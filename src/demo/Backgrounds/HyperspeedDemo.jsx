@@ -42,7 +42,7 @@ const HyperspeedDemo = () => {
           <Hyperspeed effectOptions={hyperspeedPresets[activePreset]} />
 
           {/* For Demo Purposes Only */}
-          <BackgroundContent pillText="New Background" headline="Cick & hold to see the real magic of hyperspeed!" />
+          <BackgroundContent pillText="New Background" headline="Click & hold to see the real magic of hyperspeed!" />
         </Box>
 
         <Customize>
