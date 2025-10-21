@@ -38,7 +38,7 @@ const HyperspeedDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} cursor="pointer" p={0} mb={4}>
+        <Box position="relative" className="demo-container" overflow="hidden" h={600} cursor="pointer" p={0} mb={4}>
           <Hyperspeed effectOptions={hyperspeedPresets[activePreset]} />
 
           {/* For Demo Purposes Only */}
