@@ -566,7 +566,6 @@ export default function DomeGallery({
   }, [enlargeTransitionMs, openedImageBorderRadius, grayscale]);
 
   const openItemFromElement = (el: HTMLElement) => {
-    if (cancelTapRef.current) return;
     if (openingRef.current) return;
     openingRef.current = true;
     openStartedAtRef.current = performance.now();
@@ -590,9 +589,21 @@ export default function DomeGallery({
     refDiv.className = 'item__image item__image--reference opacity-0';
     refDiv.style.transform = `rotateX(${-parentRot.rotateX}deg) rotateY(${-parentRot.rotateY}deg)`;
     parent.appendChild(refDiv);
+
+    void refDiv.offsetHeight;
+
     const tileR = refDiv.getBoundingClientRect();
-    const mainR = mainRef.current!.getBoundingClientRect();
-    const frameR = frameRef.current!.getBoundingClientRect();
+    const mainR = mainRef.current?.getBoundingClientRect();
+    const frameR = frameRef.current?.getBoundingClientRect();
+
+    if (!mainR || !frameR || tileR.width <= 0 || tileR.height <= 0) {
+      openingRef.current = false;
+      focusedElRef.current = null;
+      parent.removeChild(refDiv);
+      unlockScroll();
+      return;
+    }
+
     originalTilePositionRef.current = {
       left: tileR.left,
       top: tileR.top,
@@ -616,12 +627,17 @@ export default function DomeGallery({
     const ty0 = tileR.top - frameR.top;
     const sx0 = tileR.width / frameR.width;
     const sy0 = tileR.height / frameR.height;
-    overlay.style.transform = `translate(${tx0}px, ${ty0}px) scale(${sx0}, ${sy0})`;
-    requestAnimationFrame(() => {
+
+    const validSx0 = isFinite(sx0) && sx0 > 0 ? sx0 : 1;
+    const validSy0 = isFinite(sy0) && sy0 > 0 ? sy0 : 1;
+
+    overlay.style.transform = `translate(${tx0}px, ${ty0}px) scale(${validSx0}, ${validSy0})`;
+    setTimeout(() => {
+      if (!overlay.parentElement) return;
       overlay.style.opacity = '1';
       overlay.style.transform = 'translate(0px, 0px) scale(1, 1)';
       rootRef.current?.setAttribute('data-enlarging', 'true');
-    });
+    }, 16);
     const wantsResize = openedImageWidth || openedImageHeight;
     if (wantsResize) {
       const onFirstEnd = (ev: TransitionEvent) => {
@@ -811,12 +827,19 @@ export default function DomeGallery({
                     tabIndex={0}
                     aria-label={it.alt || 'Open image'}
                     onClick={e => {
+                      if (draggingRef.current) return;
+                      if (movedRef.current) return;
                       if (performance.now() - lastDragEndAt.current < 80) return;
+                      if (openingRef.current) return;
                       openItemFromElement(e.currentTarget as HTMLElement);
                     }}
-                    onTouchEnd={e => {
+                    onPointerUp={e => {
+                      if ((e.nativeEvent as PointerEvent).pointerType !== 'touch') return;
+                      if (draggingRef.current) return;
+                      if (movedRef.current) return;
                       if (performance.now() - lastDragEndAt.current < 80) return;
-                      openItemFromElement(e.currentTarget);
+                      if (openingRef.current) return;
+                      openItemFromElement(e.currentTarget as HTMLElement);
                     }}
                     style={{
                       inset: '10px',
