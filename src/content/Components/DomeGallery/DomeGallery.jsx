@@ -472,13 +472,13 @@ export default function DomeGallery({
       refDiv.style.opacity = '0';
       refDiv.style.transform = `rotateX(${-parentRot.rotateX}deg) rotateY(${-parentRot.rotateY}deg)`;
       parent.appendChild(refDiv);
-      
+
       void refDiv.offsetHeight;
-      
+
       const tileR = refDiv.getBoundingClientRect();
       const mainR = mainRef.current?.getBoundingClientRect();
       const frameR = frameRef.current?.getBoundingClientRect();
-      
+
       if (!mainR || !frameR || tileR.width <= 0 || tileR.height <= 0) {
         openingRef.current = false;
         focusedElRef.current = null;
@@ -486,7 +486,7 @@ export default function DomeGallery({
         unlockScroll();
         return;
       }
-      
+
       originalTilePositionRef.current = { left: tileR.left, top: tileR.top, width: tileR.width, height: tileR.height };
       el.style.visibility = 'hidden';
       el.style.zIndex = 0;
@@ -511,19 +511,19 @@ export default function DomeGallery({
       const ty0 = tileR.top - frameR.top;
       const sx0 = tileR.width / frameR.width;
       const sy0 = tileR.height / frameR.height;
-      
+
       const validSx0 = isFinite(sx0) && sx0 > 0 ? sx0 : 1;
       const validSy0 = isFinite(sy0) && sy0 > 0 ? sy0 : 1;
-      
+
       overlay.style.transform = `translate(${tx0}px, ${ty0}px) scale(${validSx0}, ${validSy0})`;
-      
+
       setTimeout(() => {
         if (!overlay.parentElement) return;
         overlay.style.opacity = '1';
         overlay.style.transform = 'translate(0px, 0px) scale(1, 1)';
         rootRef.current?.setAttribute('data-enlarging', 'true');
       }, 16);
-      
+
       const wantsResize = openedImageWidth || openedImageHeight;
       if (wantsResize) {
         const onFirstEnd = ev => {
