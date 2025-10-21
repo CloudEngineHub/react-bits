@@ -454,6 +454,8 @@ export const LaserFlow: React.FC<Props> = ({
     const dprFloor = 0.6;
     const lowerThresh = 50;
     const upperThresh = 58;
+    let lastDprChangeRef = 0;
+    const dprChangeCooldown = 2000;
 
     const adjustDprIfNeeded = (now: number) => {
       const elapsed = now - lastFpsCheckRef.current;
@@ -470,13 +472,14 @@ export const LaserFlow: React.FC<Props> = ({
       const base = baseDprRef.current;
 
       if (avgFps < lowerThresh) {
-        next = clamp(currentDprRef.current * 0.9, dprFloor, base);
+        next = clamp(currentDprRef.current * 0.85, dprFloor, base);
       } else if (avgFps > upperThresh && currentDprRef.current < base) {
-        next = clamp(currentDprRef.current * 1.05, dprFloor, base);
+        next = clamp(currentDprRef.current * 1.1, dprFloor, base);
       }
 
-      if (Math.abs(next - currentDprRef.current) > 0.01) {
+      if (Math.abs(next - currentDprRef.current) > 0.01 && now - lastDprChangeRef > dprChangeCooldown) {
         currentDprRef.current = next;
+        lastDprChangeRef = now;
         setSizeNow();
       }
 
