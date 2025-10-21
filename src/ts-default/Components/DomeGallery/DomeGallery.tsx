@@ -525,22 +525,28 @@ export default function DomeGallery({
     }
   };
 
-  const onTileClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (draggingRef.current) return;
-    if (movedRef.current) return;
-    if (performance.now() - lastDragEndAt.current < 80) return;
-    if (openingRef.current) return;
-    openItemFromElement(e.currentTarget);
-  }, [openItemFromElement]);
+  const onTileClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (draggingRef.current) return;
+      if (movedRef.current) return;
+      if (performance.now() - lastDragEndAt.current < 80) return;
+      if (openingRef.current) return;
+      openItemFromElement(e.currentTarget);
+    },
+    [openItemFromElement]
+  );
 
-  const onTilePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== 'touch') return;
-    if (draggingRef.current) return;
-    if (movedRef.current) return;
-    if (performance.now() - lastDragEndAt.current < 80) return;
-    if (openingRef.current) return;
-    openItemFromElement(e.currentTarget);
-  }, [openItemFromElement]);
+  const onTilePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.pointerType !== 'touch') return;
+      if (draggingRef.current) return;
+      if (movedRef.current) return;
+      if (performance.now() - lastDragEndAt.current < 80) return;
+      if (openingRef.current) return;
+      openItemFromElement(e.currentTarget);
+    },
+    [openItemFromElement]
+  );
 
   useEffect(() => {
     const scrim = scrimRef.current;
