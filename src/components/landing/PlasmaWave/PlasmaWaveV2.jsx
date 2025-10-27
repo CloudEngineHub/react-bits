@@ -111,6 +111,7 @@ export default function PlasmaWaveV2({
   resumeOnScrollUp = false,
   dynamicDpr = false
 }) {
+  const [fallbackActive, setFallbackActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
   const uniformOffset = useRef(new Float32Array([xOffset, yOffset]));
@@ -123,7 +124,7 @@ export default function PlasmaWaveV2({
   const runningRef = useRef(false);
   const observerRef = useRef(null);
   const permaPausedRef = useRef(false);
-  const startStopApiRef = useRef({ start: () => {}, stop: () => {} });
+  const startStopApiRef = useRef({ start: () => { }, stop: () => { } });
   const appliedScrollThresholdRef = useRef(null);
 
   const propsRef = useRef({});
@@ -137,16 +138,55 @@ export default function PlasmaWaveV2({
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || fallbackActive) return;
 
-    const renderer = new Renderer({
-      alpha: true,
-      dpr: 0.5,
-      antialias: false,
-      depth: false,
-      stencil: false,
-      powerPreference: 'high-performance'
-    });
+    const createRenderer = () => {
+      const commonOpts = {
+        alpha: true,
+        dpr: 0.5,
+        antialias: false,
+        depth: false,
+        stencil: false,
+        premultipliedAlpha: false,
+        preserveDrawingBuffer: false,
+        powerPreference: 'high-performance',
+        failIfMajorPerformanceCaveat: false
+      };
+
+      try {
+        const r = new Renderer(commonOpts);
+        return r;
+      } catch (err) {
+        try {
+          const canvas = document.createElement('canvas');
+          const attrs = {
+            alpha: true,
+            antialias: false,
+            depth: false,
+            stencil: false,
+            premultipliedAlpha: false,
+            preserveDrawingBuffer: false,
+            powerPreference: 'high-performance',
+            failIfMajorPerformanceCaveat: false
+          };
+          const gl =
+            canvas.getContext('webgl2', attrs) ||
+            canvas.getContext('webgl', attrs) ||
+            canvas.getContext('experimental-webgl', attrs);
+          if (!gl) return null;
+          const r = new Renderer({ ...commonOpts, gl });
+          return r;
+        } catch (e2) {
+          return null;
+        }
+      }
+    };
+
+    const renderer = createRenderer();
+    if (!renderer) {
+      setFallbackActive(true);
+      return;
+    }
     rendererRef.current = renderer;
 
     const gl = renderer.gl;
@@ -280,10 +320,10 @@ export default function PlasmaWaveV2({
       renderer.gl.canvas.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, [isMobile, fallbackActive]);
 
   useEffect(() => {
-    if (isMobile || !autoPauseOnScroll) return;
+    if (isMobile || fallbackActive || !autoPauseOnScroll) return;
     if (!appliedScrollThresholdRef.current)
       appliedScrollThresholdRef.current = scrollPauseThreshold ?? Math.round(window.innerHeight * 1.2);
     const limit = appliedScrollThresholdRef.current;
@@ -299,9 +339,40 @@ export default function PlasmaWaveV2({
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
-  }, [isMobile, autoPauseOnScroll, scrollPauseThreshold, resumeOnScrollUp]);
+  }, [isMobile, fallbackActive, autoPauseOnScroll, scrollPauseThreshold, resumeOnScrollUp]);
 
   if (isMobile) return null;
+
+  if (fallbackActive) {
+    return (
+      <div
+        ref={containerRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          overflow: 'hidden',
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(1200px 600px at 20% 80%, rgba(123, 31, 162, 0.3), transparent 60%), radial-gradient(1000px 500px at 80% 20%, rgba(33, 150, 243, 0.25), transparent 60%), linear-gradient(180deg, rgba(10, 2, 20, 0.6), rgba(10, 2, 20, 0.8))'
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 200,
+            background: 'linear-gradient(to top, #060010, transparent)',
+            pointerEvents: 'none',
+            zIndex: 1
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
