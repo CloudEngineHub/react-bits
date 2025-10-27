@@ -14,14 +14,13 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 
 import { splitText } from '../../constants/code/TextAnimations/splitTextCode';
-import SplitText from '../../tailwind/TextAnimations/SplitText/SplitText';
+import SplitText from '../../content/TextAnimations/SplitText/SplitText';
 
 const SplitTextDemo = () => {
   const [delay, setDelay] = useState(70);
   const [duration, setDuration] = useState(2);
   const [ease, setEase] = useState('elastic.out(1, 0.3)');
   const [splitType, setSplitType] = useState('chars');
-  const [threshold, setThreshold] = useState(0.1);
   const [showCallback, setShowCallback] = useState(true);
 
   const [key, forceRerender] = useForceRerender();
@@ -94,7 +93,6 @@ const SplitTextDemo = () => {
             duration={duration}
             ease={ease}
             splitType={splitType}
-            threshold={threshold}
             className="split-text-demo"
             onLetterAnimationComplete={showCallback ? () => toast('✅ Animation Finished!') : undefined}
           />
@@ -109,13 +107,13 @@ const SplitTextDemo = () => {
               border="1px solid #271E37"
               _hover={{ bg: '#271E37' }}
               color="#fff"
-              h={8}
+              h={10}
               onClick={() => {
                 setSplitType(splitType === 'chars' ? 'words' : splitType === 'words' ? 'lines' : 'chars');
                 forceRerender();
               }}
             >
-              Split Type <Text color={'#a1a1aa'}>&nbsp;{splitType}</Text>
+              Split Type: <Text color={'#a1a1aa'}>&nbsp;{splitType}</Text>
             </Button>
             <Button
               fontSize="xs"
@@ -124,7 +122,7 @@ const SplitTextDemo = () => {
               border="1px solid #271E37"
               _hover={{ bg: '#271E37' }}
               color="#fff"
-              h={8}
+              h={10}
               onClick={() => {
                 setEase(
                   ease === 'power3.out' ? 'bounce.out' : ease === 'bounce.out' ? 'elastic.out(1, 0.3)' : 'power3.out'
@@ -135,15 +133,6 @@ const SplitTextDemo = () => {
               Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
             </Button>
           </Flex>
-
-          <PreviewSwitch
-            title="Show Completion Toast"
-            isChecked={showCallback}
-            onChange={checked => {
-              setShowCallback(checked);
-              forceRerender();
-            }}
-          />
 
           <PreviewSlider
             title="Stagger Delay (ms)"
@@ -169,14 +158,11 @@ const SplitTextDemo = () => {
             }}
           />
 
-          <PreviewSlider
-            title="Threshold"
-            min={0.1}
-            max={1}
-            step={0.1}
-            value={threshold}
-            onChange={val => {
-              setThreshold(val);
+          <PreviewSwitch
+            title="Show Completion Toast"
+            isChecked={showCallback}
+            onChange={checked => {
+              setShowCallback(checked);
               forceRerender();
             }}
           />

@@ -32,18 +32,21 @@ export const TransitionProvider = ({ children }) => {
     async (targetSubcategory, componentMap, onNavigate) => {
       if (isTransitioning) return;
       setIsTransitioning(true);
+
       setTransitionPhase('fade-out');
 
       const preloadPromise = preloadComponent(targetSubcategory, componentMap);
-      await delay(300);
+      await delay(250);
 
       setTransitionPhase('loading');
-      await preloadPromise;
-      await delay(500);
+
+      const MAX_PRELOAD_WAIT = 500;
+      await Promise.race([preloadPromise, delay(MAX_PRELOAD_WAIT)]);
 
       onNavigate();
+
       setTransitionPhase('fade-in');
-      await delay(300);
+      await delay(250);
 
       setTransitionPhase('idle');
       setIsTransitioning(false);

@@ -63,13 +63,12 @@ function readJSON(file) {
 // Load dependency names from package.json for validation
 const pkg = readJSON(PACKAGE_JSON_PATH);
 
-// Load manual descriptions (optional; dynamic import to avoid cache)
-let componentDescriptions = {};
+let componentMetadata = {};
 try {
-  const descriptionsPath = path.join(process.cwd(), 'src/constants/Descriptions.js');
-  if (fs.existsSync(descriptionsPath)) {
-    const mod = await import(pathToFileURL(descriptionsPath).href + '?t=' + Date.now());
-    componentDescriptions = mod.descriptions || mod.default || {};
+  const metadataPath = path.join(process.cwd(), 'src/constants/Information.js');
+  if (fs.existsSync(metadataPath)) {
+    const mod = await import(pathToFileURL(metadataPath).href + '?t=' + Date.now());
+    componentMetadata = mod.componentMetadata || mod.default || {};
   }
 } catch (e) {
   // ignore
@@ -79,6 +78,15 @@ const packageDeps = new Set([...Object.keys(pkg.dependencies || {}), ...Object.k
 
 // Exclusions (never list as dependencies)
 const EXCLUDE_DEPS = new Set(['react', 'react-dom', 'react-icons']);
+
+const metadataKeyLowerSet = new Set(Object.keys(componentMetadata || {}).map(k => k.toLowerCase()));
+function getMetaForKey(manualKey, comp) {
+  let meta = componentMetadata?.[manualKey] || componentMetadata?.[comp];
+  if (meta) return meta;
+  const target = (manualKey || '').toLowerCase();
+  const foundKey = Object.keys(componentMetadata || {}).find(k => k.toLowerCase() === target);
+  return foundKey ? componentMetadata[foundKey] : undefined;
+}
 
 function getPackageName(spec) {
   if (spec.startsWith('@')) {
@@ -180,10 +188,9 @@ function buildItems() {
         let description = descriptionCache.get(compKey);
         if (!description) {
           const manualKey = `${category}/${comp}`;
-          if (componentDescriptions[manualKey]) {
-            description = componentDescriptions[manualKey];
-          } else if (componentDescriptions[comp]) {
-            description = componentDescriptions[comp];
+          const meta = getMetaForKey(manualKey, comp);
+          if (meta) {
+            description = meta.description;
           } else {
             try {
               const content = fs.readFileSync(primary, 'utf8');
@@ -280,13 +287,8 @@ function buildRegistry() {
   categoryComponentSet.forEach((set, category) => {
     set.forEach(comp => allComponentKeys.push(`${category}/${comp}`));
   });
-  const missingDescriptions = allComponentKeys.filter(
-    k => !componentDescriptions[k] && !componentDescriptions[k.split('/')[1]]
-  );
-  const coveragePct = (
-    ((allComponentKeys.length - missingDescriptions.length) / allComponentKeys.length) *
-    100
-  ).toFixed(1);
+  const missingInfo = allComponentKeys.filter(k => !metadataKeyLowerSet.has(k.toLowerCase()));
+  const coveragePct = (((allComponentKeys.length - missingInfo.length) / allComponentKeys.length) * 100).toFixed(1);
 
   // Fancy header
   const header = invert(bold(' REACT BITS REGISTRY '));
@@ -302,10 +304,10 @@ function buildRegistry() {
   line('Total files', totalFiles.toString(), green);
   line('Registry file', 'registry.json', yellow);
   line('Public copy', 'public/r/registry.json', yellow);
-  line('Description coverage', `${coveragePct}%`, missingDescriptions.length ? yellow : green);
-  if (missingDescriptions.length) {
-    console.log('\n' + yellow('Missing descriptions:'));
-    missingDescriptions.sort().forEach(k => console.log(dim(' - ') + k));
+  line('Metadata coverage', `${coveragePct}%`, missingInfo.length ? yellow : green);
+  if (missingInfo.length) {
+    console.log('\n' + yellow('Missing metadata entries:'));
+    missingInfo.sort().forEach(k => console.log(dim(' - ') + k));
   }
 
   // Category table

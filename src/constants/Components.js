@@ -1,7 +1,7 @@
 const getStarted = {
   introduction: () => import('../docs/Introduction.jsx'),
   installation: () => import('../docs/Installation.jsx'),
-  // mcp: () => import('../docs/McpServer.jsx') // Temporarily disabled
+  mcp: () => import('../docs/McpServer.jsx')
 };
 
 const animations = {
@@ -28,7 +28,8 @@ const animations = {
   'target-cursor': () => import('../demo/Animations/TargetCursorDemo'),
   'sticker-peel': () => import('../demo/Animations/StickerPeelDemo'),
   'electric-border': () => import('../demo/Animations/ElectricBorderDemo'),
-  'laser-flow': () => import('../demo/Animations/LaserFlowDemo')
+  'laser-flow': () => import('../demo/Animations/LaserFlowDemo'),
+  'ghost-cursor': () => import('../demo/Animations/GhostCursorDemo')
 };
 
 const textAnimations = {
@@ -52,7 +53,6 @@ const textAnimations = {
   'fuzzy-text': () => import('../demo/TextAnimations/FuzzyTextDemo'),
   'text-cursor': () => import('../demo/TextAnimations/TextCursorDemo'),
   'scrambled-text': () => import('../demo/TextAnimations/ScrambledTextDemo'),
-  'text-trail': () => import('../demo/TextAnimations/TextTrailDemo'),
   'curved-loop': () => import('../demo/TextAnimations/CurvedLoopDemo'),
   'text-type': () => import('../demo/TextAnimations/TextTypeDemo'),
   'logo-loop': () => import('../demo/Animations/LogoLoopDemo'),
@@ -62,7 +62,6 @@ const textAnimations = {
 const components = {
   'stack': () => import('../demo/Components/StackDemo'),
   'dock': () => import('../demo/Components/DockDemo'),
-  'rolling-gallery': () => import('../demo/Components/RollingGalleryDemo'),
   'spotlight-card': () => import('../demo/Components/SpotlightCardDemo'),
   'elastic-slider': () => import('../demo/Components/ElasticSliderDemo'),
   'decay-card': () => import('../demo/Components/DecayCardDemo'),
@@ -128,7 +127,8 @@ const backgrounds = {
   'gradient-blinds': () => import('../demo/Backgrounds/GradientBlindsDemo'),
   'prismatic-burst': () => import('../demo/Backgrounds/PrismaticBurstDemo.jsx'),
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
-  'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx')
+  'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
+  'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx')
 };
 
 export const componentMap = {

@@ -53,6 +53,7 @@ const Shuffle = ({
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
       if (respectReducedMotion && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setReady(true);
         onShuffleComplete?.();
         return;
       }
@@ -153,10 +154,9 @@ const Shuffle = ({
           }
           inner.appendChild(ch);
 
-          // compute travel based on direction; also reorder children for left so motion reveals correctly
           const steps = rolls + 1;
           let startX = 0;
-          let finalX = -steps * w; // default: slide left to reveal
+          let finalX = -steps * w;
           if (shuffleDirection === 'right') {
             const firstCopy = inner.firstElementChild;
             const real = inner.lastElementChild;

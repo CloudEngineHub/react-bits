@@ -207,7 +207,7 @@ const FeatureCards = () => {
         <div className="bento-grid" ref={gridRef}>
           <ParticleCard className="feature-card card1" disableAnimations={isMobile}>
             <div className="messages-gif-wrapper">
-              <img src="/assets/messages.gif" alt="Messages animation" className="messages-gif" />
+              <img src="/assets/gif/messages.gif" alt="Messages animation" className="messages-gif" />
             </div>
             <h2>{isMobile ? '100' : <CountUp to={100} />}%</h2>
             <h3>Free &amp; Open Source</h3>
@@ -216,7 +216,7 @@ const FeatureCards = () => {
 
           <ParticleCard className="feature-card card2" disableAnimations={isMobile}>
             <div className="components-gif-wrapper">
-              <img src="/assets/components.gif" alt="Components animation" className="components-gif" />
+              <img src="/assets/gif/components.gif" alt="Components animation" className="components-gif" />
             </div>
             <h2>{isMobile ? '110' : <CountUp to={110} />}+</h2>
             <h3>Creative Components</h3>
@@ -225,7 +225,7 @@ const FeatureCards = () => {
 
           <ParticleCard className="feature-card card4" disableAnimations={isMobile}>
             <div className="switch-gif-wrapper">
-              <img src="/assets/switch.gif" alt="Switch animation" className="switch-gif" />
+              <img src="/assets/gif/switch.gif" alt="Switch animation" className="switch-gif" />
             </div>
             <h2>{isMobile ? '4' : <CountUp to={4} />}</h2>
             <h3>Component Variants</h3>

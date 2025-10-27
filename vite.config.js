@@ -20,7 +20,8 @@ export default defineConfig({
       '@content': path.resolve(__dirname, 'src/content'),
       '@tailwind': path.resolve(__dirname, 'src/tailwind'),
       '@ts-default': path.resolve(__dirname, 'src/ts-default'),
-      '@ts-tailwind': path.resolve(__dirname, 'src/ts-tailwind')
+      '@ts-tailwind': path.resolve(__dirname, 'src/ts-tailwind'),
+      'react-virtualized': 'react-virtualized/dist/commonjs'
     }
   },
   css: {

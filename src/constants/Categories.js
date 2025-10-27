@@ -1,18 +1,11 @@
 // Highlighted sidebar items
 export const NEW = [
   'Pixel Blast',
-  'Dome Gallery',
-  'Gradual Blur',
-  'Prismatic Burst',
-  'Gradient Blinds',
-  'Bubble Menu',
-  'Electric Border',
-  'Prism',
-  'Card Nav',
-  'Staggered Menu',
   'Liquid Ether',
   'Shuffle',
-  'Laser Flow'
+  'Laser Flow',
+  'Ghost Cursor',
+  'Color Bends'
 ];
 export const UPDATED = [];
 
@@ -20,7 +13,7 @@ export const UPDATED = [];
 export const CATEGORIES = [
   {
     name: 'Get Started',
-    subcategories: ['Introduction', 'Installation', /*'MCP'*/]
+    subcategories: ['Introduction', 'Installation', 'MCP', 'Index']
   },
   {
     name: 'Text Animations',
@@ -35,7 +28,6 @@ export const CATEGORIES = [
       'Curved Loop',
       'Fuzzy Text',
       'Gradient Text',
-      'Text Trail',
       'Falling Text',
       'Text Cursor',
       'Decrypted Text',
@@ -63,6 +55,7 @@ export const CATEGORIES = [
       'Target Cursor',
       'Laser Flow',
       'Magnet Lines',
+      'Ghost Cursor',
       'Gradual Blur',
       'Click Spark',
       'Magnet',
@@ -117,7 +110,6 @@ export const CATEGORIES = [
       'Elastic Slider',
       'Counter',
       'Infinite Menu',
-      'Rolling Gallery',
       'Stepper',
       'Bounce Cards'
     ]
@@ -131,6 +123,7 @@ export const CATEGORIES = [
       'Silk',
       'Light Rays',
       'Pixel Blast',
+      'Color Bends',
       'Aurora',
       'Plasma',
       'Particles',

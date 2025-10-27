@@ -51,7 +51,6 @@ Notes:
 - [Split Text](https://www.reactbits.dev/text-animations/split-text): Splits text into characters / words for staggered entrance animation. CLI: `SplitText`.
 - [Text Cursor](https://www.reactbits.dev/text-animations/text-cursor): Make any text element follow your cursor, leaving a trail of copies behind it. CLI: `TextCursor`.
 - [Text Pressure](https://www.reactbits.dev/text-animations/text-pressure): Characters scale / warp interactively based on pointer pressure zone. CLI: `TextPressure`.
-- [Text Trail](https://www.reactbits.dev/text-animations/text-trail): 3D trail effect that follows the cursor and changes the text's appearance. CLI: `TextTrail`.
 - [Text Type](https://www.reactbits.dev/text-animations/text-type): Typewriter effect with blinking cursor and adjustable typing cadence. CLI: `TextType`.
 - [True Focus](https://www.reactbits.dev/text-animations/true-focus): Applies dynamic blur / clarity based over a series of words in order. CLI: `TrueFocus`.
 - [Variable Proximity](https://www.reactbits.dev/text-animations/variable-proximity): Letter styling changes continuously with pointer distance mapping. CLI: `VariableProximity`.
@@ -65,6 +64,7 @@ Notes:
 - [Cubes](https://www.reactbits.dev/animations/cubes): 3D rotating cube cluster. Supports auto-rotation or hover interaction. CLI: `Cubes`.
 - [Electric Border](https://www.reactbits.dev/animations/electric-border): Jittery electric energy border with animated arcs, glow and adjustable intensity. CLI: `ElectricBorder`.
 - [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple directional fade / slide entrance wrapper with threshold-based activation. CLI: `FadeContent`.
+- [Ghost Cursor](https://www.reactbits.dev/animations/ghost-cursor): Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect. CLI: `GhostCursor`.
 - [Glare Hover](https://www.reactbits.dev/animations/glare-hover): Adds a realistic moving glare highlight on hover over any element. CLI: `GlareHover`.
 - [Gradual Blur](https://www.reactbits.dev/animations/gradual-blur): Progressively un-blurs content based on scroll or trigger creating a cinematic reveal. CLI: `GradualBlur`.
 - [Image Trail](https://www.reactbits.dev/animations/image-trail): Cursor-based image trail with several built-in variants. CLI: `ImageTrail`.
@@ -115,7 +115,6 @@ Notes:
 - [Pill Nav](https://www.reactbits.dev/components/pill-nav): Minimal pill nav with sliding active highlight + smooth easing. CLI: `PillNav`.
 - [Pixel Card](https://www.reactbits.dev/components/pixel-card): Card content revealed through pixel expansion transition. CLI: `PixelCard`.
 - [Profile Card](https://www.reactbits.dev/components/profile-card): Animated profile card glare with 3D hover effect. CLI: `ProfileCard`.
-- [Rolling Gallery](https://www.reactbits.dev/components/rolling-gallery): 3D rolling gallery with drag controls. CLI: `RollingGallery`.
 - [Scroll Stack](https://www.reactbits.dev/components/scroll-stack): Overlapping card stack reveals on scroll with depth layering. CLI: `ScrollStack`.
 - [Spotlight Card](https://www.reactbits.dev/components/spotlight-card): Dynamic spotlight follows cursor casting gradient illumination. CLI: `SpotlightCard`.
 - [Stack](https://www.reactbits.dev/components/stack): Layered stack with swipe animations and smooth transitions. CLI: `Stack`.
@@ -129,6 +128,7 @@ Notes:
 - [Balatro](https://www.reactbits.dev/backgrounds/balatro): The balatro shader, fully customizalbe and interactive. CLI: `Balatro`.
 - [Ballpit](https://www.reactbits.dev/backgrounds/ballpit): Physics ball pit simulation with bouncing colorful spheres. CLI: `Ballpit`.
 - [Beams](https://www.reactbits.dev/backgrounds/beams): Crossing animated ribbons with customizable properties. CLI: `Beams`.
+- [Color Bends](https://www.reactbits.dev/backgrounds/color-bends): Vibrant color bends with smooth flowing animation. CLI: `ColorBends`.
 - [Dark Veil](https://www.reactbits.dev/backgrounds/dark-veil): Subtle dark background with a smooth animation and postprocessing. CLI: `DarkVeil`.
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.

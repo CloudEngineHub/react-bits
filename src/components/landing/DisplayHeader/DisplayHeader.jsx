@@ -43,7 +43,7 @@ const DisplayHeader = ({ activeItem }) => {
             <Link className={`nav-link ${activeItem === 'home' && 'active-link'}`} to="/">
               Home
             </Link>
-            <Link className="nav-link" to="/text-animations/split-text">
+            <Link className="nav-link" to="/get-started/introduction">
               Docs
             </Link>
             <Link className={`nav-link ${activeItem === 'showcase' && 'active-link'}`} to="/showcase">

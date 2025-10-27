@@ -114,8 +114,9 @@
   animation-iteration-count: infinite;
   will-change: transform;
   width: max-content;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 .testimonial-marquee-left {
@@ -128,21 +129,22 @@
   animation-duration: var(--speed);
 }
 
+/* move exactly half the total width (we duplicate the content twice) for a seamless loop */
 @keyframes marquee-left {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-25%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 @keyframes marquee-right {
   0% {
-    transform: translateX(-25%);
+    transform: translate3d(-50%, 0, 0);
   }
   100% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -150,22 +152,25 @@
   flex-shrink: 0;
   width: 380px;
   min-height: 120px;
-  background: #060010;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(6, 0, 16, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
   padding: 24px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+  /* avoid backdrop-filter (expensive) for better FPS */
   white-space: normal;
+  will-change: transform;
 }
 
 .testimonial-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translate3d(0, -4px, 0);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 .testimonial-content {

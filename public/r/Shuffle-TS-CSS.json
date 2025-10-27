@@ -16,7 +16,7 @@
     },
     {
       "path": "public/ts/default/src/ts-default/TextAnimations/Shuffle/Shuffle.css",
-      "content": ".shuffle-parent {\n  display: inline-block;\n  white-space: normal;\n  word-wrap: break-word;\n  will-change: transform;\n  line-height: 1; /* keep line height consistent before/after split to avoid jump */\n  font-size: 4rem;\n  font-family: 'Press Start 2P', sans-serif;\n  text-transform: uppercase;\n  visibility: hidden; /* hidden until initialized to avoid flash/jump */\n}\n\n.shuffle-parent.is-ready {\n  visibility: visible;\n}\n\n.shuffle-char-wrapper {\n  display: inline-block;\n  overflow: hidden;\n  vertical-align: baseline;\n  position: relative;\n}\n\n.shuffle-char-wrapper > span {\n  display: inline-flex;\n  will-change: transform;\n}\n\n.shuffle-char {\n  line-height: 1;\n  display: inline-block;\n  text-align: center;\n}\n",
+      "content": ".shuffle-parent {\n  display: inline-block;\n  white-space: normal;\n  word-wrap: break-word;\n  will-change: transform;\n  line-height: 1;\n  font-size: 4rem;\n  font-family: 'Press Start 2P', sans-serif;\n  text-transform: uppercase;\n  visibility: hidden;\n}\n\n.shuffle-parent.is-ready {\n  visibility: visible;\n}\n\n.shuffle-char-wrapper {\n  display: inline-block;\n  overflow: hidden;\n  vertical-align: baseline;\n  position: relative;\n}\n\n.shuffle-char-wrapper > span {\n  display: inline-flex;\n  will-change: transform;\n}\n\n.shuffle-char {\n  line-height: 1;\n  display: inline-block;\n  text-align: center;\n}\n",
       "type": "registry:item"
     }
   ]

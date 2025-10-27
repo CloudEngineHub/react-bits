@@ -41,7 +41,8 @@ export const toastStyles = {
     borderRadius: '0.75rem',
     border: '1px solid #392e4e',
     color: '#fff',
-    backgroundColor: '#060010'
+    backgroundColor: '#060010',
+    textAlign: 'center'
   }
 };
 

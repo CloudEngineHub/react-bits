@@ -3,11 +3,11 @@
   white-space: normal;
   word-wrap: break-word;
   will-change: transform;
-  line-height: 1; /* keep line height consistent before/after split to avoid jump */
+  line-height: 1;
   font-size: 4rem;
   font-family: 'Press Start 2P', sans-serif;
   text-transform: uppercase;
-  visibility: hidden; /* hidden until initialized to avoid flash/jump */
+  visibility: hidden;
 }
 
 .shuffle-parent.is-ready {

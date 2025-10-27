@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ContributionSection from './GitHub/ContributionSection';
 import TabsFooter from './TabsFooter';
 
-import { Tabs, Icon, Flex } from '@chakra-ui/react';
-import { FiCode, FiEye, FiHeart } from 'react-icons/fi';
+import { Tabs, Icon, Flex, Tooltip, Box } from '@chakra-ui/react';
+import { FiCode, FiEye } from 'react-icons/fi';
+import { RiHeartFill, RiHeartLine, RiLightbulbLine } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
@@ -19,6 +23,44 @@ const TAB_STYLE_PROPS = {
 };
 
 const TabsLayout = ({ children, className }) => {
+  const { category, subcategory } = useParams();
+
+  const { favoriteKey, componentName } = useMemo(() => {
+    if (!category || !subcategory) return null;
+
+    const toPascal = str =>
+      str
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+
+    const categoryName = toPascal(category);
+    const componentName = toPascal(subcategory);
+    return { favoriteKey: `${categoryName}/${componentName}`, componentName };
+  }, [category, subcategory]) || { favoriteKey: null, componentName: null };
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    if (!favoriteKey) return;
+    setIsSaved(isComponentSaved(favoriteKey));
+  }, [favoriteKey]);
+
+  const toggleFavorite = () => {
+    if (!favoriteKey) return;
+    const { saved } = toggleSavedComponent(favoriteKey);
+    setIsSaved(saved);
+
+    const nameEl = (
+      <span>
+        {' '}
+        <span style={{ color: '#B19EEF', fontWeight: 700 }}>&lt;{componentName} /&gt;</span>
+      </span>
+    );
+
+    if (saved) toast.success?.(<>Added {nameEl} to favorites</>) ?? toast(<>Added {nameEl} to favorites</>);
+    else toast.error?.(<>Removed {nameEl} from favorites</>) ?? toast(<>Removed {nameEl} from favorites</>);
+  };
   const contentMap = {
     PreviewTab: null,
     CodeTab: null
@@ -44,9 +86,56 @@ const TabsLayout = ({ children, className }) => {
             </Tabs.Trigger>
           </Flex>
 
-          <Tabs.Trigger className="contribute-tab" value="contribute" {...TAB_STYLE_PROPS} flexShrink={0}>
-            <Icon as={FiHeart} /> Contribute
-          </Tabs.Trigger>
+          <Flex alignItems="center" gap={2} flexShrink={0}>
+            {favoriteKey && category !== 'get-started' && (
+              <Tooltip.Root openDelay={250} closeDelay={100} positioning={{ placement: 'left', gutter: 8 }}>
+                <Tooltip.Trigger asChild>
+                  <Box
+                    as="button"
+                    aria-label="Add to Favorites"
+                    onClick={toggleFavorite}
+                    aria-pressed={isSaved}
+                    display="flex"
+                    cursor="pointer"
+                    alignItems="center"
+                    gap={2}
+                    {...TAB_STYLE_PROPS}
+                    w={10}
+                    bg={isSaved ? 'linear-gradient(-135deg, rgba(124, 58, 237, 1), rgba(75, 58, 255, 0.6))' : undefined}
+                    _hover={isSaved ? { filter: 'brightness(0.9)' } : TAB_STYLE_PROPS._hover}
+                    border={isSaved ? 'none' : TAB_STYLE_PROPS.border}
+                  >
+                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} color="#fff" boxSize={4} />
+                  </Box>
+                </Tooltip.Trigger>
+                <Tooltip.Positioner>
+                  <Tooltip.Content
+                    bg="#060010"
+                    border="1px solid #271e37"
+                    color="#B19EEF"
+                    fontSize="12px"
+                    fontWeight="500"
+                    lineHeight="0"
+                    px={4}
+                    whiteSpace="nowrap"
+                    h={10}
+                    borderRadius="15px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                    pointerEvents="none"
+                  >
+                    {isSaved ? 'Remove from Favorites' : 'Add to Favorites'}
+                  </Tooltip.Content>
+                </Tooltip.Positioner>
+              </Tooltip.Root>
+            )}
+
+            <Tabs.Trigger className="contribute-tab" value="contribute" {...TAB_STYLE_PROPS}>
+              <Icon as={RiLightbulbLine} /> Contribute
+            </Tabs.Trigger>
+          </Flex>
         </Flex>
       </Tabs.List>
 

@@ -1,21 +1,15 @@
 import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
-import { SearchProvider } from './components/context/SearchContext/SearchContext';
-import { OptionsProvider } from './components/context/OptionsContext/OptionsContext';
-import { TransitionProvider } from './components/context/TransitionContext/TransitionContext';
+import Providers from './components/layout/Providers';
 import { useEffect } from 'react';
 import { ActiveRouteProvider } from './components/context/ActiveRouteContext/ActiveRouteContext';
-import { InstallationProvider } from './components/context/InstallationContext/InstallationContext';
-import { Toaster } from 'sonner';
 import { forceChakraDarkTheme } from './utils/utils';
-import { toastStyles } from './utils/customTheme';
 
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
-import Header from './components/navs/Header';
-import Sidebar from './components/navs/Sidebar';
+import SidebarLayout from './components/layout/SidebarLayout';
 import LandingPage from './pages/LandingPage';
 import CategoryPage from './pages/CategoryPage';
 import ShowcasePage from './pages/ShowcasePage';
-import Announcement from './components/common/Misc/Announcement';
+import FavoritesPage from './pages/FavoritesPage';
 
 function AppContent() {
   const location = useLocation();
@@ -26,37 +20,36 @@ function AppContent() {
     return null;
   };
 
-  const isCategoryPage = location.pathname.match(/^\/[^/]+\/[^/]+$/);
+  const sidebarPages = ['/favorites'];
+  const isSidebarPage =
+    sidebarPages.some(path => location.pathname.includes(path)) || location.pathname.match(/^\/[^/]+\/[^/]+$/);
 
   return (
     <>
-      {!isCategoryPage && <DisplayHeader activeItem={getActiveItem()} />}
-      <Routes>
-        <Route exact path="/" element={<LandingPage />} />
-        <Route exact path="/showcase" element={<ShowcasePage />} />
-        <Route
-          path="/:category/:subcategory"
-          element={
-            <SearchProvider>
-              <OptionsProvider>
-                <TransitionProvider>
-                  <InstallationProvider>
-                    <main className="app-container">
-                      <Announcement />
-                      <Header />
-                      <section className="category-wrapper">
-                        <Sidebar />
-                        <CategoryPage />
-                      </section>
-                      <Toaster toastOptions={toastStyles} position="bottom-right" visibleToasts={1} />
-                    </main>
-                  </InstallationProvider>
-                </TransitionProvider>
-              </OptionsProvider>
-            </SearchProvider>
-          }
-        />
-      </Routes>
+      {!isSidebarPage && <DisplayHeader activeItem={getActiveItem()} />}
+      <Providers>
+        <Routes>
+          <Route exact path="/" element={<LandingPage />} />
+          <Route exact path="/showcase" element={<ShowcasePage />} />
+          <Route
+            path="/:category/:subcategory"
+            element={
+              <SidebarLayout>
+                <CategoryPage />
+              </SidebarLayout>
+            }
+          />
+
+          <Route
+            path="/favorites"
+            element={
+              <SidebarLayout>
+                <FavoritesPage />
+              </SidebarLayout>
+            }
+          />
+        </Routes>
+      </Providers>
     </>
   );
 }

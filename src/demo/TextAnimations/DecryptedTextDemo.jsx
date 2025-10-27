@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Flex, Separator } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { toast } from 'sonner';
 import { TabsLayout, PreviewTab, CodeTab } from '../../components/common/TabsLayout';
 
@@ -159,82 +159,72 @@ const DecryptedTextDemo = () => {
         </Box>
 
         <Customize>
-          <Flex wrap="wrap" gap={4} mb={4}>
-            <PreviewSwitch
-              title="Sequential"
-              isChecked={sequential}
-              onChange={checked => {
-                setSequential(checked);
-                forceRerender();
-              }}
-            />
+          <PreviewSelect
+            title="Animate On"
+            options={animateOptions}
+            value={animateOn}
+            name="animateOn"
+            width={100}
+            onChange={val => {
+              setAnimateOn(val);
+              forceRerender();
+            }}
+          />
 
-            <PreviewSwitch
-              title="Original Chars"
-              isChecked={useOriginalCharsOnly}
-              onChange={checked => {
-                setUseOriginalCharsOnly(checked);
-                forceRerender();
-              }}
-            />
-          </Flex>
+          <PreviewSelect
+            title="Direction"
+            options={directionOptions}
+            value={revealDirection}
+            name="direction"
+            width={100}
+            onChange={val => {
+              setRevealDirection(val);
+              forceRerender();
+            }}
+          />
 
-          <Separator borderColor="#271E37" my={4} />
+          <PreviewSlider
+            title="Speed"
+            min={10}
+            max={200}
+            step={10}
+            value={speed}
+            valueUnit="ms"
+            onChange={val => {
+              setSpeed(val);
+              forceRerender();
+            }}
+          />
 
-          <Flex wrap="wrap" direction="column" gap={4}>
-            <PreviewSelect
-              title="Animate On"
-              options={animateOptions}
-              value={animateOn}
-              name="animateOn"
-              width={100}
-              onChange={val => {
-                setAnimateOn(val);
-                forceRerender();
-              }}
-            />
+          <PreviewSlider
+            title="Iterations"
+            min={1}
+            max={50}
+            step={1}
+            value={maxIterations}
+            onChange={val => {
+              setMaxIterations(val);
+              forceRerender();
+            }}
+          />
 
-            <PreviewSelect
-              title="Direction"
-              options={directionOptions}
-              value={revealDirection}
-              name="direction"
-              width={100}
-              onChange={val => {
-                setRevealDirection(val);
-                forceRerender();
-              }}
-            />
-          </Flex>
+          <PreviewSwitch
+            title="Sequential"
+            isChecked={sequential}
+            onChange={checked => {
+              setSequential(checked);
+              forceRerender();
+            }}
+          />
 
-          <Separator borderColor="#271E37" my={4} />
-
-          <Flex wrap="wrap" direction="column" gap={4} mb={4}>
-            <PreviewSlider
-              title="Speed"
-              min={10}
-              max={200}
-              step={10}
-              value={speed}
-              valueUnit="ms"
-              onChange={val => {
-                setSpeed(val);
-                forceRerender();
-              }}
-            />
-
-            <PreviewSlider
-              title="Iterations"
-              min={1}
-              max={50}
-              step={1}
-              value={maxIterations}
-              onChange={val => {
-                setMaxIterations(val);
-                forceRerender();
-              }}
-            />
-          </Flex>
+          <PreviewSwitch
+            title="Original Chars"
+            isChecked={useOriginalCharsOnly}
+            onChange={checked => {
+              setUseOriginalCharsOnly(checked);
+              forceRerender();
+            }}
+          />
         </Customize>
 
         <PropTable data={propData} />
