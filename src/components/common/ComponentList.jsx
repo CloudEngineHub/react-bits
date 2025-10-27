@@ -76,30 +76,7 @@ const shouldPreload = () => {
   return true;
 };
 
-const useIsInViewport = (rootMargin = '150px 0px', threshold = 0.1) => {
-  const ref = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    let cancelled = false;
-    const obs = new IntersectionObserver(
-      entries => {
-        if (cancelled) return;
-        const entry = entries[0];
-        setIsInView(entry.isIntersecting);
-      },
-      { root: null, rootMargin, threshold }
-    );
-    obs.observe(ref.current);
-    return () => {
-      cancelled = true;
-      obs.disconnect();
-    };
-  }, [rootMargin, threshold]);
-
-  return [ref, isInView];
-};
+// Previously used to gate media by viewport. We now gate via RVGrid's visible range for reliability.
 
 const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = false, sorting = 'none', title }) => {
   const scrollRef = useRef(null);
@@ -109,6 +86,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   const clearSlotRef = useRef(null);
   const clearBtnRef = useRef(null);
   const CLEAR_APPEAR_DEBOUNCE_MS = 300;
+  const visibleRangeRef = useRef({ rowStart: 0, rowStop: -1, columnStart: 0, columnStop: -1 });
+  const [, forceTick] = useState(0);
 
   const setHoverToItemAtPoint = useCallback((x, y) => {
     try {
@@ -500,6 +479,12 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                         const to = `/${slug(fromPascal(item.categoryKey))}/${slug(fromPascal(item.componentKey))}`;
                         const isSaved = savedSet.has(item.key) || isComponentSaved(item.key);
                         const isLastCol = columnIndex === columnCount - 1;
+                        const vr = visibleRangeRef.current;
+                        const active =
+                          rowIndex >= vr.rowStart &&
+                          rowIndex <= vr.rowStop &&
+                          columnIndex >= vr.columnStart &&
+                          columnIndex <= vr.columnStop;
                         const cellStyle = {
                           ...style,
                           width: columnWidth,
@@ -611,13 +596,35 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   </IconButton>
                                 ) : null}
                               </Box>
-                              <LazyCardMedia key={item.videoUrl || item.key} videoUrl={item.videoUrl} />
+                              <LazyCardMedia key={item.videoUrl || item.key} videoUrl={item.videoUrl} active={active} />
                             </Box>
                           </div>
                         );
                       };
 
-                      const onSectionRendered = ({ rowStopIndex, columnStopIndex }) => {
+                      const onSectionRendered = ({
+                        rowStartIndex,
+                        rowStopIndex,
+                        columnStartIndex,
+                        columnStopIndex
+                      }) => {
+                        const prev = visibleRangeRef.current;
+                        if (
+                          prev.rowStart !== rowStartIndex ||
+                          prev.rowStop !== rowStopIndex ||
+                          prev.columnStart !== columnStartIndex ||
+                          prev.columnStop !== columnStopIndex
+                        ) {
+                          visibleRangeRef.current = {
+                            rowStart: rowStartIndex,
+                            rowStop: rowStopIndex,
+                            columnStart: columnStartIndex,
+                            columnStop: columnStopIndex
+                          };
+
+                          forceTick(t => (t + 1) % 1000);
+                        }
+
                         const lastVisibleIndex = rowStopIndex * columnCount + columnStopIndex;
                         preloadRange(lastVisibleIndex + 1, lastVisibleIndex + 3);
                       };
@@ -651,10 +658,9 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   );
 };
 
-const LazyCardMedia = ({ videoUrl }) => {
-  const [containerRef, inView] = useIsInViewport('250px 0px', 0.1);
+const LazyCardMedia = ({ videoUrl, active }) => {
   const videoRef = useRef(null);
-  const show = inView && !!videoUrl;
+  const show = !!videoUrl && !!active;
 
   const base = useMemo(() => (videoUrl ? videoUrl.replace(/\.(webm|mp4)$/i, '') : ''), [videoUrl]);
   const webm = base ? `${base}.webm` : '';
@@ -707,7 +713,7 @@ const LazyCardMedia = ({ videoUrl }) => {
   }, [show]);
 
   return (
-    <Box ref={containerRef} h="200px" bg="#000" borderRadius={INNER_RADIUS} overflow="hidden">
+    <Box h="200px" bg="#000" borderRadius={INNER_RADIUS} overflow="hidden">
       {show ? (
         <video
           ref={videoRef}
