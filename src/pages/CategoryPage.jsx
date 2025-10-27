@@ -1,49 +1,72 @@
-import { useEffect, useRef, Suspense, lazy } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { componentMap } from '../constants/Components';
 import { decodeLabel } from '../utils/utils';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useTransition } from '../hooks/useTransition';
 import BackToTopButton from '../components/common/Misc/BackToTopButton';
 import { SkeletonLoader, GetStartedLoader } from '../components/common/Misc/SkeletonLoader';
+import IndexPage from './IndexPage';
 
 const CategoryPage = () => {
   const { category, subcategory } = useParams();
   const { transitionPhase, getPreloadedComponent } = useTransition();
 
-  const scrollRef = useRef(null);
   const decodedLabel = decodeLabel(subcategory);
   const isLoading = transitionPhase === 'loading';
   const opacity = ['fade-out', 'loading'].includes(transitionPhase) ? 0 : 1;
   const isGetStartedRoute = category === 'get-started';
+  const isIndexPage = subcategory === 'index';
 
+  const componentFactory = subcategory && componentMap[subcategory];
   const SubcategoryComponent =
-    getPreloadedComponent(subcategory)?.default || (subcategory ? lazy(componentMap[subcategory]) : null);
+    getPreloadedComponent(subcategory)?.default || (componentFactory ? lazy(componentFactory) : null);
   const Loader = isGetStartedRoute ? GetStartedLoader : SkeletonLoader;
 
   useEffect(() => {
-    if (scrollRef.current && transitionPhase !== 'fade-out') {
-      scrollRef.current.scrollTo(0, 0);
+    if (transitionPhase !== 'fade-out') {
+      try {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      } catch {
+        window.scrollTo(0, 0);
+      }
     }
   }, [subcategory, transitionPhase]);
 
+  useEffect(() => {
+    if (decodedLabel) {
+      document.title = `React Bits - ${decodedLabel}`;
+    }
+  }, [decodedLabel]);
+
   return (
-    <Box className={`category-page ${isLoading ? 'loading' : ''}`} ref={scrollRef}>
-      <title>{`React Bits - ${decodedLabel}`}</title>
+    <>
+      {isIndexPage ? (
+        <IndexPage />
+      ) : (
+        <Box className={`category-page ${isLoading ? 'loading' : ''}`}>
+          <Box className="page-transition-fade" style={{ opacity }}>
+            <h2 className={`sub-category ${isGetStartedRoute ? 'docs-category-title' : ''}`}>{decodedLabel}</h2>
 
-      <Box className="page-transition-fade" style={{ opacity }}>
-        <h2 className={`sub-category ${isGetStartedRoute ? 'docs-category-title' : ''}`}>{decodedLabel}</h2>
-
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Suspense fallback={<Loader />}>
-            <SubcategoryComponent />
-          </Suspense>
-        )}
-      </Box>
-      <BackToTopButton />
-    </Box>
+            {SubcategoryComponent ? (
+              <Suspense fallback={<Loader />}>
+                <SubcategoryComponent />
+              </Suspense>
+            ) : (
+              <Box p={6}>
+                <Text color="#fff" fontWeight={600} fontSize="18px">
+                  Not found
+                </Text>
+                <Text color="#a6a6a6" fontSize="14px">
+                  This section is unavailable.
+                </Text>
+              </Box>
+            )}
+          </Box>
+          <BackToTopButton />
+        </Box>
+      )}
+    </>
   );
 };
 

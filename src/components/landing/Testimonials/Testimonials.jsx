@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import './Testimonials.css';
 
 const Testimonials = () => {
@@ -84,11 +85,14 @@ const Testimonials = () => {
   );
 
   const MarqueeRow = ({ tweets, direction = 'left', speed = 30 }) => {
-    const duplicatedTweets = [...tweets, ...tweets, ...tweets, ...tweets];
+    const duplicatedTweets = [...tweets, ...tweets];
 
     return (
       <div className="testimonial-row">
-        <div className={`testimonial-marquee testimonial-marquee-${direction}`} style={{ '--speed': `${speed}s` }}>
+        <div
+          className={`testimonial-marquee testimonial-marquee-${direction}`}
+          style={{ '--speed': `${speed}s`, willChange: 'transform' }}
+        >
           {duplicatedTweets.map((tweet, index) => (
             <TweetCard key={`${tweet.id}-${index}`} tweet={tweet} />
           ))}
@@ -96,6 +100,31 @@ const Testimonials = () => {
       </div>
     );
   };
+
+  const marqueeContainerRef = useRef(null);
+
+  useEffect(() => {
+    const container = marqueeContainerRef.current;
+    if (!container || typeof IntersectionObserver === 'undefined') return;
+
+    const rows = Array.from(container.querySelectorAll('.testimonial-row'));
+    if (rows.length === 0) return;
+
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const marquee = entry.target.querySelector('.testimonial-marquee');
+          if (marquee) {
+            marquee.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+          }
+        });
+      },
+      { root: null, threshold: 0.1 }
+    );
+
+    rows.forEach(r => io.observe(r));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section className="testimonials-section">

@@ -1186,6 +1186,74 @@
       ]
     },
     {
+      "name": "ColorBends-JS-CSS",
+      "type": "registry:block",
+      "title": "ColorBends",
+      "description": "Vibrant color bends with smooth flowing animation.",
+      "files": [
+        {
+          "path": "public/default/src/content/Backgrounds/ColorBends/ColorBends.jsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/default/src/content/Backgrounds/ColorBends/ColorBends.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "ColorBends-JS-TW",
+      "type": "registry:block",
+      "title": "ColorBends",
+      "description": "Vibrant color bends with smooth flowing animation.",
+      "files": [
+        {
+          "path": "public/tailwind/src/tailwind/Backgrounds/ColorBends/ColorBends.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "ColorBends-TS-CSS",
+      "type": "registry:block",
+      "title": "ColorBends",
+      "description": "Vibrant color bends with smooth flowing animation.",
+      "files": [
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/ColorBends/ColorBends.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/ColorBends/ColorBends.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "ColorBends-TS-TW",
+      "type": "registry:block",
+      "title": "ColorBends",
+      "description": "Vibrant color bends with smooth flowing animation.",
+      "files": [
+        {
+          "path": "public/ts/tailwind/src/ts-tailwind/Backgrounds/ColorBends/ColorBends.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
       "name": "Counter-JS-CSS",
       "type": "registry:block",
       "title": "Counter",
@@ -2667,6 +2735,74 @@
       ],
       "dependencies": [
         "ogl"
+      ]
+    },
+    {
+      "name": "GhostCursor-JS-CSS",
+      "type": "registry:block",
+      "title": "GhostCursor",
+      "description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+      "files": [
+        {
+          "path": "public/default/src/content/Animations/GhostCursor/GhostCursor.jsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/default/src/content/Animations/GhostCursor/GhostCursor.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "GhostCursor-JS-TW",
+      "type": "registry:block",
+      "title": "GhostCursor",
+      "description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+      "files": [
+        {
+          "path": "public/tailwind/src/tailwind/Animations/GhostCursor/GhostCursor.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "GhostCursor-TS-CSS",
+      "type": "registry:block",
+      "title": "GhostCursor",
+      "description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+      "files": [
+        {
+          "path": "public/ts/default/src/ts-default/Animations/GhostCursor/GhostCursor.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/ts/default/src/ts-default/Animations/GhostCursor/GhostCursor.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "GhostCursor-TS-TW",
+      "type": "registry:block",
+      "title": "GhostCursor",
+      "description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+      "files": [
+        {
+          "path": "public/ts/tailwind/src/ts-tailwind/Animations/GhostCursor/GhostCursor.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
       ]
     },
     {
@@ -5478,74 +5614,6 @@
       ]
     },
     {
-      "name": "RollingGallery-JS-CSS",
-      "type": "registry:block",
-      "title": "RollingGallery",
-      "description": "3D rolling gallery with drag controls.",
-      "files": [
-        {
-          "path": "public/default/src/content/Components/RollingGallery/RollingGallery.jsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/default/src/content/Components/RollingGallery/RollingGallery.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ]
-    },
-    {
-      "name": "RollingGallery-JS-TW",
-      "type": "registry:block",
-      "title": "RollingGallery",
-      "description": "3D rolling gallery with drag controls.",
-      "files": [
-        {
-          "path": "public/tailwind/src/tailwind/Components/RollingGallery/RollingGallery.jsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ]
-    },
-    {
-      "name": "RollingGallery-TS-CSS",
-      "type": "registry:block",
-      "title": "RollingGallery",
-      "description": "3D rolling gallery with drag controls.",
-      "files": [
-        {
-          "path": "public/ts/default/src/ts-default/Components/RollingGallery/RollingGallery.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/ts/default/src/ts-default/Components/RollingGallery/RollingGallery.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ]
-    },
-    {
-      "name": "RollingGallery-TS-TW",
-      "type": "registry:block",
-      "title": "RollingGallery",
-      "description": "3D rolling gallery with drag controls.",
-      "files": [
-        {
-          "path": "public/ts/tailwind/src/ts-tailwind/Components/RollingGallery/RollingGallery.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "motion"
-      ]
-    },
-    {
       "name": "RotatingText-JS-CSS",
       "type": "registry:block",
       "title": "RotatingText",
@@ -6939,74 +7007,6 @@
           "path": "public/ts/tailwind/src/ts-tailwind/TextAnimations/TextPressure/TextPressure.tsx",
           "type": "registry:component"
         }
-      ]
-    },
-    {
-      "name": "TextTrail-JS-CSS",
-      "type": "registry:block",
-      "title": "TextTrail",
-      "description": "3D trail effect that follows the cursor and changes the text's appearance.",
-      "files": [
-        {
-          "path": "public/default/src/content/TextAnimations/TextTrail/TextTrail.jsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/default/src/content/TextAnimations/TextTrail/TextTrail.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "three"
-      ]
-    },
-    {
-      "name": "TextTrail-JS-TW",
-      "type": "registry:block",
-      "title": "TextTrail",
-      "description": "3D trail effect that follows the cursor and changes the text's appearance.",
-      "files": [
-        {
-          "path": "public/tailwind/src/tailwind/TextAnimations/TextTrail/TextTrail.jsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "three"
-      ]
-    },
-    {
-      "name": "TextTrail-TS-CSS",
-      "type": "registry:block",
-      "title": "TextTrail",
-      "description": "3D trail effect that follows the cursor and changes the text's appearance.",
-      "files": [
-        {
-          "path": "public/ts/default/src/ts-default/TextAnimations/TextTrail/TextTrail.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/ts/default/src/ts-default/TextAnimations/TextTrail/TextTrail.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "three"
-      ]
-    },
-    {
-      "name": "TextTrail-TS-TW",
-      "type": "registry:block",
-      "title": "TextTrail",
-      "description": "3D trail effect that follows the cursor and changes the text's appearance.",
-      "files": [
-        {
-          "path": "public/ts/tailwind/src/ts-tailwind/TextAnimations/TextTrail/TextTrail.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "three"
       ]
     },
     {

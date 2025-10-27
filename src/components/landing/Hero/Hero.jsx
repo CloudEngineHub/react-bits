@@ -40,10 +40,10 @@ const Hero = () => {
 
       <div className="hero-main-content">
         <FadeContent className="hero-tag-fade" blur>
-          <Link to="/animations/laser-flow" className="hero-new-badge-container">
+          <Link to="/animations/ghost-cursor" className="hero-new-badge-container">
             <span className="hero-new-badge">New 🎉</span>
             <div className="hero-new-badge-text">
-              <span>Laser Flow</span>
+              <span>Ghost Cursor</span>
               <GoArrowRight />
             </div>
           </Link>
@@ -80,7 +80,7 @@ const Hero = () => {
           text="Highly customizable animated components that make your React projects truly stand out"
         />
 
-        <Link to={'/text-animations/split-text'} className="landing-button">
+        <Link to={'/get-started/index'} className="landing-button">
           <span>Browse Components</span>
           <div className="button-arrow-circle">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">

@@ -11,7 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Crosshair from '../../content/Animations/Crosshair/Crosshair';
 import { crosshair } from '../../constants/code/Animations/crosshairCode';
 
-const DEFAULT_TEXT = 'Aim... aand...';
+const DEFAULT_TEXT = 'Target';
 
 const CrosshairDemo = () => {
   const [linkText, setLinkText] = useState(DEFAULT_TEXT);
@@ -59,7 +59,7 @@ const CrosshairDemo = () => {
               href="https://github.com/DavidHDev/react-bits"
               ref={linkRef}
               onMouseEnter={() => {
-                setLinkText('Shoot!!!');
+                setLinkText('Locked');
               }}
               onMouseLeave={() => {
                 setLinkText(DEFAULT_TEXT);

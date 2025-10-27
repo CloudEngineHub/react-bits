@@ -1,11 +1,13 @@
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
 import { FiArrowRight, FiMenu, FiSearch, FiX } from 'react-icons/fi';
+import { RiHeartFill } from 'react-icons/ri';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect } from 'react';
 import { CATEGORIES, NEW, UPDATED } from '../../constants/Categories';
 import { componentMap } from '../../constants/Components';
 import { useSearch } from '../context/SearchContext/useSearch';
 import { useTransition } from '../../hooks/useTransition';
+import { getSavedComponents } from '../../utils/favorites';
 import Logo from '../../assets/logos/react-bits-logo.svg';
 
 const HOVER_TIMEOUT_DELAY = 150;
@@ -21,6 +23,11 @@ const ARROW_ICON_PROPS = {
 
 const scrollToTop = () => window.scrollTo(0, 0);
 const slug = str => str.replace(/\s+/g, '-').toLowerCase();
+const toPascal = str =>
+  str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
 
 const Sidebar = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -38,6 +45,7 @@ const Sidebar = () => {
   const itemRefs = useRef({});
   const hoverTimeoutRef = useRef(null);
   const hoverDelayTimeoutRef = useRef(null);
+  const [savedSet, setSavedSet] = useState(() => new Set(getSavedComponents()));
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -80,7 +88,7 @@ const Sidebar = () => {
 
       setPendingActivePath(path);
 
-      await startTransition(subcategory, componentMap, () => {
+      await startTransition(slug(subcategory), componentMap, () => {
         navigate(path);
         scrollToTop();
         setPendingActivePath(null);
@@ -96,7 +104,7 @@ const Sidebar = () => {
       closeDrawer();
       setPendingActivePath(path);
 
-      await startTransition(subcategory, componentMap, () => {
+      await startTransition(slug(subcategory), componentMap, () => {
         navigate(path);
         scrollToTop();
         setPendingActivePath(null);
@@ -200,6 +208,22 @@ const Sidebar = () => {
     handleScroll();
 
     return () => sidebarElement.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Keep favorites in sync so hearts update when user toggles favorites
+  useEffect(() => {
+    const updateSaved = () => setSavedSet(new Set(getSavedComponents()));
+    const onStorage = e => {
+      if (!e || e.key === 'savedComponents') updateSaved();
+    };
+    window.addEventListener('favorites:updated', updateSaved);
+    window.addEventListener('storage', onStorage);
+    // Ensure initial sync
+    updateSaved();
+    return () => {
+      window.removeEventListener('favorites:updated', updateSaved);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   return (
@@ -351,6 +375,7 @@ const Sidebar = () => {
                 itemRefs={itemRefs}
                 isTransitioning={isTransitioning}
                 isFirstCategory={index === 0}
+                savedSet={savedSet}
               />
             ))}
           </VStack>
@@ -371,22 +396,25 @@ const Category = memo(
     onItemMouseLeave,
     itemRefs,
     isTransitioning,
-    isFirstCategory
+    isFirstCategory,
+    savedSet
   }) => {
     const items = useMemo(
       () =>
         category.subcategories.map(sub => {
           const path = `/${slug(category.name)}/${slug(sub)}`;
           const activePath = pendingActivePath || location.pathname;
+          const favoriteKey = `${toPascal(slug(category.name))}/${toPascal(slug(sub))}`;
           return {
             sub,
             path,
             isActive: activePath === path,
             isNew: NEW.includes(sub),
-            isUpdated: UPDATED.includes(sub)
+            isUpdated: UPDATED.includes(sub),
+            isFavorited: savedSet?.has?.(favoriteKey)
           };
         }),
-      [category.name, category.subcategories, location.pathname, pendingActivePath]
+      [category.name, category.subcategories, location.pathname, pendingActivePath, savedSet]
     );
 
     return (
@@ -395,7 +423,7 @@ const Category = memo(
           {category.name}
         </Text>
         <Stack spacing={0.5} pl={4} borderLeft="1px solid #392e4e" position="relative">
-          {items.map(({ sub, path, isActive, isNew, isUpdated }) => (
+          {items.map(({ sub, path, isActive, isNew, isUpdated, isFavorited }) => (
             <Link
               key={path}
               ref={el => itemRefs.current && (itemRefs.current[path] = el)}
@@ -415,6 +443,7 @@ const Category = memo(
               {sub}
               {isNew && <span className="new-tag">New</span>}
               {isUpdated && <span className="updated-tag">Updated</span>}
+              {isFavorited && <Icon as={RiHeartFill} color="#B19EEF" boxSize={3} style={{ marginLeft: 6 }} />}
             </Link>
           ))}
         </Stack>

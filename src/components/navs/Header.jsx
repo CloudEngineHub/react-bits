@@ -13,11 +13,13 @@ import {
   Select,
   Separator,
   Text,
+  Tooltip,
   useDisclosure,
   createListCollection
 } from '@chakra-ui/react';
 
 import { FiArrowRight, FiMenu, FiSearch, FiStopCircle } from 'react-icons/fi';
+import { RiHeartFill } from 'react-icons/ri';
 
 import { useStars } from '../../hooks/useStars';
 import { useSearch } from '../context/SearchContext/useSearch';
@@ -248,6 +250,47 @@ const Header = () => {
           <FadeContent blur>{LanguageSelect}</FadeContent>
           <FadeContent blur>{StyleSelect}</FadeContent>
 
+          <Tooltip.Root openDelay={150} closeDelay={100} positioning={{ placement: 'bottom', gutter: 8 }}>
+            <FadeContent blur>
+              <Tooltip.Trigger asChild>
+                <IconButton
+                  as={RouterLink}
+                  to="/favorites"
+                  aria-label="Favorites"
+                  color="#fff"
+                  variant="solid"
+                  borderRadius="full"
+                  border="none"
+                  minW={10}
+                  h={10}
+                  transition="filter 0.2s"
+                  bg="linear-gradient(-135deg, rgba(124, 58, 237, 1), rgba(75, 58, 255, 0.6))"
+                  _hover={{ filter: 'brightness(1.1)', transition: 'filter 0.2s' }}
+                  _active={{ filter: 'brightness(0.95)', transition: 'filter 0.2s' }}
+                >
+                  <Icon as={RiHeartFill} color="#fff" boxSize={4} />
+                </IconButton>
+              </Tooltip.Trigger>
+              <Tooltip.Positioner>
+                <Tooltip.Content
+                  bg="#060010"
+                  border="1px solid #271e37"
+                  color="#fff"
+                  fontSize="12px"
+                  fontWeight="600"
+                  px={4}
+                  whiteSpace="nowrap"
+                  py={2}
+                  borderRadius="50px"
+                  textAlign="center"
+                  pointerEvents="none"
+                >
+                  Favorites
+                </Tooltip.Content>
+              </Tooltip.Positioner>
+            </FadeContent>
+          </Tooltip.Root>
+
           <FadeContent blur>
             <button
               className="cta-button-docs"
@@ -281,11 +324,15 @@ const Header = () => {
 
                 <Flex direction="column" px={6} gap={2}>
                   <Text fontWeight="bold">Useful Links</Text>
-                  <RouterLink to="/text-animations/split-text" onClick={onClose}>
+                  <RouterLink to="/get-started/introduction" onClick={onClose}>
                     Docs
                   </RouterLink>
                   <RouterLink to="https://github.com/DavidHDev/react-bits" target="_blank" onClick={onClose}>
                     GitHub <Icon as={FiArrowRight} transform="rotate(-45deg)" ml={1} />
+                  </RouterLink>
+
+                  <RouterLink to="/favorites" onClick={onClose}>
+                    Favorites
                   </RouterLink>
 
                   <Separator my={4} />

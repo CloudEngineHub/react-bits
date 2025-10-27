@@ -32,7 +32,7 @@ const Footer = () => {
             >
               GitHub
             </a>
-            <Link to="/text-animations/split-text" className="footer-link">
+            <Link to="/get-started/introduction" className="footer-link">
               Docs
             </Link>
             <Link to="/showcase" className="footer-link">

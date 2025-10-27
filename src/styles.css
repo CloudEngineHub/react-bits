@@ -69,6 +69,7 @@ body {
 }
 
 .app-container {
+  background: #060010;
   min-height: 100vh;
   display: flex;
   padding: 0 2em;

@@ -28,7 +28,7 @@ const float lt   = 0.3;
 const float pi   = 3.141592653589793;
 const float pi2  = pi * 2.0;
 const float pi_2 = pi * 0.5;
-#define MAX_STEPS 15
+#define MAX_STEPS 14
 
 void mainImage(out vec4 C, in vec2 U) {
   float t = iTime * pi;
@@ -141,7 +141,7 @@ export default function PlasmaWaveV2({
 
     const renderer = new Renderer({
       alpha: true,
-      dpr: Math.min(window.devicePixelRatio, 1),
+      dpr: 0.5,
       antialias: false,
       depth: false,
       stencil: false,
