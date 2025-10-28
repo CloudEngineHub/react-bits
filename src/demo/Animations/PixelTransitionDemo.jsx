@@ -13,6 +13,7 @@ import useForceRerender from '../../hooks/useForceRerender';
 
 import PixelTransition from '../../content/Animations/PixelTransition/PixelTransition';
 import { pixelTransition } from '../../constants/code/Animations/pixelTransitionCode';
+import PreviewSwitch from '@/components/common/Preview/PreviewSwitch';
 
 const propData = [
   {
@@ -52,6 +53,12 @@ const propData = [
     description: "Sets the 'padding-top' (or aspect-ratio) for the container."
   },
   {
+    name: 'once',
+    type: 'boolean',
+    default: 'false',
+    description: 'If true, the transition will not revert on mouse leave or subsequent clicks.'
+  },
+  {
     name: 'className',
     type: 'string',
     default: '—',
@@ -70,6 +77,7 @@ const PixelTransitionDemo = () => {
   const [pixelColor, setPixelColor] = useState('#ffffff');
   const [animationStepDuration, setAnimationStepDuration] = useState(0.4);
   const [key, forceRerender] = useForceRerender();
+  const [once, setOnce] = useState(false);
 
   return (
     <TabsLayout>
@@ -100,6 +108,7 @@ const PixelTransitionDemo = () => {
             gridSize={gridSize}
             pixelColor={pixelColor}
             animationStepDuration={animationStepDuration}
+            once={once}
             className="custom-pixel-card"
           />
           <Text mt={2} color="#a6a6a6">
@@ -148,6 +157,7 @@ const PixelTransitionDemo = () => {
               p={0}
             />
           </Flex>
+          <PreviewSwitch title="Once" isChecked={once} onChange={checked => setOnce(checked)} />
         </Customize>
 
         <PropTable data={propData} />
