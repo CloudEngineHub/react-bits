@@ -31,6 +31,7 @@ export const pixelTransition = {
   }
   gridSize={12}
   pixelColor='#ffffff'
+  once={false}
   animationStepDuration={0.4}
   className="custom-pixel-card"
 />`,

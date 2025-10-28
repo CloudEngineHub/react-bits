@@ -8,6 +8,7 @@ interface PixelTransitionProps {
   gridSize?: number;
   pixelColor?: string;
   animationStepDuration?: number;
+  once?: boolean;
   className?: string;
   style?: CSSProperties;
   aspectRatio?: string;
@@ -19,6 +20,7 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  once = false,
   className = '',
   style = {},
   aspectRatio = '100%'
@@ -104,12 +106,12 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
     if (!isActive) animatePixels(true);
   };
   const handleMouseLeave = (): void => {
-    if (isActive) animatePixels(false);
+    if (isActive && !once) animatePixels(false);
   };
   const handleClick = (): void => {
-    animatePixels(!isActive);
+    if (!isActive) animatePixels(true);
+    else if (isActive && !once) animatePixels(false);
   };
-
   return (
     <div
       ref={containerRef}
