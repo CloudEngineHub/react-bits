@@ -8,9 +8,9 @@ function PixelTransition({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
-  style = {},
-  aspectRatio = '100%'
+  style = {}
 }) {
   const containerRef = useRef(null);
   const pixelGridRef = useRef(null);
