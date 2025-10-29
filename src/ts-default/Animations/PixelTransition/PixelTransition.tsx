@@ -3,8 +3,8 @@ import { gsap } from 'gsap';
 import './PixelTransition.css';
 
 interface PixelTransitionProps {
-  firstContent: React.ReactNode;
-  secondContent: React.ReactNode;
+  firstContent: React.ReactNode | string;
+  secondContent: React.ReactNode | string;
   gridSize?: number;
   pixelColor?: string;
   animationStepDuration?: number;
@@ -19,9 +19,9 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
-  style = {},
-  aspectRatio = '100%'
+  style = {}
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pixelGridRef = useRef<HTMLDivElement | null>(null);
