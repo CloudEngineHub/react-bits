@@ -7,10 +7,12 @@ function PixelTransition({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
   once = false,
   style = {},
   aspectRatio = '100%'
+  style = {}
 }) {
   const containerRef = useRef(null);
   const pixelGridRef = useRef(null);
@@ -91,10 +93,10 @@ function PixelTransition({
     });
   };
 
-  const handleMouseEnter = () => {
+  const handleEnter = () => {
     if (!isActive) animatePixels(true);
   };
-  const handleMouseLeave = () => {
+  const handleLeave = () => {
     if (isActive && !once) animatePixels(false);
   };
   const handleClick = () => {
@@ -118,15 +120,25 @@ function PixelTransition({
         overflow-hidden
       `}
       style={style}
-      onMouseEnter={!isTouchDevice ? handleMouseEnter : undefined}
-      onMouseLeave={!isTouchDevice ? handleMouseLeave : undefined}
+      onMouseEnter={!isTouchDevice ? handleEnter : undefined}
+      onMouseLeave={!isTouchDevice ? handleLeave : undefined}
       onClick={isTouchDevice ? handleClick : undefined}
+      onFocus={!isTouchDevice ? handleEnter : undefined}
+      onBlur={!isTouchDevice ? handleLeave : undefined}
+      tabIndex={0}
     >
       <div style={{ paddingTop: aspectRatio }} />
 
-      <div className="absolute inset-0 w-full h-full">{firstContent}</div>
+      <div className="absolute inset-0 w-full h-full" aria-hidden={isActive}>
+        {firstContent}
+      </div>
 
-      <div ref={activeRef} className="absolute inset-0 w-full h-full z-[2]" style={{ display: 'none' }}>
+      <div
+        ref={activeRef}
+        className="absolute inset-0 w-full h-full z-[2]"
+        style={{ display: 'none' }}
+        aria-hidden={!isActive}
+      >
         {secondContent}
       </div>
 
