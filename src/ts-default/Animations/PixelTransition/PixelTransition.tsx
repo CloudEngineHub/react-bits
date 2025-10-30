@@ -3,8 +3,8 @@ import { gsap } from 'gsap';
 import './PixelTransition.css';
 
 interface PixelTransitionProps {
-  firstContent: React.ReactNode;
-  secondContent: React.ReactNode;
+  firstContent: React.ReactNode | string;
+  secondContent: React.ReactNode | string;
   gridSize?: number;
   pixelColor?: string;
   animationStepDuration?: number;
@@ -19,9 +19,9 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
-  style = {},
-  aspectRatio = '100%'
+  style = {}
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pixelGridRef = useRef<HTMLDivElement | null>(null);
@@ -100,10 +100,10 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
     });
   };
 
-  const handleMouseEnter = (): void => {
+  const handleEnter = (): void => {
     if (!isActive) animatePixels(true);
   };
-  const handleMouseLeave = (): void => {
+  const handleLeave = (): void => {
     if (isActive) animatePixels(false);
   };
   const handleClick = (): void => {
@@ -115,13 +115,18 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
       ref={containerRef}
       className={`pixelated-image-card ${className}`}
       style={style}
-      onMouseEnter={!isTouchDevice ? handleMouseEnter : undefined}
-      onMouseLeave={!isTouchDevice ? handleMouseLeave : undefined}
+      onMouseEnter={!isTouchDevice ? handleEnter : undefined}
+      onMouseLeave={!isTouchDevice ? handleLeave : undefined}
       onClick={isTouchDevice ? handleClick : undefined}
+      onFocus={!isTouchDevice ? handleEnter : undefined}
+      onBlur={!isTouchDevice ? handleLeave : undefined}
+      tabIndex={0}
     >
       <div style={{ paddingTop: aspectRatio }} />
-      <div className="pixelated-image-card__default">{firstContent}</div>
-      <div className="pixelated-image-card__active" ref={activeRef}>
+      <div className="pixelated-image-card__default" aria-hidden={isActive}>
+        {firstContent}
+      </div>
+      <div className="pixelated-image-card__active" ref={activeRef} aria-hidden={!isActive}>
         {secondContent}
       </div>
       <div className="pixelated-image-card__pixels" ref={pixelGridRef} />
