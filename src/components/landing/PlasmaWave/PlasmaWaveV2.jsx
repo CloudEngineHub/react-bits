@@ -124,7 +124,7 @@ export default function PlasmaWaveV2({
   const runningRef = useRef(false);
   const observerRef = useRef(null);
   const permaPausedRef = useRef(false);
-  const startStopApiRef = useRef({ start: () => { }, stop: () => { } });
+  const startStopApiRef = useRef({ start: () => {}, stop: () => {} });
   const appliedScrollThresholdRef = useRef(null);
 
   const propsRef = useRef({});

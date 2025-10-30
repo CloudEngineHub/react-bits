@@ -36,7 +36,7 @@ export const generateCliCommands = (language, style, category, subcategory, depe
     .join('');
 
   const jsrepoUrl = `${baseUrl}/${jsrepoVariant}/${jsrepoCategory}/${componentName}`;
-  const shadcnUrl = `${baseUrl}/r/${componentName}-${shadcnVariant}`;
+  const shadcnUrl = `@react-bits/${componentName}-${shadcnVariant}`;
 
   const prefixCommands = {
     pnpm: 'pnpm dlx',
@@ -48,6 +48,7 @@ export const generateCliCommands = (language, style, category, subcategory, depe
   const jsrepo = Object.fromEntries(
     Object.entries(prefixCommands).map(([mgr, prefix]) => [mgr, `${prefix} jsrepo add ${jsrepoUrl}`])
   );
+
   const shadcn = Object.fromEntries(
     Object.entries(prefixCommands).map(([mgr, prefix]) => [mgr, `${prefix} shadcn@latest add ${shadcnUrl}`])
   );
