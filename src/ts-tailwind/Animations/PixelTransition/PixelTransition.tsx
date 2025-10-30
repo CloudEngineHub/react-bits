@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState, CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
 interface PixelTransitionProps {
-  firstContent: React.ReactNode;
-  secondContent: React.ReactNode;
+  firstContent: React.ReactNode | string;
+  secondContent: React.ReactNode | string;
   gridSize?: number;
   pixelColor?: string;
   animationStepDuration?: number;
@@ -18,9 +18,9 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
-  style = {},
-  aspectRatio = '100%'
+  style = {}
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pixelGridRef = useRef<HTMLDivElement | null>(null);
@@ -101,10 +101,10 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
     });
   };
 
-  const handleMouseEnter = (): void => {
+  const handleEnter = (): void => {
     if (!isActive) animatePixels(true);
   };
-  const handleMouseLeave = (): void => {
+  const handleLeave = (): void => {
     if (isActive) animatePixels(false);
   };
   const handleClick = (): void => {
@@ -127,15 +127,25 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
         overflow-hidden
       `}
       style={style}
-      onMouseEnter={!isTouchDevice ? handleMouseEnter : undefined}
-      onMouseLeave={!isTouchDevice ? handleMouseLeave : undefined}
+      onMouseEnter={!isTouchDevice ? handleEnter : undefined}
+      onMouseLeave={!isTouchDevice ? handleLeave : undefined}
       onClick={isTouchDevice ? handleClick : undefined}
+      onFocus={!isTouchDevice ? handleEnter : undefined}
+      onBlur={!isTouchDevice ? handleLeave : undefined}
+      tabIndex={0}
     >
       <div style={{ paddingTop: aspectRatio }} />
 
-      <div className="absolute inset-0 w-full h-full">{firstContent}</div>
+      <div className="absolute inset-0 w-full h-full" aria-hidden={isActive}>
+        {firstContent}
+      </div>
 
-      <div ref={activeRef} className="absolute inset-0 w-full h-full z-[2]" style={{ display: 'none' }}>
+      <div
+        ref={activeRef}
+        className="absolute inset-0 w-full h-full z-[2]"
+        style={{ display: 'none' }}
+        aria-hidden={!isActive}
+      >
         {secondContent}
       </div>
 

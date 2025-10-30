@@ -8,9 +8,9 @@ function PixelTransition({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  aspectRatio = '100%',
   className = '',
-  style = {},
-  aspectRatio = '100%'
+  style = {}
 }) {
   const containerRef = useRef(null);
   const pixelGridRef = useRef(null);
@@ -89,10 +89,10 @@ function PixelTransition({
     });
   };
 
-  const handleMouseEnter = () => {
+  const handleEnter = () => {
     if (!isActive) animatePixels(true);
   };
-  const handleMouseLeave = () => {
+  const handleLeave = () => {
     if (isActive) animatePixels(false);
   };
   const handleClick = () => {
@@ -104,13 +104,18 @@ function PixelTransition({
       ref={containerRef}
       className={`pixelated-image-card ${className}`}
       style={style}
-      onMouseEnter={!isTouchDevice ? handleMouseEnter : undefined}
-      onMouseLeave={!isTouchDevice ? handleMouseLeave : undefined}
+      onMouseEnter={!isTouchDevice ? handleEnter : undefined}
+      onMouseLeave={!isTouchDevice ? handleLeave : undefined}
       onClick={isTouchDevice ? handleClick : undefined}
+      onFocus={!isTouchDevice ? handleEnter : undefined}
+      onBlur={!isTouchDevice ? handleLeave : undefined}
+      tabIndex={0}
     >
       <div style={{ paddingTop: aspectRatio }} />
-      <div className="pixelated-image-card__default">{firstContent}</div>
-      <div className="pixelated-image-card__active" ref={activeRef}>
+      <div className="pixelated-image-card__default" aria-hidden={isActive}>
+        {firstContent}
+      </div>
+      <div className="pixelated-image-card__active" ref={activeRef} aria-hidden={!isActive}>
         {secondContent}
       </div>
       <div className="pixelated-image-card__pixels" ref={pixelGridRef} />
