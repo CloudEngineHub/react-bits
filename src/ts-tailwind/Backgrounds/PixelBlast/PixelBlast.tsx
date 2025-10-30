@@ -323,7 +323,6 @@ void main(){
 }
 `;
 
-
 const MAX_CLICKS = 10;
 
 const PixelBlast: React.FC<PixelBlastProps> = ({
