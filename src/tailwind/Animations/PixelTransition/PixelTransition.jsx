@@ -9,6 +9,9 @@ function PixelTransition({
   animationStepDuration = 0.3,
   aspectRatio = '100%',
   className = '',
+  once = false,
+  style = {},
+  aspectRatio = '100%'
   style = {}
 }) {
   const containerRef = useRef(null);
@@ -94,10 +97,11 @@ function PixelTransition({
     if (!isActive) animatePixels(true);
   };
   const handleLeave = () => {
-    if (isActive) animatePixels(false);
+    if (isActive && !once) animatePixels(false);
   };
   const handleClick = () => {
-    animatePixels(!isActive);
+    if (!isActive) animatePixels(true);
+    else if (isActive && !once) animatePixels(false);
   };
 
   return (

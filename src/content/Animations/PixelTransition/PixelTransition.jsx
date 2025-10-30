@@ -8,6 +8,7 @@ function PixelTransition({
   gridSize = 7,
   pixelColor = 'currentColor',
   animationStepDuration = 0.3,
+  once = false,
   aspectRatio = '100%',
   className = '',
   style = {}
@@ -93,10 +94,11 @@ function PixelTransition({
     if (!isActive) animatePixels(true);
   };
   const handleLeave = () => {
-    if (isActive) animatePixels(false);
+    if (isActive && !once) animatePixels(false);
   };
   const handleClick = () => {
-    animatePixels(!isActive);
+    if (!isActive) animatePixels(true);
+    else if (isActive && !once) animatePixels(false);
   };
 
   return (
