@@ -289,6 +289,7 @@ export const LaserFlow: React.FC<Props> = ({
   const rectRef = useRef<DOMRect | null>(null);
   const baseDprRef = useRef<number>(1);
   const currentDprRef = useRef<number>(1);
+  const lastSizeRef = useRef({ width: 0, height: 0, dpr: 0 });
   const fpsSamplesRef = useRef<number[]>([]);
   const lastFpsCheckRef = useRef<number>(performance.now());
   const emaDtRef = useRef<number>(16.7); // ms
@@ -392,10 +393,23 @@ export const LaserFlow: React.FC<Props> = ({
       const w = mount.clientWidth || 1;
       const h = mount.clientHeight || 1;
       const pr = currentDprRef.current;
+
+      const last = lastSizeRef.current;
+      const sizeChanged = Math.abs(w - last.width) > 0.5 || Math.abs(h - last.height) > 0.5;
+      const dprChanged = Math.abs(pr - last.dpr) > 0.01;
+      if (!sizeChanged && !dprChanged) {
+        return;
+      }
+
+      lastSizeRef.current = { width: w, height: h, dpr: pr };
       renderer.setPixelRatio(pr);
       renderer.setSize(w, h, false);
       uniforms.iResolution.value.set(w * pr, h * pr, pr);
       rectRef.current = canvas.getBoundingClientRect();
+
+      if (!pausedRef.current) {
+        renderer.render(scene, camera);
+      }
     };
 
     let resizeRaf = 0;
