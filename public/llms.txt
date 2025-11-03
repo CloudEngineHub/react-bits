@@ -137,6 +137,7 @@ Notes:
 - [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Layered gradient blinds with spotlight and noise distortion. CLI: `GradientBlinds`.
 - [Grid Distortion](https://www.reactbits.dev/backgrounds/grid-distortion): Warped grid mesh distorts smoothly reacting to cursor. CLI: `GridDistortion`.
 - [Grid Motion](https://www.reactbits.dev/backgrounds/grid-motion): Perspective moving grid lines based on cusror position. CLI: `GridMotion`.
+- [Grid Scan](https://www.reactbits.dev/backgrounds/grid-scan): Animated grid room 3D scan effect and cool interactions. CLI: `GridScan`.
 - [Hyperspeed](https://www.reactbits.dev/backgrounds/hyperspeed): Animated lines continously moving to simulate hyperspace travel on click hold. CLI: `Hyperspeed`.
 - [Iridescence](https://www.reactbits.dev/backgrounds/iridescence): Slick iridescent shader with shifting waves. CLI: `Iridescence`.
 - [Letter Glitch](https://www.reactbits.dev/backgrounds/letter-glitch): Matrix style letter animation. CLI: `LetterGlitch`.

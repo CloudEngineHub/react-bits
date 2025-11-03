@@ -128,7 +128,8 @@ const backgrounds = {
   'prismatic-burst': () => import('../demo/Backgrounds/PrismaticBurstDemo.jsx'),
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
-  'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx')
+  'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
+  'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx')
 };
 
 export const componentMap = {

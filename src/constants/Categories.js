@@ -5,7 +5,8 @@ export const NEW = [
   'Shuffle',
   'Laser Flow',
   'Ghost Cursor',
-  'Color Bends'
+  'Color Bends',
+  'Grid Scan'
 ];
 export const UPDATED = [];
 
@@ -128,6 +129,7 @@ export const CATEGORIES = [
       'Plasma',
       'Particles',
       'Gradient Blinds',
+      'Grid Scan',
       'Beams',
       'Lightning',
       'Prismatic Burst',
