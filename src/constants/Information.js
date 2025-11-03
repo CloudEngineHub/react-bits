@@ -769,6 +769,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/gradient-blinds',
     tags: []
   },
+  'Backgrounds/GridScan': {
+    videoUrl: '/assets/video/gridscan.webm',
+    description: 'Animated grid room 3D scan effect and cool interactions.',
+    category: 'Backgrounds',
+    name: 'GridScan',
+    docsUrl: 'https://reactbits.dev/backgrounds/grid-scan',
+    tags: []
+  },
   'Backgrounds/GridDistortion': {
     videoUrl: '/assets/video/griddistortion.webm',
     description: 'Warped grid mesh distorts smoothly reacting to cursor.',

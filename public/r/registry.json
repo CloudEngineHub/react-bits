@@ -3414,6 +3414,82 @@
       ]
     },
     {
+      "name": "GridScan-JS-CSS",
+      "type": "registry:block",
+      "title": "GridScan",
+      "description": "Animated grid room 3D scan effect and cool interactions.",
+      "files": [
+        {
+          "path": "public/default/src/content/Backgrounds/GridScan/GridScan.jsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/default/src/content/Backgrounds/GridScan/GridScan.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "face-api.js",
+        "postprocessing",
+        "three"
+      ]
+    },
+    {
+      "name": "GridScan-JS-TW",
+      "type": "registry:block",
+      "title": "GridScan",
+      "description": "Animated grid room 3D scan effect and cool interactions.",
+      "files": [
+        {
+          "path": "public/tailwind/src/tailwind/Backgrounds/GridScan/GridScan.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "face-api.js",
+        "postprocessing",
+        "three"
+      ]
+    },
+    {
+      "name": "GridScan-TS-CSS",
+      "type": "registry:block",
+      "title": "GridScan",
+      "description": "Animated grid room 3D scan effect and cool interactions.",
+      "files": [
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/GridScan/GridScan.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/GridScan/GridScan.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "face-api.js",
+        "postprocessing",
+        "three"
+      ]
+    },
+    {
+      "name": "GridScan-TS-TW",
+      "type": "registry:block",
+      "title": "GridScan",
+      "description": "Animated grid room 3D scan effect and cool interactions.",
+      "files": [
+        {
+          "path": "public/ts/tailwind/src/ts-tailwind/Backgrounds/GridScan/GridScan.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "face-api.js",
+        "postprocessing",
+        "three"
+      ]
+    },
+    {
       "name": "Hyperspeed-JS-CSS",
       "type": "registry:block",
       "title": "Hyperspeed",
