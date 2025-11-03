@@ -54,7 +54,7 @@ const TargetCursorDemo = () => {
                   color="#B19EEF"
                   border="1px dashed #B19EEF"
                   fontWeight={900}
-                  fontSize="2rem"
+                  fontSize="clamp(1rem, 4vw, 2rem)"
                   className="cursor-target"
                   py={2}
                   px={6}
@@ -69,7 +69,7 @@ const TargetCursorDemo = () => {
                   color="#B19EEF"
                   border="1px dashed #B19EEF"
                   fontWeight={900}
-                  fontSize="2rem"
+                  fontSize="clamp(1rem, 4vw, 2rem)"
                   className="cursor-target"
                   py={2}
                   px={6}
@@ -84,7 +84,7 @@ const TargetCursorDemo = () => {
                   color="#B19EEF"
                   border="1px dashed #B19EEF"
                   fontWeight={900}
-                  fontSize="2rem"
+                  fontSize="clamp(1rem, 4vw, 2rem)"
                   className="cursor-target"
                   py={2}
                   px={6}
@@ -100,7 +100,7 @@ const TargetCursorDemo = () => {
                   color="#B19EEF"
                   border="1px dashed #B19EEF"
                   fontWeight={900}
-                  fontSize="2rem"
+                  fontSize="clamp(1rem, 4vw, 2rem)"
                   className="cursor-target"
                   py={2}
                   px={6}
