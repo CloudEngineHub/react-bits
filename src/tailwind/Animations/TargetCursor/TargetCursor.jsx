@@ -6,6 +6,16 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
   const cornersRef = useRef(null);
   const spinTl = useRef(null);
   const dotRef = useRef(null);
+  
+  const isMobile = useMemo(() => {
+    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+    const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
+    return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
+  }, []);
+  
   const constants = useMemo(
     () => ({
       borderWidth: 3,
@@ -26,7 +36,7 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
   }, []);
 
   useEffect(() => {
-    if (!cursorRef.current) return;
+    if (isMobile || !cursorRef.current) return;
 
     const originalCursor = document.body.style.cursor;
     if (hideDefaultCursor) {
@@ -302,10 +312,10 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
       spinTl.current?.kill();
       document.body.style.cursor = originalCursor;
     };
-  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor]);
+  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile]);
 
   useEffect(() => {
-    if (!cursorRef.current || !spinTl.current) return;
+    if (isMobile || !cursorRef.current || !spinTl.current) return;
 
     if (spinTl.current.isActive()) {
       spinTl.current.kill();
@@ -313,7 +323,11 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
         .timeline({ repeat: -1 })
         .to(cursorRef.current, { rotation: '+=360', duration: spinDuration, ease: 'none' });
     }
-  }, [spinDuration]);
+  }, [spinDuration, isMobile]);
+
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div
