@@ -16,6 +16,8 @@ import { targetCursor } from '../../constants/code/Animations/targetCursorCode';
 const TargetCursorDemo = () => {
   const [spinDuration, setSpinDuration] = useState(2);
   const [hideDefaultCursor, setHideDefaultCursor] = useState(true);
+  const [hoverDuration, setHoverDuration] = useState(0.2);
+  const [parallaxOn, setParallaxOn] = useState(true);
 
   const propData = [
     {
@@ -35,6 +37,18 @@ const TargetCursorDemo = () => {
       type: 'boolean',
       default: 'true',
       description: 'Whether to hide the default browser cursor when the component is active'
+    },
+    {
+      name: 'hoverDuration',
+      type: 'number',
+      default: '0.2',
+      description: 'Duration in seconds for the transition when the cursor locks onto a target'
+    },
+    {
+      name: 'parallaxOn',
+      type: 'boolean',
+      default: 'true',
+      description: 'Enables a subtle parallax effect on the corners when moving over a target'
     }
   ];
 
@@ -122,8 +136,18 @@ const TargetCursorDemo = () => {
               width={200}
               onChange={setSpinDuration}
             />
-
+            <PreviewSlider
+              title="Hover Duration"
+              min={0.1}
+              max={1}
+              step={0.05}
+              value={hoverDuration}
+              valueUnit="s"
+              width={200}
+              onChange={setHoverDuration}
+            />
             <PreviewSwitch title="Hide Default Cursor" isChecked={hideDefaultCursor} onChange={setHideDefaultCursor} />
+            <PreviewSwitch title="Enable Parallax" isChecked={parallaxOn} onChange={setParallaxOn} />
           </Customize>
 
           <PropTable data={propData} />
@@ -135,7 +159,12 @@ const TargetCursorDemo = () => {
         </CodeTab>
       </TabsLayout>
 
-      <TargetCursor spinDuration={spinDuration} hideDefaultCursor={hideDefaultCursor} />
+      <TargetCursor
+        spinDuration={spinDuration}
+        hideDefaultCursor={hideDefaultCursor}
+        hoverDuration={hoverDuration}
+        parallaxOn={parallaxOn}
+      />
     </>
   );
 };
