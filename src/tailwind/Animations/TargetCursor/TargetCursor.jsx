@@ -6,7 +6,7 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
   const cornersRef = useRef(null);
   const spinTl = useRef(null);
   const dotRef = useRef(null);
-  
+
   const isMobile = useMemo(() => {
     const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     const isSmallScreen = window.innerWidth <= 768;
@@ -15,7 +15,7 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
     const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
     return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
   }, []);
-  
+
   const constants = useMemo(
     () => ({
       borderWidth: 3,
@@ -104,7 +104,6 @@ const TargetCursor = ({ targetSelector = '.cursor-target', spinDuration = 2, hid
 
     window.addEventListener('scroll', scrollHandler, { passive: true });
 
-    window.addEventListener('mousemove', moveHandler);
     const mouseDownHandler = () => {
       if (!dotRef.current) return;
       gsap.to(dotRef.current, { scale: 0.7, duration: 0.3 });

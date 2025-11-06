@@ -17,7 +17,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   const cornersRef = useRef<NodeListOf<HTMLDivElement>>(null);
   const spinTl = useRef<gsap.core.Timeline>(null);
   const dotRef = useRef<HTMLDivElement>(null);
-  
+
   const isMobile = useMemo(() => {
     const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     const isSmallScreen = window.innerWidth <= 768;
@@ -26,7 +26,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
     return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
   }, []);
-  
+
   const constants = useMemo(
     () => ({
       borderWidth: 3,
@@ -114,7 +114,6 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     };
 
     window.addEventListener('scroll', scrollHandler, { passive: true });
-    window.addEventListener('mousemove', moveHandler);
 
     const mouseDownHandler = (): void => {
       if (!dotRef.current) return;
