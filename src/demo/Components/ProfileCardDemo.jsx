@@ -14,26 +14,22 @@ import ProfileCard from '../../content/Components/ProfileCard/ProfileCard';
 
 const ProfileCardDemo = () => {
   const [showIcon, setShowIcon] = useState(true);
-  const [showUserInfo, setShowUserInfo] = useState(true);
-  const [showBehindGradient, setShowBehindGradient] = useState(true);
+  const [showUserInfo, setShowUserInfo] = useState(false);
   const [enableMobileTilt, setEnableMobileTilt] = useState(false);
-  const [customBehindGradient, setCustomBehindGradient] = useState(
-    'radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)'
-  );
+  const [showBehindGlow, setShowBehindGlow] = useState(true);
+  const [behindGlowColor, setBehindGlowColor] = useState('rgba(125, 190, 255, 0.67)');
   const [customInnerGradient, setCustomInnerGradient] = useState('linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)');
 
   const [key, forceRerender] = useForceRerender();
 
   const generateRandomGradients = () => {
     const randomHue1 = Math.floor(Math.random() * 360);
-    const randomHue2 = Math.floor(Math.random() * 360);
     const randomHue3 = Math.floor(Math.random() * 360);
-    const randomHue4 = Math.floor(Math.random() * 360);
 
-    const newBehindGradient = `radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(${randomHue1},100%,90%,var(--card-opacity)) 4%,hsla(${randomHue1},50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(${randomHue1},25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(${randomHue1},0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,hsl(${randomHue2}, 100%, 70%) 0%,transparent 100%),radial-gradient(100% 100% at 50% 50%,hsl(${randomHue3}, 100%, 65%) 1%,transparent 76%),conic-gradient(from 124deg at 50% 50%,hsl(${randomHue4}, 100%, 70%) 0%,hsl(${randomHue2}, 100%, 70%) 40%,hsl(${randomHue2}, 100%, 70%) 60%,hsl(${randomHue4}, 100%, 70%) 100%)`;
+    const newGlow = `hsla(${randomHue1}, 100%, 70%, 0.6)`;
     const newInnerGradient = `linear-gradient(145deg,hsla(${randomHue1}, 40%, 45%, 0.55) 0%,hsla(${randomHue3}, 60%, 70%, 0.27) 100%)`;
 
-    setCustomBehindGradient(newBehindGradient);
+    setBehindGlowColor(newGlow);
     setCustomInnerGradient(newInnerGradient);
     forceRerender();
   };
@@ -58,22 +54,28 @@ const ProfileCardDemo = () => {
       description: 'Optional URL for a grain texture overlay effect'
     },
     {
-      name: 'behindGradient',
-      type: 'string',
-      default: 'undefined',
-      description: 'Custom CSS gradient string for the background gradient effect'
-    },
-    {
       name: 'innerGradient',
       type: 'string',
       default: 'undefined',
       description: 'Custom CSS gradient string for the inner card gradient'
     },
     {
-      name: 'showBehindGradient',
+      name: 'behindGlowEnabled',
       type: 'boolean',
       default: 'true',
-      description: 'Whether to display the background gradient effect'
+      description: 'Toggle the smooth radial glow that follows the cursor behind the card'
+    },
+    {
+      name: 'behindGlowColor',
+      type: 'string',
+      default: '"rgba(125, 190, 255, 0.67)"',
+      description: 'CSS color for the behind-the-card glow (e.g. rgba/hsla/hex)'
+    },
+    {
+      name: 'behindGlowSize',
+      type: 'string',
+      default: '"50%"',
+      description: 'Size of the glow as a length/percentage stop in the radial gradient'
     },
     {
       name: 'className',
@@ -163,9 +165,9 @@ const ProfileCardDemo = () => {
             avatarUrl="/assets/demo/person.webp"
             iconUrl={showIcon ? '/assets/demo/iconpattern.png' : ''}
             showUserInfo={showUserInfo}
-            showBehindGradient={showBehindGradient}
             grainUrl="/assets/demo/grain.webp"
-            behindGradient={customBehindGradient}
+            behindGlowEnabled={showBehindGlow}
+            behindGlowColor={behindGlowColor}
             innerGradient={customInnerGradient}
             enableMobileTilt={enableMobileTilt}
           />
@@ -185,6 +187,14 @@ const ProfileCardDemo = () => {
           </Button>
 
           <PreviewSwitch
+            title="Behind Glow"
+            isChecked={showBehindGlow}
+            onChange={() => {
+              setShowBehindGlow(!showBehindGlow);
+              forceRerender();
+            }}
+          />
+          <PreviewSwitch
             title="Show Icon Pattern"
             isChecked={showIcon}
             onChange={() => {
@@ -197,14 +207,6 @@ const ProfileCardDemo = () => {
             isChecked={showUserInfo}
             onChange={() => {
               setShowUserInfo(!showUserInfo);
-              forceRerender();
-            }}
-          />
-          <PreviewSwitch
-            title="Show BG Gradient"
-            isChecked={showBehindGradient}
-            onChange={() => {
-              setShowBehindGradient(!showBehindGradient);
               forceRerender();
             }}
           />

@@ -78,7 +78,7 @@ const Introduction = () => {
       </p>
 
       <p className="docs-paragraph dim">
-        P.S. The header has a neat dropdown to help you choose your preferred language.
+        P.S. The header has a neat dropdown to help you choose your preferred technologies.
       </p>
 
       <h3 className="docs-category-title">Performance</h3>
