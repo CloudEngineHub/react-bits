@@ -14,6 +14,7 @@ export default function App() {
       <TargetCursor 
         spinDuration={2}
         hideDefaultCursor={true}
+        parallaxOn={true}
       />
       
       <h1>Hover over the elements below</h1>
