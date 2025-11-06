@@ -415,7 +415,7 @@ export const GridScan: React.FC<GridScanProps> = ({
         (DeviceOrientationEvent as any).requestPermission
       ) {
         try {
-          const res = await (DeviceOrientationEvent as any).requestPermission();
+          await (DeviceOrientationEvent as any).requestPermission();
         } catch {}
       }
     };
