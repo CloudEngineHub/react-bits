@@ -8,7 +8,7 @@ export const NEW = [
   'Color Bends',
   'Grid Scan'
 ];
-export const UPDATED = [];
+export const UPDATED = ['Profile Card'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
