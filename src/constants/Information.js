@@ -567,14 +567,6 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/infinite-menu',
     tags: []
   },
-  'Components/InfiniteScroll': {
-    videoUrl: '/assets/video/infinitescroll.webm',
-    description: 'Infinite scrolling container auto-loads content near viewport end.',
-    category: 'Components',
-    name: 'InfiniteScroll',
-    docsUrl: 'https://reactbits.dev/components/infinite-scroll',
-    tags: []
-  },
   'Components/Lanyard': {
     videoUrl: '/assets/video/lanyard.webm',
     description: 'Swinging 3D lanyard / badge card with realistic inertial motion.',

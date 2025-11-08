@@ -75,7 +75,7 @@ const TextCursorDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} overflow="hidden">
           <TextCursor key={key} text={text} followMouseDirection={followMouseDirection} randomFloat={randomFloat} />
           <Text
             pointerEvents="none"

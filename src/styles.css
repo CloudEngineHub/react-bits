@@ -75,6 +75,12 @@ body {
   padding: 0 2em;
 }
 
+@media only screen and (max-width: 967px) {
+  .app-container {
+    padding: 0 1em;
+  }
+}
+
 .back-to-top {
   background: #060010 !important;
   border: 1px solid #392e4e;

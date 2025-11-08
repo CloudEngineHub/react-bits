@@ -115,7 +115,7 @@ const ModelViewerDemo = () => {
         <Box
           position="relative"
           className="demo-container"
-          h={500}
+          h={400}
           overflow="hidden"
           p={0}
           display="flex"

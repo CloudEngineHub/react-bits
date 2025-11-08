@@ -101,7 +101,7 @@ const RibbonsDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} p={0} overflow="hidden">
           <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#271E37">
             Hover Me.
           </Text>

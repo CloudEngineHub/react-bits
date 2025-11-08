@@ -18,7 +18,7 @@ import { textType } from '../../constants/code/TextAnimations/textTypeCode';
 const TextTypeDemo = () => {
   const [key, forceRerender] = useForceRerender();
 
-  const [texts] = useState(["Welcome to React Bits! It's great to have you here!", 'Build some amazing experiences!']);
+  const [texts] = useState(['Welcome to React Bits! Good to see you!', 'Build some amazing experiences!']);
   const [typingSpeed, setTypingSpeed] = useState(75);
   const [pauseDuration, setPauseDuration] = useState(1500);
   const [deletingSpeed, setDeletingSpeed] = useState(50);

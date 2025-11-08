@@ -77,7 +77,7 @@ const TrueFocusDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" minH={200}>
+        <Box position="relative" className="demo-container" minH={400}>
           <TrueFocus {...config} />
         </Box>
 

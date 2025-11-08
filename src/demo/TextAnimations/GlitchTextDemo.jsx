@@ -56,7 +56,7 @@ const GlitchTextDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} overflow="hidden">
           <GlitchText key={key} speed={speed} enableShadows={enableShadows} enableOnHover={enableOnHover}>
             {enableOnHover ? 'Hover Me' : 'React Bits'}
           </GlitchText>

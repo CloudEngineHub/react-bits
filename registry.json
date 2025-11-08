@@ -3493,7 +3493,7 @@
       "name": "Hyperspeed-JS-CSS",
       "type": "registry:block",
       "title": "Hyperspeed",
-      "description": "Animated lines continously moving to simulate hyperspace travel on click hold.",
+      "description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
       "files": [
         {
           "path": "public/default/src/content/Backgrounds/Hyperspeed/Hyperspeed.jsx",
@@ -3513,7 +3513,7 @@
       "name": "Hyperspeed-JS-TW",
       "type": "registry:block",
       "title": "Hyperspeed",
-      "description": "Animated lines continously moving to simulate hyperspace travel on click hold.",
+      "description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
       "files": [
         {
           "path": "public/tailwind/src/tailwind/Backgrounds/Hyperspeed/Hyperspeed.jsx",
@@ -3529,7 +3529,7 @@
       "name": "Hyperspeed-TS-CSS",
       "type": "registry:block",
       "title": "Hyperspeed",
-      "description": "Animated lines continously moving to simulate hyperspace travel on click hold.",
+      "description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
       "files": [
         {
           "path": "public/ts/default/src/ts-default/Backgrounds/Hyperspeed/Hyperspeed.tsx",
@@ -3549,7 +3549,7 @@
       "name": "Hyperspeed-TS-TW",
       "type": "registry:block",
       "title": "Hyperspeed",
-      "description": "Animated lines continously moving to simulate hyperspace travel on click hold.",
+      "description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
       "files": [
         {
           "path": "public/ts/tailwind/src/ts-tailwind/Backgrounds/Hyperspeed/Hyperspeed.tsx",
@@ -3695,74 +3695,6 @@
       ],
       "dependencies": [
         "gl-matrix"
-      ]
-    },
-    {
-      "name": "InfiniteScroll-JS-CSS",
-      "type": "registry:block",
-      "title": "InfiniteScroll",
-      "description": "Infinite scrolling container auto-loads content near viewport end.",
-      "files": [
-        {
-          "path": "public/default/src/content/Components/InfiniteScroll/InfiniteScroll.jsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/default/src/content/Components/InfiniteScroll/InfiniteScroll.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "gsap"
-      ]
-    },
-    {
-      "name": "InfiniteScroll-JS-TW",
-      "type": "registry:block",
-      "title": "InfiniteScroll",
-      "description": "Infinite scrolling container auto-loads content near viewport end.",
-      "files": [
-        {
-          "path": "public/tailwind/src/tailwind/Components/InfiniteScroll/InfiniteScroll.jsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "gsap"
-      ]
-    },
-    {
-      "name": "InfiniteScroll-TS-CSS",
-      "type": "registry:block",
-      "title": "InfiniteScroll",
-      "description": "Infinite scrolling container auto-loads content near viewport end.",
-      "files": [
-        {
-          "path": "public/ts/default/src/ts-default/Components/InfiniteScroll/InfiniteScroll.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "public/ts/default/src/ts-default/Components/InfiniteScroll/InfiniteScroll.css",
-          "type": "registry:item"
-        }
-      ],
-      "dependencies": [
-        "gsap"
-      ]
-    },
-    {
-      "name": "InfiniteScroll-TS-TW",
-      "type": "registry:block",
-      "title": "InfiniteScroll",
-      "description": "Infinite scrolling container auto-loads content near viewport end.",
-      "files": [
-        {
-          "path": "public/ts/tailwind/src/ts-tailwind/Components/InfiniteScroll/InfiniteScroll.tsx",
-          "type": "registry:component"
-        }
-      ],
-      "dependencies": [
-        "gsap"
       ]
     },
     {
@@ -5625,7 +5557,7 @@
       "name": "RippleGrid-JS-CSS",
       "type": "registry:block",
       "title": "RippleGrid",
-      "description": "A grid that continously animates with a ripple effect.",
+      "description": "A grid that continuously animates with a ripple effect.",
       "files": [
         {
           "path": "public/default/src/content/Backgrounds/RippleGrid/RippleGrid.jsx",
@@ -5644,7 +5576,7 @@
       "name": "RippleGrid-JS-TW",
       "type": "registry:block",
       "title": "RippleGrid",
-      "description": "A grid that continously animates with a ripple effect.",
+      "description": "A grid that continuously animates with a ripple effect.",
       "files": [
         {
           "path": "public/tailwind/src/tailwind/Backgrounds/RippleGrid/RippleGrid.jsx",
@@ -5659,7 +5591,7 @@
       "name": "RippleGrid-TS-CSS",
       "type": "registry:block",
       "title": "RippleGrid",
-      "description": "A grid that continously animates with a ripple effect.",
+      "description": "A grid that continuously animates with a ripple effect.",
       "files": [
         {
           "path": "public/ts/default/src/ts-default/Backgrounds/RippleGrid/RippleGrid.tsx",
@@ -5678,7 +5610,7 @@
       "name": "RippleGrid-TS-TW",
       "type": "registry:block",
       "title": "RippleGrid",
-      "description": "A grid that continously animates with a ripple effect.",
+      "description": "A grid that continuously animates with a ripple effect.",
       "files": [
         {
           "path": "public/ts/tailwind/src/ts-tailwind/Backgrounds/RippleGrid/RippleGrid.tsx",

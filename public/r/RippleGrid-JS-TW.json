@@ -3,7 +3,7 @@
   "name": "RippleGrid-JS-TW",
   "type": "registry:block",
   "title": "RippleGrid",
-  "description": "A grid that continously animates with a ripple effect.",
+  "description": "A grid that continuously animates with a ripple effect.",
   "dependencies": [
     "ogl"
   ],

@@ -110,7 +110,7 @@ const BounceCardsDemo = () => {
             key={key}
             className="custom-bounceCards"
             images={images}
-            containerWidth={500}
+            containerWidth={400}
             containerHeight={250}
             animationDelay={animationDelay}
             animationStagger={animationStagger}

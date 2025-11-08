@@ -137,15 +137,6 @@ const TextPressureDemo = () => {
         </Box>
 
         <Customize>
-          <PreviewInput
-            title="Text"
-            value={text}
-            placeholder="Your text here..."
-            width={200}
-            maxLength={10}
-            onChange={setText}
-          />
-
           <Flex alignItems="center" gap={4} flexWrap="wrap" mt={6}>
             <Flex gap={4} align="center">
               <Text fontSize="sm">Text Color</Text>
@@ -174,9 +165,15 @@ const TextPressureDemo = () => {
             </Flex>
           </Flex>
 
-          <Text mt={6} color="#999">
-            Animation Settings
-          </Text>
+          <PreviewInput
+            title="Text"
+            value={text}
+            placeholder="Your text here..."
+            width={200}
+            maxLength={10}
+            onChange={setText}
+          />
+
           <Flex gap={4} flexWrap="wrap">
             <PreviewSwitch
               title="Flex"

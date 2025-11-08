@@ -16,7 +16,7 @@ import Cubes from '../../content/Animations/Cubes/Cubes';
 
 const CubesDemo = () => {
   const [borderStyle, setBorderStyle] = useState('2px dashed #B19EEF');
-  const [gridSize, setGridSize] = useState(10);
+  const [gridSize, setGridSize] = useState(8);
   const [maxAngle, setMaxAngle] = useState(45);
   const [radius, setRadius] = useState(3);
   const [autoAnimate, setAutoAnimate] = useState(true);

@@ -56,7 +56,7 @@ const TargetCursorDemo = () => {
     <>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" flexDirection="column" h={500} overflow="hidden">
+          <Box position="relative" className="demo-container" flexDirection="column" h={400} overflow="hidden">
             <Text fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={900} mb={6} color="#271E37">
               Hover Below.
             </Text>

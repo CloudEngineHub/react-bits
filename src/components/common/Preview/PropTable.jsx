@@ -4,8 +4,9 @@ const CodeCell = ({ content = '' }) => {
   return (
     <Box
       fontFamily="monospace"
-      py={1}
-      px={2}
+      fontSize="10px"
+      py="0.2em"
+      px="0.6em"
       ml={2}
       borderRadius="5px"
       width="fit-content"
@@ -79,6 +80,7 @@ const PropTable = ({ data }) => {
                   p={4}
                   color="white"
                   whiteSpace="nowrap"
+                  fontSize="12px"
                   width={'120px'}
                   borderRight="1px solid #392e4e"
                   bg={'#060010'}
@@ -97,7 +99,7 @@ const PropTable = ({ data }) => {
                 >
                   <CodeCell content={prop.default && prop.default.length ? prop.default : '—'} />
                 </Table.Cell>
-                <Table.Cell borderColor="#271E37" p={4} color="white" bg={'#060010'}>
+                <Table.Cell borderColor="#271E37" p={4} color="white" bg={'#060010'} fontSize="12px">
                   <Text maxW={300}>{prop.description}</Text>
                 </Table.Cell>
               </Table.Row>

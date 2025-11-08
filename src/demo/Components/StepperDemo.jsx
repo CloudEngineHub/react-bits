@@ -105,7 +105,7 @@ const StepperDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} overflow="hidden">
           <Stepper
             initialStep={step}
             onStepChange={step => {

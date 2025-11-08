@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { toast } from 'sonner';
 import { TabsLayout, PreviewTab, CodeTab } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -103,57 +102,20 @@ const DecryptedTextDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" py={{ md: 6, sm: 4 }} className="demo-container" overflow="hidden">
+        <Box position="relative" py={{ md: 6, sm: 4 }} className="demo-container" h={400} overflow="hidden">
           <RefreshButton onClick={forceRerender} />
-          <Flex
-            pl={{ md: 6, sm: 3 }}
-            m={{ md: 8, sm: 2 }}
-            w="100%"
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            key={key}
-          >
+
+          <Flex width="80%" px=".5em">
             <DecryptedText
+              key={key}
               speed={speed}
-              text="Ahoy, matey!"
+              text="Hacking into the mainframe..."
               maxIterations={maxIterations}
               sequential={sequential}
               revealDirection={revealDirection}
               parentClassName="decrypted-text"
               useOriginalCharsOnly={useOriginalCharsOnly}
               animateOn={animateOn}
-            />
-            <DecryptedText
-              speed={speed}
-              text="Set yer eyes on this"
-              maxIterations={maxIterations}
-              sequential={sequential}
-              revealDirection={revealDirection}
-              parentClassName="decrypted-text"
-              useOriginalCharsOnly={useOriginalCharsOnly}
-              animateOn={animateOn}
-            />
-            <DecryptedText
-              speed={speed}
-              text="And try tinkerin' round'"
-              maxIterations={maxIterations}
-              sequential={sequential}
-              revealDirection={revealDirection}
-              parentClassName="decrypted-text"
-              useOriginalCharsOnly={useOriginalCharsOnly}
-              animateOn={animateOn}
-            />
-            <DecryptedText
-              speed={speed}
-              text="with these here props, arr!"
-              maxIterations={maxIterations}
-              sequential={sequential}
-              revealDirection={revealDirection}
-              parentClassName="decrypted-text"
-              useOriginalCharsOnly={useOriginalCharsOnly}
-              animateOn={animateOn}
-              onAnimationComplete={() => toast('✅ Animation Finished!')}
             />
           </Flex>
         </Box>

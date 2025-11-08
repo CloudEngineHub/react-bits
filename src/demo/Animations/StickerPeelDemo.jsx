@@ -103,7 +103,7 @@ const StickerPeelDemo = () => {
         <Box
           position="relative"
           className="demo-container"
-          h={500}
+          h={400}
           overflow="hidden"
           bg="linear-gradient(to bottom, #060010, #0D0716, #0D0716 , #060010)"
         >

@@ -104,7 +104,6 @@ export const CATEGORIES = [
       'Spotlight Card',
       'Flying Posters',
       'Card Swap',
-      'Infinite Scroll',
       'Glass Icons',
       'Decay Card',
       'Flowing Menu',

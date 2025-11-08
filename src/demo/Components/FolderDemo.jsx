@@ -48,7 +48,7 @@ const FolderDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} overflow="hidden">
           <Folder key={key} size={size} color={color} className="custom-folder" />
         </Box>
 

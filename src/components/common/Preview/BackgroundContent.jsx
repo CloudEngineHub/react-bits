@@ -44,7 +44,7 @@ const BackgroundContent = ({
               justifyContent="space-between"
               bg="rgba(255, 255, 255, 0.05)"
               backdropFilter="blur(10px)"
-              border="1px solid rgba(255, 255, 255, 0.2)"
+              border="1px solid rgba(255, 255, 255, 0.1)"
               sx={{
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
@@ -94,7 +94,7 @@ const BackgroundContent = ({
               fontWeight="500"
               bg="rgba(255, 255, 255, 0.05)"
               backdropFilter="blur(10px)"
-              border="1px solid rgba(255, 255, 255, 0.2)"
+              border="1px solid rgba(255, 255, 255, 0.1)"
               sx={{
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
@@ -108,11 +108,11 @@ const BackgroundContent = ({
               textShadow="0 0 16px rgba(0, 0, 0, 0.5)"
               mt={4}
               color="white"
-              fontSize="clamp(2rem, 4vw, 2.6rem)"
+              fontSize="clamp(2rem, 4vw, 2.2rem)"
               lineHeight="1.2"
               textAlign="center"
               letterSpacing="-2px"
-              maxWidth="18ch"
+              maxWidth="16ch"
               fontWeight="bold"
             >
               {headline}
@@ -121,8 +121,8 @@ const BackgroundContent = ({
             <Box display="flex" gap={4} mt={8} alignItems="center">
               <Box
                 as="button"
-                px={{ base: 6, md: 10 }}
-                py={{ base: 2, md: 3 }}
+                px={{ base: 6, md: 8 }}
+                py={{ base: 2, md: 2 }}
                 bg="white"
                 color="black"
                 borderRadius="50px"
@@ -140,14 +140,14 @@ const BackgroundContent = ({
               </Box>
               <Box
                 as="button"
-                px={{ base: 6, md: 10 }}
-                py={{ base: 2, md: 3 }}
+                px={{ base: 6, md: 8 }}
+                py={{ base: 2, md: 2 }}
                 borderRadius="50px"
                 fontSize={{ base: '12px', md: '14px' }}
                 fontWeight="500"
                 bg="rgba(255, 255, 255, 0.05)"
                 backdropFilter="blur(10px)"
-                border="1px solid rgba(255, 255, 255, 0.2)"
+                border="1px solid rgba(255, 255, 255, 0.1)"
                 sx={{
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)',

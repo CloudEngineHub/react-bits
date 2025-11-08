@@ -213,7 +213,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
     }
   }, [showClear]);
 
-  const getColumnsForWidth = useCallback(w => (w >= 1024 ? 3 : w >= 768 ? 2 : 1), []);
+  const getColumnsForWidth = useCallback(w => (w >= 900 ? 3 : w >= 640 ? 2 : 1), []);
 
   const preloadRange = useCallback(
     (startIdx, endIdx) => {

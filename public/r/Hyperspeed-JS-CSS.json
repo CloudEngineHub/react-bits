@@ -3,7 +3,7 @@
   "name": "Hyperspeed-JS-CSS",
   "type": "registry:block",
   "title": "Hyperspeed",
-  "description": "Animated lines continously moving to simulate hyperspace travel on click hold.",
+  "description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
   "dependencies": [
     "postprocessing",
     "three"

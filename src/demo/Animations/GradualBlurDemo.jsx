@@ -182,7 +182,7 @@ const GradualBlurDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container demo-container-dots" h={500} p={0} overflow="hidden">
+        <Box position="relative" className="demo-container demo-container-dots" h={400} p={0} overflow="hidden">
           <Flex
             ref={scrollRef}
             flexDirection="column"
