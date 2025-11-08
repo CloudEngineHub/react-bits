@@ -173,13 +173,18 @@ export const Plasma: React.FC<PlasmaProps> = ({
     const t0 = performance.now();
     const loop = (t: number) => {
       let timeValue = (t - t0) * 0.001;
-
       if (direction === 'pingpong') {
-        const cycle = Math.sin(timeValue * 0.5) * directionMultiplier;
-        (program.uniforms.uDirection as any).value = cycle;
+        const pingpongDuration = 10;
+        const segmentTime = timeValue % pingpongDuration;
+        const isForward = Math.floor(timeValue / pingpongDuration) % 2 === 0;
+        const u = segmentTime / pingpongDuration;
+        const smooth = u * u * (3 - 2 * u);
+        const pingpongTime = isForward ? smooth * pingpongDuration : (1 - smooth) * pingpongDuration;
+        (program.uniforms.uDirection as any).value = 1.0;
+        (program.uniforms.iTime as any).value = pingpongTime;
+      } else {
+        (program.uniforms.iTime as any).value = timeValue;
       }
-
-      (program.uniforms.iTime as any).value = timeValue;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
