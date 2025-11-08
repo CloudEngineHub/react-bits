@@ -795,7 +795,7 @@ export const componentMetadata = {
   },
   'Backgrounds/Hyperspeed': {
     videoUrl: '/assets/video/hyperspeed.webm',
-    description: 'Animated lines continously moving to simulate hyperspace travel on click hold.',
+    description: 'Animated lines continuously moving to simulate hyperspace travel on click hold.',
     category: 'Backgrounds',
     name: 'Hyperspeed',
     docsUrl: 'https://reactbits.dev/backgrounds/hyperspeed',
@@ -891,7 +891,7 @@ export const componentMetadata = {
   },
   'Backgrounds/RippleGrid': {
     videoUrl: '/assets/video/ripplegrid.webm',
-    description: 'A grid that continously animates with a ripple effect.',
+    description: 'A grid that continuously animates with a ripple effect.',
     category: 'Backgrounds',
     name: 'RippleGrid',
     docsUrl: 'https://reactbits.dev/backgrounds/ripple-grid',
