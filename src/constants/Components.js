@@ -65,7 +65,6 @@ const components = {
   'spotlight-card': () => import('../demo/Components/SpotlightCardDemo'),
   'elastic-slider': () => import('../demo/Components/ElasticSliderDemo'),
   'decay-card': () => import('../demo/Components/DecayCardDemo'),
-  'infinite-scroll': () => import('../demo/Components/InfiniteScrollDemo'),
   'bounce-cards': () => import('../demo/Components/BounceCardsDemo'),
   'pixel-card': () => import('../demo/Components/PixelCardDemo'),
   'tilted-card': () => import('../demo/Components/TiltedCardDemo'),

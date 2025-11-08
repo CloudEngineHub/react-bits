@@ -113,10 +113,10 @@ const CardSwapDemo = () => {
             textAlign={{ base: 'center', lg: 'left' }}
             pt={{ base: 8, lg: 0 }}
             pb={{ base: 4, lg: 0 }}
-            px={{ base: 4, lg: 4 }}
+            px={{ base: 0, lg: 0 }}
           >
             <Text
-              fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
+              fontSize={{ base: '2xl', md: '3xl', lg: '3xl' }}
               mb={4}
               fontWeight={500}
               lineHeight={1.1}

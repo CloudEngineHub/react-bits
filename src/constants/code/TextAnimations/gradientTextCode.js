@@ -6,6 +6,8 @@ import tsTailwind from '@ts-tailwind/TextAnimations/GradientText/GradientText.ts
 
 export const gradientText = {
   usage: `import GradientText from './GradientText'
+
+// For a smoother animation, the gradient should start and end with the same color
   
 <GradientText
   colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}

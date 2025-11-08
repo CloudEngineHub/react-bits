@@ -102,7 +102,7 @@ const TiltedCardDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" minH={500} overflow="hidden">
+        <Box position="relative" className="demo-container" h={500} overflow="hidden">
           <TiltedCard
             imageSrc="https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58"
             altText="Kendrick Lamar - GNX Album Cover"

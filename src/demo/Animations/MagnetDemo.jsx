@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -71,32 +71,19 @@ const MagnetDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <h2 className="demo-title-extra">Container</h2>
-        <Box position="relative" className="demo-container" minH={300}>
-          <Magnet padding={padding} disabled={disabled} magnetStrength={magnetStrength}>
-            <Flex
-              w={200}
-              h={100}
-              fontSize="xl"
-              fontWeight="bolder"
-              color="#fff"
-              bg="#060010"
-              border="1px solid #222"
-              borderRadius="20px"
-              justifyContent="center"
-              alignItems="center"
-            >
-              Hover Me!
-            </Flex>
-          </Magnet>
-        </Box>
-
-        <h2 className="demo-title-extra">Link</h2>
-        <Box position="relative" className="demo-container" minH={300}>
+        <Box position="relative" className="demo-container" minH={400}>
           <Magnet padding={Math.floor(padding / 2)} disabled={disabled} magnetStrength={magnetStrength}>
             <a href="https://github.com/DavidHDev/react-bits" target="_blank" rel="noreferrer">
-              <Flex fontSize="lg" color="#fff">
-                Star&nbsp;<Text color="#5227FF">React Bits</Text>&nbsp;on GitHub!
+              <Flex
+                fontSize="lg"
+                color="#fff"
+                border="1px solid #5227FF"
+                borderRadius="15px"
+                p={4}
+                align="center"
+                gap={2}
+              >
+                Hover This
               </Flex>
             </a>
           </Magnet>

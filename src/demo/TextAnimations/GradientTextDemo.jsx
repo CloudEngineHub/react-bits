@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { FiInfo } from 'react-icons/fi';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -55,20 +54,10 @@ const GradientTextDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <h2 className="demo-title-extra">Default</h2>
-        <Box position="relative" className="demo-container" minH={150}>
-          <Text fontSize={'2rem'} as="div">
+        <Box position="relative" className="demo-container" minH={400}>
+          <Text fontSize={'3rem'} as="div">
             <GradientText colors={colors.split(',')} animationSpeed={speed} showBorder={false}>
-              Add a splash of color!
-            </GradientText>
-          </Text>
-        </Box>
-
-        <h2 className="demo-title-extra">Border Animation</h2>
-        <Box position="relative" className="demo-container" minH={150}>
-          <Text fontSize={'2rem'} as="div">
-            <GradientText colors={colors.split(',')} animationSpeed={speed} className="custom-gradient-class">
-              Now with a cool border!
+              A Splash Of Color!
             </GradientText>
           </Text>
         </Box>
@@ -84,29 +73,22 @@ const GradientTextDemo = () => {
             valueUnit="s"
           />
 
-          <Flex gap={0} direction="column">
-            <PreviewInput
-              title="Colors"
-              maxLength={100}
-              placeholder="Enter colors separated by commas"
-              onChange={val => setColors(val)}
-              value={colors}
-            />
-            <Box
-              bg={`linear-gradient(to right, ${gradientPreview.join(', ')})`}
-              w="300px"
-              marginLeft="calc(2rem + 24px)"
-              h="12px"
-              borderRadius="md"
-              border="1px solid #271E37"
-            />
-          </Flex>
+          <PreviewInput
+            title="Colors"
+            maxLength={100}
+            placeholder="Enter colors separated by commas"
+            onChange={val => setColors(val)}
+            value={colors}
+          />
+          <Box
+            bg={`linear-gradient(to right, ${gradientPreview.join(', ')})`}
+            w="300px"
+            marginLeft="calc(2rem + 24px)"
+            h="12px"
+            borderRadius="md"
+            border="1px solid #271E37"
+          />
         </Customize>
-
-        <p className="demo-extra-info" style={{ marginTop: '1rem' }}>
-          <FiInfo position="relative" /> For a smoother animation, the gradient should start and end with the same
-          color.
-        </p>
 
         <PropTable data={propData} />
       </PreviewTab>

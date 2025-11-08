@@ -119,7 +119,7 @@ const ScrollRevealDemo = () => {
       <PreviewTab>
         <Box
           className="demo-container"
-          style={{ height: '500px', maxHeight: '500px' }}
+          style={{ height: '400px', maxHeight: '400px' }}
           overflowY="scroll"
           overflowX="hidden"
           ref={containerRef}

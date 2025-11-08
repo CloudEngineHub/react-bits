@@ -109,7 +109,7 @@ const GlareHoverDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden">
+        <Box position="relative" className="demo-container" h={400} overflow="hidden">
           <GlareHover
             background="#060010"
             borderColor="#271E37"

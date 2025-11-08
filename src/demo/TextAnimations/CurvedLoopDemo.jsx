@@ -64,7 +64,7 @@ const CurvedLoopDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
+        <Box position="relative" className="demo-container" h={400} overflow="hidden" p={0}>
           <CurvedLoop
             key={key}
             marqueeText={marqueeText}

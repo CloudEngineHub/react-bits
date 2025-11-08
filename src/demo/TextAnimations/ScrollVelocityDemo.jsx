@@ -93,7 +93,7 @@ const ScrollVelocityDemo = () => {
   return (
     <TabsLayout>
       <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} maxH={600} overflow={'hidden'}>
+        <Box position="relative" className="demo-container" h={400} overflow={'hidden'}>
           <Flex position="relative" justifyContent="center" alignItems="center">
             <ScrollVelocity texts={['React Bits', 'Scroll Down']} velocity={velocity} className="custom-scroll-text" />
           </Flex>
