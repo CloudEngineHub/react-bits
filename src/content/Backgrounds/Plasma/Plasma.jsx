@@ -93,6 +93,7 @@ export const Plasma = ({
 
   useEffect(() => {
     if (!containerRef.current) return;
+    const containerEl = containerRef.current;
 
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
@@ -144,7 +145,7 @@ export const Plasma = ({
     };
 
     if (mouseInteractive) {
-      containerRef.current.addEventListener('mousemove', handleMouseMove);
+      containerEl.addEventListener('mousemove', handleMouseMove);
     }
 
     const setSize = () => {
@@ -158,20 +159,25 @@ export const Plasma = ({
     };
 
     const ro = new ResizeObserver(setSize);
-    ro.observe(containerRef.current);
+    ro.observe(containerEl);
     setSize();
 
     let raf = 0;
     const t0 = performance.now();
     const loop = t => {
       let timeValue = (t - t0) * 0.001;
-
       if (direction === 'pingpong') {
-        const cycle = Math.sin(timeValue * 0.5) * directionMultiplier;
-        program.uniforms.uDirection.value = cycle;
+        const pingpongDuration = 10;
+        const segmentTime = timeValue % pingpongDuration;
+        const isForward = Math.floor(timeValue / pingpongDuration) % 2 === 0;
+        const u = segmentTime / pingpongDuration;
+        const smooth = u * u * (3 - 2 * u);
+        const pingpongTime = isForward ? smooth * pingpongDuration : (1 - smooth) * pingpongDuration;
+        program.uniforms.uDirection.value = 1.0;
+        program.uniforms.iTime.value = pingpongTime;
+      } else {
+        program.uniforms.iTime.value = timeValue;
       }
-
-      program.uniforms.iTime.value = timeValue;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
@@ -180,12 +186,11 @@ export const Plasma = ({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      if (mouseInteractive && containerRef.current) {
-        containerRef.current.removeEventListener('mousemove', handleMouseMove);
+      if (mouseInteractive && containerEl) {
+        containerEl.removeEventListener('mousemove', handleMouseMove);
       }
       try {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        containerRef.current?.removeChild(canvas);
+        containerEl?.removeChild(canvas);
       } catch {
         console.warn('Canvas already removed from container');
       }
