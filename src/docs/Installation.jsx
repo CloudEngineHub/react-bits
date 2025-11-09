@@ -16,6 +16,8 @@ const Installation = () => {
 
   return (
     <section className="docs-section">
+      <h3 className="docs-category-title">Installation</h3>
+
       <p className="docs-paragraph dim">Using components is very straightforward, anyone can do it.</p>
 
       <h3 className="docs-category-title">Pick The Method</h3>

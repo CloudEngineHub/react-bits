@@ -46,7 +46,7 @@ const CategoryPage = () => {
       ) : (
         <Box className={`category-page ${isLoading ? 'loading' : ''}`}>
           <Box className="page-transition-fade" style={{ opacity }}>
-            <h2 className={`sub-category ${isGetStartedRoute ? 'docs-category-title' : ''}`}>{decodedLabel}</h2>
+            {!isGetStartedRoute && <h2 className="sub-category">{decodedLabel}</h2>}
 
             {SubcategoryComponent ? (
               <Suspense fallback={<Loader />}>

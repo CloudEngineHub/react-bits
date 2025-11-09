@@ -1,5 +1,6 @@
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
 import { FiArrowRight, FiMenu, FiSearch, FiX } from 'react-icons/fi';
+import { TbSparkles } from 'react-icons/tb';
 import { RiHeartFill } from 'react-icons/ri';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect } from 'react';
@@ -9,6 +10,7 @@ import { useSearch } from '../context/SearchContext/useSearch';
 import { useTransition } from '../../hooks/useTransition';
 import { getSavedComponents } from '../../utils/favorites';
 import Logo from '../../assets/logos/react-bits-logo.svg';
+import SponsorsCard from '../common/SponsorsCard';
 
 const HOVER_TIMEOUT_DELAY = 150;
 const ICON_BUTTON_STYLES = {
@@ -31,6 +33,7 @@ const toPascal = str =>
 
 const Sidebar = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [isSponsorsOpen, setSponsorsOpen] = useState(false);
   const [linePosition, setLinePosition] = useState(null);
   const [isLineVisible, setIsLineVisible] = useState(false);
   const [hoverLinePosition, setHoverLinePosition] = useState(null);
@@ -73,6 +76,8 @@ const Sidebar = () => {
 
   const handleDrawerToggle = () => setDrawerOpen(p => !p);
   const closeDrawer = () => setDrawerOpen(false);
+  const openSponsors = () => setSponsorsOpen(true);
+  const closeSponsors = () => setSponsorsOpen(false);
   const onSearchClick = () => {
     closeDrawer();
     toggleSearch();
@@ -231,10 +236,16 @@ const Sidebar = () => {
       <Box display={{ md: 'none' }} position="fixed" top={0} left={0} zIndex="overlay" w="100%" bg="#060010" p="1em">
         <Flex align="center" justify="space-between" gap="1em">
           <Link to="/">
-            <Image src={Logo} h="32px" alt="React Bits logo" />
+            <Image src={Logo} h="22px" alt="React Bits logo" />
           </Link>
 
           <Flex gap={2}>
+            <IconButton px={4} {...ICON_BUTTON_STYLES} aria-label="Sponsors" onClick={openSponsors}>
+              <Icon as={TbSparkles} color="#fff" />{' '}
+              <Text color="#fff" fontSize="14px">
+                Sponsors
+              </Text>
+            </IconButton>
             <IconButton {...ICON_BUTTON_STYLES} ref={searchBtnRef} aria-label="Search" onClick={onSearchClick}>
               <Icon as={FiSearch} color="#fff" />
             </IconButton>
@@ -319,13 +330,48 @@ const Sidebar = () => {
         </Drawer.Positioner>
       </Drawer.Root>
 
+      <Drawer.Root open={isSponsorsOpen} onOpenChange={closeSponsors} placement="left" size="full">
+        <Drawer.Backdrop />
+        <Drawer.Positioner
+          w="100vw"
+          maxW="100vw"
+          sx={{
+            transition: 'transform 0.3s ease',
+            "&[data-state='closed']": { transform: 'translateX(-100%)' },
+            "&[data-state='open']": { transform: 'translateX(0)' }
+          }}
+        >
+          <Drawer.Content bg="#060010">
+            <Drawer.Body p={0}>
+              <Box position="relative" p="1em" pt="3.5em">
+                <IconButton
+                  {...ICON_BUTTON_STYLES}
+                  aria-label="Close"
+                  onClick={closeSponsors}
+                  position="absolute"
+                  top="1em"
+                  right="1em"
+                  zIndex={2}
+                >
+                  <Icon as={FiX} color="#fff" />
+                </IconButton>
+                <Box className="sponsors-overlay">
+                  <SponsorsCard />
+                </Box>
+              </Box>
+            </Drawer.Body>
+          </Drawer.Content>
+        </Drawer.Positioner>
+      </Drawer.Root>
+
       <Box
         as="nav"
         ref={sidebarContainerRef}
         position="fixed"
-        top="57px"
+        top="4em"
+        left="2em"
         h="100vh"
-        w={{ base: 0, md: 40 }}
+        w={{ base: 0, md: '240px' }}
         p={5}
         overflowY="auto"
         className={`sidebar ${isScrolledToBottom ? 'sidebar-no-fade' : ''}`}

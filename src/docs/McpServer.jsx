@@ -16,6 +16,8 @@ const McpServer = () => {
 
   return (
     <section className="docs-section">
+      <h3 className="docs-category-title">MCP Server</h3>
+
       <p className="docs-paragraph">
         <a style={{ textDecoration: 'underline' }} href="https://modelcontextprotocol.io/" target="_blank">
           Model Context Protocol (MCP)

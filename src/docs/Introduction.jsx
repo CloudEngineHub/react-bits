@@ -10,6 +10,8 @@ const Introduction = () => {
 
   return (
     <section className="docs-section">
+      <h3 className="docs-category-title">Introduction</h3>
+
       <p className="docs-paragraph dim">
         React Bits is an open-source collection of carefully designed UI components that aim to enhance your React web
         applications.
