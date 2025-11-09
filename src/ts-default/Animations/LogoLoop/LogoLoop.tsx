@@ -208,12 +208,10 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
     const [isHovered, setIsHovered] = useState<boolean>(false);
 
-    // Determine the effective hover speed (support backward compatibility)
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
       if (pauseOnHover === true) return 0;
       if (pauseOnHover === false) return undefined;
-      // Default behavior: pause on hover
       return 0;
     }, [hoverSpeed, pauseOnHover]);
 
@@ -233,23 +231,26 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
     const updateDimensions = useCallback(() => {
       const containerWidth = containerRef.current?.clientWidth ?? 0;
-      const containerHeight = containerRef.current?.clientHeight ?? 0;
       const sequenceRect = seqRef.current?.getBoundingClientRect?.();
       const sequenceWidth = sequenceRect?.width ?? 0;
       const sequenceHeight = sequenceRect?.height ?? 0;
-
       if (isVertical) {
+        const parentHeight = containerRef.current?.parentElement?.clientHeight ?? 0;
+        if (containerRef.current && parentHeight > 0) {
+          const targetHeight = Math.ceil(parentHeight);
+          if (containerRef.current.style.height !== `${targetHeight}px`)
+            containerRef.current.style.height = `${targetHeight}px`;
+        }
         if (sequenceHeight > 0) {
           setSeqHeight(Math.ceil(sequenceHeight));
-          const copiesNeeded = Math.ceil(containerHeight / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
+          const viewport = containerRef.current?.clientHeight ?? parentHeight ?? sequenceHeight;
+          const copiesNeeded = Math.ceil(viewport / sequenceHeight) + ANIMATION_CONFIG.COPY_HEADROOM;
           setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
         }
-      } else {
-        if (sequenceWidth > 0) {
-          setSeqWidth(Math.ceil(sequenceWidth));
-          const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
-          setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
-        }
+      } else if (sequenceWidth > 0) {
+        setSeqWidth(Math.ceil(sequenceWidth));
+        const copiesNeeded = Math.ceil(containerWidth / sequenceWidth) + ANIMATION_CONFIG.COPY_HEADROOM;
+        setCopyCount(Math.max(ANIMATION_CONFIG.MIN_COPIES, copiesNeeded));
       }
     }, [isVertical]);
 
@@ -286,65 +287,62 @@ export const LogoLoop = React.memo<LogoLoopProps>(
     const handleMouseEnter = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(true);
     }, [effectiveHoverSpeed]);
-
     const handleMouseLeave = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(false);
     }, [effectiveHoverSpeed]);
 
-    const renderLogoItem = useCallback((item: LogoItem, key: React.Key) => {
-      // If renderItem prop is provided, use it
-      if (renderItem) {
+    const renderLogoItem = useCallback(
+      (item: LogoItem, key: React.Key) => {
+        if (renderItem) {
+          return (
+            <li className="logoloop__item" key={key} role="listitem">
+              {renderItem(item, key)}
+            </li>
+          );
+        }
+        const isNodeItem = 'node' in item;
+        const content = isNodeItem ? (
+          <span className="logoloop__node" aria-hidden={!!item.href && !item.ariaLabel}>
+            {(item as any).node}
+          </span>
+        ) : (
+          <img
+            src={(item as any).src}
+            srcSet={(item as any).srcSet}
+            sizes={(item as any).sizes}
+            width={(item as any).width}
+            height={(item as any).height}
+            alt={(item as any).alt ?? ''}
+            title={(item as any).title}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        );
+        const itemAriaLabel = isNodeItem
+          ? ((item as any).ariaLabel ?? (item as any).title)
+          : ((item as any).alt ?? (item as any).title);
+        const itemContent = (item as any).href ? (
+          <a
+            className="logoloop__link"
+            href={(item as any).href}
+            aria-label={itemAriaLabel || 'logo link'}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {content}
+          </a>
+        ) : (
+          content
+        );
         return (
           <li className="logoloop__item" key={key} role="listitem">
-            {renderItem(item, key)}
+            {itemContent}
           </li>
         );
-      }
-
-      // Default rendering logic
-      const isNodeItem = 'node' in item;
-
-      const content = isNodeItem ? (
-        <span className="logoloop__node" aria-hidden={!!item.href && !item.ariaLabel}>
-          {item.node}
-        </span>
-      ) : (
-        <img
-          src={item.src}
-          srcSet={item.srcSet}
-          sizes={item.sizes}
-          width={item.width}
-          height={item.height}
-          alt={item.alt ?? ''}
-          title={item.title}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      );
-
-      const itemAriaLabel = isNodeItem ? (item.ariaLabel ?? item.title) : (item.alt ?? item.title);
-
-      const itemContent = item.href ? (
-        <a
-          className="logoloop__link"
-          href={item.href}
-          aria-label={itemAriaLabel || 'logo link'}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          {content}
-        </a>
-      ) : (
-        content
-      );
-
-      return (
-        <li className="logoloop__item" key={key} role="listitem">
-          {itemContent}
-        </li>
-      );
-    }, [renderItem]);
+      },
+      [renderItem]
+    );
 
     const logoLists = useMemo(
       () =>
@@ -364,24 +362,20 @@ export const LogoLoop = React.memo<LogoLoopProps>(
 
     const containerStyle = useMemo(
       (): React.CSSProperties => ({
-        width: toCssLength(width) ?? '100%',
+        width: isVertical
+          ? toCssLength(width) === '100%'
+            ? undefined
+            : toCssLength(width)
+          : (toCssLength(width) ?? '100%'),
         ...cssVariables,
         ...style
       }),
-      [width, cssVariables, style]
+      [width, cssVariables, style, isVertical]
     );
 
     return (
-      <div
-        ref={containerRef}
-        className={rootClassName}
-        style={containerStyle}
-        role="region"
-        aria-label={ariaLabel}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="logoloop__track" ref={trackRef}>
+      <div ref={containerRef} className={rootClassName} style={containerStyle} role="region" aria-label={ariaLabel}>
+        <div className="logoloop__track" ref={trackRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {logoLists}
         </div>
       </div>

@@ -77,7 +77,8 @@ const LogoLoopDemo = () => {
       name: 'direction',
       type: "'left' | 'right' | 'up' | 'down'",
       default: "'left'",
-      description: 'Direction of the logo animation loop. Supports horizontal (left/right) and vertical (up/down) scrolling.'
+      description:
+        'Direction of the logo animation loop. Supports horizontal (left/right) and vertical (up/down) scrolling.'
     },
     {
       name: 'width',
@@ -101,7 +102,8 @@ const LogoLoopDemo = () => {
       name: 'hoverSpeed',
       type: 'number | undefined',
       default: '0',
-      description: 'Speed when hovering over the component. Set to 0 to pause, or a lower value for deceleration effect.'
+      description:
+        'Speed when hovering over the component. Set to 0 to pause, or a lower value for deceleration effect.'
     },
     {
       name: 'fadeOut',
@@ -125,7 +127,8 @@ const LogoLoopDemo = () => {
       name: 'renderItem',
       type: '(item: LogoItem, key: React.Key) => React.ReactNode',
       default: 'undefined',
-      description: 'Custom render function for each logo item. Allows full control over item rendering for animations, tooltips, etc.'
+      description:
+        'Custom render function for each logo item. Allows full control over item rendering for animations, tooltips, etc.'
     },
     {
       name: 'ariaLabel',
@@ -164,20 +167,40 @@ const LogoLoopDemo = () => {
             fadeOut={fadeOut}
             fadeOutColor="#060010"
             ariaLabel="Our tech stack"
-            renderItem={useCustomRender ? (item) => (
-              <div style={{ 
-                padding: '8px', 
-                border: '2px solid #8b5cf6',
-                borderRadius: '8px',
-                background: 'rgba(139, 92, 246, 0.1)'
-              }}>
-                {'node' in item ? item.node : <img src={item.src} alt={item.alt} style={{ height: `${logoHeight}px` }} />}
-              </div>
-            ) : undefined}
+            renderItem={
+              useCustomRender
+                ? item => (
+                    <div
+                      style={{
+                        padding: '8px',
+                        border: '2px solid #8b5cf6',
+                        borderRadius: '8px',
+                        background: 'rgba(139, 92, 246, 0.1)'
+                      }}
+                    >
+                      {'node' in item ? (
+                        item.node
+                      ) : (
+                        <img src={item.src} alt={item.alt} style={{ height: `${logoHeight}px` }} />
+                      )}
+                    </div>
+                  )
+                : undefined
+            }
           />
         </Box>
 
         <Customize>
+          <PreviewSelect
+            title="Direction"
+            options={directionOptions}
+            value={direction}
+            onChange={value => {
+              setDirection(value);
+              forceRerender();
+            }}
+          />
+
           <PreviewSlider
             title="Speed"
             min={0}
@@ -226,16 +249,6 @@ const LogoLoopDemo = () => {
             valueUnit="px"
             onChange={value => {
               setGap(value);
-              forceRerender();
-            }}
-          />
-
-          <PreviewSelect
-            title="Direction"
-            options={directionOptions}
-            value={direction}
-            onChange={value => {
-              setDirection(value);
               forceRerender();
             }}
           />
