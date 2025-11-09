@@ -7,6 +7,11 @@
   --logoloop-fadeColorAuto: #ffffff;
 }
 
+.logoloop--vertical {
+  overflow-x: visible;
+  overflow-y: hidden;
+}
+
 .logoloop--scale-hover {
   padding-top: calc(var(--logoloop-logoHeight) * 0.1);
   padding-bottom: calc(var(--logoloop-logoHeight) * 0.1);
@@ -25,9 +30,19 @@
   user-select: none;
 }
 
+.logoloop--vertical .logoloop__track {
+  flex-direction: column;
+  height: max-content;
+  width: auto;
+}
+
 .logoloop__list {
   display: flex;
   align-items: center;
+}
+
+.logoloop--vertical .logoloop__list {
+  flex-direction: column;
 }
 
 .logoloop__item {
@@ -37,8 +52,18 @@
   line-height: 1;
 }
 
+.logoloop--vertical .logoloop__item {
+  margin-right: 0;
+  margin-bottom: var(--logoloop-gap);
+}
+
 .logoloop__item:last-child {
   margin-right: var(--logoloop-gap);
+}
+
+.logoloop--vertical .logoloop__item:last-child {
+  margin-right: 0;
+  margin-bottom: var(--logoloop-gap);
 }
 
 .logoloop__node {
