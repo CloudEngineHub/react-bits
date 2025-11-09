@@ -162,7 +162,7 @@ const LogoLoopDemo = () => {
             fadeOut={fadeOut}
             fadeOutColor="#060010"
             ariaLabel="Our tech stack"
-            renderItem={useCustomRender ? (item, key) => (
+            renderItem={useCustomRender ? (item) => (
               <div style={{ 
                 padding: '8px', 
                 border: '2px solid #8b5cf6',
