@@ -8,6 +8,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import useForceRerender from '../../hooks/useForceRerender';
 
 import { logoLoop } from '../../constants/code/Animations/logoLoopCode';
@@ -50,6 +51,13 @@ const LogoLoopDemo = () => {
   const [scaleOnHover, setScaleOnHover] = useState(true);
   const [direction, setDirection] = useState('left');
   const [useCustomRender, setUseCustomRender] = useState(false);
+
+  const directionOptions = [
+    { value: 'left', label: 'Left' },
+    { value: 'right', label: 'Right' },
+    { value: 'up', label: 'Up' },
+    { value: 'down', label: 'Down' }
+  ];
 
   const propData = [
     {
@@ -222,15 +230,14 @@ const LogoLoopDemo = () => {
             }}
           />
 
-          <PreviewSwitch
+          <PreviewSelect
             title="Direction"
-            isChecked={direction === 'right'}
-            onChange={checked => {
-              setDirection(checked ? 'right' : 'left');
+            options={directionOptions}
+            value={direction}
+            onChange={value => {
+              setDirection(value);
               forceRerender();
             }}
-            checkedLabel="Right"
-            uncheckedLabel="Left"
           />
 
           <PreviewSwitch
