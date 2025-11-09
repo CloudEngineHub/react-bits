@@ -49,17 +49,6 @@ function App() {
         hoverSpeed={20}
         fadeOut
       />
-      
-      {/* Custom rendering with renderItem */}
-      <LogoLoop
-        logos={techLogos}
-        speed={100}
-        renderItem={(item, key) => (
-          <div className="custom-logo-wrapper">
-            {'node' in item ? item.node : <img src={item.src} alt={item.alt} />}
-          </div>
-        )}
-      />
     </div>
   );
 }`,
