@@ -25,17 +25,40 @@ const imageLogos = [
 function App() {
   return (
     <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
+      {/* Basic horizontal loop */}
       <LogoLoop
         logos={techLogos}
         speed={120}
         direction="left"
         logoHeight={48}
         gap={40}
-        pauseOnHover
+        hoverSpeed={0}
         scaleOnHover
         fadeOut
         fadeOutColor="#ffffff"
         ariaLabel="Technology partners"
+      />
+      
+      {/* Vertical loop with deceleration on hover */}
+      <LogoLoop
+        logos={techLogos}
+        speed={80}
+        direction="up"
+        logoHeight={48}
+        gap={40}
+        hoverSpeed={20}
+        fadeOut
+      />
+      
+      {/* Custom rendering with renderItem */}
+      <LogoLoop
+        logos={techLogos}
+        speed={100}
+        renderItem={(item, key) => (
+          <div className="custom-logo-wrapper">
+            {'node' in item ? item.node : <img src={item.src} alt={item.alt} />}
+          </div>
+        )}
       />
     </div>
   );
