@@ -90,16 +90,10 @@ const LogoLoopDemo = () => {
       description: 'Gap between logos in pixels.'
     },
     {
-      name: 'pauseOnHover',
-      type: 'boolean',
-      default: 'true',
-      description: 'DEPRECATED: Use hoverSpeed instead. When true, pauses animation on hover (equivalent to hoverSpeed={0}).'
-    },
-    {
       name: 'hoverSpeed',
       type: 'number | undefined',
       default: '0',
-      description: 'Speed when hovering over the component. Set to 0 to pause, or a lower value for deceleration effect. Overrides pauseOnHover.'
+      description: 'Speed when hovering over the component. Set to 0 to pause, or a lower value for deceleration effect.'
     },
     {
       name: 'fadeOut',
