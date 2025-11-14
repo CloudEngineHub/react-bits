@@ -40,8 +40,7 @@ const TrueFocusDemo = () => {
       name: 'separator',
       type: 'string',
       default: "' '",
-      description:
-        'Optional string used to separate words in the sentence.'
+      description: 'Optional string used to separate words in the sentence.'
     },
     {
       name: 'manualMode',
