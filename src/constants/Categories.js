@@ -6,7 +6,8 @@ export const NEW = [
   'Laser Flow',
   'Ghost Cursor',
   'Color Bends',
-  'Grid Scan'
+  'Grid Scan',
+  'Floating Lines'
 ];
 export const UPDATED = ['Profile Card', 'Logo Loop'];
 
@@ -121,6 +122,7 @@ export const CATEGORIES = [
       'Prism',
       'Dark Veil',
       'Silk',
+      'Floating Lines',
       'Light Rays',
       'Pixel Blast',
       'Color Bends',

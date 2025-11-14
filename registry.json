@@ -2356,6 +2356,74 @@
       ]
     },
     {
+      "name": "FloatingLines-JS-CSS",
+      "type": "registry:block",
+      "title": "FloatingLines",
+      "description": "3D floating lines that react to cursor movement.",
+      "files": [
+        {
+          "path": "public/default/src/content/Backgrounds/FloatingLines/FloatingLines.jsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/default/src/content/Backgrounds/FloatingLines/FloatingLines.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "FloatingLines-JS-TW",
+      "type": "registry:block",
+      "title": "FloatingLines",
+      "description": "3D floating lines that react to cursor movement.",
+      "files": [
+        {
+          "path": "public/tailwind/src/tailwind/Backgrounds/FloatingLines/FloatingLines.jsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "FloatingLines-TS-CSS",
+      "type": "registry:block",
+      "title": "FloatingLines",
+      "description": "3D floating lines that react to cursor movement.",
+      "files": [
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/FloatingLines/FloatingLines.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "public/ts/default/src/ts-default/Backgrounds/FloatingLines/FloatingLines.css",
+          "type": "registry:item"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
+      "name": "FloatingLines-TS-TW",
+      "type": "registry:block",
+      "title": "FloatingLines",
+      "description": "3D floating lines that react to cursor movement.",
+      "files": [
+        {
+          "path": "public/ts/tailwind/src/ts-tailwind/Backgrounds/FloatingLines/FloatingLines.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "dependencies": [
+        "three"
+      ]
+    },
+    {
       "name": "FlowingMenu-JS-CSS",
       "type": "registry:block",
       "title": "FlowingMenu",
