@@ -132,6 +132,7 @@ Notes:
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.
 - [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): Terminal CRT scanline squares effect with flicker + noise. CLI: `FaultyTerminal`.
+- [Floating Lines](https://www.reactbits.dev/backgrounds/floating-lines): 3D floating lines that react to cursor movement. CLI: `FloatingLines`.
 - [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Parallax realistic starfield with pointer interactions. CLI: `Galaxy`.
 - [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Layered gradient blinds with spotlight and noise distortion. CLI: `GradientBlinds`.
 - [Grid Distortion](https://www.reactbits.dev/backgrounds/grid-distortion): Warped grid mesh distorts smoothly reacting to cursor. CLI: `GridDistortion`.

@@ -40,10 +40,10 @@ const Hero = () => {
 
       <div className="hero-main-content">
         <FadeContent className="hero-tag-fade" blur>
-          <Link to="/backgrounds/grid-scan" className="hero-new-badge-container">
+          <Link to="/backgrounds/floating-lines" className="hero-new-badge-container">
             <span className="hero-new-badge">New 🎉</span>
             <div className="hero-new-badge-text">
-              <span>Grid Scan</span>
+              <span>Floating Lines</span>
               <GoArrowRight />
             </div>
           </Link>

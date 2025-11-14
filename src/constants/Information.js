@@ -929,6 +929,14 @@ export const componentMetadata = {
     name: 'LiquidEther',
     docsUrl: 'https://reactbits.dev/backgrounds/liquid-ether',
     tags: []
+  },
+  'Backgrounds/FloatingLines': {
+    videoUrl: '/assets/video/floatinglines.webm',
+    description: '3D floating lines that react to cursor movement.',
+    category: 'Backgrounds',
+    name: 'FloatingLines',
+    docsUrl: 'https://reactbits.dev/backgrounds/floating-lines',
+    tags: []
   }
 };
 
