@@ -64,8 +64,9 @@ const TextCursor: React.FC<TextCursorProps> = ({
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance >= spacing) {
           let rawAngle = (Math.atan2(dy, dx) * 180) / Math.PI;
-          if (rawAngle > 90) rawAngle -= 180;
-          else if (rawAngle < -90) rawAngle += 180;
+
+          rawAngle = ((rawAngle + 180) % 360) - 180;
+
           const computedAngle = followMouseDirection ? rawAngle : 0;
           const steps = Math.floor(distance / spacing);
           for (let i = 1; i <= steps; i++) {
@@ -97,9 +98,12 @@ const TextCursor: React.FC<TextCursorProps> = ({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
     container.addEventListener('mousemove', handleMouseMove);
-    return () => container.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [containerRef.current]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -117,7 +121,7 @@ const TextCursor: React.FC<TextCursorProps> = ({
           {trail.map(item => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 1, x: 0, y: 0, rotate: item.angle }}
+              initial={{ opacity: 0, scale: 1, rotate: item.angle }}
               animate={{
                 opacity: 1,
                 scale: 1,
@@ -127,7 +131,8 @@ const TextCursor: React.FC<TextCursorProps> = ({
               }}
               exit={{ opacity: 0, scale: 0 }}
               transition={{
-                opacity: { duration: exitDuration, ease: 'easeOut', delay },
+                opacity: { duration: exitDuration, ease: 'easeOut' },
+
                 ...(randomFloat && {
                   x: {
                     duration: 2,
