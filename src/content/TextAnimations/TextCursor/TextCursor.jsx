@@ -4,7 +4,6 @@ import './TextCursor.css';
 
 const TextCursor = ({
   text = '⚛️',
-  delay = 0.01,
   spacing = 100,
   followMouseDirection = true,
   randomFloat = true,
