@@ -10,7 +10,6 @@ export const textCursor = {
 
 <TextCursor
   text="Hello!"
-  delay={0.01}
   spacing={80}
   followMouseDirection={true}
   randomFloat={true}

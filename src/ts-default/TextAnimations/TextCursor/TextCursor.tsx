@@ -4,7 +4,6 @@ import './TextCursor.css';
 
 interface TextCursorProps {
   text: string;
-  delay?: number;
   spacing?: number;
   followMouseDirection?: boolean;
   randomFloat?: boolean;
@@ -25,7 +24,6 @@ interface TrailItem {
 
 const TextCursor: React.FC<TextCursorProps> = ({
   text = '⚛️',
-  delay = 0.01,
   spacing = 100,
   followMouseDirection = true,
   randomFloat = true,

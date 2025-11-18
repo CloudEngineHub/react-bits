@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const TextCursor = ({
   text = '⚛️',
-  delay = 0.01,
   spacing = 100,
   followMouseDirection = true,
   randomFloat = true,

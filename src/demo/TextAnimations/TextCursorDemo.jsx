@@ -29,12 +29,6 @@ const TextCursorDemo = () => {
       description: 'The text string to display as the trail.'
     },
     {
-      name: 'delay',
-      type: 'number',
-      default: '0.01',
-      description: 'The entry stagger delay in seconds for the fade-out animation.'
-    },
-    {
       name: 'spacing',
       type: 'number',
       default: '100',
