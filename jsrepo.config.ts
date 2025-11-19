@@ -642,24 +642,32 @@ type Variant = (typeof VARIANTS)[number];
  * @param title The title of the component.
  * @param description The description of the component.
  * @param category The category of the component.
+ * @param categories Organize the component into multiple categories.
+ * @param meta Optional meta data for the component.
+ * @param variants The variants of the component that are available through the registry (default: all variants)
  * @returns An array of RegistryItem objects.
  */
 function defineComponent({
   title,
   description,
   category,
+  categories,
+  meta,
   variants = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW']
 }: {
   title: string;
   description: string;
   category: Category;
+  categories?: string[];
+  meta?: Record<string, string>;
   variants?: readonly Variant[];
 }): RegistryItem[] {
   const baseItem: Omit<RegistryItem, 'files' | 'name'> = {
     title,
     description,
     type: 'registry:component',
-    categories: [category]
+    categories: [category, ...(categories ?? [])],
+    meta
   };
 
   // this might warrant a bit of explanation
