@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AnimatedContent = ({
   children,
+  container,
   distance = 100,
   direction = 'vertical',
   reverse = false,
@@ -16,13 +17,25 @@ const AnimatedContent = ({
   scale = 1,
   threshold = 0.1,
   delay = 0,
-  onComplete
+  disappearAfter = 0,
+  disappearDuration = 0.5,
+  disappearEase = 'power3.in',
+  onComplete,
+  onDisappearanceComplete,
+  className = '',
+  ...props
 }) => {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    let scrollerTarget = container || document.getElementById('snap-main-container') || null;
+
+    if (typeof scrollerTarget === 'string') {
+      scrollerTarget = document.querySelector(scrollerTarget);
+    }
 
     const axis = direction === 'horizontal' ? 'x' : 'y';
     const offset = reverse ? -distance : distance;
@@ -31,44 +44,66 @@ const AnimatedContent = ({
     gsap.set(el, {
       [axis]: offset,
       scale,
-      opacity: animateOpacity ? initialOpacity : 1
+      opacity: animateOpacity ? initialOpacity : 1,
+      visibility: 'visible'
     });
 
-    gsap.to(el, {
+    const tl = gsap.timeline({
+      paused: true,
+      delay,
+      onComplete: () => {
+        if (onComplete) onComplete();
+        if (disappearAfter > 0) {
+          gsap.to(el, {
+            [axis]: reverse ? distance : -distance,
+            scale: 0.8,
+            opacity: animateOpacity ? initialOpacity : 0,
+            delay: disappearAfter,
+            duration: disappearDuration,
+            ease: disappearEase,
+            onComplete: () => onDisappearanceComplete?.()
+          });
+        }
+      }
+    });
+
+    tl.to(el, {
       [axis]: 0,
       scale: 1,
       opacity: 1,
       duration,
-      ease,
-      delay,
-      onComplete,
-      scrollTrigger: {
-        trigger: el,
-        start: `top ${startPct}%`,
-        toggleActions: 'play none none none',
-        once: true
-      }
+      ease
+    });
+
+    const st = ScrollTrigger.create({
+      trigger: el,
+      scroller: scrollerTarget,
+      start: `top ${startPct}%`,
+      once: true,
+      onEnter: () => tl.play()
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-      gsap.killTweensOf(el);
+      st.kill();
+      tl.kill();
     };
   }, [
-    distance,
-    direction,
-    reverse,
-    duration,
-    ease,
-    initialOpacity,
-    animateOpacity,
-    scale,
-    threshold,
-    delay,
-    onComplete
+    container,
+    distance, direction, reverse, duration, ease,
+    initialOpacity, animateOpacity, scale, threshold,
+    delay, disappearAfter, disappearDuration,
+    disappearEase, onComplete, onDisappearanceComplete
   ]);
 
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div
+      ref={ref}
+      className={`invisible ${className}`}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default AnimatedContent;

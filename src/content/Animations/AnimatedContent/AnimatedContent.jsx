@@ -21,7 +21,9 @@ const AnimatedContent = ({
   disappearDuration = 0.5,
   disappearEase = 'power3.in',
   onComplete,
-  onDisappearanceComplete
+  onDisappearanceComplete,
+  className = '',
+  ...props
 }) => {
   const ref = useRef(null);
 
@@ -93,7 +95,16 @@ const AnimatedContent = ({
     disappearEase, onComplete, onDisappearanceComplete
   ]);
 
-  return <div ref={ref} style={{ visibility: 'hidden' }}>{children}</div>;
+  return (
+    <div 
+        ref={ref} 
+        className={className}
+        style={{ visibility: 'hidden' }} 
+        {...props}
+    >
+        {children}
+    </div>
+  );
 };
 
 export default AnimatedContent;
