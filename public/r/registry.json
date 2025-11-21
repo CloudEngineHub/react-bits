@@ -452,78 +452,6 @@
 			]
 		},
 		{
-			"name": "GhostCursor-JS-CSS",
-			"title": "GhostCursor",
-			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.jsx"
-				}
-			]
-		},
-		{
-			"name": "GhostCursor-JS-TW",
-			"title": "GhostCursor",
-			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.jsx"
-				}
-			]
-		},
-		{
-			"name": "GhostCursor-TS-CSS",
-			"title": "GhostCursor",
-			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.tsx"
-				}
-			]
-		},
-		{
-			"name": "GhostCursor-TS-TW",
-			"title": "GhostCursor",
-			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GhostCursor/GhostCursor.tsx"
-				}
-			]
-		},
-		{
 			"name": "GlareHover-JS-CSS",
 			"title": "GlareHover",
 			"description": "Adds a realistic moving glare highlight on hover over any element.",
@@ -660,6 +588,78 @@
 			]
 		},
 		{
+			"name": "GhostCursor-JS-CSS",
+			"title": "GhostCursor",
+			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.jsx"
+				}
+			]
+		},
+		{
+			"name": "GhostCursor-JS-TW",
+			"title": "GhostCursor",
+			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.jsx"
+				}
+			]
+		},
+		{
+			"name": "GhostCursor-TS-CSS",
+			"title": "GhostCursor",
+			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.tsx"
+				}
+			]
+		},
+		{
+			"name": "GhostCursor-TS-TW",
+			"title": "GhostCursor",
+			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GhostCursor/GhostCursor.tsx"
+				}
+			]
+		},
+		{
 			"name": "ImageTrail-JS-CSS",
 			"title": "ImageTrail",
 			"description": "Cursor-based image trail with several built-in variants.",
@@ -728,78 +728,6 @@
 				{
 					"type": "registry:component",
 					"path": "ImageTrail/ImageTrail.tsx"
-				}
-			]
-		},
-		{
-			"name": "LaserFlow-JS-CSS",
-			"title": "LaserFlow",
-			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.jsx"
-				}
-			]
-		},
-		{
-			"name": "LaserFlow-JS-TW",
-			"title": "LaserFlow",
-			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.jsx"
-				}
-			]
-		},
-		{
-			"name": "LaserFlow-TS-CSS",
-			"title": "LaserFlow",
-			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.tsx"
-				}
-			]
-		},
-		{
-			"name": "LaserFlow-TS-TW",
-			"title": "LaserFlow",
-			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LaserFlow/LaserFlow.tsx"
 				}
 			]
 		},
@@ -1736,6 +1664,1638 @@
 				{
 					"type": "registry:component",
 					"path": "TargetCursor/TargetCursor.tsx"
+				}
+			]
+		},
+		{
+			"name": "LaserFlow-JS-CSS",
+			"title": "LaserFlow",
+			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "LaserFlow-JS-TW",
+			"title": "LaserFlow",
+			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "LaserFlow-TS-CSS",
+			"title": "LaserFlow",
+			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.tsx"
+				}
+			]
+		},
+		{
+			"name": "LaserFlow-TS-TW",
+			"title": "LaserFlow",
+			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LaserFlow/LaserFlow.tsx"
+				}
+			]
+		},
+		{
+			"name": "ASCIIText-JS-CSS",
+			"title": "ASCIIText",
+			"description": "Renders text with an animated ASCII background for a retro feel.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ASCIIText/ASCIIText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ASCIIText-JS-TW",
+			"title": "ASCIIText",
+			"description": "Renders text with an animated ASCII background for a retro feel.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ASCIIText/ASCIIText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ASCIIText-TS-CSS",
+			"title": "ASCIIText",
+			"description": "Renders text with an animated ASCII background for a retro feel.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ASCIIText/ASCIIText.tsx"
+				}
+			]
+		},
+		{
+			"name": "ASCIIText-TS-TW",
+			"title": "ASCIIText",
+			"description": "Renders text with an animated ASCII background for a retro feel.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ASCIIText/ASCIIText.tsx"
+				}
+			]
+		},
+		{
+			"name": "BlurText-JS-CSS",
+			"title": "BlurText",
+			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BlurText/BlurText.jsx"
+				}
+			]
+		},
+		{
+			"name": "BlurText-JS-TW",
+			"title": "BlurText",
+			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BlurText/BlurText.jsx"
+				}
+			]
+		},
+		{
+			"name": "BlurText-TS-CSS",
+			"title": "BlurText",
+			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BlurText/BlurText.tsx"
+				}
+			]
+		},
+		{
+			"name": "BlurText-TS-TW",
+			"title": "BlurText",
+			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BlurText/BlurText.tsx"
+				}
+			]
+		},
+		{
+			"name": "CircularText-JS-CSS",
+			"title": "CircularText",
+			"description": "Layouts characters around a circle with optional rotation animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.jsx"
+				}
+			]
+		},
+		{
+			"name": "CircularText-JS-TW",
+			"title": "CircularText",
+			"description": "Layouts characters around a circle with optional rotation animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.jsx"
+				}
+			]
+		},
+		{
+			"name": "CircularText-TS-CSS",
+			"title": "CircularText",
+			"description": "Layouts characters around a circle with optional rotation animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.tsx"
+				}
+			]
+		},
+		{
+			"name": "CircularText-TS-TW",
+			"title": "CircularText",
+			"description": "Layouts characters around a circle with optional rotation animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CircularText/CircularText.tsx"
+				}
+			]
+		},
+		{
+			"name": "CountUp-JS-CSS",
+			"title": "CountUp",
+			"description": "Animated number counter supporting formatting and decimals.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CountUp/CountUp.jsx"
+				}
+			]
+		},
+		{
+			"name": "CountUp-JS-TW",
+			"title": "CountUp",
+			"description": "Animated number counter supporting formatting and decimals.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CountUp/CountUp.jsx"
+				}
+			]
+		},
+		{
+			"name": "CountUp-TS-CSS",
+			"title": "CountUp",
+			"description": "Animated number counter supporting formatting and decimals.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CountUp/CountUp.tsx"
+				}
+			]
+		},
+		{
+			"name": "CountUp-TS-TW",
+			"title": "CountUp",
+			"description": "Animated number counter supporting formatting and decimals.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CountUp/CountUp.tsx"
+				}
+			]
+		},
+		{
+			"name": "CurvedLoop-JS-CSS",
+			"title": "CurvedLoop",
+			"description": "Flowing looping text path along a customizable curve with drag interaction.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.jsx"
+				}
+			]
+		},
+		{
+			"name": "CurvedLoop-JS-TW",
+			"title": "CurvedLoop",
+			"description": "Flowing looping text path along a customizable curve with drag interaction.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.jsx"
+				}
+			]
+		},
+		{
+			"name": "CurvedLoop-TS-CSS",
+			"title": "CurvedLoop",
+			"description": "Flowing looping text path along a customizable curve with drag interaction.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.tsx"
+				}
+			]
+		},
+		{
+			"name": "CurvedLoop-TS-TW",
+			"title": "CurvedLoop",
+			"description": "Flowing looping text path along a customizable curve with drag interaction.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "CurvedLoop/CurvedLoop.tsx"
+				}
+			]
+		},
+		{
+			"name": "DecryptedText-JS-CSS",
+			"title": "DecryptedText",
+			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DecryptedText/DecryptedText.jsx"
+				}
+			]
+		},
+		{
+			"name": "DecryptedText-JS-TW",
+			"title": "DecryptedText",
+			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DecryptedText/DecryptedText.jsx"
+				}
+			]
+		},
+		{
+			"name": "DecryptedText-TS-CSS",
+			"title": "DecryptedText",
+			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DecryptedText/DecryptedText.tsx"
+				}
+			]
+		},
+		{
+			"name": "DecryptedText-TS-TW",
+			"title": "DecryptedText",
+			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DecryptedText/DecryptedText.tsx"
+				}
+			]
+		},
+		{
+			"name": "FallingText-JS-CSS",
+			"title": "FallingText",
+			"description": "Characters fall with gravity + bounce creating a playful entrance.",
+			"type": "registry:component",
+			"dependencies": [
+				"matter-js@^0.20.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.jsx"
+				}
+			]
+		},
+		{
+			"name": "FallingText-JS-TW",
+			"title": "FallingText",
+			"description": "Characters fall with gravity + bounce creating a playful entrance.",
+			"type": "registry:component",
+			"dependencies": [
+				"matter-js@^0.20.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.jsx"
+				}
+			]
+		},
+		{
+			"name": "FallingText-TS-CSS",
+			"title": "FallingText",
+			"description": "Characters fall with gravity + bounce creating a playful entrance.",
+			"type": "registry:component",
+			"dependencies": [
+				"matter-js@^0.20.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.tsx"
+				}
+			]
+		},
+		{
+			"name": "FallingText-TS-TW",
+			"title": "FallingText",
+			"description": "Characters fall with gravity + bounce creating a playful entrance.",
+			"type": "registry:component",
+			"dependencies": [
+				"matter-js@^0.20.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FallingText/FallingText.tsx"
+				}
+			]
+		},
+		{
+			"name": "FuzzyText-JS-CSS",
+			"title": "FuzzyText",
+			"description": "Vibrating fuzzy text with controllable hover intensity.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FuzzyText/FuzzyText.jsx"
+				}
+			]
+		},
+		{
+			"name": "FuzzyText-JS-TW",
+			"title": "FuzzyText",
+			"description": "Vibrating fuzzy text with controllable hover intensity.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FuzzyText/FuzzyText.jsx"
+				}
+			]
+		},
+		{
+			"name": "FuzzyText-TS-CSS",
+			"title": "FuzzyText",
+			"description": "Vibrating fuzzy text with controllable hover intensity.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FuzzyText/FuzzyText.tsx"
+				}
+			]
+		},
+		{
+			"name": "FuzzyText-TS-TW",
+			"title": "FuzzyText",
+			"description": "Vibrating fuzzy text with controllable hover intensity.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FuzzyText/FuzzyText.tsx"
+				}
+			]
+		},
+		{
+			"name": "GlitchText-JS-CSS",
+			"title": "GlitchText",
+			"description": "RGB split and distortion glitch effect with jitter effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.jsx"
+				}
+			]
+		},
+		{
+			"name": "GlitchText-JS-TW",
+			"title": "GlitchText",
+			"description": "RGB split and distortion glitch effect with jitter effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.jsx"
+				}
+			]
+		},
+		{
+			"name": "GlitchText-TS-CSS",
+			"title": "GlitchText",
+			"description": "RGB split and distortion glitch effect with jitter effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.tsx"
+				}
+			]
+		},
+		{
+			"name": "GlitchText-TS-TW",
+			"title": "GlitchText",
+			"description": "RGB split and distortion glitch effect with jitter effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GlitchText/GlitchText.tsx"
+				}
+			]
+		},
+		{
+			"name": "GradientText-JS-CSS",
+			"title": "GradientText",
+			"description": "Animated gradient sweep across live text with speed and color control.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.jsx"
+				}
+			]
+		},
+		{
+			"name": "GradientText-JS-TW",
+			"title": "GradientText",
+			"description": "Animated gradient sweep across live text with speed and color control.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.jsx"
+				}
+			]
+		},
+		{
+			"name": "GradientText-TS-CSS",
+			"title": "GradientText",
+			"description": "Animated gradient sweep across live text with speed and color control.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.tsx"
+				}
+			]
+		},
+		{
+			"name": "GradientText-TS-TW",
+			"title": "GradientText",
+			"description": "Animated gradient sweep across live text with speed and color control.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GradientText/GradientText.tsx"
+				}
+			]
+		},
+		{
+			"name": "RotatingText-JS-CSS",
+			"title": "RotatingText",
+			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.jsx"
+				}
+			]
+		},
+		{
+			"name": "RotatingText-JS-TW",
+			"title": "RotatingText",
+			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.jsx"
+				}
+			]
+		},
+		{
+			"name": "RotatingText-TS-CSS",
+			"title": "RotatingText",
+			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.tsx"
+				}
+			]
+		},
+		{
+			"name": "RotatingText-TS-TW",
+			"title": "RotatingText",
+			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "RotatingText/RotatingText.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrambledText-JS-CSS",
+			"title": "ScrambledText",
+			"description": "Detects cursor position and applies a distortion effect to text.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrambledText-JS-TW",
+			"title": "ScrambledText",
+			"description": "Detects cursor position and applies a distortion effect to text.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrambledText-TS-CSS",
+			"title": "ScrambledText",
+			"description": "Detects cursor position and applies a distortion effect to text.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrambledText-TS-TW",
+			"title": "ScrambledText",
+			"description": "Detects cursor position and applies a distortion effect to text.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrambledText/ScrambledText.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollFloat-JS-CSS",
+			"title": "ScrollFloat",
+			"description": "Text gently floats / parallax shifts on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollFloat-JS-TW",
+			"title": "ScrollFloat",
+			"description": "Text gently floats / parallax shifts on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollFloat-TS-CSS",
+			"title": "ScrollFloat",
+			"description": "Text gently floats / parallax shifts on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollFloat-TS-TW",
+			"title": "ScrollFloat",
+			"description": "Text gently floats / parallax shifts on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollFloat/ScrollFloat.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollReveal-JS-CSS",
+			"title": "ScrollReveal",
+			"description": "Text gently unblurs and reveals on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollReveal-JS-TW",
+			"title": "ScrollReveal",
+			"description": "Text gently unblurs and reveals on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollReveal-TS-CSS",
+			"title": "ScrollReveal",
+			"description": "Text gently unblurs and reveals on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollReveal-TS-TW",
+			"title": "ScrollReveal",
+			"description": "Text gently unblurs and reveals on scroll.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollReveal/ScrollReveal.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollVelocity-JS-CSS",
+			"title": "ScrollVelocity",
+			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollVelocity-JS-TW",
+			"title": "ScrollVelocity",
+			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.jsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollVelocity-TS-CSS",
+			"title": "ScrollVelocity",
+			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.tsx"
+				}
+			]
+		},
+		{
+			"name": "ScrollVelocity-TS-TW",
+			"title": "ScrollVelocity",
+			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ScrollVelocity/ScrollVelocity.tsx"
+				}
+			]
+		},
+		{
+			"name": "ShinyText-JS-CSS",
+			"title": "ShinyText",
+			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ShinyText-JS-TW",
+			"title": "ShinyText",
+			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.jsx"
+				}
+			]
+		},
+		{
+			"name": "ShinyText-TS-CSS",
+			"title": "ShinyText",
+			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.tsx"
+				}
+			]
+		},
+		{
+			"name": "ShinyText-TS-TW",
+			"title": "ShinyText",
+			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ShinyText/ShinyText.tsx"
+				}
+			]
+		},
+		{
+			"name": "SplitText-JS-CSS",
+			"title": "SplitText",
+			"description": "Splits text into characters / words for staggered entrance animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SplitText/SplitText.jsx"
+				}
+			]
+		},
+		{
+			"name": "SplitText-JS-TW",
+			"title": "SplitText",
+			"description": "Splits text into characters / words for staggered entrance animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SplitText/SplitText.jsx"
+				}
+			]
+		},
+		{
+			"name": "SplitText-TS-CSS",
+			"title": "SplitText",
+			"description": "Splits text into characters / words for staggered entrance animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SplitText/SplitText.tsx"
+				}
+			]
+		},
+		{
+			"name": "SplitText-TS-TW",
+			"title": "SplitText",
+			"description": "Splits text into characters / words for staggered entrance animation.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SplitText/SplitText.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextCursor-JS-CSS",
+			"title": "TextCursor",
+			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextCursor-JS-TW",
+			"title": "TextCursor",
+			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextCursor-TS-CSS",
+			"title": "TextCursor",
+			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextCursor-TS-TW",
+			"title": "TextCursor",
+			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextCursor/TextCursor.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextPressure-JS-CSS",
+			"title": "TextPressure",
+			"description": "Characters scale / warp interactively based on pointer pressure zone.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextPressure/TextPressure.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextPressure-JS-TW",
+			"title": "TextPressure",
+			"description": "Characters scale / warp interactively based on pointer pressure zone.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextPressure/TextPressure.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextPressure-TS-CSS",
+			"title": "TextPressure",
+			"description": "Characters scale / warp interactively based on pointer pressure zone.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextPressure/TextPressure.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextPressure-TS-TW",
+			"title": "TextPressure",
+			"description": "Characters scale / warp interactively based on pointer pressure zone.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextPressure/TextPressure.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextType-JS-CSS",
+			"title": "TextType",
+			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextType-JS-TW",
+			"title": "TextType",
+			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.jsx"
+				}
+			]
+		},
+		{
+			"name": "TextType-TS-CSS",
+			"title": "TextType",
+			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.tsx"
+				}
+			]
+		},
+		{
+			"name": "TextType-TS-TW",
+			"title": "TextType",
+			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TextType/TextType.tsx"
+				}
+			]
+		},
+		{
+			"name": "TrueFocus-JS-CSS",
+			"title": "TrueFocus",
+			"description": "Applies dynamic blur / clarity based over a series of words in order.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.jsx"
+				}
+			]
+		},
+		{
+			"name": "TrueFocus-JS-TW",
+			"title": "TrueFocus",
+			"description": "Applies dynamic blur / clarity based over a series of words in order.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.jsx"
+				}
+			]
+		},
+		{
+			"name": "TrueFocus-TS-CSS",
+			"title": "TrueFocus",
+			"description": "Applies dynamic blur / clarity based over a series of words in order.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.tsx"
+				}
+			]
+		},
+		{
+			"name": "TrueFocus-TS-TW",
+			"title": "TrueFocus",
+			"description": "Applies dynamic blur / clarity based over a series of words in order.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "TrueFocus/TrueFocus.tsx"
+				}
+			]
+		},
+		{
+			"name": "VariableProximity-JS-CSS",
+			"title": "VariableProximity",
+			"description": "Letter styling changes continuously with pointer distance mapping.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.jsx"
+				}
+			]
+		},
+		{
+			"name": "VariableProximity-JS-TW",
+			"title": "VariableProximity",
+			"description": "Letter styling changes continuously with pointer distance mapping.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.jsx"
+				}
+			]
+		},
+		{
+			"name": "VariableProximity-TS-CSS",
+			"title": "VariableProximity",
+			"description": "Letter styling changes continuously with pointer distance mapping.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.tsx"
+				}
+			]
+		},
+		{
+			"name": "VariableProximity-TS-TW",
+			"title": "VariableProximity",
+			"description": "Letter styling changes continuously with pointer distance mapping.",
+			"type": "registry:component",
+			"dependencies": [
+				"motion@^12.23.12"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "VariableProximity/VariableProximity.tsx"
+				}
+			]
+		},
+		{
+			"name": "Shuffle-JS-CSS",
+			"title": "Shuffle",
+			"description": "Animated text reveal where characters shuffle before settling.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.jsx"
+				}
+			]
+		},
+		{
+			"name": "Shuffle-JS-TW",
+			"title": "Shuffle",
+			"description": "Animated text reveal where characters shuffle before settling.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.jsx"
+				}
+			]
+		},
+		{
+			"name": "Shuffle-TS-CSS",
+			"title": "Shuffle",
+			"description": "Animated text reveal where characters shuffle before settling.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.tsx"
+				}
+			]
+		},
+		{
+			"name": "Shuffle-TS-TW",
+			"title": "Shuffle",
+			"description": "Animated text reveal where characters shuffle before settling.",
+			"type": "registry:component",
+			"dependencies": [
+				"gsap@^3.13.0",
+				"@gsap/react@^2.1.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Shuffle/Shuffle.tsx"
 				}
 			]
 		},
@@ -3956,78 +5516,6 @@
 			]
 		},
 		{
-			"name": "StaggeredMenu-JS-CSS",
-			"title": "StaggeredMenu",
-			"description": "Menu with staggered item animations and smooth transitions on open/close.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.jsx"
-				}
-			]
-		},
-		{
-			"name": "StaggeredMenu-JS-TW",
-			"title": "StaggeredMenu",
-			"description": "Menu with staggered item animations and smooth transitions on open/close.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.jsx"
-				}
-			]
-		},
-		{
-			"name": "StaggeredMenu-TS-CSS",
-			"title": "StaggeredMenu",
-			"description": "Menu with staggered item animations and smooth transitions on open/close.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.tsx"
-				}
-			]
-		},
-		{
-			"name": "StaggeredMenu-TS-TW",
-			"title": "StaggeredMenu",
-			"description": "Menu with staggered item animations and smooth transitions on open/close.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "StaggeredMenu/StaggeredMenu.tsx"
-				}
-			]
-		},
-		{
 			"name": "Stepper-JS-CSS",
 			"title": "Stepper",
 			"description": "Animated multi-step progress indicator with active state transitions.",
@@ -4172,729 +5660,9 @@
 			]
 		},
 		{
-			"name": "ASCIIText-JS-CSS",
-			"title": "ASCIIText",
-			"description": "Renders text with an animated ASCII background for a retro feel.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ASCIIText/ASCIIText.jsx"
-				}
-			]
-		},
-		{
-			"name": "ASCIIText-JS-TW",
-			"title": "ASCIIText",
-			"description": "Renders text with an animated ASCII background for a retro feel.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ASCIIText/ASCIIText.jsx"
-				}
-			]
-		},
-		{
-			"name": "ASCIIText-TS-CSS",
-			"title": "ASCIIText",
-			"description": "Renders text with an animated ASCII background for a retro feel.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ASCIIText/ASCIIText.tsx"
-				}
-			]
-		},
-		{
-			"name": "ASCIIText-TS-TW",
-			"title": "ASCIIText",
-			"description": "Renders text with an animated ASCII background for a retro feel.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ASCIIText/ASCIIText.tsx"
-				}
-			]
-		},
-		{
-			"name": "BlurText-JS-CSS",
-			"title": "BlurText",
-			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "BlurText/BlurText.jsx"
-				}
-			]
-		},
-		{
-			"name": "BlurText-JS-TW",
-			"title": "BlurText",
-			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "BlurText/BlurText.jsx"
-				}
-			]
-		},
-		{
-			"name": "BlurText-TS-CSS",
-			"title": "BlurText",
-			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "BlurText/BlurText.tsx"
-				}
-			]
-		},
-		{
-			"name": "BlurText-TS-TW",
-			"title": "BlurText",
-			"description": "Text starts blurred then crisply resolves for a soft-focus reveal effect.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "BlurText/BlurText.tsx"
-				}
-			]
-		},
-		{
-			"name": "CircularText-JS-CSS",
-			"title": "CircularText",
-			"description": "Layouts characters around a circle with optional rotation animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.jsx"
-				}
-			]
-		},
-		{
-			"name": "CircularText-JS-TW",
-			"title": "CircularText",
-			"description": "Layouts characters around a circle with optional rotation animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.jsx"
-				}
-			]
-		},
-		{
-			"name": "CircularText-TS-CSS",
-			"title": "CircularText",
-			"description": "Layouts characters around a circle with optional rotation animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.tsx"
-				}
-			]
-		},
-		{
-			"name": "CircularText-TS-TW",
-			"title": "CircularText",
-			"description": "Layouts characters around a circle with optional rotation animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CircularText/CircularText.tsx"
-				}
-			]
-		},
-		{
-			"name": "CountUp-JS-CSS",
-			"title": "CountUp",
-			"description": "Animated number counter supporting formatting and decimals.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CountUp/CountUp.jsx"
-				}
-			]
-		},
-		{
-			"name": "CountUp-JS-TW",
-			"title": "CountUp",
-			"description": "Animated number counter supporting formatting and decimals.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CountUp/CountUp.jsx"
-				}
-			]
-		},
-		{
-			"name": "CountUp-TS-CSS",
-			"title": "CountUp",
-			"description": "Animated number counter supporting formatting and decimals.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CountUp/CountUp.tsx"
-				}
-			]
-		},
-		{
-			"name": "CountUp-TS-TW",
-			"title": "CountUp",
-			"description": "Animated number counter supporting formatting and decimals.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CountUp/CountUp.tsx"
-				}
-			]
-		},
-		{
-			"name": "CurvedLoop-JS-CSS",
-			"title": "CurvedLoop",
-			"description": "Flowing looping text path along a customizable curve with drag interaction.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.jsx"
-				}
-			]
-		},
-		{
-			"name": "CurvedLoop-JS-TW",
-			"title": "CurvedLoop",
-			"description": "Flowing looping text path along a customizable curve with drag interaction.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.jsx"
-				}
-			]
-		},
-		{
-			"name": "CurvedLoop-TS-CSS",
-			"title": "CurvedLoop",
-			"description": "Flowing looping text path along a customizable curve with drag interaction.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.tsx"
-				}
-			]
-		},
-		{
-			"name": "CurvedLoop-TS-TW",
-			"title": "CurvedLoop",
-			"description": "Flowing looping text path along a customizable curve with drag interaction.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "CurvedLoop/CurvedLoop.tsx"
-				}
-			]
-		},
-		{
-			"name": "DecryptedText-JS-CSS",
-			"title": "DecryptedText",
-			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "DecryptedText/DecryptedText.jsx"
-				}
-			]
-		},
-		{
-			"name": "DecryptedText-JS-TW",
-			"title": "DecryptedText",
-			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "DecryptedText/DecryptedText.jsx"
-				}
-			]
-		},
-		{
-			"name": "DecryptedText-TS-CSS",
-			"title": "DecryptedText",
-			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "DecryptedText/DecryptedText.tsx"
-				}
-			]
-		},
-		{
-			"name": "DecryptedText-TS-TW",
-			"title": "DecryptedText",
-			"description": "Hacker-style decryption cycling random glyphs until resolving to real text.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "DecryptedText/DecryptedText.tsx"
-				}
-			]
-		},
-		{
-			"name": "FallingText-JS-CSS",
-			"title": "FallingText",
-			"description": "Characters fall with gravity + bounce creating a playful entrance.",
-			"type": "registry:component",
-			"dependencies": [
-				"matter-js@^0.20.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.jsx"
-				}
-			]
-		},
-		{
-			"name": "FallingText-JS-TW",
-			"title": "FallingText",
-			"description": "Characters fall with gravity + bounce creating a playful entrance.",
-			"type": "registry:component",
-			"dependencies": [
-				"matter-js@^0.20.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.jsx"
-				}
-			]
-		},
-		{
-			"name": "FallingText-TS-CSS",
-			"title": "FallingText",
-			"description": "Characters fall with gravity + bounce creating a playful entrance.",
-			"type": "registry:component",
-			"dependencies": [
-				"matter-js@^0.20.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.tsx"
-				}
-			]
-		},
-		{
-			"name": "FallingText-TS-TW",
-			"title": "FallingText",
-			"description": "Characters fall with gravity + bounce creating a playful entrance.",
-			"type": "registry:component",
-			"dependencies": [
-				"matter-js@^0.20.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FallingText/FallingText.tsx"
-				}
-			]
-		},
-		{
-			"name": "FuzzyText-JS-CSS",
-			"title": "FuzzyText",
-			"description": "Vibrating fuzzy text with controllable hover intensity.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FuzzyText/FuzzyText.jsx"
-				}
-			]
-		},
-		{
-			"name": "FuzzyText-JS-TW",
-			"title": "FuzzyText",
-			"description": "Vibrating fuzzy text with controllable hover intensity.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FuzzyText/FuzzyText.jsx"
-				}
-			]
-		},
-		{
-			"name": "FuzzyText-TS-CSS",
-			"title": "FuzzyText",
-			"description": "Vibrating fuzzy text with controllable hover intensity.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FuzzyText/FuzzyText.tsx"
-				}
-			]
-		},
-		{
-			"name": "FuzzyText-TS-TW",
-			"title": "FuzzyText",
-			"description": "Vibrating fuzzy text with controllable hover intensity.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FuzzyText/FuzzyText.tsx"
-				}
-			]
-		},
-		{
-			"name": "GlitchText-JS-CSS",
-			"title": "GlitchText",
-			"description": "RGB split and distortion glitch effect with jitter effects.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.jsx"
-				}
-			]
-		},
-		{
-			"name": "GlitchText-JS-TW",
-			"title": "GlitchText",
-			"description": "RGB split and distortion glitch effect with jitter effects.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.jsx"
-				}
-			]
-		},
-		{
-			"name": "GlitchText-TS-CSS",
-			"title": "GlitchText",
-			"description": "RGB split and distortion glitch effect with jitter effects.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.tsx"
-				}
-			]
-		},
-		{
-			"name": "GlitchText-TS-TW",
-			"title": "GlitchText",
-			"description": "RGB split and distortion glitch effect with jitter effects.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GlitchText/GlitchText.tsx"
-				}
-			]
-		},
-		{
-			"name": "GradientText-JS-CSS",
-			"title": "GradientText",
-			"description": "Animated gradient sweep across live text with speed and color control.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.jsx"
-				}
-			]
-		},
-		{
-			"name": "GradientText-JS-TW",
-			"title": "GradientText",
-			"description": "Animated gradient sweep across live text with speed and color control.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.jsx"
-				}
-			]
-		},
-		{
-			"name": "GradientText-TS-CSS",
-			"title": "GradientText",
-			"description": "Animated gradient sweep across live text with speed and color control.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.tsx"
-				}
-			]
-		},
-		{
-			"name": "GradientText-TS-TW",
-			"title": "GradientText",
-			"description": "Animated gradient sweep across live text with speed and color control.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GradientText/GradientText.tsx"
-				}
-			]
-		},
-		{
-			"name": "RotatingText-JS-CSS",
-			"title": "RotatingText",
-			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.jsx"
-				}
-			]
-		},
-		{
-			"name": "RotatingText-JS-TW",
-			"title": "RotatingText",
-			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.jsx"
-				}
-			]
-		},
-		{
-			"name": "RotatingText-TS-CSS",
-			"title": "RotatingText",
-			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.tsx"
-				}
-			]
-		},
-		{
-			"name": "RotatingText-TS-TW",
-			"title": "RotatingText",
-			"description": "Cycles through multiple phrases with 3D rotate / flip transitions.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "RotatingText/RotatingText.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrambledText-JS-CSS",
-			"title": "ScrambledText",
-			"description": "Detects cursor position and applies a distortion effect to text.",
+			"name": "StaggeredMenu-JS-CSS",
+			"title": "StaggeredMenu",
+			"description": "Menu with staggered item animations and smooth transitions on open/close.",
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0"
@@ -4903,18 +5671,18 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.css"
+					"path": "StaggeredMenu/StaggeredMenu.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.jsx"
+					"path": "StaggeredMenu/StaggeredMenu.jsx"
 				}
 			]
 		},
 		{
-			"name": "ScrambledText-JS-TW",
-			"title": "ScrambledText",
-			"description": "Detects cursor position and applies a distortion effect to text.",
+			"name": "StaggeredMenu-JS-TW",
+			"title": "StaggeredMenu",
+			"description": "Menu with staggered item animations and smooth transitions on open/close.",
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0"
@@ -4923,14 +5691,14 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.jsx"
+					"path": "StaggeredMenu/StaggeredMenu.jsx"
 				}
 			]
 		},
 		{
-			"name": "ScrambledText-TS-CSS",
-			"title": "ScrambledText",
-			"description": "Detects cursor position and applies a distortion effect to text.",
+			"name": "StaggeredMenu-TS-CSS",
+			"title": "StaggeredMenu",
+			"description": "Menu with staggered item animations and smooth transitions on open/close.",
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0"
@@ -4939,18 +5707,18 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.css"
+					"path": "StaggeredMenu/StaggeredMenu.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.tsx"
+					"path": "StaggeredMenu/StaggeredMenu.tsx"
 				}
 			]
 		},
 		{
-			"name": "ScrambledText-TS-TW",
-			"title": "ScrambledText",
-			"description": "Detects cursor position and applies a distortion effect to text.",
+			"name": "StaggeredMenu-TS-TW",
+			"title": "StaggeredMenu",
+			"description": "Menu with staggered item animations and smooth transitions on open/close.",
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0"
@@ -4959,775 +5727,7 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "ScrambledText/ScrambledText.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollFloat-JS-CSS",
-			"title": "ScrollFloat",
-			"description": "Text gently floats / parallax shifts on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollFloat-JS-TW",
-			"title": "ScrollFloat",
-			"description": "Text gently floats / parallax shifts on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollFloat-TS-CSS",
-			"title": "ScrollFloat",
-			"description": "Text gently floats / parallax shifts on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollFloat-TS-TW",
-			"title": "ScrollFloat",
-			"description": "Text gently floats / parallax shifts on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollFloat/ScrollFloat.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollReveal-JS-CSS",
-			"title": "ScrollReveal",
-			"description": "Text gently unblurs and reveals on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollReveal-JS-TW",
-			"title": "ScrollReveal",
-			"description": "Text gently unblurs and reveals on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollReveal-TS-CSS",
-			"title": "ScrollReveal",
-			"description": "Text gently unblurs and reveals on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollReveal-TS-TW",
-			"title": "ScrollReveal",
-			"description": "Text gently unblurs and reveals on scroll.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollReveal/ScrollReveal.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollVelocity-JS-CSS",
-			"title": "ScrollVelocity",
-			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollVelocity-JS-TW",
-			"title": "ScrollVelocity",
-			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.jsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollVelocity-TS-CSS",
-			"title": "ScrollVelocity",
-			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.tsx"
-				}
-			]
-		},
-		{
-			"name": "ScrollVelocity-TS-TW",
-			"title": "ScrollVelocity",
-			"description": "Text marquee animatio - speed and distortion scale with user's scroll velocity.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ScrollVelocity/ScrollVelocity.tsx"
-				}
-			]
-		},
-		{
-			"name": "ShinyText-JS-CSS",
-			"title": "ShinyText",
-			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.jsx"
-				}
-			]
-		},
-		{
-			"name": "ShinyText-JS-TW",
-			"title": "ShinyText",
-			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.jsx"
-				}
-			]
-		},
-		{
-			"name": "ShinyText-TS-CSS",
-			"title": "ShinyText",
-			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.tsx"
-				}
-			]
-		},
-		{
-			"name": "ShinyText-TS-TW",
-			"title": "ShinyText",
-			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "ShinyText/ShinyText.tsx"
-				}
-			]
-		},
-		{
-			"name": "Shuffle-JS-CSS",
-			"title": "Shuffle",
-			"description": "Animated text reveal where characters shuffle before settling.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.jsx"
-				}
-			]
-		},
-		{
-			"name": "Shuffle-JS-TW",
-			"title": "Shuffle",
-			"description": "Animated text reveal where characters shuffle before settling.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.jsx"
-				}
-			]
-		},
-		{
-			"name": "Shuffle-TS-CSS",
-			"title": "Shuffle",
-			"description": "Animated text reveal where characters shuffle before settling.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.tsx"
-				}
-			]
-		},
-		{
-			"name": "Shuffle-TS-TW",
-			"title": "Shuffle",
-			"description": "Animated text reveal where characters shuffle before settling.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Shuffle/Shuffle.tsx"
-				}
-			]
-		},
-		{
-			"name": "SplitText-JS-CSS",
-			"title": "SplitText",
-			"description": "Splits text into characters / words for staggered entrance animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "SplitText/SplitText.jsx"
-				}
-			]
-		},
-		{
-			"name": "SplitText-JS-TW",
-			"title": "SplitText",
-			"description": "Splits text into characters / words for staggered entrance animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "SplitText/SplitText.jsx"
-				}
-			]
-		},
-		{
-			"name": "SplitText-TS-CSS",
-			"title": "SplitText",
-			"description": "Splits text into characters / words for staggered entrance animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "SplitText/SplitText.tsx"
-				}
-			]
-		},
-		{
-			"name": "SplitText-TS-TW",
-			"title": "SplitText",
-			"description": "Splits text into characters / words for staggered entrance animation.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0",
-				"@gsap/react@^2.1.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "SplitText/SplitText.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextCursor-JS-CSS",
-			"title": "TextCursor",
-			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextCursor-JS-TW",
-			"title": "TextCursor",
-			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextCursor-TS-CSS",
-			"title": "TextCursor",
-			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextCursor-TS-TW",
-			"title": "TextCursor",
-			"description": "Make any text element follow your cursor, leaving a trail of copies behind it.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextCursor/TextCursor.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextPressure-JS-CSS",
-			"title": "TextPressure",
-			"description": "Characters scale / warp interactively based on pointer pressure zone.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextPressure/TextPressure.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextPressure-JS-TW",
-			"title": "TextPressure",
-			"description": "Characters scale / warp interactively based on pointer pressure zone.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextPressure/TextPressure.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextPressure-TS-CSS",
-			"title": "TextPressure",
-			"description": "Characters scale / warp interactively based on pointer pressure zone.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextPressure/TextPressure.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextPressure-TS-TW",
-			"title": "TextPressure",
-			"description": "Characters scale / warp interactively based on pointer pressure zone.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextPressure/TextPressure.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextType-JS-CSS",
-			"title": "TextType",
-			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextType-JS-TW",
-			"title": "TextType",
-			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.jsx"
-				}
-			]
-		},
-		{
-			"name": "TextType-TS-CSS",
-			"title": "TextType",
-			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.tsx"
-				}
-			]
-		},
-		{
-			"name": "TextType-TS-TW",
-			"title": "TextType",
-			"description": "Typewriter effect with blinking cursor and adjustable typing cadence.",
-			"type": "registry:component",
-			"dependencies": [
-				"gsap@^3.13.0"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TextType/TextType.tsx"
-				}
-			]
-		},
-		{
-			"name": "TrueFocus-JS-CSS",
-			"title": "TrueFocus",
-			"description": "Applies dynamic blur / clarity based over a series of words in order.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.jsx"
-				}
-			]
-		},
-		{
-			"name": "TrueFocus-JS-TW",
-			"title": "TrueFocus",
-			"description": "Applies dynamic blur / clarity based over a series of words in order.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.jsx"
-				}
-			]
-		},
-		{
-			"name": "TrueFocus-TS-CSS",
-			"title": "TrueFocus",
-			"description": "Applies dynamic blur / clarity based over a series of words in order.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.tsx"
-				}
-			]
-		},
-		{
-			"name": "TrueFocus-TS-TW",
-			"title": "TrueFocus",
-			"description": "Applies dynamic blur / clarity based over a series of words in order.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "TrueFocus/TrueFocus.tsx"
-				}
-			]
-		},
-		{
-			"name": "VariableProximity-JS-CSS",
-			"title": "VariableProximity",
-			"description": "Letter styling changes continuously with pointer distance mapping.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.jsx"
-				}
-			]
-		},
-		{
-			"name": "VariableProximity-JS-TW",
-			"title": "VariableProximity",
-			"description": "Letter styling changes continuously with pointer distance mapping.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.jsx"
-				}
-			]
-		},
-		{
-			"name": "VariableProximity-TS-CSS",
-			"title": "VariableProximity",
-			"description": "Letter styling changes continuously with pointer distance mapping.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.tsx"
-				}
-			]
-		},
-		{
-			"name": "VariableProximity-TS-TW",
-			"title": "VariableProximity",
-			"description": "Letter styling changes continuously with pointer distance mapping.",
-			"type": "registry:component",
-			"dependencies": [
-				"motion@^12.23.12"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "VariableProximity/VariableProximity.tsx"
+					"path": "StaggeredMenu/StaggeredMenu.tsx"
 				}
 			]
 		},
@@ -6394,78 +6394,6 @@
 			]
 		},
 		{
-			"name": "FloatingLines-JS-CSS",
-			"title": "FloatingLines",
-			"description": "3D floating lines that react to cursor movement.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.jsx"
-				}
-			]
-		},
-		{
-			"name": "FloatingLines-JS-TW",
-			"title": "FloatingLines",
-			"description": "3D floating lines that react to cursor movement.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.jsx"
-				}
-			]
-		},
-		{
-			"name": "FloatingLines-TS-CSS",
-			"title": "FloatingLines",
-			"description": "3D floating lines that react to cursor movement.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.tsx"
-				}
-			]
-		},
-		{
-			"name": "FloatingLines-TS-TW",
-			"title": "FloatingLines",
-			"description": "3D floating lines that react to cursor movement.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "FloatingLines/FloatingLines.tsx"
-				}
-			]
-		},
-		{
 			"name": "Galaxy-JS-CSS",
 			"title": "Galaxy",
 			"description": "Parallax realistic starfield with pointer interactions.",
@@ -6610,6 +6538,86 @@
 			]
 		},
 		{
+			"name": "GridScan-JS-CSS",
+			"title": "GridScan",
+			"description": "Animated grid room 3D scan effect and cool interactions.",
+			"type": "registry:component",
+			"dependencies": [
+				"postprocessing@^6.36.0",
+				"three@^0.167.1",
+				"face-api.js@^0.22.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.jsx"
+				}
+			]
+		},
+		{
+			"name": "GridScan-JS-TW",
+			"title": "GridScan",
+			"description": "Animated grid room 3D scan effect and cool interactions.",
+			"type": "registry:component",
+			"dependencies": [
+				"postprocessing@^6.36.0",
+				"three@^0.167.1",
+				"face-api.js@^0.22.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.jsx"
+				}
+			]
+		},
+		{
+			"name": "GridScan-TS-CSS",
+			"title": "GridScan",
+			"description": "Animated grid room 3D scan effect and cool interactions.",
+			"type": "registry:component",
+			"dependencies": [
+				"postprocessing@^6.36.0",
+				"three@^0.167.1",
+				"face-api.js@^0.22.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.tsx"
+				}
+			]
+		},
+		{
+			"name": "GridScan-TS-TW",
+			"title": "GridScan",
+			"description": "Animated grid room 3D scan effect and cool interactions.",
+			"type": "registry:component",
+			"dependencies": [
+				"postprocessing@^6.36.0",
+				"three@^0.167.1",
+				"face-api.js@^0.22.2"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "GridScan/GridScan.tsx"
+				}
+			]
+		},
+		{
 			"name": "GridDistortion-JS-CSS",
 			"title": "GridDistortion",
 			"description": "Warped grid mesh distorts smoothly reacting to cursor.",
@@ -6750,86 +6758,6 @@
 				{
 					"type": "registry:component",
 					"path": "GridMotion/GridMotion.tsx"
-				}
-			]
-		},
-		{
-			"name": "GridScan-JS-CSS",
-			"title": "GridScan",
-			"description": "Animated grid room 3D scan effect and cool interactions.",
-			"type": "registry:component",
-			"dependencies": [
-				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.jsx"
-				}
-			]
-		},
-		{
-			"name": "GridScan-JS-TW",
-			"title": "GridScan",
-			"description": "Animated grid room 3D scan effect and cool interactions.",
-			"type": "registry:component",
-			"dependencies": [
-				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.jsx"
-				}
-			]
-		},
-		{
-			"name": "GridScan-TS-CSS",
-			"title": "GridScan",
-			"description": "Animated grid room 3D scan effect and cool interactions.",
-			"type": "registry:component",
-			"dependencies": [
-				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.tsx"
-				}
-			]
-		},
-		{
-			"name": "GridScan-TS-TW",
-			"title": "GridScan",
-			"description": "Animated grid room 3D scan effect and cool interactions.",
-			"type": "registry:component",
-			"dependencies": [
-				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "GridScan/GridScan.tsx"
 				}
 			]
 		},
@@ -7054,70 +6982,6 @@
 			]
 		},
 		{
-			"name": "Lightning-JS-CSS",
-			"title": "Lightning",
-			"description": "Procedural lightning bolts with branching and glow flicker.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.jsx"
-				}
-			]
-		},
-		{
-			"name": "Lightning-JS-TW",
-			"title": "Lightning",
-			"description": "Procedural lightning bolts with branching and glow flicker.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.jsx"
-				}
-			]
-		},
-		{
-			"name": "Lightning-TS-CSS",
-			"title": "Lightning",
-			"description": "Procedural lightning bolts with branching and glow flicker.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.tsx"
-				}
-			]
-		},
-		{
-			"name": "Lightning-TS-TW",
-			"title": "Lightning",
-			"description": "Procedural lightning bolts with branching and glow flicker.",
-			"type": "registry:component",
-			"dependencies": [],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lightning/Lightning.tsx"
-				}
-			]
-		},
-		{
 			"name": "LightRays-JS-CSS",
 			"title": "LightRays",
 			"description": "Volumetric light rays/beams with customizable direction.",
@@ -7190,6 +7054,70 @@
 			]
 		},
 		{
+			"name": "Lightning-JS-CSS",
+			"title": "Lightning",
+			"description": "Procedural lightning bolts with branching and glow flicker.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.jsx"
+				}
+			]
+		},
+		{
+			"name": "Lightning-JS-TW",
+			"title": "Lightning",
+			"description": "Procedural lightning bolts with branching and glow flicker.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.jsx"
+				}
+			]
+		},
+		{
+			"name": "Lightning-TS-CSS",
+			"title": "Lightning",
+			"description": "Procedural lightning bolts with branching and glow flicker.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.tsx"
+				}
+			]
+		},
+		{
+			"name": "Lightning-TS-TW",
+			"title": "Lightning",
+			"description": "Procedural lightning bolts with branching and glow flicker.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightning/Lightning.tsx"
+				}
+			]
+		},
+		{
 			"name": "LiquidChrome-JS-CSS",
 			"title": "LiquidChrome",
 			"description": "Liquid metallic chrome shader with flowing reflective surface.",
@@ -7258,78 +7186,6 @@
 				{
 					"type": "registry:component",
 					"path": "LiquidChrome/LiquidChrome.tsx"
-				}
-			]
-		},
-		{
-			"name": "LiquidEther-JS-CSS",
-			"title": "LiquidEther",
-			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.jsx"
-				}
-			]
-		},
-		{
-			"name": "LiquidEther-JS-TW",
-			"title": "LiquidEther",
-			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.jsx"
-				}
-			]
-		},
-		{
-			"name": "LiquidEther-TS-CSS",
-			"title": "LiquidEther",
-			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.tsx"
-				}
-			]
-		},
-		{
-			"name": "LiquidEther-TS-TW",
-			"title": "LiquidEther",
-			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
-			"type": "registry:component",
-			"dependencies": [
-				"three@^0.167.1"
-			],
-			"registryDependencies": [],
-			"files": [
-				{
-					"type": "registry:component",
-					"path": "LiquidEther/LiquidEther.tsx"
 				}
 			]
 		},
@@ -8106,6 +7962,150 @@
 				{
 					"type": "registry:component",
 					"path": "Waves/Waves.tsx"
+				}
+			]
+		},
+		{
+			"name": "LiquidEther-JS-CSS",
+			"title": "LiquidEther",
+			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.jsx"
+				}
+			]
+		},
+		{
+			"name": "LiquidEther-JS-TW",
+			"title": "LiquidEther",
+			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.jsx"
+				}
+			]
+		},
+		{
+			"name": "LiquidEther-TS-CSS",
+			"title": "LiquidEther",
+			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.tsx"
+				}
+			]
+		},
+		{
+			"name": "LiquidEther-TS-TW",
+			"title": "LiquidEther",
+			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LiquidEther/LiquidEther.tsx"
+				}
+			]
+		},
+		{
+			"name": "FloatingLines-JS-CSS",
+			"title": "FloatingLines",
+			"description": "3D floating lines that react to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.jsx"
+				}
+			]
+		},
+		{
+			"name": "FloatingLines-JS-TW",
+			"title": "FloatingLines",
+			"description": "3D floating lines that react to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.jsx"
+				}
+			]
+		},
+		{
+			"name": "FloatingLines-TS-CSS",
+			"title": "FloatingLines",
+			"description": "3D floating lines that react to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.tsx"
+				}
+			]
+		},
+		{
+			"name": "FloatingLines-TS-TW",
+			"title": "FloatingLines",
+			"description": "3D floating lines that react to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "FloatingLines/FloatingLines.tsx"
 				}
 			]
 		}

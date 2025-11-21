@@ -1,3 +1,34 @@
+/**
+ * @typedef {'Animations' | 'Backgrounds' | 'Components' | 'TextAnimations'} Category
+ */
+/**
+ * The supported code/component variants for the registry system.
+ * 
+ * @type {readonly ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW']}
+ */
+export const VARIANTS = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW'];
+
+/**
+ * @typedef {'JS-CSS' | 'JS-TW' | 'TS-CSS' | 'TS-TW'} Variant
+ */
+
+/**
+ * Type for all component metadata, including enforcement of the Category field.
+ * 
+ * @typedef {Object} ComponentMetadata
+ * @property {string} videoUrl
+ * @property {string} description
+ * @property {Category} category
+ * @property {string} name
+ * @property {string} docsUrl
+ * @property {string[]} tags
+ * @property {Variant[]} [variants]
+ * @property {Record<string, any>} [meta]
+ */
+
+/** 
+ * @type {Record<string, ComponentMetadata>} 
+ */
 export const componentMetadata = {
 
   //! Animations -------------------------------------------------------------------------------------------------------------------------------
@@ -621,7 +652,8 @@ export const componentMetadata = {
     category: 'Components',
     name: 'ProfileCard',
     docsUrl: 'https://reactbits.dev/components/profile-card',
-    tags: []
+    tags: [],
+    variants: ['JS-CSS', 'TS-CSS']
   },
   'Components/ScrollStack': {
     videoUrl: '/assets/video/scrollstack.webm',
