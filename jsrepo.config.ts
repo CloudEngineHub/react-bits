@@ -1,6 +1,6 @@
 import { defineConfig, type RegistryItem } from 'jsrepo';
 import { output } from '@jsrepo/shadcn';
-import { type Category, componentMetadata, type Variant, VARIANTS } from './src/constants/Information';
+import { type Category, componentMetadata, type Variant } from './src/constants/Information';
 
 export default defineConfig({
   registry: {
