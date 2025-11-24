@@ -20,6 +20,7 @@ const FadeDemo = () => {
   const [duration, setDuration] = useState(1000);
   const [threshold, setThreshold] = useState(0.1);
   const [initialOpacity, setInitialOpacity] = useState(0);
+  
 
   const [key, forceRerender] = useForceRerender();
 
