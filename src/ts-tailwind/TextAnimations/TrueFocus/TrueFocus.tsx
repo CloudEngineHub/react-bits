@@ -78,7 +78,11 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
   };
 
   return (
-    <div className="relative flex gap-4 justify-center items-center flex-wrap" ref={containerRef}>
+    <div 
+      className="relative flex gap-4 justify-center items-center flex-wrap" 
+      ref={containerRef}
+      style={{ outline: 'none', userSelect: 'none' }}
+    >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
         return (
@@ -97,7 +101,9 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
                   : isActive
                     ? `blur(0px)`
                     : `blur(${blurAmount}px)`,
-                transition: `filter ${animationDuration}s ease`
+                transition: `filter ${animationDuration}s ease`,
+                outline: 'none',
+                userSelect: 'none'
               } as React.CSSProperties
             }
             onMouseEnter={() => handleMouseEnter(index)}
