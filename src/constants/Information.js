@@ -4,7 +4,7 @@ export const componentMetadata = {
 
   'Animations/AnimatedContent': {
     videoUrl: '/assets/video/animatedcontent.webm',
-    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration and easing.',
+    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration, easing and disappear options.',
     category: 'Animations',
     name: 'AnimatedContent',
     docsUrl: 'https://reactbits.dev/animations/animated-content',
