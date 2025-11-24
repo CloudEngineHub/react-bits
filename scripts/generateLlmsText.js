@@ -121,11 +121,10 @@ const CLI_INSTRUCTIONS = {
     ]
   },
   jsrepo: {
-    command: 'npx jsrepo add https://reactbits.dev/<variant>/<Category>/<Component>',
+    command: 'npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>',
     params: [
-      '<variant>: default | tailwind | ts/default | ts/tailwind',
-      '<Category>: TextAnimations | Animations | Components | Backgrounds',
-      'Example: npx jsrepo add https://reactbits.dev/default/TextAnimations/SplitText'
+      '<LANG>: JS | TS; <STYLE>: CSS | TW',
+      'Example: npx jsrepo@latest add https://reactbits.dev/r/SplitText-JS-CSS'
     ]
   },
   notes: [
