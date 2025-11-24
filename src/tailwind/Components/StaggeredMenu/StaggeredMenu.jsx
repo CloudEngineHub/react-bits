@@ -15,6 +15,7 @@ export const StaggeredMenu = ({
   changeMenuColorOnOpen = true,
   isFixed = false,
   accentColor = '#5227FF',
+  closeOnClickAway = true,
   onMenuOpen,
   onMenuClose
 }) => {
@@ -309,6 +310,33 @@ export const StaggeredMenu = ({
     animateColor(target);
     animateText(target);
   }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+
+  const closeMenu = useCallback(() => {
+    if (openRef.current) {
+      openRef.current = false;
+      setOpen(false);
+      onMenuClose?.();
+      playClose();
+      animateIcon(false);
+      animateColor(false);
+      animateText(false);
+    }
+  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+
+  React.useEffect(() => {
+    if (!closeOnClickAway || !open) return;
+
+    const handleClickOutside = (event) => {
+      if (panelRef.current && !panelRef.current.contains(event.target)) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [closeOnClickAway, open, closeMenu]);
 
   return (
     <div
