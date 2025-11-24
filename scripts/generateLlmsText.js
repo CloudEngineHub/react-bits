@@ -37,10 +37,10 @@ function collectComponents(componentMetadata) {
   for (const metadata of Object.values(componentMetadata)) {
     const category = metadata.category;
     if (!category || !CATEGORY_SLUGS[category]) continue;
-    
+
     const compName = metadata.name;
     if (!categories[category]) categories[category] = {};
-    
+
     categories[category][compName] = {
       name: compName,
       description: metadata.description || ''

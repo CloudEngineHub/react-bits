@@ -114,7 +114,7 @@ const Shuffle: React.FC<ShuffleProps> = ({
         }
         try {
           splitRef.current?.revert();
-        } catch { }
+        } catch {}
         splitRef.current = null;
         playingRef.current = false;
       };
@@ -352,7 +352,7 @@ const Shuffle: React.FC<ShuffleProps> = ({
   );
 
   const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-2xl leading-none';
-  const userHasFont = (className && /font[-[]/i.test(className));
+  const userHasFont = className && /font[-[]/i.test(className);
 
   const fallbackFont = userHasFont ? {} : { fontFamily: `'Press Start 2P', sans-serif` };
 

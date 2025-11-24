@@ -326,7 +326,7 @@ export const StaggeredMenu = ({
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (panelRef.current && !panelRef.current.contains(event.target)) {
         closeMenu();
       }

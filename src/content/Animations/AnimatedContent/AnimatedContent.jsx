@@ -32,9 +32,9 @@ const AnimatedContent = ({
     if (!el) return;
 
     let scrollerTarget = container || document.getElementById('snap-main-container') || null;
-    
+
     if (typeof scrollerTarget === 'string') {
-        scrollerTarget = document.querySelector(scrollerTarget);
+      scrollerTarget = document.querySelector(scrollerTarget);
     }
 
     const axis = direction === 'horizontal' ? 'x' : 'y';
@@ -89,20 +89,26 @@ const AnimatedContent = ({
     };
   }, [
     container,
-    distance, direction, reverse, duration, ease, 
-    initialOpacity, animateOpacity, scale, threshold, 
-    delay, disappearAfter, disappearDuration, 
-    disappearEase, onComplete, onDisappearanceComplete
+    distance,
+    direction,
+    reverse,
+    duration,
+    ease,
+    initialOpacity,
+    animateOpacity,
+    scale,
+    threshold,
+    delay,
+    disappearAfter,
+    disappearDuration,
+    disappearEase,
+    onComplete,
+    onDisappearanceComplete
   ]);
 
   return (
-    <div 
-        ref={ref} 
-        className={className}
-        style={{ visibility: 'hidden' }} 
-        {...props}
-    >
-        {children}
+    <div ref={ref} className={className} style={{ visibility: 'hidden' }} {...props}>
+      {children}
     </div>
   );
 };
