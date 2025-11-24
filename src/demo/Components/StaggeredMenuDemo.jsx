@@ -118,6 +118,12 @@ const StaggeredMenuDemo = () => {
       type: '() => void',
       default: 'undefined',
       description: 'Callback function called when menu closes.'
+    },
+    {
+      name: 'closeOnClickAway',
+      type: 'boolean',
+      default: 'true',
+      description: 'Whether to close the menu when clicking outside.'
     }
   ];
 
