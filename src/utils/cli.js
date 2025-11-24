@@ -32,7 +32,7 @@ export const generateCliCommands = (language, style, category, subcategory, depe
   };
 
   const jsrepo = Object.fromEntries(
-    Object.entries(prefixCommands).map(([mgr, prefix]) => [mgr, `${prefix} jsrepo add ${jsrepoUrl}`])
+    Object.entries(prefixCommands).map(([mgr, prefix]) => [mgr, `${prefix} jsrepo@latest add ${jsrepoUrl}`])
   );
 
   const shadcn = Object.fromEntries(
