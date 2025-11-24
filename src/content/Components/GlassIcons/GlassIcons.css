@@ -16,6 +16,8 @@
   perspective: 24em;
   transform-style: preserve-3d;
   -webkit-tap-highlight-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .icon-btn__back,
@@ -41,6 +43,7 @@
   display: block;
   transform: rotate(15deg);
   transform-origin: 100% 100%;
+  will-change: transform;
 }
 
 .icon-btn__front {
@@ -48,8 +51,10 @@
   box-shadow: 0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset;
   backdrop-filter: blur(0.75em);
   -webkit-backdrop-filter: blur(0.75em);
+  -moz-backdrop-filter: blur(0.75em);
   display: flex;
   transform-origin: 80% 50%;
+  will-change: transform;
 }
 
 .icon-btn__icon {
@@ -81,7 +86,7 @@
 
 .icon-btn:focus-visible .icon-btn__front,
 .icon-btn:hover .icon-btn__front {
-  transform: translateZ(2em);
+  transform: translate3d(0, 0, 2em);
 }
 
 .icon-btn:focus-visible .icon-btn__label,
