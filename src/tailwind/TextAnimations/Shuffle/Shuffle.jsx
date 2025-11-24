@@ -52,11 +52,7 @@ const Shuffle = ({
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
 
-      if (
-        respectReducedMotion &&
-        window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      ) {
+      if (respectReducedMotion && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         onShuffleComplete?.();
         return;
       }
@@ -64,8 +60,7 @@ const Shuffle = ({
       const el = ref.current;
 
       let computedFont = '';
-      const userHasFont =
-        (style && style.fontFamily) || (className && /font[-[]/i.test(className));
+      const userHasFont = (style && style.fontFamily) || (className && /font[-[]/i.test(className));
       if (userHasFont) {
         computedFont = style.fontFamily || getComputedStyle(el).fontFamily || '';
       } else {
@@ -92,7 +87,7 @@ const Shuffle = ({
           tlRef.current = null;
         }
         if (wrappersRef.current.length) {
-          wrappersRef.current.forEach((wrap) => {
+          wrappersRef.current.forEach(wrap => {
             const inner = wrap.firstElementChild;
             const orig = inner?.querySelector('[data-orig="1"]');
             if (orig && wrap.parentNode) wrap.parentNode.replaceChild(orig, wrap);
@@ -117,16 +112,16 @@ const Shuffle = ({
           wordsClass: 'shuffle-word',
           linesClass: 'shuffle-line',
           smartWrap: true,
-          reduceWhiteSpace: false,
+          reduceWhiteSpace: false
         });
 
         const chars = splitRef.current.chars || [];
         wrappersRef.current = [];
 
         const rolls = Math.max(1, Math.floor(shuffleTimes));
-        const rand = (set) => set.charAt(Math.floor(Math.random() * set.length)) || '';
+        const rand = set => set.charAt(Math.floor(Math.random() * set.length)) || '';
 
-        chars.forEach((ch) => {
+        chars.forEach(ch => {
           const parent = ch.parentElement;
           if (!parent) return;
 
@@ -138,8 +133,7 @@ const Shuffle = ({
           Object.assign(wrap.style, { width: w + 'px' });
 
           const inner = document.createElement('span');
-          inner.className =
-            'inline-block whitespace-nowrap will-change-transform origin-left transform-gpu';
+          inner.className = 'inline-block whitespace-nowrap will-change-transform origin-left transform-gpu';
 
           parent.insertBefore(wrap, ch);
           wrap.appendChild(inner);
@@ -183,24 +177,22 @@ const Shuffle = ({
         });
       };
 
-      const inners = () => wrappersRef.current.map((w) => w.firstElementChild);
+      const inners = () => wrappersRef.current.map(w => w.firstElementChild);
 
       const randomizeScrambles = () => {
         if (!scrambleCharset) return;
-        wrappersRef.current.forEach((w) => {
+        wrappersRef.current.forEach(w => {
           const strip = w.firstElementChild;
           if (!strip) return;
           const kids = Array.from(strip.children);
           for (let i = 1; i < kids.length - 1; i++) {
-            kids[i].textContent = scrambleCharset.charAt(
-              Math.floor(Math.random() * scrambleCharset.length)
-            );
+            kids[i].textContent = scrambleCharset.charAt(Math.floor(Math.random() * scrambleCharset.length));
           }
         });
       };
 
       const cleanupToStill = () => {
-        wrappersRef.current.forEach((w) => {
+        wrappersRef.current.forEach(w => {
           const strip = w.firstElementChild;
           if (!strip) return;
           const real = strip.querySelector('[data-orig="1"]');
@@ -234,7 +226,7 @@ const Shuffle = ({
               onShuffleComplete?.();
               armHover();
             }
-          },
+          }
         });
 
         const addTween = (targets, at) => {
@@ -245,7 +237,7 @@ const Shuffle = ({
               duration,
               ease,
               force3D: true,
-              stagger: animationMode === 'evenodd' ? stagger : 0,
+              stagger: animationMode === 'evenodd' ? stagger : 0
             },
             at
           );
@@ -260,9 +252,13 @@ const Shuffle = ({
           if (odd.length) addTween(odd, 0);
           if (even.length) addTween(even, evenStart);
         } else {
-          strips.forEach((strip) => {
+          strips.forEach(strip => {
             const d = Math.random() * maxDelay;
-            tl.to(strip, { x: parseFloat(strip.getAttribute('data-final-x') || '0'), duration, ease, force3D: true }, d);
+            tl.to(
+              strip,
+              { x: parseFloat(strip.getAttribute('data-final-x') || '0'), duration, ease, force3D: true },
+              d
+            );
             if (colorFrom && colorTo) tl.fromTo(strip, { color: colorFrom }, { color: colorTo, duration, ease }, d);
           });
         }
@@ -320,9 +316,9 @@ const Shuffle = ({
         colorTo,
         triggerOnce,
         respectReducedMotion,
-        triggerOnHover,
+        triggerOnHover
       ],
-      scope: ref,
+      scope: ref
     }
   );
 

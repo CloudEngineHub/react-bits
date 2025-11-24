@@ -51,11 +51,10 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     const el = ref.current;
     if (!el) return;
 
-    let scrollerTarget: Element | string | null = 
-      container || document.getElementById('snap-main-container') || null;
-    
+    let scrollerTarget: Element | string | null = container || document.getElementById('snap-main-container') || null;
+
     if (typeof scrollerTarget === 'string') {
-        scrollerTarget = document.querySelector(scrollerTarget);
+      scrollerTarget = document.querySelector(scrollerTarget);
     }
 
     const axis = direction === 'horizontal' ? 'x' : 'y';
@@ -110,19 +109,26 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     };
   }, [
     container,
-    distance, direction, reverse, duration, ease, 
-    initialOpacity, animateOpacity, scale, threshold, 
-    delay, disappearAfter, disappearDuration, 
-    disappearEase, onComplete, onDisappearanceComplete
+    distance,
+    direction,
+    reverse,
+    duration,
+    ease,
+    initialOpacity,
+    animateOpacity,
+    scale,
+    threshold,
+    delay,
+    disappearAfter,
+    disappearDuration,
+    disappearEase,
+    onComplete,
+    onDisappearanceComplete
   ]);
 
   return (
-    <div 
-        ref={ref} 
-        className={`invisible ${className}`} 
-        {...props}
-    >
-        {children}
+    <div ref={ref} className={`invisible ${className}`} {...props}>
+      {children}
     </div>
   );
 };
