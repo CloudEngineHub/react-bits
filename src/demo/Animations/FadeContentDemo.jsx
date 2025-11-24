@@ -15,16 +15,25 @@ import FadeContent from '../../content/Animations/FadeContent/FadeContent';
 import { fadeContent } from '../../constants/code/Animations/fadeContentCode';
 
 const FadeDemo = () => {
+  const [ease, setEase] = useState('power2.out');
   const [blur, setBlur] = useState(false);
   const [delay, setDelay] = useState(0);
-  const [duration, setDuration] = useState(1000);
+  const [duration, setDuration] = useState(1);
   const [threshold, setThreshold] = useState(0.1);
   const [initialOpacity, setInitialOpacity] = useState(0);
-  
+  const [disappearEase, setDisappearEase] = useState('power2.in');
+  const [disappearAfter, setDisappearAfter] = useState(0);
+  const [disappearDuration, setDisappearDuration] = useState(0.5);
 
   const [key, forceRerender] = useForceRerender();
 
   const propData = [
+    { 
+      name: 'children', 
+      type: 'ReactNode', 
+      default: '', 
+      description: 'The content to be animated.' 
+    },
     {
       name: 'blur',
       type: 'boolean',
@@ -35,19 +44,19 @@ const FadeDemo = () => {
       name: 'duration',
       type: 'number',
       default: 1000,
-      description: 'Specifies the duration of the fade animation in milliseconds.'
+      description: 'Specifies the duration of the fade animation in seconds.'
     },
     {
       name: 'delay',
       type: 'number',
       default: '0',
-      description: 'Adds a delay in milliseconds before triggering the animation.'
+      description: 'Adds a delay in seconds before triggering the animation.'
     },
     {
-      name: 'easing',
+      name: 'ease',
       type: 'string',
-      default: 'ease-out',
-      description: 'Defines the easing function for the fade transition.'
+      default: 'power2.out',
+      description: 'GSAP easing function for the fade animation.'
     },
     {
       name: 'threshold',
@@ -66,6 +75,24 @@ const FadeDemo = () => {
       type: 'string',
       default: '',
       description: 'Custom class(es) to be added to the container.'
+    },
+    {
+      name: 'disappearAfter',
+      type: 'number',
+      default: 0,
+      description: 'Time in seconds after which the content will start to disappear. Disables if set to 0.'
+    },
+    {
+      name: 'disappearDuration',
+      type: 'number',
+      default: 0.5,
+      description: 'Duration of the disappearance animation in seconds.'
+    },
+    {
+      name: 'disappearEase',
+      type: 'string',
+      default: 'power2.in',
+      description: 'GSAP easing function for the disappearance animation.'
     }
   ];
 
@@ -80,6 +107,10 @@ const FadeDemo = () => {
             delay={delay}
             threshold={threshold}
             initialOpacity={initialOpacity}
+            disappearAfter={disappearAfter}
+            disappearDuration={disappearDuration}
+            disappearEase={disappearEase}
+            ease={ease}
           >
             <Flex
               fontSize="xl"
@@ -100,6 +131,43 @@ const FadeDemo = () => {
         </Box>
 
         <Customize>
+          <Flex gap={2} wrap="wrap">
+            <Button
+              fontSize="xs"
+              bg="#170D27"
+              borderRadius="10px"
+              border="1px solid #271E37"
+              _hover={{ bg: '#271E37' }}
+              color="#fff"
+              h={8}
+              onClick={() => {
+                setEase(
+                  ease === 'power2.out' ? 'bounce.out' : ease === 'bounce.out' ? 'elastic.out(1, 0.3)' : 'power2.out'
+                );
+                forceRerender();
+              }}
+            >
+              Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
+            </Button>
+            <Button
+              fontSize="xs"
+              bg="#170D27"
+              borderRadius="10px"
+              border="1px solid #271E37"
+              _hover={{ bg: '#271E37' }}
+              color="#fff"
+              h={8}
+              onClick={() => {
+                setDisappearEase(
+                  disappearEase === 'power2.in' ? 'bounce.in' : disappearEase === 'bounce.in' ? 'elastic.in(1, 0.3)' : 'power2.in'
+                );
+                forceRerender();
+              }}
+            >
+              Disappear Ease: <Text color={'#a1a1aa'}>&nbsp;{disappearEase}</Text>
+            </Button>
+          </Flex>
+
           <PreviewSwitch
             title="Enable Blur"
             isChecked={blur}
@@ -111,11 +179,11 @@ const FadeDemo = () => {
 
           <PreviewSlider
             title="Duration"
-            min={500}
-            max={3000}
-            step={100}
+            min={0.5}
+            max={3}
+            step={0.1}
             value={duration}
-            valueUnit="ms"
+            valueUnit="s"
             onChange={val => {
               setDuration(val);
               forceRerender();
@@ -125,10 +193,10 @@ const FadeDemo = () => {
           <PreviewSlider
             title="Delay"
             min={0}
-            max={2000}
-            step={100}
+            max={2}
+            step={0.1}
             value={delay}
-            valueUnit="ms"
+            valueUnit="s"
             onChange={val => {
               setDelay(val);
               forceRerender();
@@ -155,6 +223,30 @@ const FadeDemo = () => {
             value={initialOpacity}
             onChange={val => {
               setInitialOpacity(val);
+              forceRerender();
+            }}
+          />
+
+          <PreviewSlider
+            title="Disappear After"
+            min={0}
+            max={5}
+            step={0.1}
+            value={disappearAfter}
+            onChange={val => {
+              setDisappearAfter(val);
+              forceRerender();
+            }}
+          />
+
+          <PreviewSlider
+            title="Disappear Duration"
+            min={0.5}
+            max={3}
+            step={0.1}
+            value={disappearDuration}
+            onChange={val => {
+              setDisappearDuration(val);
               forceRerender();
             }}
           />

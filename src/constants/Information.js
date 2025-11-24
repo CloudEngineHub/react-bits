@@ -52,7 +52,7 @@ export const componentMetadata = {
   },
   'Animations/FadeContent': {
     videoUrl: '/assets/video/fadecontent.webm',
-    description: 'Simple directional fade / slide entrance wrapper with threshold-based activation.',
+    description: 'Simple directional fade / slide entrance / exit wrapper with threshold-based activation.',
     category: 'Animations',
     name: 'FadeContent',
     docsUrl: 'https://reactbits.dev/animations/fade-content',

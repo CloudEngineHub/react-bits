@@ -309,7 +309,7 @@ const AnimatedContentDemo = () => {
 
           <PreviewSlider
             title="Disappear Duration"
-            min={0.1}
+            min={0.5}
             max={3}
             step={0.1}
             value={disappearDuration}

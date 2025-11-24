@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import * as React from 'react';
+import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,7 +10,7 @@ interface FadeContentProps extends React.HTMLAttributes<HTMLDivElement> {
   container?: Element | string | null;
   blur?: boolean;
   duration?: number;
-  easing?: string;
+  ease?: string;
   delay?: number;
   threshold?: number;
   initialOpacity?: number;
@@ -25,7 +26,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
   container,
   blur = false,
   duration = 1,
-  easing = 'power2.out',
+  ease = 'power2.out',
   delay = 0,
   threshold = 0.1,
   initialOpacity = 0,
@@ -80,7 +81,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
       opacity: 1,
       filter: 'blur(0px)',
       duration: duration,
-      ease: easing
+      ease: ease
     });
 
     const st = ScrollTrigger.create({
@@ -97,7 +98,7 @@ const FadeContent: React.FC<FadeContentProps> = ({
       gsap.killTweensOf(el);
     };
   }, [
-    container, blur, duration, easing, delay, threshold, 
+    container, blur, duration, ease, delay, threshold, 
     initialOpacity, disappearAfter, disappearDuration, 
     disappearEase, onComplete, onDisappearanceComplete
   ]);
