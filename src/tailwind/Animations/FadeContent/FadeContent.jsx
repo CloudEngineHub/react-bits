@@ -9,7 +9,7 @@ const FadeContent = ({
   container,
   blur = false,
   duration = 1,
-  easing = 'power2.out',
+  ease = 'power2.out',
   delay = 0,
   threshold = 0.1,
   initialOpacity = 0,
@@ -62,7 +62,7 @@ const FadeContent = ({
       opacity: 1,
       filter: 'blur(0px)',
       duration: duration,
-      ease: easing
+      ease: ease
     });
 
     const st = ScrollTrigger.create({
@@ -79,7 +79,7 @@ const FadeContent = ({
       gsap.killTweensOf(el);
     };
   }, [
-    container, blur, duration, easing, delay, threshold, 
+    container, blur, duration, ease, delay, threshold, 
     initialOpacity, disappearAfter, disappearDuration, 
     disappearEase, onComplete, onDisappearanceComplete
   ]);
