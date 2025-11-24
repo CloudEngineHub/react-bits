@@ -19,7 +19,7 @@ Important notes for agents:
 - shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
   - <LANG>: JS | TS; <STYLE>: CSS | TW
   - Example: npx shadcn@latest add https://reactbits.dev/r/SplitText-JS-CSS
-- shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
+- jsrepo: `npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
   - <LANG>: JS | TS; <STYLE>: CSS | TW
   - Example: npx jsrepo@latest add https://reactbits.dev/r/SplitText-JS-CSS
 
