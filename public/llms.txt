@@ -19,10 +19,9 @@ Important notes for agents:
 - shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
   - <LANG>: JS | TS; <STYLE>: CSS | TW
   - Example: npx shadcn@latest add https://reactbits.dev/r/SplitText-JS-CSS
-- jsrepo: `npx jsrepo add https://reactbits.dev/<variant>/<Category>/<Component>`
-  - <variant>: default | tailwind | ts/default | ts/tailwind
-  - <Category>: TextAnimations | Animations | Components | Backgrounds
-  - Example: npx jsrepo add https://reactbits.dev/default/TextAnimations/SplitText
+- shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
+  - <LANG>: JS | TS; <STYLE>: CSS | TW
+  - Example: npx jsrepo@latest add https://reactbits.dev/r/SplitText-JS-CSS
 
 Notes:
 
