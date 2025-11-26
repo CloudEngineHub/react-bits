@@ -11,6 +11,7 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import Customize from '../../components/common/Preview/Customize';
 import useForceRerender from '../../hooks/useForceRerender';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import PreviewInput from '@/components/common/Preview/PreviewInput';
 
 import Particles from '../../content/Backgrounds/Particles/Particles';
 import { particles } from '../../constants/code/Backgrounds/particlesCode';
@@ -26,6 +27,7 @@ const ParticlesDemo = () => {
   const [moveParticlesOnHover, setMoveParticlesOnHover] = useState(true);
   const [alphaParticles, setAlphaParticles] = useState(false);
   const [disableRotation, setDisableRotation] = useState(false);
+  const [pixelRatio, setPixelRatio] = useState(1);
 
   const [key, forceRerender] = useForceRerender();
 
@@ -95,6 +97,12 @@ const ParticlesDemo = () => {
       type: 'boolean',
       default: 'false',
       description: 'If true, stops the particle system from rotating.'
+    },
+    {
+      name: 'pixelRatio',
+      type: 'number',
+      default: '1',
+      description: 'Sets the pixel ratio for sharper rendering on high-DPI screens.'
     }
   ];
 
@@ -112,6 +120,7 @@ const ParticlesDemo = () => {
             moveParticlesOnHover={moveParticlesOnHover}
             alphaParticles={alphaParticles}
             disableRotation={disableRotation}
+            pixelRatio={pixelRatio}
           />
 
           {/* For Demo Purposes Only */}
@@ -119,6 +128,8 @@ const ParticlesDemo = () => {
         </Box>
 
         <Customize>
+
+
           <Flex gap={4} align="center" mt={4}>
             <Text fontSize="sm">Color</Text>
             <Input
@@ -171,6 +182,14 @@ const ParticlesDemo = () => {
             isChecked={disableRotation}
             onChange={checked => setDisableRotation(checked)}
           />
+
+          <PreviewInput
+            title="Pixel Ratio"
+            width={150}
+            value={pixelRatio}
+            onChange={setPixelRatio}
+          />
+
         </Customize>
 
         <PropTable data={propData} />
