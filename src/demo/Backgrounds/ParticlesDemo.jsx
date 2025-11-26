@@ -128,8 +128,6 @@ const ParticlesDemo = () => {
         </Box>
 
         <Customize>
-
-
           <Flex gap={4} align="center" mt={4}>
             <Text fontSize="sm">Color</Text>
             <Input
@@ -183,13 +181,12 @@ const ParticlesDemo = () => {
             onChange={checked => setDisableRotation(checked)}
           />
 
-          <PreviewInput
-            title="Pixel Ratio"
-            width={150}
-            value={pixelRatio}
+          <PreviewInput 
+            title="Pixel Ratio" 
+            width={150} 
+            value={pixelRatio} 
             onChange={setPixelRatio}
           />
-
         </Customize>
 
         <PropTable data={propData} />
