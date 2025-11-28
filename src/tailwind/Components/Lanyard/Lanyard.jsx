@@ -15,16 +15,25 @@ import * as THREE from 'three';
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], fov = 20, transparent = true }) {
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
       <Canvas
         camera={{ position: position, fov: fov }}
+        dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
+        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Band isMobile={isMobile} />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -60,7 +69,7 @@ export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], 
     </div>
   );
 }
-function Band({ maxSpeed = 50, minSpeed = 0 }) {
+function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -80,7 +89,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
   );
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
-  const [isSmall, setIsSmall] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -96,16 +104,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       return () => void (document.body.style.cursor = 'auto');
     }
   }, [hovered, dragged]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmall(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useFrame((state, delta) => {
     if (dragged) {
@@ -128,7 +126,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(32));
+      band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
@@ -168,7 +166,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
               <meshPhysicalMaterial
                 map={materials.base.map}
                 map-anisotropy={16}
-                clearcoat={1}
+                clearcoat={isMobile ? 0 : 1}
                 clearcoatRoughness={0.15}
                 roughness={0.9}
                 metalness={0.8}
@@ -184,7 +182,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         <meshLineMaterial
           color="white"
           depthTest={false}
-          resolution={isSmall ? [1000, 2000] : [1000, 1000]}
+          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
           useMap
           map={texture}
           repeat={[-4, 1]}
