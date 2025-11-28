@@ -60,7 +60,11 @@ const TrueFocus = ({
   };
 
   return (
-    <div className="relative flex gap-4 justify-center items-center flex-wrap" ref={containerRef}>
+    <div
+      className="relative flex gap-4 justify-center items-center flex-wrap"
+      ref={containerRef}
+      style={{ outline: 'none', userSelect: 'none' }}
+    >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
         return (
@@ -78,7 +82,9 @@ const TrueFocus = ({
                   : `blur(${blurAmount}px)`,
               '--border-color': borderColor,
               '--glow-color': glowColor,
-              transition: `filter ${animationDuration}s ease`
+              transition: `filter ${animationDuration}s ease`,
+              outline: 'none',
+              userSelect: 'none'
             }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
