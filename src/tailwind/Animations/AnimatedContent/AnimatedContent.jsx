@@ -89,18 +89,25 @@ const AnimatedContent = ({
     };
   }, [
     container,
-    distance, direction, reverse, duration, ease,
-    initialOpacity, animateOpacity, scale, threshold,
-    delay, disappearAfter, disappearDuration,
-    disappearEase, onComplete, onDisappearanceComplete
+    distance,
+    direction,
+    reverse,
+    duration,
+    ease,
+    initialOpacity,
+    animateOpacity,
+    scale,
+    threshold,
+    delay,
+    disappearAfter,
+    disappearDuration,
+    disappearEase,
+    onComplete,
+    onDisappearanceComplete
   ]);
 
   return (
-    <div
-      ref={ref}
-      className={`invisible ${className}`}
-      {...props}
-    >
+    <div ref={ref} className={`invisible ${className}`} {...props}>
       {children}
     </div>
   );

@@ -52,8 +52,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     const el = ref.current;
     if (!el) return;
 
-    let scrollerTarget: Element | string | null = 
-      container || document.getElementById('snap-main-container') || null;
+    let scrollerTarget: Element | string | null = container || document.getElementById('snap-main-container') || null;
 
     if (typeof scrollerTarget === 'string') {
       scrollerTarget = document.querySelector(scrollerTarget);
@@ -75,7 +74,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
       delay,
       onComplete: () => {
         if (onComplete) onComplete();
-        
+
         if (disappearAfter > 0) {
           gsap.to(el, {
             [axis]: reverse ? distance : -distance,
@@ -130,12 +129,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
   ]);
 
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{ visibility: 'hidden', ...style }}
-      {...props}
-    >
+    <div ref={ref} className={className} style={{ visibility: 'hidden', ...style }} {...props}>
       {children}
     </div>
   );
