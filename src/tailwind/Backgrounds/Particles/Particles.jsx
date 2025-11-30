@@ -105,10 +105,10 @@ const Particles = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new Renderer({ 
+    const renderer = new Renderer({
       dpr: pixelRatio,
       depth: false,
-      alpha: true 
+      alpha: true
     });
     const gl = renderer.gl;
     container.appendChild(gl.canvas);
