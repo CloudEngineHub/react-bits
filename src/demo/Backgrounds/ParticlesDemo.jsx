@@ -181,12 +181,7 @@ const ParticlesDemo = () => {
             onChange={checked => setDisableRotation(checked)}
           />
 
-          <PreviewInput 
-            title="Pixel Ratio" 
-            width={150} 
-            value={pixelRatio} 
-            onChange={setPixelRatio}
-          />
+          <PreviewInput title="Pixel Ratio" width={150} value={pixelRatio} onChange={setPixelRatio} />
         </Customize>
 
         <PropTable data={propData} />
