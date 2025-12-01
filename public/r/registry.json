@@ -400,7 +400,9 @@
 			"title": "FadeContent",
 			"description": "Simple directional fade / slide entrance wrapper with threshold-based activation.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -414,7 +416,9 @@
 			"title": "FadeContent",
 			"description": "Simple directional fade / slide entrance wrapper with threshold-based activation.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -428,7 +432,9 @@
 			"title": "FadeContent",
 			"description": "Simple directional fade / slide entrance wrapper with threshold-based activation.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -442,7 +448,9 @@
 			"title": "FadeContent",
 			"description": "Simple directional fade / slide entrance wrapper with threshold-based activation.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"gsap@^3.13.0"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
