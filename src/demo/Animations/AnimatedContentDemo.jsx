@@ -26,11 +26,21 @@ const AnimatedContentDemo = () => {
   const [animateOpacity, setAnimateOpacity] = useState(true);
   const [scale, setScale] = useState(1);
   const [threshold, setThreshold] = useState(0.1);
+  const [disappearAfter, setDisappearAfter] = useState(0);
+  const [disappearDuration, setDisappearDuration] = useState(0.5);
+  const [disappearEase, setDisappearEase] = useState('power3.in');
 
   const [key, forceRerender] = useForceRerender();
 
   const propData = [
     { name: 'children', type: 'ReactNode', default: '', description: 'The content to be animated.' },
+    {
+      name: 'container',
+      type: 'string | HTMLElement',
+      default: 'null',
+      description:
+        'The scroll container to use for ScrollTrigger. Can be a selector string or an HTMLElement. Defaults to main container. Uses auto-detection (for snap-main-container id) if not provided.'
+    },
     {
       name: 'distance',
       type: 'number',
@@ -71,6 +81,36 @@ const AnimatedContentDemo = () => {
       type: 'function',
       default: 'undefined',
       description: 'Callback function called when animation completes.'
+    },
+    { 
+      name: 'dissappearAfter',
+      type: 'number',
+      default: '0',
+      description: 'Time in seconds after which the content will disappear. Disabled if set to 0.'
+    },
+    {
+      name: 'disappearDuration',
+      type: 'number',
+      default: '0.5',
+      description: 'Duration of the disappearance animation in seconds.'
+    },
+    {
+      name: 'disappearEase',
+      type: 'string',
+      default: '"power3.in"',
+      description: 'GSAP easing function for the disappearance animation.'
+    },
+    {
+      name: 'onDisappearanceComplete',
+      type: 'function',
+      default: 'undefined',
+      description: 'Callback function called when disappearance animation completes.'
+    },
+    {
+      name: 'className',
+      type: 'string',
+      default: "''",
+      description: 'Additional CSS classes to apply to the animated component.'
     }
   ];
 
@@ -91,6 +131,9 @@ const AnimatedContentDemo = () => {
             animateOpacity={animateOpacity}
             scale={scale}
             threshold={threshold}
+            disappearAfter={disappearAfter}
+            disappearDuration={disappearDuration}
+            disappearEase={disappearEase}
           >
             <Flex
               fontSize="xl"
@@ -142,6 +185,23 @@ const AnimatedContentDemo = () => {
               }}
             >
               Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
+            </Button>
+            <Button
+              fontSize="xs"
+              bg="#170D27"
+              borderRadius="10px"
+              border="1px solid #271E37"
+              _hover={{ bg: '#271E37' }}
+              color="#fff"
+              h={8}
+              onClick={() => {
+                setDisappearEase(
+                  disappearEase === 'power3.in' ? 'bounce.in' : disappearEase === 'bounce.in' ? 'elastic.in(1, 0.3)' : 'power3.in'
+                );
+                forceRerender();
+              }}
+            >
+              Disappear Ease: <Text color={'#a1a1aa'}>&nbsp;{disappearEase}</Text>
             </Button>
           </Flex>
 
@@ -231,6 +291,30 @@ const AnimatedContentDemo = () => {
             value={threshold}
             onChange={val => {
               setThreshold(val);
+              forceRerender();
+            }}
+          />
+
+          <PreviewSlider
+            title="Disappear After"
+            min={0}
+            max={5}
+            step={0.1}
+            value={disappearAfter}
+            onChange={val => {
+              setDisappearAfter(val);
+              forceRerender();
+            }}
+          />
+
+          <PreviewSlider
+            title="Disappear Duration"
+            min={0.5}
+            max={3}
+            step={0.1}
+            value={disappearDuration}
+            onChange={val => {
+              setDisappearDuration(val);
               forceRerender();
             }}
           />
