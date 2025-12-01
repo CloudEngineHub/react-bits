@@ -228,7 +228,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <Box display={{ md: 'none' }} position="fixed" top={0} left={0} zIndex="overlay" w="100%" bg="#060010" p="1em">
+      <Box display={{ md: 'none' }} position="fixed" top="50px" left={0} zIndex="overlay" w="100%" bg="#060010" p="1em">
         <Flex align="center" justify="space-between" gap="1em">
           <Link to="/">
             <Image src={Logo} h="32px" alt="React Bits logo" />
@@ -246,7 +246,7 @@ const Sidebar = () => {
       </Box>
 
       <Drawer.Root open={isDrawerOpen} onOpenChange={closeDrawer} placement="left" size="full">
-        <Drawer.Backdrop />
+        <Drawer.Backdrop mt="50px" h="calc(100vh - 50px)" />
         <Drawer.Positioner
           w="100vw"
           sx={{
@@ -255,8 +255,10 @@ const Sidebar = () => {
             "&[data-state='open']": { transform: 'translateX(0)' }
           }}
           maxW="100vw"
+          mt="50px"
+          h="calc(100vh - 50px)"
         >
-          <Drawer.Content bg="#060010">
+          <Drawer.Content bg="#060010" h="100%">
             <Drawer.Header h="72px" py={2} borderBottom="1px solid #ffffff1c" className="sidebar-logo">
               <Flex align="center" justify="space-between" w="100%">
                 <Link to="/">
