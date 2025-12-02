@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useInView } from 'motion/react';
 import './AnimatedList.css';
 
@@ -53,12 +53,26 @@ const AnimatedList = ({
   const [topGradientOpacity, setTopGradientOpacity] = useState(0);
   const [bottomGradientOpacity, setBottomGradientOpacity] = useState(1);
 
-  const handleScroll = e => {
+  const handleItemMouseEnter = useCallback(index => {
+    setSelectedIndex(index);
+  }, []);
+
+  const handleItemClick = useCallback(
+    (item, index) => {
+      setSelectedIndex(index);
+      if (onItemSelect) {
+        onItemSelect(item, index);
+      }
+    },
+    [onItemSelect]
+  );
+
+  const handleScroll = useCallback(e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     setTopGradientOpacity(Math.min(scrollTop / 50, 1));
     const bottomDistance = scrollHeight - (scrollTop + clientHeight);
     setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
-  };
+  }, []);
 
   useEffect(() => {
     if (!enableArrowNavigation) return;
@@ -115,13 +129,8 @@ const AnimatedList = ({
             key={index}
             delay={0.1}
             index={index}
-            onMouseEnter={() => setSelectedIndex(index)}
-            onClick={() => {
-              setSelectedIndex(index);
-              if (onItemSelect) {
-                onItemSelect(item, index);
-              }
-            }}
+            onMouseEnter={() => handleItemMouseEnter(index)}
+            onClick={() => handleItemClick(item, index)}
           >
             <div className={`item ${selectedIndex === index ? 'selected' : ''} ${itemClassName}`}>
               <p className="item-text">{item}</p>

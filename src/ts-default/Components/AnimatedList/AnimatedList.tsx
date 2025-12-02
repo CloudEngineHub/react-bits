@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, ReactNode, MouseEventHandler, UIEvent } from 'react';
+import React, { useRef, useState, useEffect, useCallback, ReactNode, MouseEventHandler, UIEvent } from 'react';
 import { motion, useInView } from 'motion/react';
 import './AnimatedList.css';
 
@@ -72,13 +72,27 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
   const [topGradientOpacity, setTopGradientOpacity] = useState<number>(0);
   const [bottomGradientOpacity, setBottomGradientOpacity] = useState<number>(1);
 
-  const handleScroll = (e: UIEvent<HTMLDivElement>) => {
+  const handleItemMouseEnter = useCallback((index: number) => {
+    setSelectedIndex(index);
+  }, []);
+
+  const handleItemClick = useCallback(
+    (item: string, index: number) => {
+      setSelectedIndex(index);
+      if (onItemSelect) {
+        onItemSelect(item, index);
+      }
+    },
+    [onItemSelect]
+  );
+
+  const handleScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
     const { scrollTop, scrollHeight, clientHeight } = target;
     setTopGradientOpacity(Math.min(scrollTop / 50, 1));
     const bottomDistance = scrollHeight - (scrollTop + clientHeight);
     setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
-  };
+  }, []);
 
   useEffect(() => {
     if (!enableArrowNavigation) return;
@@ -135,13 +149,8 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
             key={index}
             delay={0.1}
             index={index}
-            onMouseEnter={() => setSelectedIndex(index)}
-            onClick={() => {
-              setSelectedIndex(index);
-              if (onItemSelect) {
-                onItemSelect(item, index);
-              }
-            }}
+            onMouseEnter={() => handleItemMouseEnter(index)}
+            onClick={() => handleItemClick(item, index)}
           >
             <div className={`item ${selectedIndex === index ? 'selected' : ''} ${itemClassName}`}>
               <p className="item-text">{item}</p>

@@ -552,11 +552,12 @@ const MagicBento = ({
                 rgba(${glowColor}, calc(var(--glow-intensity) * 0.4)) 30%,
                 transparent 60%);
             border-radius: inherit;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: subtract;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
             pointer-events: none;
+            opacity: 1;
             transition: opacity 0.3s ease;
             z-index: 1;
           }
