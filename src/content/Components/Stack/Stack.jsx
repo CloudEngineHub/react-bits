@@ -43,7 +43,6 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 export default function Stack({
   randomRotation = false,
   sensitivity = 200,
-  dimensions = { width: 208, height: 208 },
   cards = [],
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
@@ -149,8 +148,8 @@ export default function Stack({
     <div
       style={{
         position: 'relative',
-        width: dimensions.width,
-        height: dimensions.height,
+        width: '100%',
+        height: '100%',
         perspective: 600,
       }}
     >
@@ -167,8 +166,8 @@ export default function Stack({
               style={{
                 borderRadius: '1rem',
                 overflow: 'hidden',
-                width: dimensions.width,
-                height: dimensions.height,
+                width: '100%',
+                height: '100%',
               }}
               onClick={() => shouldEnableClick && sendToBack(card.id)}
               animate={{

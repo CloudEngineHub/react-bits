@@ -52,7 +52,6 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 interface StackProps {
   randomRotation?: boolean;
   sensitivity?: number;
-  dimensions?: { width: number; height: number };
   sendToBackOnClick?: boolean;
   cards?: React.ReactNode[];
   animationConfig?: { stiffness: number; damping: number };
@@ -65,7 +64,6 @@ interface StackProps {
 export default function Stack({
   randomRotation = false,
   sensitivity = 200,
-  dimensions = { width: 208, height: 208 },
   cards = [],
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
@@ -169,10 +167,8 @@ export default function Stack({
 
   return (
     <div
-      className="relative"
+      className="relative w-full h-full"
       style={{
-        width: dimensions.width,
-        height: dimensions.height,
         perspective: 600,
       }}
     >
@@ -186,7 +182,7 @@ export default function Stack({
             disableDrag={shouldDisableDrag}
           >
             <motion.div
-              className="rounded-2xl overflow-hidden"
+              className="rounded-2xl overflow-hidden w-full h-full"
               onClick={() => shouldEnableClick && sendToBack(card.id)}
               animate={{
                 rotateZ: (stack.length - index - 1) * 4 + randomRotate,
@@ -198,10 +194,6 @@ export default function Stack({
                 type: 'spring',
                 stiffness: animationConfig.stiffness,
                 damping: animationConfig.damping,
-              }}
-              style={{
-                width: dimensions.width,
-                height: dimensions.height,
               }}
             >
               {card.content}
