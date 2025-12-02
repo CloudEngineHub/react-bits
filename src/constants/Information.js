@@ -35,7 +35,7 @@ export const componentMetadata = {
 
   'Animations/AnimatedContent': {
     videoUrl: '/assets/video/animatedcontent.webm',
-    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration and easing.',
+    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration, easing and disappear options.',
     category: 'Animations',
     name: 'AnimatedContent',
     docsUrl: 'https://reactbits.dev/animations/animated-content',
@@ -83,7 +83,7 @@ export const componentMetadata = {
   },
   'Animations/FadeContent': {
     videoUrl: '/assets/video/fadecontent.webm',
-    description: 'Simple directional fade / slide entrance wrapper with threshold-based activation.',
+    description: 'Simple directional fade / slide entrance / exit wrapper with threshold-based activation.',
     category: 'Animations',
     name: 'FadeContent',
     docsUrl: 'https://reactbits.dev/animations/fade-content',
