@@ -1,21 +1,20 @@
-import { motion, useMotionValue, useTransform, PanInfo } from 'motion/react';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { motion, useMotionValue, useTransform } from 'motion/react';
+import { useState, useEffect } from 'react';
 
 interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
   sensitivity: number;
-  setDragging: (isDragging: boolean) => void;
+  disableDrag?: boolean;
 }
 
-function CardRotate({ children, onSendToBack, sensitivity, setDragging }: CardRotateProps) {
+function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }: CardRotateProps) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
-  function handleDragEnd(_: any, info: PanInfo) {
-    setDragging(false);
+  function handleDragEnd(_: never, info: { offset: { x: number; y: number } }) {
     if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity) {
       onSendToBack();
     } else {
@@ -24,16 +23,26 @@ function CardRotate({ children, onSendToBack, sensitivity, setDragging }: CardRo
     }
   }
 
+  if (disableDrag) {
+    return (
+      <motion.div
+        className="absolute cursor-pointer"
+        style={{ x: 0, y: 0 }}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
-      className="absolute top-0 left-0 w-full h-full cursor-grab"
-      style={{ x, y, rotateX, rotateY, zIndex: 1 }}
+      className="absolute cursor-grab"
+      style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       dragElastic={0.6}
-      onDragStart={() => setDragging(true)}
+      whileTap={{ cursor: 'grabbing' }}
       onDragEnd={handleDragEnd}
-      whileDrag={{ cursor: 'grabbing' }}
     >
       {children}
     </motion.div>
@@ -41,108 +50,163 @@ function CardRotate({ children, onSendToBack, sensitivity, setDragging }: CardRo
 }
 
 interface StackProps {
-  children: React.ReactNode;
   randomRotation?: boolean;
   sensitivity?: number;
+  dimensions?: { width: number; height: number };
   sendToBackOnClick?: boolean;
-  autoplay?: boolean;
-  autoplayDelay?: number;
+  cards?: React.ReactNode[];
   animationConfig?: { stiffness: number; damping: number };
-  className?: string;
+  autoAnimate?: boolean;
+  autoInterval?: number;
+  mobileClickOnly?: boolean;
+  mobileBreakpoint?: number;
 }
 
 export default function Stack({
-  children,
   randomRotation = false,
   sensitivity = 200,
-  sendToBackOnClick = false,
-  autoplay = false,
-  autoplayDelay = 3000,
+  dimensions = { width: 208, height: 208 },
+  cards = [],
   animationConfig = { stiffness: 260, damping: 20 },
-  className = '',
+  sendToBackOnClick = false,
+  autoAnimate = false,
+  autoInterval = 3000,
+  mobileClickOnly = false,
+  mobileBreakpoint = 768,
 }: StackProps) {
-  const childrenArray = React.Children.toArray(children);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < mobileBreakpoint);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [mobileBreakpoint]);
 
-  const [order, setOrder] = useState<number[]>([]);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const shouldDisableDrag = mobileClickOnly && isMobile;
+  const shouldEnableClick = sendToBackOnClick || shouldDisableDrag;
+
+  const [stack, setStack] = useState<{ id: number; content: React.ReactNode }[]>(
+    () => {
+      if (cards.length) {
+        return cards.map((content, index) => ({ id: index + 1, content }));
+      } else {
+        return [
+          {
+            id: 1,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format"
+                alt="card-1"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            ),
+          },
+          {
+            id: 2,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format"
+                alt="card-2"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            ),
+          },
+          {
+            id: 3,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format"
+                alt="card-3"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            ),
+          },
+          {
+            id: 4,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
+                alt="card-4"
+                className="w-full h-full object-cover pointer-events-none"
+              />
+            ),
+          },
+        ];
+      }
+    }
+  );
 
   useEffect(() => {
-    setOrder((prevOrder) => {
-      const newIndices = childrenArray.map((_, i) => i);
+    if (cards.length) {
+      setStack(cards.map((content, index) => ({ id: index + 1, content })));
+    }
+  }, [cards]);
 
-      if (prevOrder.length === newIndices.length) {
-        return prevOrder;
-      }
-      return newIndices;
+  const sendToBack = (id: number) => {
+    setStack((prev) => {
+      const newStack = [...prev];
+      const index = newStack.findIndex((card) => card.id === id);
+      const [card] = newStack.splice(index, 1);
+      newStack.unshift(card);
+      return newStack;
     });
-  }, [childrenArray.length]);
-
-  const sendToBack = useCallback(() => {
-    setOrder((prev) => {
-      const newOrder = [...prev];
-      const lastItem = newOrder.pop();
-      if (lastItem !== undefined) {
-        newOrder.unshift(lastItem);
-      }
-      return newOrder;
-    });
-  }, []);
+  };
 
   useEffect(() => {
-    if (!autoplay || isPaused || isDragging) return;
-    const interval = setInterval(() => {
-      sendToBack();
-    }, autoplayDelay);
-    return () => clearInterval(interval);
-  }, [autoplay, autoplayDelay, isPaused, isDragging, sendToBack]);
+    if (autoAnimate && stack.length > 1) {
+      const interval = setInterval(() => {
+        const topCardId = stack[stack.length - 1].id;
+        sendToBack(topCardId);
+      }, autoInterval);
 
-  const randomRotations = useMemo(() => {
-    return childrenArray.map(() => (randomRotation ? Math.random() * 10 - 5 : 0));
-  }, [childrenArray.length, randomRotation]);
+      return () => clearInterval(interval);
+    }
+  }, [autoAnimate, autoInterval, stack]);
 
   return (
     <div
-      className={`relative h-full w-full ${className}`}
-      style={{ perspective: 600 }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      className="relative"
+      style={{
+        width: dimensions.width,
+        height: dimensions.height,
+        perspective: 600,
+      }}
     >
-      {order.map((childIndex, index) => {
-        const child = childrenArray[childIndex];
-        const isTop = index === order.length - 1;
-        const reverseIndex = order.length - 1 - index;
+      {stack.map((card, index) => {
+        const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
         return (
-          <motion.div
-            key={childIndex}
-            className="absolute inset-0 flex items-center justify-center"
-            initial={false}
-            animate={{
-              rotateZ: reverseIndex * 4 + randomRotations[childIndex],
-              scale: 1 - reverseIndex * 0.06,
-              y: -reverseIndex * 15,
-              zIndex: index,
-              transformOrigin: '50% 100%',
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: animationConfig.stiffness,
-              damping: animationConfig.damping,
-            }}
+          <CardRotate 
+            key={card.id} 
+            onSendToBack={() => sendToBack(card.id)} 
+            sensitivity={sensitivity}
+            disableDrag={shouldDisableDrag}
           >
-            <CardRotate
-              onSendToBack={sendToBack}
-              sensitivity={sensitivity}
-              setDragging={setIsDragging}
+            <motion.div
+              className="rounded-2xl overflow-hidden"
+              onClick={() => shouldEnableClick && sendToBack(card.id)}
+              animate={{
+                rotateZ: (stack.length - index - 1) * 4 + randomRotate,
+                scale: 1 + index * 0.06 - stack.length * 0.06,
+                transformOrigin: '90% 90%',
+              }}
+              initial={false}
+              transition={{
+                type: 'spring',
+                stiffness: animationConfig.stiffness,
+                damping: animationConfig.damping,
+              }}
+              style={{
+                width: dimensions.width,
+                height: dimensions.height,
+              }}
             >
-              <div
-                className="w-full h-full"
-                onClick={() => isTop && sendToBackOnClick && sendToBack()}
-              >
-                {child}
-              </div>
-            </CardRotate>
-          </motion.div>
+              {card.content}
+            </motion.div>
+          </CardRotate>
         );
       })}
     </div>
