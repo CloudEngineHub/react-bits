@@ -28,11 +28,11 @@ const FadeDemo = () => {
   const [key, forceRerender] = useForceRerender();
 
   const propData = [
-    { 
-      name: 'children', 
-      type: 'ReactNode', 
-      default: '', 
-      description: 'The content to be animated.' 
+    {
+      name: 'children',
+      type: 'ReactNode',
+      default: '',
+      description: 'The content to be animated.'
     },
     {
       name: 'blur',
@@ -159,7 +159,11 @@ const FadeDemo = () => {
               h={8}
               onClick={() => {
                 setDisappearEase(
-                  disappearEase === 'power2.in' ? 'bounce.in' : disappearEase === 'bounce.in' ? 'elastic.in(1, 0.3)' : 'power2.in'
+                  disappearEase === 'power2.in'
+                    ? 'bounce.in'
+                    : disappearEase === 'bounce.in'
+                      ? 'elastic.in(1, 0.3)'
+                      : 'power2.in'
                 );
                 forceRerender();
               }}

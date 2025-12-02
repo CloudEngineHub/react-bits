@@ -34,6 +34,7 @@ function AppContent() {
             link="https://pro.reactbits.dev"
             backgroundColor={location.pathname === '/' ? undefined : '#5227FF'}
             noBorder={location.pathname !== '/'}
+            className="landing-bar"
           />
           <DisplayHeader activeItem={getActiveItem()} />
         </>
