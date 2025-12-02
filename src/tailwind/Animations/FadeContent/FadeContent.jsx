@@ -29,7 +29,7 @@ const FadeContent = ({
 
     let scrollerTarget = container || document.getElementById('snap-main-container') || null;
     if (typeof scrollerTarget === 'string') {
-        scrollerTarget = document.querySelector(scrollerTarget);
+      scrollerTarget = document.querySelector(scrollerTarget);
     }
 
     const startPct = (1 - threshold) * 100;
@@ -79,17 +79,22 @@ const FadeContent = ({
       gsap.killTweensOf(el);
     };
   }, [
-    container, blur, duration, ease, delay, threshold, 
-    initialOpacity, disappearAfter, disappearDuration, 
-    disappearEase, onComplete, onDisappearanceComplete
+    container,
+    blur,
+    duration,
+    ease,
+    delay,
+    threshold,
+    initialOpacity,
+    disappearAfter,
+    disappearDuration,
+    disappearEase,
+    onComplete,
+    onDisappearanceComplete
   ]);
 
   return (
-    <div
-      ref={ref}
-      className={`invisible ${className}`}
-      {...props}
-    >
+    <div ref={ref} className={`invisible ${className}`} {...props}>
       {children}
     </div>
   );

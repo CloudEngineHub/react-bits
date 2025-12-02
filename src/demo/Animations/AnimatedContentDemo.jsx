@@ -82,7 +82,7 @@ const AnimatedContentDemo = () => {
       default: 'undefined',
       description: 'Callback function called when animation completes.'
     },
-    { 
+    {
       name: 'dissappearAfter',
       type: 'number',
       default: '0',
@@ -196,7 +196,11 @@ const AnimatedContentDemo = () => {
               h={8}
               onClick={() => {
                 setDisappearEase(
-                  disappearEase === 'power3.in' ? 'bounce.in' : disappearEase === 'bounce.in' ? 'elastic.in(1, 0.3)' : 'power3.in'
+                  disappearEase === 'power3.in'
+                    ? 'bounce.in'
+                    : disappearEase === 'bounce.in'
+                      ? 'elastic.in(1, 0.3)'
+                      : 'power3.in'
                 );
                 forceRerender();
               }}

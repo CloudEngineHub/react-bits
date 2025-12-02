@@ -3,10 +3,10 @@ import { Icon } from '@chakra-ui/react';
 import { LuArrowRight } from 'react-icons/lu';
 import { RiSparklingFill } from 'react-icons/ri';
 
-const AnnouncementBar = ({ message, link, linkText, backgroundColor, noBorder }) => {
+const AnnouncementBar = ({ message, link, linkText, backgroundColor, noBorder, className }) => {
   const content = (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <Icon as={RiSparklingFill} color="#FF9FFC" boxSize="14px" className="header-announcement-icon" />
+      <Icon as={RiSparklingFill} color="#ffffff" boxSize="14px" className="header-announcement-icon" />
       <span className="header-announcement-message">
         {message}
         {linkText && (
@@ -31,7 +31,13 @@ const AnnouncementBar = ({ message, link, linkText, backgroundColor, noBorder })
 
   if (link) {
     return (
-      <a href={link} target="_blank" rel="noopener noreferrer" className="header-announcement-bar" style={style}>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`header-announcement-bar ${className}`}
+        style={style}
+      >
         <div className="header-announcement-content">{content}</div>
       </a>
     );
