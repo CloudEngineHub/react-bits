@@ -53,8 +53,8 @@ interface StackProps {
   sendToBackOnClick?: boolean;
   cards?: React.ReactNode[];
   animationConfig?: { stiffness: number; damping: number };
-  autoAnimate?: boolean;
-  autoInterval?: number;
+  autoplay?: boolean;
+  autoplayDelay?: number;
   mobileClickOnly?: boolean;
   mobileBreakpoint?: number;
 }
@@ -65,8 +65,8 @@ export default function Stack({
   cards = [],
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
-  autoAnimate = false,
-  autoInterval = 3000,
+  autoplay = false,
+  autoplayDelay = 3000,
   mobileClickOnly = false,
   mobileBreakpoint = 768,
 }: StackProps) {
@@ -153,15 +153,15 @@ export default function Stack({
   };
 
   useEffect(() => {
-    if (autoAnimate && stack.length > 1) {
+    if (autoplay && stack.length > 1) {
       const interval = setInterval(() => {
         const topCardId = stack[stack.length - 1].id;
         sendToBack(topCardId);
-      }, autoInterval);
+      }, autoplayDelay);
 
       return () => clearInterval(interval);
     }
-  }, [autoAnimate, autoInterval, stack]);
+  }, [autoplay, autoplayDelay, stack]);
 
   return (
     <div

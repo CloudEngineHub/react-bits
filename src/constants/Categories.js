@@ -9,7 +9,7 @@ export const NEW = [
   'Grid Scan',
   'Floating Lines'
 ];
-export const UPDATED = ['Profile Card', 'Logo Loop'];
+export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
