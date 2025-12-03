@@ -18,6 +18,7 @@ const StackDemo = () => {
   const [sensitivity, setSensitivity] = useState(200);
   const [autoplay, setAutoplay] = useState(false);
   const [autoplayDelay, setAutoplayDelay] = useState(3000);
+  const [pauseOnHover, setPauseOnHover] = useState(false);
   const [key, forceRerender] = useForceRerender();
 
   const propData = [
@@ -62,6 +63,12 @@ const StackDemo = () => {
       type: 'number',
       default: '3000',
       description: 'Delay in milliseconds between automatic card transitions.'
+    },
+    {
+      name: 'pauseOnHover',
+      type: 'boolean',
+      default: 'false',
+      description: 'When enabled, autoplay pauses when hovering over the stack.'
     }
   ];
 
@@ -83,6 +90,7 @@ const StackDemo = () => {
               sensitivity={sensitivity}
               autoplay={autoplay}
               autoplayDelay={autoplayDelay}
+              pauseOnHover={pauseOnHover}
               cards={images.map((src, i) => (
                 <img
                   key={i}
@@ -110,6 +118,14 @@ const StackDemo = () => {
             isChecked={autoplay}
             onChange={checked => {
               setAutoplay(checked);
+            }}
+          />
+
+          <PreviewSwitch
+            title="Pause On Hover"
+            isChecked={pauseOnHover}
+            onChange={checked => {
+              setPauseOnHover(checked);
             }}
           />
 
