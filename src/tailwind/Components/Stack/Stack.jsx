@@ -50,10 +50,12 @@ export default function Stack({
   sendToBackOnClick = false,
   autoplay = false,
   autoplayDelay = 3000,
+  pauseOnHover = false,
   mobileClickOnly = false,
   mobileBreakpoint = 768,
 }) {
   const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   
   useEffect(() => {
     const checkMobile = () => {
@@ -136,7 +138,7 @@ export default function Stack({
   };
 
   useEffect(() => {
-    if (autoplay && stack.length > 1) {
+    if (autoplay && stack.length > 1 && !isPaused) {
       const interval = setInterval(() => {
         const topCardId = stack[stack.length - 1].id;
         sendToBack(topCardId);
@@ -144,7 +146,7 @@ export default function Stack({
 
       return () => clearInterval(interval);
     }
-  }, [autoplay, autoplayDelay, stack]);
+  }, [autoplay, autoplayDelay, stack, isPaused]);
 
   return (
     <div
@@ -152,6 +154,8 @@ export default function Stack({
       style={{
         perspective: 600,
       }}
+      onMouseEnter={() => pauseOnHover && setIsPaused(true)}
+      onMouseLeave={() => pauseOnHover && setIsPaused(false)}
     >
       {stack.map((card, index) => {
         const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
