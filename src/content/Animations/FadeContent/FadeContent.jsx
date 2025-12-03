@@ -81,6 +81,7 @@ const FadeContent = ({
       tl.kill();
       gsap.killTweensOf(el);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
