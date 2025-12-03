@@ -75,7 +75,7 @@ const ShowcasePage = () => {
           </FadeContent>
         </div>
 
-        <FadeContent blur duration={1000} className="fade-grid">
+        <FadeContent blur duration={1000} threshold={0} className="fade-grid">
           <div className="grid-container">
             {showcaseItems.map((item, index) => (
               <Box as="a" href={item.url} rel="noreferrer" target="_blank" className="grid-item" key={item.url}>

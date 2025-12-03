@@ -8,7 +8,7 @@ const FadeContent = ({
   children,
   container,
   blur = false,
-  duration = 1,
+  duration = 1000,
   ease = 'power2.out',
   delay = 0,
   threshold = 0.1,
@@ -35,23 +35,25 @@ const FadeContent = ({
 
     const startPct = (1 - threshold) * 100;
 
+    const getSeconds = (val) => (typeof val === 'number' && val > 10 ? val / 1000 : val);
+
     gsap.set(el, {
-      opacity: initialOpacity,
+      autoAlpha: initialOpacity,
       filter: blur ? 'blur(10px)' : 'blur(0px)',
-      visibility: 'visible'
+      willChange: 'opacity, filter, transform'
     });
 
     const tl = gsap.timeline({
       paused: true,
-      delay: delay,
+      delay: getSeconds(delay),
       onComplete: () => {
         if (onComplete) onComplete();
         if (disappearAfter > 0) {
           gsap.to(el, {
-            opacity: initialOpacity,
+            autoAlpha: initialOpacity,
             filter: blur ? 'blur(10px)' : 'blur(0px)',
-            delay: disappearAfter,
-            duration: disappearDuration,
+            delay: getSeconds(disappearAfter),
+            duration: getSeconds(disappearDuration),
             ease: disappearEase,
             onComplete: () => onDisappearanceComplete?.()
           });
@@ -60,9 +62,9 @@ const FadeContent = ({
     });
 
     tl.to(el, {
-      opacity: 1,
+      autoAlpha: 1,
       filter: 'blur(0px)',
-      duration: duration,
+      duration: getSeconds(duration),
       ease: ease
     });
 
@@ -79,23 +81,10 @@ const FadeContent = ({
       tl.kill();
       gsap.killTweensOf(el);
     };
-  }, [
-    container,
-    blur,
-    duration,
-    ease,
-    delay,
-    threshold,
-    initialOpacity,
-    disappearAfter,
-    disappearDuration,
-    disappearEase,
-    onComplete,
-    onDisappearanceComplete
-  ]);
+  }, []);
 
   return (
-    <div ref={ref} className={className} style={{ visibility: 'hidden', ...style }} {...props}>
+    <div ref={ref} className={className} style={style} {...props}>
       {children}
     </div>
   );
