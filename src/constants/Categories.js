@@ -1,13 +1,13 @@
 // Highlighted sidebar items
 export const NEW = [
-  'Pixel Blast',
   'Liquid Ether',
   'Shuffle',
   'Laser Flow',
   'Ghost Cursor',
   'Color Bends',
   'Grid Scan',
-  'Floating Lines'
+  'Floating Lines',
+  'Light Pillar'
 ];
 export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content'];
 
@@ -121,6 +121,7 @@ export const CATEGORIES = [
       'Liquid Ether',
       'Prism',
       'Dark Veil',
+      'Light Pillar',
       'Silk',
       'Floating Lines',
       'Light Rays',

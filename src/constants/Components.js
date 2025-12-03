@@ -129,7 +129,8 @@ const backgrounds = {
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
   'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
   'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx'),
-  'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx')
+  'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx'),
+  'light-pillar': () => import('../demo/Backgrounds/LightPillarDemo.jsx')
 };
 
 export const componentMap = {

@@ -969,6 +969,14 @@ export const componentMetadata = {
     name: 'FloatingLines',
     docsUrl: 'https://reactbits.dev/backgrounds/floating-lines',
     tags: []
+  },
+  'Backgrounds/LightPillar': {
+    videoUrl: '/assets/video/lightpillar.webm',
+    description: 'Vertical pillar of light with glow effects.',
+    category: 'Backgrounds',
+    name: 'LightPillar',
+    docsUrl: 'https://reactbits.dev/backgrounds/light-pillar',
+    tags: []
   }
 };
 
