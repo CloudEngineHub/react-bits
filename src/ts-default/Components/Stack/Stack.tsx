@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { useState, useEffect } from 'react';
+import './Stack.css';
 
 interface CardRotateProps {
   children: React.ReactNode;
@@ -26,7 +27,8 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   if (disableDrag) {
     return (
       <motion.div
-        style={{ position: 'absolute', cursor: 'pointer', x: 0, y: 0 }}
+        className="card-rotate-disabled"
+        style={{ x: 0, y: 0 }}
       >
         {children}
       </motion.div>
@@ -35,7 +37,8 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 
   return (
     <motion.div
-      style={{ position: 'absolute', cursor: 'grab', x, y, rotateX, rotateY }}
+      className="card-rotate"
+      style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
       dragElastic={0.6}
@@ -100,7 +103,7 @@ export default function Stack({
               <img
                 src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format"
                 alt="card-1"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                className="card-image"
               />
             ),
           },
@@ -110,7 +113,7 @@ export default function Stack({
               <img
                 src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format"
                 alt="card-2"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                className="card-image"
               />
             ),
           },
@@ -120,7 +123,7 @@ export default function Stack({
               <img
                 src="https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format"
                 alt="card-3"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                className="card-image"
               />
             ),
           },
@@ -130,7 +133,7 @@ export default function Stack({
               <img
                 src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
                 alt="card-4"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+                className="card-image"
               />
             ),
           },
@@ -168,12 +171,7 @@ export default function Stack({
 
   return (
     <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        perspective: 600,
-      }}
+      className="stack-container"
       onMouseEnter={() => pauseOnHover && setIsPaused(true)}
       onMouseLeave={() => pauseOnHover && setIsPaused(false)}
     >
@@ -187,12 +185,7 @@ export default function Stack({
             disableDrag={shouldDisableDrag}
           >
             <motion.div
-              style={{
-                borderRadius: '1rem',
-                overflow: 'hidden',
-                width: '100%',
-                height: '100%',
-              }}
+              className="card"
               onClick={() => shouldEnableClick && sendToBack(card.id)}
               animate={{
                 rotateZ: (stack.length - index - 1) * 4 + randomRotate,
