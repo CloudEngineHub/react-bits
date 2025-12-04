@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
@@ -41,6 +41,20 @@ const Shuffle = ({
   const playingRef = useRef(false);
   const hoverHandlerRef = useRef(null);
 
+  const userHasFont = useMemo(
+    () => (style && style.fontFamily) || (className && /font[-[]/i.test(className)),
+    [style, className]
+  );
+
+  const scrollTriggerStart = useMemo(() => {
+    const startPct = (1 - threshold) * 100;
+    const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
+    const mv = mm ? parseFloat(mm[1]) : 0;
+    const mu = mm ? mm[2] || 'px' : 'px';
+    const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
+    return `top ${startPct}%${sign}`;
+  }, [threshold, rootMargin]);
+
   useEffect(() => {
     if ('fonts' in document) {
       if (document.fonts.status === 'loaded') setFontsLoaded(true);
@@ -60,19 +74,13 @@ const Shuffle = ({
       const el = ref.current;
 
       let computedFont = '';
-      const userHasFont = (style && style.fontFamily) || (className && /font[-[]/i.test(className));
       if (userHasFont) {
         computedFont = style.fontFamily || getComputedStyle(el).fontFamily || '';
       } else {
         computedFont = `'Press Start 2P', sans-serif`;
       }
 
-      const startPct = (1 - threshold) * 100;
-      const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
-      const mv = mm ? parseFloat(mm[1]) : 0;
-      const mu = mm ? mm[2] || 'px' : 'px';
-      const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
-      const start = `top ${startPct}%${sign}`;
+      const start = scrollTriggerStart;
 
       const removeHover = () => {
         if (hoverHandlerRef.current && ref.current) {
@@ -302,8 +310,7 @@ const Shuffle = ({
         duration,
         maxDelay,
         ease,
-        threshold,
-        rootMargin,
+        scrollTriggerStart,
         fontsLoaded,
         shuffleDirection,
         shuffleTimes,
@@ -316,16 +323,21 @@ const Shuffle = ({
         colorTo,
         triggerOnce,
         respectReducedMotion,
-        triggerOnHover
+        triggerOnHover,
+        onShuffleComplete,
+        userHasFont
       ],
       scope: ref
     }
   );
 
   const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-[4rem] leading-none';
-  const classes = `${baseTw} ${ready ? 'visible' : 'invisible'} ${className}`.trim();
+  const classes = useMemo(
+    () => `${baseTw} ${ready ? 'visible' : 'invisible'} ${className}`.trim(),
+    [baseTw, ready, className]
+  );
   const Tag = tag || 'p';
-  const commonStyle = { textAlign, ...style };
+  const commonStyle = useMemo(() => ({ textAlign, ...style }), [textAlign, style]);
 
   return React.createElement(Tag, { ref: ref, className: classes, style: commonStyle }, text);
 };
