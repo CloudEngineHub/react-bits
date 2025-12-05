@@ -1,8 +1,8 @@
 import { motion, useMotionValue, useTransform } from 'motion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Stack.css';
 
-function CardRotate({ children, onSendToBack, sensitivity }) {
+function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
@@ -15,6 +15,17 @@ function CardRotate({ children, onSendToBack, sensitivity }) {
       x.set(0);
       y.set(0);
     }
+  }
+
+  if (disableDrag) {
+    return (
+      <motion.div
+        className="card-rotate-disabled"
+        style={{ x: 0, y: 0 }}
+      >
+        {children}
+      </motion.div>
+    );
   }
 
   return (
@@ -35,66 +46,140 @@ function CardRotate({ children, onSendToBack, sensitivity }) {
 export default function Stack({
   randomRotation = false,
   sensitivity = 200,
-  cardDimensions = { width: 208, height: 208 },
-  cardsData = [],
+  cards = [],
   animationConfig = { stiffness: 260, damping: 20 },
-  sendToBackOnClick = false
+  sendToBackOnClick = false,
+  autoplay = false,
+  autoplayDelay = 3000,
+  pauseOnHover = false,
+  mobileClickOnly = false,
+  mobileBreakpoint = 768,
 }) {
-  const [cards, setCards] = useState(
-    cardsData.length
-      ? cardsData
-      : [
-          { id: 1, img: 'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format' },
-          { id: 2, img: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format' },
-          { id: 3, img: 'https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format' },
-          { id: 4, img: 'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format' }
-        ]
+  const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < mobileBreakpoint);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [mobileBreakpoint]);
+
+  const shouldDisableDrag = mobileClickOnly && isMobile;
+  const shouldEnableClick = sendToBackOnClick || shouldDisableDrag;
+
+  const [stack, setStack] = useState(
+    () => {
+      if (cards.length) {
+        return cards.map((content, index) => ({ id: index + 1, content }));
+      } else {
+        return [
+          {
+            id: 1,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format"
+                alt="card-1"
+                className="card-image"
+              />
+            ),
+          },
+          {
+            id: 2,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format"
+                alt="card-2"
+                className="card-image"
+              />
+            ),
+          },
+          {
+            id: 3,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format"
+                alt="card-3"
+                className="card-image"
+              />
+            ),
+          },
+          {
+            id: 4,
+            content: (
+              <img
+                src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
+                alt="card-4"
+                className="card-image"
+              />
+            ),
+          },
+        ];
+      }
+    }
   );
 
-  const sendToBack = id => {
-    setCards(prev => {
-      const newCards = [...prev];
-      const index = newCards.findIndex(card => card.id === id);
-      const [card] = newCards.splice(index, 1);
-      newCards.unshift(card);
-      return newCards;
+  useEffect(() => {
+    if (cards.length) {
+      setStack(cards.map((content, index) => ({ id: index + 1, content })));
+    }
+  }, [cards]);
+
+  const sendToBack = (id) => {
+    setStack((prev) => {
+      const newStack = [...prev];
+      const index = newStack.findIndex((card) => card.id === id);
+      const [card] = newStack.splice(index, 1);
+      newStack.unshift(card);
+      return newStack;
     });
   };
+
+  useEffect(() => {
+    if (autoplay && stack.length > 1 && !isPaused) {
+      const interval = setInterval(() => {
+        const topCardId = stack[stack.length - 1].id;
+        sendToBack(topCardId);
+      }, autoplayDelay);
+
+      return () => clearInterval(interval);
+    }
+  }, [autoplay, autoplayDelay, stack, isPaused]);
 
   return (
     <div
       className="stack-container"
-      style={{
-        width: cardDimensions.width,
-        height: cardDimensions.height,
-        perspective: 600
-      }}
+      onMouseEnter={() => pauseOnHover && setIsPaused(true)}
+      onMouseLeave={() => pauseOnHover && setIsPaused(false)}
     >
-      {cards.map((card, index) => {
+      {stack.map((card, index) => {
         const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
-
         return (
-          <CardRotate key={card.id} onSendToBack={() => sendToBack(card.id)} sensitivity={sensitivity}>
+          <CardRotate 
+            key={card.id} 
+            onSendToBack={() => sendToBack(card.id)} 
+            sensitivity={sensitivity}
+            disableDrag={shouldDisableDrag}
+          >
             <motion.div
               className="card"
-              onClick={() => sendToBackOnClick && sendToBack(card.id)}
+              onClick={() => shouldEnableClick && sendToBack(card.id)}
               animate={{
-                rotateZ: (cards.length - index - 1) * 4 + randomRotate,
-                scale: 1 + index * 0.06 - cards.length * 0.06,
-                transformOrigin: '90% 90%'
+                rotateZ: (stack.length - index - 1) * 4 + randomRotate,
+                scale: 1 + index * 0.06 - stack.length * 0.06,
+                transformOrigin: '90% 90%',
               }}
               initial={false}
               transition={{
                 type: 'spring',
                 stiffness: animationConfig.stiffness,
-                damping: animationConfig.damping
-              }}
-              style={{
-                width: cardDimensions.width,
-                height: cardDimensions.height
+                damping: animationConfig.damping,
               }}
             >
-              <img src={card.img} alt={`card-${card.id}`} className="card-image" />
+              {card.content}
             </motion.div>
           </CardRotate>
         );
