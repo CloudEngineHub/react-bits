@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform } from 'motion/react';
+import { motion, useMotionValue, useTransform, type PanInfo } from 'motion/react';
 import { useState, useEffect } from 'react';
 import './Stack.css';
 
@@ -15,7 +15,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
-  function handleDragEnd(_: never, info: { offset: { x: number; y: number } }) {
+  function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
     if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity) {
       onSendToBack();
     } else {

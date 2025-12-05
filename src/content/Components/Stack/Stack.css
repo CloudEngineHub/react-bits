@@ -7,11 +7,13 @@
 
 .card-rotate {
   position: absolute;
+  inset: 0;
   cursor: grab;
 }
 
 .card-rotate-disabled {
   position: absolute;
+  inset: 0;
   cursor: pointer;
 }
 
