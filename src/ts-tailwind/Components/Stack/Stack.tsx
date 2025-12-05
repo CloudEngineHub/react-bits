@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform } from 'motion/react';
+import { motion, useMotionValue, useTransform, type PanInfo } from 'motion/react';
 import { useState, useEffect } from 'react';
 
 interface CardRotateProps {
@@ -14,7 +14,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
-  function handleDragEnd(_: never, info: { offset: { x: number; y: number } }) {
+  function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
     if (Math.abs(info.offset.x) > sensitivity || Math.abs(info.offset.y) > sensitivity) {
       onSendToBack();
     } else {
@@ -26,7 +26,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
   if (disableDrag) {
     return (
       <motion.div
-        className="absolute cursor-pointer"
+        className="absolute inset-0 cursor-pointer"
         style={{ x: 0, y: 0 }}
       >
         {children}
@@ -36,7 +36,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 
   return (
     <motion.div
-      className="absolute cursor-grab"
+      className="absolute inset-0 cursor-grab"
       style={{ x, y, rotateX, rotateY }}
       drag
       dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
