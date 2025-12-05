@@ -9,7 +9,7 @@ export const NEW = [
   'Floating Lines',
   'Light Pillar'
 ];
-export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content'];
+export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [

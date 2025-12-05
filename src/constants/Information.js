@@ -673,7 +673,7 @@ export const componentMetadata = {
   },
   'Components/Stack': {
     videoUrl: '/assets/video/stack.webm',
-    description: 'Layered stack with swipe animations and smooth transitions.',
+    description: 'Layered stack with swipe animations, autoplay and smooth transitions.',
     category: 'Components',
     name: 'Stack',
     docsUrl: 'https://reactbits.dev/components/stack',
