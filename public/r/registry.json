@@ -1748,6 +1748,74 @@
 			]
 		},
 		{
+			"name": "Antigravity-JS-CSS",
+			"title": "Antigravity",
+			"description": "3D antigravity particle field that repels from the cursor with smooth motion.",
+			"type": "registry:component",
+			"dependencies": [
+				"@react-three/fiber@^9.3.0",
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Antigravity/Antigravity.jsx"
+				}
+			]
+		},
+		{
+			"name": "Antigravity-JS-TW",
+			"title": "Antigravity",
+			"description": "3D antigravity particle field that repels from the cursor with smooth motion.",
+			"type": "registry:component",
+			"dependencies": [
+				"@react-three/fiber@^9.3.0",
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Antigravity/Antigravity.jsx"
+				}
+			]
+		},
+		{
+			"name": "Antigravity-TS-CSS",
+			"title": "Antigravity",
+			"description": "3D antigravity particle field that repels from the cursor with smooth motion.",
+			"type": "registry:component",
+			"dependencies": [
+				"@react-three/fiber@^9.3.0",
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Antigravity/Antigravity.tsx"
+				}
+			]
+		},
+		{
+			"name": "Antigravity-TS-TW",
+			"title": "Antigravity",
+			"description": "3D antigravity particle field that repels from the cursor with smooth motion.",
+			"type": "registry:component",
+			"dependencies": [
+				"@react-three/fiber@^9.3.0",
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Antigravity/Antigravity.tsx"
+				}
+			]
+		},
+		{
 			"name": "ASCIIText-JS-CSS",
 			"title": "ASCIIText",
 			"description": "Renders text with an animated ASCII background for a retro feel.",
@@ -5454,7 +5522,7 @@
 		{
 			"name": "Stack-JS-CSS",
 			"title": "Stack",
-			"description": "Layered stack with swipe animations and smooth transitions.",
+			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
 			"type": "registry:component",
 			"dependencies": [
 				"motion@^12.23.12"
@@ -5474,7 +5542,7 @@
 		{
 			"name": "Stack-JS-TW",
 			"title": "Stack",
-			"description": "Layered stack with swipe animations and smooth transitions.",
+			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
 			"type": "registry:component",
 			"dependencies": [
 				"motion@^12.23.12"
@@ -5490,7 +5558,7 @@
 		{
 			"name": "Stack-TS-CSS",
 			"title": "Stack",
-			"description": "Layered stack with swipe animations and smooth transitions.",
+			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
 			"type": "registry:component",
 			"dependencies": [
 				"motion@^12.23.12"
@@ -5510,7 +5578,7 @@
 		{
 			"name": "Stack-TS-TW",
 			"title": "Stack",
-			"description": "Layered stack with swipe animations and smooth transitions.",
+			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
 			"type": "registry:component",
 			"dependencies": [
 				"motion@^12.23.12"
