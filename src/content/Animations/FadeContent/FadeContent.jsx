@@ -35,7 +35,7 @@ const FadeContent = ({
 
     const startPct = (1 - threshold) * 100;
 
-    const getSeconds = (val) => (typeof val === 'number' && val > 10 ? val / 1000 : val);
+    const getSeconds = val => (typeof val === 'number' && val > 10 ? val / 1000 : val);
 
     gsap.set(el, {
       autoAlpha: initialOpacity,
@@ -81,7 +81,7 @@ const FadeContent = ({
       tl.kill();
       gsap.killTweensOf(el);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

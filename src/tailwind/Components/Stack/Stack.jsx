@@ -18,10 +18,7 @@ function CardRotate({ children, onSendToBack, sensitivity, disableDrag = false }
 
   if (disableDrag) {
     return (
-      <motion.div
-        className="absolute inset-0 cursor-pointer"
-        style={{ x: 0, y: 0 }}
-      >
+      <motion.div className="absolute inset-0 cursor-pointer" style={{ x: 0, y: 0 }}>
         {children}
       </motion.div>
     );
@@ -52,16 +49,16 @@ export default function Stack({
   autoplayDelay = 3000,
   pauseOnHover = false,
   mobileClickOnly = false,
-  mobileBreakpoint = 768,
+  mobileBreakpoint = 768
 }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < mobileBreakpoint);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -70,56 +67,54 @@ export default function Stack({
   const shouldDisableDrag = mobileClickOnly && isMobile;
   const shouldEnableClick = sendToBackOnClick || shouldDisableDrag;
 
-  const [stack, setStack] = useState(
-    () => {
-      if (cards.length) {
-        return cards.map((content, index) => ({ id: index + 1, content }));
-      } else {
-        return [
-          {
-            id: 1,
-            content: (
-              <img
-                src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format"
-                alt="card-1"
-                className="w-full h-full object-cover pointer-events-none"
-              />
-            ),
-          },
-          {
-            id: 2,
-            content: (
-              <img
-                src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format"
-                alt="card-2"
-                className="w-full h-full object-cover pointer-events-none"
-              />
-            ),
-          },
-          {
-            id: 3,
-            content: (
-              <img
-                src="https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format"
-                alt="card-3"
-                className="w-full h-full object-cover pointer-events-none"
-              />
-            ),
-          },
-          {
-            id: 4,
-            content: (
-              <img
-                src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
-                alt="card-4"
-                className="w-full h-full object-cover pointer-events-none"
-              />
-            ),
-          },
-        ];
-      }
+  const [stack, setStack] = useState(() => {
+    if (cards.length) {
+      return cards.map((content, index) => ({ id: index + 1, content }));
+    } else {
+      return [
+        {
+          id: 1,
+          content: (
+            <img
+              src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format"
+              alt="card-1"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          )
+        },
+        {
+          id: 2,
+          content: (
+            <img
+              src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format"
+              alt="card-2"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          )
+        },
+        {
+          id: 3,
+          content: (
+            <img
+              src="https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format"
+              alt="card-3"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          )
+        },
+        {
+          id: 4,
+          content: (
+            <img
+              src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format"
+              alt="card-4"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          )
+        }
+      ];
     }
-  );
+  });
 
   useEffect(() => {
     if (cards.length) {
@@ -127,10 +122,10 @@ export default function Stack({
     }
   }, [cards]);
 
-  const sendToBack = (id) => {
-    setStack((prev) => {
+  const sendToBack = id => {
+    setStack(prev => {
       const newStack = [...prev];
-      const index = newStack.findIndex((card) => card.id === id);
+      const index = newStack.findIndex(card => card.id === id);
       const [card] = newStack.splice(index, 1);
       newStack.unshift(card);
       return newStack;
@@ -152,7 +147,7 @@ export default function Stack({
     <div
       className="relative w-full h-full"
       style={{
-        perspective: 600,
+        perspective: 600
       }}
       onMouseEnter={() => pauseOnHover && setIsPaused(true)}
       onMouseLeave={() => pauseOnHover && setIsPaused(false)}
@@ -160,9 +155,9 @@ export default function Stack({
       {stack.map((card, index) => {
         const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
         return (
-          <CardRotate 
-            key={card.id} 
-            onSendToBack={() => sendToBack(card.id)} 
+          <CardRotate
+            key={card.id}
+            onSendToBack={() => sendToBack(card.id)}
             sensitivity={sensitivity}
             disableDrag={shouldDisableDrag}
           >
@@ -172,13 +167,13 @@ export default function Stack({
               animate={{
                 rotateZ: (stack.length - index - 1) * 4 + randomRotate,
                 scale: 1 + index * 0.06 - stack.length * 0.06,
-                transformOrigin: '90% 90%',
+                transformOrigin: '90% 90%'
               }}
               initial={false}
               transition={{
                 type: 'spring',
                 stiffness: animationConfig.stiffness,
-                damping: animationConfig.damping,
+                damping: animationConfig.damping
               }}
             >
               {card.content}
