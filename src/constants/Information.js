@@ -241,6 +241,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/laser-flow',
     tags: []
   },
+  'Animations/Antigravity': {
+    videoUrl: '/assets/video/antigravity.webm',
+    description: '3D antigravity particle field that repels from the cursor with smooth motion.',
+    category: 'Animations',
+    name: 'Antigravity',
+    docsUrl: 'https://reactbits.dev/animations/antigravity',
+    tags: []
+  },
 
   //! Text Animations -------------------------------------------------------------------------------------------------------------------------------
 

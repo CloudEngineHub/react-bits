@@ -7,7 +7,8 @@ export const NEW = [
   'Color Bends',
   'Grid Scan',
   'Floating Lines',
-  'Light Pillar'
+  'Light Pillar',
+  'Antigravity'
 ];
 export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
@@ -53,6 +54,7 @@ export const CATEGORIES = [
       'Electric Border',
       'Pixel Transition',
       'Glare Hover',
+      'Antigravity',
       'Logo Loop',
       'Target Cursor',
       'Laser Flow',
