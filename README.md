@@ -1,14 +1,20 @@
 <div align="center">
-	<br>
+	<hr>
 	<br>
     <picture>
       <source media="(prefers-color-scheme: light)" srcset="src/assets/logos/reactbits-gh-black.svg">
       <source media="(prefers-color-scheme: dark)" srcset="src/assets/logos/reactbits-gh-white.svg">
-      <img src="src/assets/logos/reactbits-gh-black.svg" alt="react-bits logo" width="1000">
+      <img src="src/assets/logos/reactbits-gh-black.svg" alt="react-bits logo" width="800">
     </picture>
 	<br>
 	<br>
 </div>
+
+<hr />
+
+<img src="src/assets/common/readme-showcase.png" alt="react-bits logo" width="1000">
+
+<br />
 
 <div align="center">
   The largest & most creative library of animated React components.
@@ -19,7 +25,6 @@
 <div align="center">
   <a href="https://github.com/davidhdev/react-bits/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/davidhdev/react-bits"></a>
   <a href="https://github.com/davidhdev/react-bits/blob/main/LICENSE.md"><img alt="License" src="https://img.shields.io/badge/License-MIT+Commons_Clause-magenta"></a>
-  
 </div>
 
 ## Documentation
