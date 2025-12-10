@@ -4,13 +4,13 @@
     <picture>
       <source media="(prefers-color-scheme: light)" srcset="src/assets/logos/reactbits-gh-black.svg">
       <source media="(prefers-color-scheme: dark)" srcset="src/assets/logos/reactbits-gh-white.svg">
-      <img src="src/assets/logos/reactbits-gh-black.svg" alt="react-bits logo" width="800">
+      <img src="src/assets/logos/reactbits-gh-black.svg" alt="react-bits logo" width="600">
     </picture>
 	<br>
 	<br>
 </div>
 
-<hr />
+<br />
 
 <img src="src/assets/common/readme-showcase.png" alt="react-bits logo" width="1000">
 
