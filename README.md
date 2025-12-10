@@ -1,5 +1,5 @@
 <div align="center">
-	<hr>
+	<br>
 	<br>
     <picture>
       <source media="(prefers-color-scheme: light)" srcset="src/assets/logos/reactbits-gh-black.svg">
