@@ -4,17 +4,17 @@ import { Fingerprint, Activity, Lock } from 'lucide-react';
 
 const ReflectiveCard = ({
   blurStrength = 12,
-  color = "white",
+  color = 'white',
   metalness = 1,
   roughness = 0.4,
-  overlayColor = "rgba(255, 255, 255, 0.1)",
+  overlayColor = 'rgba(255, 255, 255, 0.1)',
   displacementStrength = 20,
   noiseScale = 1,
   specularConstant = 1.2,
   grayscale = 1,
   glassDistortion = 0,
-  className = "",
-  style = {},
+  className = '',
+  style = {}
 }) => {
   const videoRef = useRef(null);
 
@@ -27,7 +27,7 @@ const ReflectiveCard = ({
           video: {
             width: { ideal: 640 },
             height: { ideal: 480 },
-            facingMode: "user"
+            facingMode: 'user'
           }
         });
 
@@ -35,7 +35,7 @@ const ReflectiveCard = ({
           videoRef.current.srcObject = stream;
         }
       } catch (err) {
-        console.error("Error accessing webcam:", err);
+        console.error('Error accessing webcam:', err);
       }
     };
 
@@ -57,28 +57,16 @@ const ReflectiveCard = ({
     '--roughness': roughness,
     '--overlay-color': overlayColor,
     '--text-color': color,
-    '--saturation': saturation,
+    '--saturation': saturation
   };
 
   return (
-    <div
-      className={`reflective-card-container ${className}`}
-      style={{ ...style, ...cssVariables }}
-    >
+    <div className={`reflective-card-container ${className}`} style={{ ...style, ...cssVariables }}>
       <svg className="reflective-svg-filters" aria-hidden="true">
         <defs>
           <filter id="metallic-displacement" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              type="turbulence"
-              baseFrequency={baseFrequency}
-              numOctaves="2"
-              result="noise"
-            />
-            <feColorMatrix
-              in="noise"
-              type="luminanceToAlpha"
-              result="noiseAlpha"
-            />
+            <feTurbulence type="turbulence" baseFrequency={baseFrequency} numOctaves="2" result="noise" />
+            <feColorMatrix in="noise" type="luminanceToAlpha" result="noiseAlpha" />
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
@@ -97,35 +85,16 @@ const ReflectiveCard = ({
             >
               <fePointLight x="0" y="0" z="300" />
             </feSpecularLighting>
-            <feComposite
-              in="light"
-              in2="rippled"
-              operator="in"
-              result="light-effect"
-            />
-            <feBlend
-              in="light-effect"
-              in2="rippled"
-              mode="screen"
-              result="metallic-result"
-            />
+            <feComposite in="light" in2="rippled" operator="in" result="light-effect" />
+            <feBlend in="light-effect" in2="rippled" mode="screen" result="metallic-result" />
             <feColorMatrix
               in="SourceAlpha"
               type="matrix"
               values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
               result="solidAlpha"
             />
-            <feMorphology
-              in="solidAlpha"
-              operator="erode"
-              radius="45"
-              result="erodedAlpha"
-            />
-            <feGaussianBlur
-              in="erodedAlpha"
-              stdDeviation="10"
-              result="blurredMap"
-            />
+            <feMorphology in="solidAlpha" operator="erode" radius="45" result="erodedAlpha" />
+            <feGaussianBlur in="erodedAlpha" stdDeviation="10" result="blurredMap" />
             <feComponentTransfer in="blurredMap" result="glassMap">
               <feFuncA type="linear" slope="0.5" intercept="0" />
             </feComponentTransfer>
@@ -141,13 +110,7 @@ const ReflectiveCard = ({
         </defs>
       </svg>
 
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        className="reflective-video"
-      />
+      <video ref={videoRef} autoPlay playsInline muted className="reflective-video" />
 
       <div className="reflective-noise" />
       <div className="reflective-sheen" />
