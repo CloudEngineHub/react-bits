@@ -38,56 +38,13 @@ const fromPascal = str =>
     .replace(/_/g, ' ')
     .trim();
 
-const supportsType = type => {
-  try {
-    const v = document.createElement('video');
-    if (!('canPlayType' in v)) return false;
-    const res = v.canPlayType(type);
-    return res === 'probably' || res === 'maybe';
-  } catch (e) {
-    return false;
-  }
-};
-
-const prefersWebM = () => supportsType('video/webm; codecs="vp9,vorbis"') || supportsType('video/webm');
-
-const pickBestSource = url => {
-  if (!url) return '';
-  if (url.endsWith('.webm')) {
-    if (prefersWebM()) return url;
-    const mp4 = url.replace(/\.webm$/, '.mp4');
-    return mp4;
-  }
-  if (url.endsWith('.mp4')) {
-    return url;
-  }
-  return url;
-};
-
-const shouldPreload = () => {
-  try {
-    const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (c?.saveData) return false;
-    const slowTypes = new Set(['slow-2g', '2g']);
-    if (c?.effectiveType && slowTypes.has(c.effectiveType)) return false;
-  } catch (e) {
-    // noop
-  }
-  return true;
-};
-
-// Previously used to gate media by viewport. We now gate via RVGrid's visible range for reliability.
-
 const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = false, sorting = 'none', title }) => {
   const scrollRef = useRef(null);
   const GAP_PX = 16;
-  const preloadedSrcsRef = useRef(new Set());
   const [hoveredKey, setHoveredKey] = useState(null);
   const clearSlotRef = useRef(null);
   const clearBtnRef = useRef(null);
   const CLEAR_APPEAR_DEBOUNCE_MS = 300;
-  const visibleRangeRef = useRef({ rowStart: 0, rowStop: -1, columnStart: 0, columnStop: -1 });
-  const [, forceTick] = useState(0);
 
   const setHoverToItemAtPoint = useCallback((x, y) => {
     try {
@@ -214,42 +171,6 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   }, [showClear]);
 
   const getColumnsForWidth = useCallback(w => (w >= 900 ? 3 : w >= 640 ? 2 : 1), []);
-
-  const preloadRange = useCallback(
-    (startIdx, endIdx) => {
-      if (!shouldPreload()) return;
-      const urls = [];
-      for (let i = startIdx; i <= Math.min(endIdx, filtered.length - 1); i++) {
-        const url = filtered[i]?.videoUrl;
-        if (!url) continue;
-        const chosen = pickBestSource(url);
-        if (chosen && !preloadedSrcsRef.current.has(chosen)) {
-          urls.push(chosen);
-        }
-      }
-      if (urls.length === 0) return;
-      urls.forEach(src => {
-        try {
-          const v = document.createElement('video');
-          v.preload = 'metadata';
-          v.src = src;
-          const mark = () => {
-            preloadedSrcsRef.current.add(src);
-          };
-          v.addEventListener('loadedmetadata', mark, { once: true });
-          v.addEventListener('loadeddata', mark, { once: true });
-          v.addEventListener('canplaythrough', mark, { once: true });
-          v.load();
-          setTimeout(() => {
-            v.src = '';
-          }, 8000);
-        } catch (e) {
-          // no-op
-        }
-      });
-    },
-    [filtered]
-  );
 
   const clearFilters = () => {
     setSearch('');
@@ -479,12 +400,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                         const to = `/${slug(fromPascal(item.categoryKey))}/${slug(fromPascal(item.componentKey))}`;
                         const isSaved = savedSet.has(item.key) || isComponentSaved(item.key);
                         const isLastCol = columnIndex === columnCount - 1;
-                        const vr = visibleRangeRef.current;
-                        const active =
-                          rowIndex >= vr.rowStart &&
-                          rowIndex <= vr.rowStop &&
-                          columnIndex >= vr.columnStart &&
-                          columnIndex <= vr.columnStop;
+
                         const cellStyle = {
                           ...style,
                           width: columnWidth,
@@ -596,37 +512,14 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   </IconButton>
                                 ) : null}
                               </Box>
-                              <LazyCardMedia key={item.videoUrl || item.key} videoUrl={item.videoUrl} active={active} />
+                              <LazyCardMedia
+                                key={item.videoUrl || item.key}
+                                videoUrl={item.videoUrl}
+                                playing={hoveredKey === item.key}
+                              />
                             </Box>
                           </div>
                         );
-                      };
-
-                      const onSectionRendered = ({
-                        rowStartIndex,
-                        rowStopIndex,
-                        columnStartIndex,
-                        columnStopIndex
-                      }) => {
-                        const prev = visibleRangeRef.current;
-                        if (
-                          prev.rowStart !== rowStartIndex ||
-                          prev.rowStop !== rowStopIndex ||
-                          prev.columnStart !== columnStartIndex ||
-                          prev.columnStop !== columnStopIndex
-                        ) {
-                          visibleRangeRef.current = {
-                            rowStart: rowStartIndex,
-                            rowStop: rowStopIndex,
-                            columnStart: columnStartIndex,
-                            columnStop: columnStopIndex
-                          };
-
-                          forceTick(t => (t + 1) % 1000);
-                        }
-
-                        const lastVisibleIndex = rowStopIndex * columnCount + columnStopIndex;
-                        preloadRange(lastVisibleIndex + 1, lastVisibleIndex + 3);
                       };
 
                       return (
@@ -643,7 +536,6 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                           isScrolling={isScrolling}
                           onScroll={onChildScroll}
                           scrollTop={scrollTop}
-                          onSectionRendered={onSectionRendered}
                         />
                       );
                     }}
@@ -658,9 +550,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   );
 };
 
-const LazyCardMedia = ({ videoUrl, active }) => {
+const LazyCardMedia = ({ videoUrl, playing }) => {
   const videoRef = useRef(null);
-  const show = !!videoUrl && !!active;
+
+  const show = !!videoUrl;
 
   const base = useMemo(() => (videoUrl ? videoUrl.replace(/\.(webm|mp4)$/i, '') : ''), [videoUrl]);
   const webm = base ? `${base}.webm` : '';
@@ -668,60 +561,52 @@ const LazyCardMedia = ({ videoUrl, active }) => {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !show) return;
-    let mounted = true;
+    if (!v) return;
 
-    const tryPlay = () => {
-      if (!mounted) return;
-      try {
-        const p = v.play();
-        if (p && typeof p.then === 'function') p.catch(() => {});
-      } catch (e) {
-        // ignore autoplay errors
-      }
-    };
-
-    if (v.readyState >= 3) {
-      tryPlay();
-    } else {
-      const onLoadedMeta = () => tryPlay();
-      const onCanPlay = () => tryPlay();
-      const onLoadedData = () => tryPlay();
-      const onCanPlayThrough = () => tryPlay();
-      v.addEventListener('loadedmetadata', onLoadedMeta);
-      v.addEventListener('canplay', onCanPlay);
-      v.addEventListener('loadeddata', onLoadedData);
-      v.addEventListener('canplaythrough', onCanPlayThrough);
-      const id = setTimeout(tryPlay, 1200);
-      return () => {
-        clearTimeout(id);
-        v.removeEventListener('loadedmetadata', onLoadedMeta);
-        v.removeEventListener('canplay', onCanPlay);
-        v.removeEventListener('loadeddata', onLoadedData);
-        v.removeEventListener('canplaythrough', onCanPlayThrough);
+    if (playing) {
+      const tryPlay = () => {
+        try {
+          const p = v.play();
+          if (p && typeof p.then === 'function') {
+            p.catch(() => {});
+          }
+        } catch (e) {
+          // ignore
+        }
       };
-    }
 
-    return () => {
-      mounted = false;
+      if (v.readyState >= 3) {
+        tryPlay();
+      } else {
+        const onCanPlay = () => tryPlay();
+        v.addEventListener('canplay', onCanPlay, { once: true });
+        return () => {
+          v.removeEventListener('canplay', onCanPlay);
+        };
+      }
+    } else {
       try {
         v.pause();
       } catch (e) {
-        // ignore pause errors
+        // ignore
       }
-    };
-  }, [show]);
+    }
+  }, [playing]);
+  const handleLoadedMetadata = e => {
+    const v = e.target;
+    v.currentTime = 0.1;
+  };
 
   return (
     <Box h="200px" bg="#000" borderRadius={INNER_RADIUS} overflow="hidden">
       {show ? (
         <video
           ref={videoRef}
-          autoPlay
           loop
           muted
           playsInline
           preload="metadata"
+          onLoadedMetadata={handleLoadedMetadata}
           style={{
             width: '100%',
             height: '100%',
