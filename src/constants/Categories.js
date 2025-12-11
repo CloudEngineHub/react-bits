@@ -8,7 +8,8 @@ export const NEW = [
   'Grid Scan',
   'Floating Lines',
   'Light Pillar',
-  'Antigravity'
+  'Antigravity',
+  'Reflective Card'
 ];
 export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
@@ -86,6 +87,7 @@ export const CATEGORIES = [
       'Bubble Menu',
       'Magic Bento',
       'Circular Gallery',
+      'Reflective Card',
       'Card Nav',
       'Stack',
       'Fluid Glass',

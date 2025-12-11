@@ -94,7 +94,8 @@ const components = {
   'card-nav': () => import('../demo/Components/CardNavDemo'),
   'bubble-menu': () => import('../demo/Components/BubbleMenuDemo'),
   'dome-gallery': () => import('../demo/Components/DomeGalleryDemo'),
-  'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo')
+  'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo'),
+  'reflective-card': () => import('../demo/Components/ReflectiveCardDemo')
 };
 
 const backgrounds = {

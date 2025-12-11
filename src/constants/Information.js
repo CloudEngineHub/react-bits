@@ -711,6 +711,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/staggered-menu',
     tags: []
   },
+  'Components/ReflectiveCard': {
+    videoUrl: '/assets/video/reflectivecard.webm',
+    description: 'Card with dynamic webcam reflection and glare effects that respond to cursor movement.',
+    category: 'Components',
+    name: 'ReflectiveCard',
+    docsUrl: 'https://reactbits.dev/components/reflective-card',
+    tags: []
+  },
 
   //! Backgrounds -------------------------------------------------------------------------------------------------------------------------------
   'Backgrounds/Aurora': {
