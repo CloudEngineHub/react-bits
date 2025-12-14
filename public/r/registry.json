@@ -5808,6 +5808,78 @@
 			]
 		},
 		{
+			"name": "ReflectiveCard-JS-CSS",
+			"title": "ReflectiveCard",
+			"description": "Card with dynamic webcam reflection and glare effects that respond to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"lucide-react@^0.542.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.jsx"
+				}
+			]
+		},
+		{
+			"name": "ReflectiveCard-JS-TW",
+			"title": "ReflectiveCard",
+			"description": "Card with dynamic webcam reflection and glare effects that respond to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"lucide-react@^0.542.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.jsx"
+				}
+			]
+		},
+		{
+			"name": "ReflectiveCard-TS-CSS",
+			"title": "ReflectiveCard",
+			"description": "Card with dynamic webcam reflection and glare effects that respond to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"lucide-react@^0.542.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.tsx"
+				}
+			]
+		},
+		{
+			"name": "ReflectiveCard-TS-TW",
+			"title": "ReflectiveCard",
+			"description": "Card with dynamic webcam reflection and glare effects that respond to cursor movement.",
+			"type": "registry:component",
+			"dependencies": [
+				"lucide-react@^0.542.0"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "ReflectiveCard/ReflectiveCard.tsx"
+				}
+			]
+		},
+		{
 			"name": "Aurora-JS-CSS",
 			"title": "Aurora",
 			"description": "Flowing aurora gradient background.",

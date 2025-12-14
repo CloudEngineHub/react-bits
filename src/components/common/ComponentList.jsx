@@ -9,13 +9,15 @@ import {
   Portal,
   Select,
   Text,
-  createListCollection
+  createListCollection,
+  Button
 } from '@chakra-ui/react';
+import { Dialog } from '@chakra-ui/react';
 import { Grid as RVGrid, AutoSizer, WindowScroller } from 'react-virtualized';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FiSearch, FiTrash2, FiX } from 'react-icons/fi';
+import { FiSearch, FiTrash2, FiX, FiPlay } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { toast } from 'sonner';
 import { componentMetadata } from '../../constants/Information';
@@ -26,6 +28,10 @@ import {
   removeSavedComponent,
   toggleSavedComponent
 } from '../../utils/favorites';
+import { FaCaretRight, FaChevronRight, FaPlay } from 'react-icons/fa';
+import DarkVeil from '@/ts-tailwind/Backgrounds/DarkVeil/DarkVeil';
+import Aurora from '@/content/Backgrounds/Aurora/Aurora';
+import { ArrowRight } from 'lucide-react';
 
 const CARD_RADIUS = 30;
 const CARD_PADDING = 6;
@@ -107,6 +113,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   const [selectedCategory, setSelectedCategory] = useState(categories.items[0]);
   const [search, setSearch] = useState('');
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   useEffect(() => {
     setSelectedCategory(prev => (categories.items.includes(prev) ? prev : categories.items[0]));
@@ -179,6 +186,126 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   return (
     <Box className="category-page" ref={scrollRef}>
+      <Flex
+        position="relative"
+        w="100%"
+        h="110px"
+        border="1px solid #170D27"
+        overflow="hidden"
+        bg="#060010"
+        mb={6}
+        cursor="pointer"
+        alignItems="center"
+        pl={{ base: 4, md: 8 }}
+        pr={2}
+        borderRadius="25px"
+        onClick={() => setIsVideoOpen(true)}
+      >
+        <Flex
+          direction="column"
+          position="relative"
+          zIndex={1}
+          alignSelf={{ base: 'flex-start', md: 'center' }}
+          pt={{ base: 4, md: 0 }}
+        >
+          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#FFFFFF" letterSpacing={'-.5px'}>
+            React Bits Pro is coming.
+          </Text>
+          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
+            Watch the latest teaser <Icon boxSize={{base: 2, md: 3}} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
+          </Text>
+        </Flex>
+
+        <Box
+          border="1px solid #271E37"
+          h="93px"
+          aspectRatio={{ base: '1', md: '16/9' }}
+          ml="auto"
+          bg="#060010"
+          backgroundImage="url('/assets/demo/poster.jpg')"
+          backgroundSize="cover"
+          backgroundPosition="center"
+          borderRadius="17px"
+          cursor="pointer"
+          filter={'brightness(0.75)'}
+          onClick={() => setIsVideoOpen(true)}
+          _hover={{ borderColor: '#271E37', filter: 'brightness(1.0)' }}
+          transition="all 0.2s"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          zIndex={1}
+        >
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            bg="rgba(6, 0, 16, 0.4)"
+            borderRadius="17px"
+            zIndex={1}
+          />
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            background="linear-gradient(135deg, #FF9FFC 0%, #5227FF 50%, #FF9FFC 100%)"
+            borderRadius="17px"
+            w="100%"
+            h="100%"
+            zIndex={2}
+            pointerEvents="none"
+            opacity={0.3}
+            mixBlendMode="overlay"
+          />
+          <Icon as={FaPlay} boxSize={6} color="#ffffff" zIndex={10} />
+        </Box>
+
+        <Box position="absolute" top={0} left={0} w="100%" h="100%" zIndex={0} rotate={'180deg'} opacity={0.25}>
+          <Aurora colorStops={['#FF9FFC', '#5227FF', '#FF9FFC']} amplitude={6} blend={5} />
+        </Box>
+      </Flex>
+
+      <Dialog.Root open={isVideoOpen} onOpenChange={e => setIsVideoOpen(e.open)} size="xl">
+        <Dialog.Backdrop bg="rgba(0,0,0,0.7)" />
+        <Dialog.Positioner placement="center" display="flex" alignItems="center" justifyContent="center">
+          <Dialog.Content bg="#060010" border="1px solid #170D27" maxW="800px" borderRadius="20px">
+            <Dialog.CloseTrigger color="#B19EEF" />
+            <Dialog.Body>
+              <Box w="100%" aspectRatio={16 / 9} bg="#000" borderRadius="12px" overflow="hidden" my={4}>
+                <video
+                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/lessismoresmall.mp4"
+                  controls
+                  autoPlay
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </Box>
+              <Button
+                bg="#ffffff"
+                color="#060010"
+                _hover={{ bg: '#f5f5f5' }}
+                size="lg"
+                borderRadius="full"
+                w="100%"
+                onClick={() => {
+                  window.open('https://pro.reactbits.dev/waitlist', '_blank');
+                }}
+              >
+                Join the Waitlist
+              </Button>
+
+              <Text mt={4} color="#B19EEF" textAlign="center">
+                Get an exclusive 35% discount on launch
+              </Text>
+            </Dialog.Body>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+
       <Flex
         className="page-transition-fade"
         mb={12}
