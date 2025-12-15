@@ -17,7 +17,7 @@ import { Grid as RVGrid, AutoSizer, WindowScroller } from 'react-virtualized';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FiSearch, FiTrash2, FiX, FiPlay } from 'react-icons/fi';
+import { FiSearch, FiTrash2, FiX } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { toast } from 'sonner';
 import { componentMetadata } from '../../constants/Information';
@@ -28,10 +28,8 @@ import {
   removeSavedComponent,
   toggleSavedComponent
 } from '../../utils/favorites';
-import { FaCaretRight, FaChevronRight, FaPlay } from 'react-icons/fa';
-import DarkVeil from '@/ts-tailwind/Backgrounds/DarkVeil/DarkVeil';
+import { FaChevronRight, FaPlay } from 'react-icons/fa';
 import Aurora from '@/content/Backgrounds/Aurora/Aurora';
-import { ArrowRight } from 'lucide-react';
 
 const CARD_RADIUS = 30;
 const CARD_PADDING = 6;
@@ -212,7 +210,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             React Bits Pro is coming.
           </Text>
           <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
-            Watch the latest teaser <Icon boxSize={{base: 2, md: 3}} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
+            Watch the latest teaser{' '}
+            <Icon boxSize={{ base: 2, md: 3 }} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
           </Text>
         </Flex>
 
