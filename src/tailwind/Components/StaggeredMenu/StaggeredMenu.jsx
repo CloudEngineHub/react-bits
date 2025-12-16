@@ -327,7 +327,12 @@ export const StaggeredMenu = ({
     if (!closeOnClickAway || !open) return;
 
     const handleClickOutside = event => {
-      if (panelRef.current && !panelRef.current.contains(event.target)) {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target) &&
+        toggleBtnRef.current &&
+        !toggleBtnRef.current.contains(event.target)
+      ) {
         closeMenu();
       }
     };
