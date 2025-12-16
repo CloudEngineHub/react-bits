@@ -383,7 +383,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
     >
       <div
-        className={(className ? className + ' ' : '') + 'staggered-menu-wrapper relative w-full h-full z-40'}
+        className={(className ? className + ' ' : '') + 'staggered-menu-wrapper pointer-events-none relative w-full h-full z-40'}
         style={accentColor ? ({ ['--sm-accent' as any]: accentColor } as React.CSSProperties) : undefined}
         data-position={position}
         data-open={open || undefined}
@@ -533,7 +533,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       </div>
 
       <style>{`
-.sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; }
+.sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; pointer-events: none; }
 .sm-scope .staggered-menu-header { position: absolute; top: 0; left: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2em; background: transparent; pointer-events: none; z-index: 20; }
 .sm-scope .staggered-menu-header > * { pointer-events: auto; }
 .sm-scope .sm-logo { display: flex; align-items: center; user-select: none; }
