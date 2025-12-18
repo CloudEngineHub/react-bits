@@ -6,12 +6,14 @@ import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 
 import InfiniteMenu from '../../content/Components/InfiniteMenu/InfiniteMenu';
 import { infiniteMenu } from '../../constants/code/Components/infiniteMenuCode';
 
 const InfiniteMenuDemo = () => {
   const [isHidden, setIsHidden] = useState(true);
+  const [scale, setScale] = useState(1.0);
 
   const propData = [
     {
@@ -75,10 +77,11 @@ const InfiniteMenuDemo = () => {
             transform={isHidden ? 'scale(5)' : 'scale(1)'}
             transition="1s ease"
           >
-            <InfiniteMenu items={items} />
+            <InfiniteMenu items={items} scale={scale} />
           </Box>
         </Box>
 
+        <PreviewSlider title="Scale" min={0.1} max={3} step={0.1} value={scale} onChange={val => setScale(val)} />
         <PropTable data={propData} />
         <Dependencies dependencyList={['gl-matrix']} />
       </PreviewTab>
