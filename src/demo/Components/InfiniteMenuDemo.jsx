@@ -19,6 +19,12 @@ const InfiniteMenuDemo = () => {
       type: 'object[]',
       default: '[{...}]',
       description: 'List of items containing an image, link, title, and description - or just add what you need.'
+    },
+    {
+      name: 'scale',
+      type: 'number',
+      default: '1.0',
+      description: 'Controls camera zoom'
     }
   ];
 
