@@ -730,8 +730,11 @@ class InfiniteGridMenu {
     private items: MenuItem[],
     private onActiveItemChange: ActiveItemCallback,
     private onMovementChange: MovementChangeCallback,
-    onInit?: InitCallback
+    onInit?: InitCallback,
+    scale: number = 1.0
   ) {
+    this.scaleFactor = scale;
+    this.camera.position[2] = 3 * scale;
     this.init(onInit);
   }
 
@@ -998,7 +1001,7 @@ class InfiniteGridMenu {
   private onControlUpdate(deltaTime: number): void {
     const timeScale = deltaTime / this.TARGET_FRAME_DURATION + 0.0001;
     let damping = 5 / timeScale;
-    let cameraTargetZ = 3;
+    let cameraTargetZ = 3 * this.scaleFactor;
 
     const isMoving = this.control.isPointerDown || Math.abs(this.smoothRotationVelocity) > 0.01;
 
@@ -1056,9 +1059,10 @@ const defaultItems: MenuItem[] = [
 
 interface InfiniteMenuProps {
   items?: MenuItem[];
+  scale?: number;
 }
 
-const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
+const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null) as MutableRefObject<HTMLCanvasElement | null>;
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [isMoving, setIsMoving] = useState<boolean>(false);
@@ -1074,8 +1078,13 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     };
 
     if (canvas) {
-      sketch = new InfiniteGridMenu(canvas, items.length ? items : defaultItems, handleActiveItem, setIsMoving, sk =>
-        sk.run()
+      sketch = new InfiniteGridMenu(
+        canvas,
+        items.length ? items : defaultItems,
+        handleActiveItem,
+        setIsMoving,
+        sk => sk.run(),
+        scale
       );
     }
 
@@ -1091,7 +1100,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [items]);
+  }, [items, scale]);
 
   const handleButtonClick = () => {
     if (!activeItem?.link) return;
