@@ -9,7 +9,8 @@ export const NEW = [
   'Floating Lines',
   'Light Pillar',
   'Antigravity',
-  'Reflective Card'
+  'Reflective Card',
+  'Pixel Snow'
 ];
 export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
@@ -137,6 +138,7 @@ export const CATEGORIES = [
       'Gradient Blinds',
       'Grid Scan',
       'Beams',
+      'Pixel Snow',
       'Lightning',
       'Prismatic Burst',
       'Galaxy',

@@ -993,6 +993,14 @@ export const componentMetadata = {
     name: 'LightPillar',
     docsUrl: 'https://reactbits.dev/backgrounds/light-pillar',
     tags: []
+  },
+  'Backgrounds/PixelSnow': {
+    videoUrl: '/assets/video/pixelsnow.webm',
+    description: 'Falling pixelated snow effect with customizable density and speed.',
+    category: 'Backgrounds',
+    name: 'PixelSnow',
+    docsUrl: 'https://reactbits.dev/backgrounds/pixel-snow',
+    tags: []
   }
 };
 

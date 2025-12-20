@@ -348,7 +348,9 @@ export const StaggeredMenu = ({
       className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
     >
       <div
-        className={(className ? className + ' ' : '') + 'staggered-menu-wrapper pointer-events-none relative w-full h-full'}
+        className={
+          (className ? className + ' ' : '') + 'staggered-menu-wrapper pointer-events-none relative w-full h-full'
+        }
         style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
         data-position={position}
         data-open={open || undefined}

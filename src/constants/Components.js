@@ -132,7 +132,8 @@ const backgrounds = {
   'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
   'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx'),
   'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx'),
-  'light-pillar': () => import('../demo/Backgrounds/LightPillarDemo.jsx')
+  'light-pillar': () => import('../demo/Backgrounds/LightPillarDemo.jsx'),
+  'pixel-snow': () => import('../demo/Backgrounds/PixelSnowDemo.jsx')
 };
 
 export const componentMap = {
