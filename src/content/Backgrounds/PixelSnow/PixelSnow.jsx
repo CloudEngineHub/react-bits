@@ -48,6 +48,24 @@ vec3 hash3(uint n) {
   return vec3(hash(n) * uvec3(0x1U, 0x1ffU, 0x3ffffU)) * F0;
 }
 
+float snowflakeDist(vec2 p) {
+  float r = length(p);
+  float a = atan(p.y, p.x);
+  float PI = 3.14159265;
+  a = abs(mod(a + PI / 6.0, PI / 3.0) - PI / 6.0);
+  vec2 q = r * vec2(cos(a), sin(a));
+  float dMain = abs(q.y);
+  dMain = max(dMain, max(-q.x, q.x - 1.0));
+  vec2 b1s = vec2(0.4, 0.0);
+  vec2 b1d = vec2(0.574, 0.819);
+  float b1t = clamp(dot(q - b1s, b1d), 0.0, 0.4);
+  float dB1 = length(q - b1s - b1t * b1d);
+  vec2 b2s = vec2(0.7, 0.0);
+  float b2t = clamp(dot(q - b2s, b1d), 0.0, 0.25);
+  float dB2 = length(q - b2s - b2t * b1d);
+  return min(dMain, min(dB1, dB2)) * 10.0;
+}
+
 void main() {
   float pixelSize = max(1.0, floor(0.5 + uResolution.x / uPixelResolution));
   vec2 fragCoord = floor(gl_FragCoord.xy / pixelSize);
@@ -91,7 +109,10 @@ void main() {
         vec2 testUV = abs(vec2(dot(testPos, camI), dot(testPos, camJ)));
         float depth = dot(flakePos - camPos, camK);
         float flakeSize = max(uFlakeSize, uMinFlakeSize * depth * 0.5 / res.x);
-        float dist = uVariant > 0.5 ? length(testUV) : max(testUV.x, testUV.y);
+        float dist;
+        if (uVariant < 0.5) dist = max(testUV.x, testUV.y);
+        else if (uVariant < 1.5) dist = length(testUV);
+        else dist = snowflakeDist(vec2(dot(testPos, camI), dot(testPos, camJ)) / flakeSize) * flakeSize;
 
         if (dist < flakeSize) {
           float intensity = exp2(-(t + toIntersection) / uDepthFade) *
@@ -167,7 +188,7 @@ export default function PixelSnow({
         uBrightness: { value: brightness },
         uGamma: { value: gamma },
         uDensity: { value: density },
-        uVariant: { value: variant === 'round' ? 1.0 : 0.0 },
+        uVariant: { value: variant === 'round' ? 1.0 : variant === 'snowflake' ? 2.0 : 0.0 },
         uDirection: { value: (direction * Math.PI) / 180 }
       },
       transparent: true

@@ -29,7 +29,8 @@ const PixelSnowDemo = () => {
 
   const variantOptions = [
     { label: 'Square', value: 'square' },
-    { label: 'Round', value: 'round' }
+    { label: 'Round', value: 'round' },
+    { label: 'Snowflake', value: 'snowflake' }
   ];
 
   const propData = [
@@ -95,9 +96,9 @@ const PixelSnowDemo = () => {
     },
     {
       name: 'variant',
-      type: '"square" | "round"',
+      type: '"square" | "round" | "snowflake"',
       default: '"square"',
-      description: 'Shape of the snowflakes - square or round (circles remain pixelated)'
+      description: 'Shape of the snowflakes - square, round, or snowflake pattern'
     },
     {
       name: 'direction',
