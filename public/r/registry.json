@@ -8328,6 +8328,78 @@
 					"path": "LightPillar/LightPillar.tsx"
 				}
 			]
+		},
+		{
+			"name": "PixelSnow-JS-CSS",
+			"title": "PixelSnow",
+			"description": "Falling pixelated snow effect with customizable density and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.jsx"
+				}
+			]
+		},
+		{
+			"name": "PixelSnow-JS-TW",
+			"title": "PixelSnow",
+			"description": "Falling pixelated snow effect with customizable density and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.jsx"
+				}
+			]
+		},
+		{
+			"name": "PixelSnow-TS-CSS",
+			"title": "PixelSnow",
+			"description": "Falling pixelated snow effect with customizable density and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.tsx"
+				}
+			]
+		},
+		{
+			"name": "PixelSnow-TS-TW",
+			"title": "PixelSnow",
+			"description": "Falling pixelated snow effect with customizable density and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PixelSnow/PixelSnow.tsx"
+				}
+			]
 		}
 	]
 }
