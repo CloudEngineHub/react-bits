@@ -277,7 +277,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Dialog.Body>
               <Box w="100%" aspectRatio={16 / 9} bg="#000" borderRadius="12px" overflow="hidden" my={4}>
                 <video
-                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/rbproteasertwo.mp4"
+                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/rbpteasertwo.mp4"
                   controls
                   autoPlay
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
