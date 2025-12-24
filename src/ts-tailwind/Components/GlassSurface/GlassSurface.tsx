@@ -198,7 +198,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   }, [width, height]);
 
   const supportsSVGFilters = () => {
-    if (typeof window === "undefined" || typeof document === "undefined") {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
       return false;
     }
 
@@ -210,10 +210,10 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       return false;
     }
 
-    const div = document.createElement("div");
+    const div = document.createElement('div');
     div.style.backdropFilter = `url(#${filterId})`;
 
-    return div.style.backdropFilter !== "";
+    return div.style.backdropFilter !== '';
   };
 
   const supportsBackdropFilter = () => {
