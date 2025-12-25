@@ -1,4 +1,4 @@
-import { useEffect, useRef, useId } from 'react';
+import { useEffect, useRef, useEffect, useId } from 'react';
 import './GlassSurface.css';
 
 const GlassSurface = ({
@@ -27,6 +27,8 @@ const GlassSurface = ({
   const filterId = `glass-filter-${uniqueId}`;
   const redGradId = `red-grad-${uniqueId}`;
   const blueGradId = `blue-grad-${uniqueId}`;
+
+  const [svgSupported, setSvgSupported] = useState(false)
 
   const containerRef = useRef(null);
   const feImageRef = useRef(null);
@@ -136,8 +138,17 @@ const GlassSurface = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height]);
 
+  useEffect(() => {
+    setSvgSupported(supportsSVGFilters());
+  }, []);
+
   const supportsSVGFilters = () => {
-    const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return false;
+    }
+
+    const isWebkit =
+      /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
     if (isWebkit || isFirefox) {
@@ -146,6 +157,7 @@ const GlassSurface = ({
 
     const div = document.createElement('div');
     div.style.backdropFilter = `url(#${filterId})`;
+
     return div.style.backdropFilter !== '';
   };
 
@@ -162,7 +174,7 @@ const GlassSurface = ({
   return (
     <div
       ref={containerRef}
-      className={`glass-surface ${supportsSVGFilters() ? 'glass-surface--svg' : 'glass-surface--fallback'} ${className}`}
+      className={`glass-surface ${svgSupported ? 'glass-surface--svg' : 'glass-surface--fallback'} ${className}`}
       style={containerStyle}
     >
       <svg className="glass-surface__filter" xmlns="http://www.w3.org/2000/svg">
