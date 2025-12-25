@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 
 const TrueFocus = ({
   sentence = 'True Focus',
+  separator = ' ',
   manualMode = false,
   blurAmount = 5,
   borderColor = 'green',
@@ -10,7 +11,7 @@ const TrueFocus = ({
   animationDuration = 0.5,
   pauseBetweenAnimations = 1
 }) => {
-  const words = sentence.split(' ');
+  const words = sentence.split(separator);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastActiveIndex, setLastActiveIndex] = useState(null);
   const containerRef = useRef(null);
@@ -59,7 +60,11 @@ const TrueFocus = ({
   };
 
   return (
-    <div className="relative flex gap-4 justify-center items-center flex-wrap" ref={containerRef}>
+    <div
+      className="relative flex gap-4 justify-center items-center flex-wrap"
+      ref={containerRef}
+      style={{ outline: 'none', userSelect: 'none' }}
+    >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
         return (
@@ -77,7 +82,9 @@ const TrueFocus = ({
                   : `blur(${blurAmount}px)`,
               '--border-color': borderColor,
               '--glow-color': glowColor,
-              transition: `filter ${animationDuration}s ease`
+              transition: `filter ${animationDuration}s ease`,
+              outline: 'none',
+              userSelect: 'none'
             }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}

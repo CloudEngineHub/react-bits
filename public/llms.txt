@@ -19,10 +19,9 @@ Important notes for agents:
 - shadcn: `npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
   - <LANG>: JS | TS; <STYLE>: CSS | TW
   - Example: npx shadcn@latest add https://reactbits.dev/r/SplitText-JS-CSS
-- jsrepo: `npx jsrepo add https://reactbits.dev/<variant>/<Category>/<Component>`
-  - <variant>: default | tailwind | ts/default | ts/tailwind
-  - <Category>: TextAnimations | Animations | Components | Backgrounds
-  - Example: npx jsrepo add https://reactbits.dev/default/TextAnimations/SplitText
+- jsrepo: `npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`
+  - <LANG>: JS | TS; <STYLE>: CSS | TW
+  - Example: npx jsrepo@latest add https://reactbits.dev/r/SplitText-JS-CSS
 
 Notes:
 
@@ -57,13 +56,14 @@ Notes:
 
 ## Animations
 
-- [Animated Content](https://www.reactbits.dev/animations/animated-content): Wrapper that animates any children on scroll or mount with configurable direction, distance, duration and easing. CLI: `AnimatedContent`.
+- [Animated Content](https://www.reactbits.dev/animations/animated-content): Wrapper that animates any children on scroll or mount with configurable direction, distance, duration, easing and disappear options. CLI: `AnimatedContent`.
+- [Antigravity](https://www.reactbits.dev/animations/antigravity): 3D antigravity particle field that repels from the cursor with smooth motion. CLI: `Antigravity`.
 - [Blob Cursor](https://www.reactbits.dev/animations/blob-cursor): Organic blob cursor that smoothly follows the pointer with inertia and elastic morphing. CLI: `BlobCursor`.
 - [Click Spark](https://www.reactbits.dev/animations/click-spark): Creates particle spark bursts at click position. CLI: `ClickSpark`.
 - [Crosshair](https://www.reactbits.dev/animations/crosshair): Custom crosshair cursor with tracking, and link hover effects. CLI: `Crosshair`.
 - [Cubes](https://www.reactbits.dev/animations/cubes): 3D rotating cube cluster. Supports auto-rotation or hover interaction. CLI: `Cubes`.
 - [Electric Border](https://www.reactbits.dev/animations/electric-border): Jittery electric energy border with animated arcs, glow and adjustable intensity. CLI: `ElectricBorder`.
-- [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple directional fade / slide entrance wrapper with threshold-based activation. CLI: `FadeContent`.
+- [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple directional fade / slide entrance / exit wrapper with threshold-based activation. CLI: `FadeContent`.
 - [Ghost Cursor](https://www.reactbits.dev/animations/ghost-cursor): Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect. CLI: `GhostCursor`.
 - [Glare Hover](https://www.reactbits.dev/animations/glare-hover): Adds a realistic moving glare highlight on hover over any element. CLI: `GlareHover`.
 - [Gradual Blur](https://www.reactbits.dev/animations/gradual-blur): Progressively un-blurs content based on scroll or trigger creating a cinematic reveal. CLI: `GradualBlur`.
@@ -114,9 +114,10 @@ Notes:
 - [Pill Nav](https://www.reactbits.dev/components/pill-nav): Minimal pill nav with sliding active highlight + smooth easing. CLI: `PillNav`.
 - [Pixel Card](https://www.reactbits.dev/components/pixel-card): Card content revealed through pixel expansion transition. CLI: `PixelCard`.
 - [Profile Card](https://www.reactbits.dev/components/profile-card): Animated profile card glare with 3D hover effect. CLI: `ProfileCard`.
+- [Reflective Card](https://www.reactbits.dev/components/reflective-card): Card with dynamic webcam reflection and glare effects that respond to cursor movement. CLI: `ReflectiveCard`.
 - [Scroll Stack](https://www.reactbits.dev/components/scroll-stack): Overlapping card stack reveals on scroll with depth layering. CLI: `ScrollStack`.
 - [Spotlight Card](https://www.reactbits.dev/components/spotlight-card): Dynamic spotlight follows cursor casting gradient illumination. CLI: `SpotlightCard`.
-- [Stack](https://www.reactbits.dev/components/stack): Layered stack with swipe animations and smooth transitions. CLI: `Stack`.
+- [Stack](https://www.reactbits.dev/components/stack): Layered stack with swipe animations, autoplay and smooth transitions. CLI: `Stack`.
 - [Staggered Menu](https://www.reactbits.dev/components/staggered-menu): Menu with staggered item animations and smooth transitions on open/close. CLI: `StaggeredMenu`.
 - [Stepper](https://www.reactbits.dev/components/stepper): Animated multi-step progress indicator with active state transitions. CLI: `Stepper`.
 - [Tilted Card](https://www.reactbits.dev/components/tilted-card): 3D perspective tilt card reacting to pointer. CLI: `TiltedCard`.
@@ -132,6 +133,7 @@ Notes:
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.
 - [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): Terminal CRT scanline squares effect with flicker + noise. CLI: `FaultyTerminal`.
+- [Floating Lines](https://www.reactbits.dev/backgrounds/floating-lines): 3D floating lines that react to cursor movement. CLI: `FloatingLines`.
 - [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Parallax realistic starfield with pointer interactions. CLI: `Galaxy`.
 - [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Layered gradient blinds with spotlight and noise distortion. CLI: `GradientBlinds`.
 - [Grid Distortion](https://www.reactbits.dev/backgrounds/grid-distortion): Warped grid mesh distorts smoothly reacting to cursor. CLI: `GridDistortion`.
@@ -141,6 +143,7 @@ Notes:
 - [Iridescence](https://www.reactbits.dev/backgrounds/iridescence): Slick iridescent shader with shifting waves. CLI: `Iridescence`.
 - [Letter Glitch](https://www.reactbits.dev/backgrounds/letter-glitch): Matrix style letter animation. CLI: `LetterGlitch`.
 - [Lightning](https://www.reactbits.dev/backgrounds/lightning): Procedural lightning bolts with branching and glow flicker. CLI: `Lightning`.
+- [Light Pillar](https://www.reactbits.dev/backgrounds/light-pillar): Vertical pillar of light with glow effects. CLI: `LightPillar`.
 - [Light Rays](https://www.reactbits.dev/backgrounds/light-rays): Volumetric light rays/beams with customizable direction. CLI: `LightRays`.
 - [Liquid Chrome](https://www.reactbits.dev/backgrounds/liquid-chrome): Liquid metallic chrome shader with flowing reflective surface. CLI: `LiquidChrome`.
 - [Liquid Ether](https://www.reactbits.dev/backgrounds/liquid-ether): Interactive liquid shader with flowing distortion and customizable colors. CLI: `LiquidEther`.

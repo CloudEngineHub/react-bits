@@ -2,11 +2,11 @@
 import fs from 'fs';
 import path from 'path';
 import process from 'process';
+import { componentMetadata } from '../src/constants/Information.js';
 
 const OUTPUT_FILENAME = 'llms.txt';
 const OUTPUT_DIR = path.join(process.cwd(), 'public');
 const OUTPUT_PATH = path.join(OUTPUT_DIR, OUTPUT_FILENAME);
-const REGISTRY_PATH = path.join(process.cwd(), 'registry.json');
 
 const CATEGORY_SLUGS = {
   Animations: 'animations',
@@ -16,14 +16,6 @@ const CATEGORY_SLUGS = {
 };
 
 const CATEGORY_ORDER = ['TextAnimations', 'Animations', 'Components', 'Backgrounds'];
-
-function readRegistry() {
-  if (!fs.existsSync(REGISTRY_PATH)) {
-    console.error('registry.json not found - run `npm run shadcn:generate` first.');
-    process.exit(1);
-  }
-  return JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
-}
 
 function pascalToTitle(name) {
   return name
@@ -39,27 +31,20 @@ function pascalToKebab(name) {
     .toLowerCase();
 }
 
-function collectComponents(registry) {
+function collectComponents(componentMetadata) {
   const categories = {};
-  const knownCategories = new Set(Object.keys(CATEGORY_SLUGS));
 
-  for (const item of registry.items || []) {
-    if (!item.files?.length) continue;
-    const primaryPath = item.files[0].path;
-    const segments = primaryPath.split(/[\\/]/);
+  for (const metadata of Object.values(componentMetadata)) {
+    const category = metadata.category;
+    if (!category || !CATEGORY_SLUGS[category]) continue;
 
-    const category = segments.find(s => knownCategories.has(s));
-    if (!category) continue;
-    const compName = item.title; // PascalCase
+    const compName = metadata.name;
     if (!categories[category]) categories[category] = {};
-    if (!categories[category][compName]) {
-      categories[category][compName] = {
-        name: compName,
-        description: item.description || ''
-      };
-    } else if (!categories[category][compName].description && item.description) {
-      categories[category][compName].description = item.description;
-    }
+
+    categories[category][compName] = {
+      name: compName,
+      description: metadata.description || ''
+    };
   }
   return categories;
 }
@@ -121,11 +106,10 @@ const CLI_INSTRUCTIONS = {
     ]
   },
   jsrepo: {
-    command: 'npx jsrepo add https://reactbits.dev/<variant>/<Category>/<Component>',
+    command: 'npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>',
     params: [
-      '<variant>: default | tailwind | ts/default | ts/tailwind',
-      '<Category>: TextAnimations | Animations | Components | Backgrounds',
-      'Example: npx jsrepo add https://reactbits.dev/default/TextAnimations/SplitText'
+      '<LANG>: JS | TS; <STYLE>: CSS | TW',
+      'Example: npx jsrepo@latest add https://reactbits.dev/r/SplitText-JS-CSS'
     ]
   },
   notes: [
@@ -248,8 +232,7 @@ function generateMarkdown(categories) {
 }
 
 function main() {
-  const registry = readRegistry();
-  const categories = collectComponents(registry);
+  const categories = collectComponents(componentMetadata);
   const md = generateMarkdown(categories);
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   fs.writeFileSync(OUTPUT_PATH, md, 'utf8');

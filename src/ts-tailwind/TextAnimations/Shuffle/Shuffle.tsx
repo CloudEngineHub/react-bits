@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
+import { JSX } from 'react';
 
-gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
+gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
 export interface ShuffleProps {
   text: string;
@@ -74,6 +75,15 @@ const Shuffle: React.FC<ShuffleProps> = ({
     } else setFontsLoaded(true);
   }, []);
 
+  const scrollTriggerStart = useMemo(() => {
+    const startPct = (1 - threshold) * 100;
+    const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
+    const mv = mm ? parseFloat(mm[1]) : 0;
+    const mu = mm ? mm[2] || 'px' : 'px';
+    const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
+    return `top ${startPct}%${sign}`;
+  }, [threshold, rootMargin]);
+
   useGSAP(
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
@@ -83,13 +93,7 @@ const Shuffle: React.FC<ShuffleProps> = ({
       }
 
       const el = ref.current as HTMLElement;
-
-      const startPct = (1 - threshold) * 100;
-      const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
-      const mv = mm ? parseFloat(mm[1]) : 0;
-      const mu = mm ? mm[2] || 'px' : 'px';
-      const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
-      const start = `top ${startPct}%${sign}`;
+      const start = scrollTriggerStart;
 
       const removeHover = () => {
         if (hoverHandlerRef.current && ref.current) {
@@ -120,6 +124,8 @@ const Shuffle: React.FC<ShuffleProps> = ({
 
       const build = () => {
         teardown();
+
+        const computedFont = getComputedStyle(el).fontFamily;
 
         splitRef.current = new GSAPSplitText(el, {
           type: 'chars',
@@ -155,18 +161,18 @@ const Shuffle: React.FC<ShuffleProps> = ({
 
           const firstOrig = ch.cloneNode(true) as HTMLElement;
           firstOrig.className = 'inline-block text-left';
-          Object.assign(firstOrig.style, { width: w + 'px' });
+          Object.assign(firstOrig.style, { width: w + 'px', fontFamily: computedFont });
 
           ch.setAttribute('data-orig', '1');
           ch.className = 'inline-block text-left';
-          Object.assign(ch.style, { width: w + 'px' });
+          Object.assign(ch.style, { width: w + 'px', fontFamily: computedFont });
 
           inner.appendChild(firstOrig);
           for (let k = 0; k < rolls; k++) {
             const c = ch.cloneNode(true) as HTMLElement;
             if (scrambleCharset) c.textContent = rand(scrambleCharset);
             c.className = 'inline-block text-left';
-            Object.assign(c.style, { width: w + 'px' });
+            Object.assign(c.style, { width: w + 'px', fontFamily: computedFont });
             inner.appendChild(c);
           }
           inner.appendChild(ch);
@@ -328,8 +334,7 @@ const Shuffle: React.FC<ShuffleProps> = ({
         duration,
         maxDelay,
         ease,
-        threshold,
-        rootMargin,
+        scrollTriggerStart,
         fontsLoaded,
         shuffleDirection,
         shuffleTimes,
@@ -342,20 +347,34 @@ const Shuffle: React.FC<ShuffleProps> = ({
         colorTo,
         triggerOnce,
         respectReducedMotion,
-        triggerOnHover
+        triggerOnHover,
+        onShuffleComplete
       ],
       scope: ref
     }
   );
 
-  const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-[4rem] leading-none';
-  const commonStyle: React.CSSProperties = {
-    textAlign,
-    fontFamily: `'Press Start 2P', sans-serif`,
-    ...style
-  };
+  const baseTw = 'inline-block whitespace-normal break-words will-change-transform uppercase text-2xl leading-none';
+  const userHasFont = useMemo(() => className && /font[-[]/i.test(className), [className]);
 
-  const classes = `${baseTw} ${ready ? 'visible' : 'invisible'} ${className}`.trim();
+  const fallbackFont = useMemo(
+    () => (userHasFont ? {} : { fontFamily: `'Press Start 2P', sans-serif` }),
+    [userHasFont]
+  );
+
+  const commonStyle = useMemo(
+    () => ({
+      textAlign,
+      ...fallbackFont,
+      ...style
+    }),
+    [textAlign, fallbackFont, style]
+  );
+
+  const classes = useMemo(
+    () => `${baseTw} ${ready ? 'visible' : 'invisible'} ${className}`.trim(),
+    [baseTw, ready, className]
+  );
   const Tag = (tag || 'p') as keyof JSX.IntrinsicElements;
 
   return React.createElement(Tag, { ref: ref as any, className: classes, style: commonStyle }, text);

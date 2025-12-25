@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 
 interface TrueFocusProps {
   sentence?: string;
+  separator?: string;
   manualMode?: boolean;
   blurAmount?: number;
   borderColor?: string;
@@ -20,6 +21,7 @@ interface FocusRect {
 
 const TrueFocus: React.FC<TrueFocusProps> = ({
   sentence = 'True Focus',
+  separator = ' ',
   manualMode = false,
   blurAmount = 5,
   borderColor = 'green',
@@ -27,7 +29,7 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
   animationDuration = 0.5,
   pauseBetweenAnimations = 1
 }) => {
-  const words = sentence.split(' ');
+  const words = sentence.split(separator);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +78,11 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
   };
 
   return (
-    <div className="relative flex gap-4 justify-center items-center flex-wrap" ref={containerRef}>
+    <div
+      className="relative flex gap-4 justify-center items-center flex-wrap"
+      ref={containerRef}
+      style={{ outline: 'none', userSelect: 'none' }}
+    >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
         return (
@@ -95,7 +101,9 @@ const TrueFocus: React.FC<TrueFocusProps> = ({
                   : isActive
                     ? `blur(0px)`
                     : `blur(${blurAmount}px)`,
-                transition: `filter ${animationDuration}s ease`
+                transition: `filter ${animationDuration}s ease`,
+                outline: 'none',
+                userSelect: 'none'
               } as React.CSSProperties
             }
             onMouseEnter={() => handleMouseEnter(index)}
