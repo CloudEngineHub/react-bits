@@ -1,10 +1,41 @@
+/**
+ * @typedef {'Animations' | 'Backgrounds' | 'Components' | 'TextAnimations'} Category
+ */
+/**
+ * The supported code/component variants for the registry system.
+ * 
+ * @type {readonly ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW']}
+ */
+export const VARIANTS = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW'];
+
+/**
+ * @typedef {'JS-CSS' | 'JS-TW' | 'TS-CSS' | 'TS-TW'} Variant
+ */
+
+/**
+ * Type for all component metadata, including enforcement of the Category field.
+ * 
+ * @typedef {Object} ComponentMetadata
+ * @property {string} videoUrl
+ * @property {string} description
+ * @property {Category} category
+ * @property {string} name
+ * @property {string} docsUrl
+ * @property {string[]} tags
+ * @property {Variant[]} [variants]
+ * @property {Record<string, any>} [meta]
+ */
+
+/** 
+ * @type {Record<string, ComponentMetadata>} 
+ */
 export const componentMetadata = {
 
   //! Animations -------------------------------------------------------------------------------------------------------------------------------
 
   'Animations/AnimatedContent': {
     videoUrl: '/assets/video/animatedcontent.webm',
-    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration and easing.',
+    description: 'Wrapper that animates any children on scroll or mount with configurable direction, distance, duration, easing and disappear options.',
     category: 'Animations',
     name: 'AnimatedContent',
     docsUrl: 'https://reactbits.dev/animations/animated-content',
@@ -52,7 +83,7 @@ export const componentMetadata = {
   },
   'Animations/FadeContent': {
     videoUrl: '/assets/video/fadecontent.webm',
-    description: 'Simple directional fade / slide entrance wrapper with threshold-based activation.',
+    description: 'Simple directional fade / slide entrance / exit wrapper with threshold-based activation.',
     category: 'Animations',
     name: 'FadeContent',
     docsUrl: 'https://reactbits.dev/animations/fade-content',
@@ -208,6 +239,14 @@ export const componentMetadata = {
     category: 'Animations',
     name: 'LaserFlow',
     docsUrl: 'https://reactbits.dev/animations/laser-flow',
+    tags: []
+  },
+  'Animations/Antigravity': {
+    videoUrl: '/assets/video/antigravity.webm',
+    description: '3D antigravity particle field that repels from the cursor with smooth motion.',
+    category: 'Animations',
+    name: 'Antigravity',
+    docsUrl: 'https://reactbits.dev/animations/antigravity',
     tags: []
   },
 
@@ -621,7 +660,8 @@ export const componentMetadata = {
     category: 'Components',
     name: 'ProfileCard',
     docsUrl: 'https://reactbits.dev/components/profile-card',
-    tags: []
+    tags: [],
+    variants: ['JS-CSS', 'TS-CSS']
   },
   'Components/ScrollStack': {
     videoUrl: '/assets/video/scrollstack.webm',
@@ -641,7 +681,7 @@ export const componentMetadata = {
   },
   'Components/Stack': {
     videoUrl: '/assets/video/stack.webm',
-    description: 'Layered stack with swipe animations and smooth transitions.',
+    description: 'Layered stack with swipe animations, autoplay and smooth transitions.',
     category: 'Components',
     name: 'Stack',
     docsUrl: 'https://reactbits.dev/components/stack',
@@ -669,6 +709,14 @@ export const componentMetadata = {
     category: 'Components',
     name: 'StaggeredMenu',
     docsUrl: 'https://reactbits.dev/components/staggered-menu',
+    tags: []
+  },
+  'Components/ReflectiveCard': {
+    videoUrl: '/assets/video/reflectivecard.webm',
+    description: 'Card with dynamic webcam reflection and glare effects that respond to cursor movement.',
+    category: 'Components',
+    name: 'ReflectiveCard',
+    docsUrl: 'https://reactbits.dev/components/reflective-card',
     tags: []
   },
 
@@ -928,6 +976,30 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'LiquidEther',
     docsUrl: 'https://reactbits.dev/backgrounds/liquid-ether',
+    tags: []
+  },
+  'Backgrounds/FloatingLines': {
+    videoUrl: '/assets/video/floatinglines.webm',
+    description: '3D floating lines that react to cursor movement.',
+    category: 'Backgrounds',
+    name: 'FloatingLines',
+    docsUrl: 'https://reactbits.dev/backgrounds/floating-lines',
+    tags: []
+  },
+  'Backgrounds/LightPillar': {
+    videoUrl: '/assets/video/lightpillar.webm',
+    description: 'Vertical pillar of light with glow effects.',
+    category: 'Backgrounds',
+    name: 'LightPillar',
+    docsUrl: 'https://reactbits.dev/backgrounds/light-pillar',
+    tags: []
+  },
+  'Backgrounds/PixelSnow': {
+    videoUrl: '/assets/video/pixelsnow.webm',
+    description: 'Falling pixelated snow effect with customizable density and speed.',
+    category: 'Backgrounds',
+    name: 'PixelSnow',
+    docsUrl: 'https://reactbits.dev/backgrounds/pixel-snow',
     tags: []
   }
 };

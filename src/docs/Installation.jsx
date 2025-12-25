@@ -123,7 +123,7 @@ const Installation = () => {
             shadcn
           </h4>
           <p className="docs-paragraph short"></p>
-          <CodeBlock>{`npx shadcn@latest add https://reactbits.dev/r/SplitText-<LANGUAGE>-<STYLE>`}</CodeBlock>
+          <CodeBlock>{`npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`}</CodeBlock>
           <p className="docs-paragraph short">&lt;LANGUAGE&gt; + &lt;STYLE&gt; combinations:</p>
           <ul className="docs-list">
             <li className="docs-list-item">
@@ -144,7 +144,7 @@ const Installation = () => {
             jsrepo
           </h4>
           <p className="docs-paragraph short"></p>
-          <CodeBlock>{`npx jsrepo add https://reactbits.dev/<VARIANT>/TextAnimations/SplitText`}</CodeBlock>
+          <CodeBlock>{`npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`}</CodeBlock>
           <p className="docs-paragraph short">&lt;VARIANT&gt; options:</p>
           <ul className="docs-list">
             <li className="docs-list-item">

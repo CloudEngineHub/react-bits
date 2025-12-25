@@ -29,7 +29,8 @@ const animations = {
   'sticker-peel': () => import('../demo/Animations/StickerPeelDemo'),
   'electric-border': () => import('../demo/Animations/ElectricBorderDemo'),
   'laser-flow': () => import('../demo/Animations/LaserFlowDemo'),
-  'ghost-cursor': () => import('../demo/Animations/GhostCursorDemo')
+  'ghost-cursor': () => import('../demo/Animations/GhostCursorDemo'),
+  'antigravity': () => import('../demo/Animations/AntigravityDemo')
 };
 
 const textAnimations = {
@@ -93,7 +94,8 @@ const components = {
   'card-nav': () => import('../demo/Components/CardNavDemo'),
   'bubble-menu': () => import('../demo/Components/BubbleMenuDemo'),
   'dome-gallery': () => import('../demo/Components/DomeGalleryDemo'),
-  'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo')
+  'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo'),
+  'reflective-card': () => import('../demo/Components/ReflectiveCardDemo')
 };
 
 const backgrounds = {
@@ -128,7 +130,10 @@ const backgrounds = {
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
   'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
-  'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx')
+  'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx'),
+  'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx'),
+  'light-pillar': () => import('../demo/Backgrounds/LightPillarDemo.jsx'),
+  'pixel-snow': () => import('../demo/Backgrounds/PixelSnowDemo.jsx')
 };
 
 export const componentMap = {

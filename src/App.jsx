@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { ActiveRouteProvider } from './components/context/ActiveRouteContext/ActiveRouteContext';
 import { forceChakraDarkTheme } from './utils/utils';
 
+import AnnouncementBar from './components/landing/AnnouncementBar/AnnouncementBar';
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
 import SidebarLayout from './components/layout/SidebarLayout';
 import LandingPage from './pages/LandingPage';
@@ -26,7 +27,18 @@ function AppContent() {
 
   return (
     <>
-      {!isSidebarPage && <DisplayHeader activeItem={getActiveItem()} />}
+      {!isSidebarPage && (
+        <>
+          <AnnouncementBar
+            message="React Bits Pro is coming: 56+ pro components, 100+ UI blocks, 5+ full templates. Click to join waitlist."
+            link="https://pro.reactbits.dev"
+            backgroundColor={location.pathname === '/' ? undefined : '#5227FF'}
+            noBorder={location.pathname !== '/'}
+            className="landing-bar"
+          />
+          <DisplayHeader activeItem={getActiveItem()} />
+        </>
+      )}
       <Providers>
         <Routes>
           <Route exact path="/" element={<LandingPage />} />

@@ -1,14 +1,18 @@
 // Highlighted sidebar items
 export const NEW = [
-  'Pixel Blast',
   'Liquid Ether',
   'Shuffle',
   'Laser Flow',
   'Ghost Cursor',
   'Color Bends',
-  'Grid Scan'
+  'Grid Scan',
+  'Floating Lines',
+  'Light Pillar',
+  'Antigravity',
+  'Reflective Card',
+  'Pixel Snow'
 ];
-export const UPDATED = ['Profile Card', 'Logo Loop'];
+export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
@@ -52,6 +56,7 @@ export const CATEGORIES = [
       'Electric Border',
       'Pixel Transition',
       'Glare Hover',
+      'Antigravity',
       'Logo Loop',
       'Target Cursor',
       'Laser Flow',
@@ -83,6 +88,7 @@ export const CATEGORIES = [
       'Bubble Menu',
       'Magic Bento',
       'Circular Gallery',
+      'Reflective Card',
       'Card Nav',
       'Stack',
       'Fluid Glass',
@@ -120,7 +126,9 @@ export const CATEGORIES = [
       'Liquid Ether',
       'Prism',
       'Dark Veil',
+      'Light Pillar',
       'Silk',
+      'Floating Lines',
       'Light Rays',
       'Pixel Blast',
       'Color Bends',
@@ -130,6 +138,7 @@ export const CATEGORIES = [
       'Gradient Blinds',
       'Grid Scan',
       'Beams',
+      'Pixel Snow',
       'Lightning',
       'Prismatic Burst',
       'Galaxy',

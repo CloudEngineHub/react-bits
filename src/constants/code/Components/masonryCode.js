@@ -2,6 +2,7 @@ import code from '@content/Components/Masonry/Masonry.jsx?raw';
 import tailwind from '@tailwind/Components/Masonry/Masonry.jsx?raw';
 import tsCode from '@ts-default/Components/Masonry/Masonry.tsx?raw';
 import tsTailwind from '@ts-tailwind/Components/Masonry/Masonry.tsx?raw';
+import css from '@content/Components/Masonry/Masonry.css?raw';
 
 export const masonry = {
   dependencies: `gsap`,
@@ -44,5 +45,6 @@ const items = [
   code,
   tailwind,
   tsCode,
-  tsTailwind
+  tsTailwind,
+  css
 };

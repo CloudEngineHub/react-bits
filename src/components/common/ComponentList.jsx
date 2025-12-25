@@ -9,8 +9,10 @@ import {
   Portal,
   Select,
   Text,
-  createListCollection
+  createListCollection,
+  Button
 } from '@chakra-ui/react';
+import { Dialog } from '@chakra-ui/react';
 import { Grid as RVGrid, AutoSizer, WindowScroller } from 'react-virtualized';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -26,6 +28,8 @@ import {
   removeSavedComponent,
   toggleSavedComponent
 } from '../../utils/favorites';
+import { FaChevronRight, FaPlay } from 'react-icons/fa';
+import Aurora from '@/content/Backgrounds/Aurora/Aurora';
 
 const CARD_RADIUS = 30;
 const CARD_PADDING = 6;
@@ -38,56 +42,13 @@ const fromPascal = str =>
     .replace(/_/g, ' ')
     .trim();
 
-const supportsType = type => {
-  try {
-    const v = document.createElement('video');
-    if (!('canPlayType' in v)) return false;
-    const res = v.canPlayType(type);
-    return res === 'probably' || res === 'maybe';
-  } catch (e) {
-    return false;
-  }
-};
-
-const prefersWebM = () => supportsType('video/webm; codecs="vp9,vorbis"') || supportsType('video/webm');
-
-const pickBestSource = url => {
-  if (!url) return '';
-  if (url.endsWith('.webm')) {
-    if (prefersWebM()) return url;
-    const mp4 = url.replace(/\.webm$/, '.mp4');
-    return mp4;
-  }
-  if (url.endsWith('.mp4')) {
-    return url;
-  }
-  return url;
-};
-
-const shouldPreload = () => {
-  try {
-    const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (c?.saveData) return false;
-    const slowTypes = new Set(['slow-2g', '2g']);
-    if (c?.effectiveType && slowTypes.has(c.effectiveType)) return false;
-  } catch (e) {
-    // noop
-  }
-  return true;
-};
-
-// Previously used to gate media by viewport. We now gate via RVGrid's visible range for reliability.
-
 const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = false, sorting = 'none', title }) => {
   const scrollRef = useRef(null);
   const GAP_PX = 16;
-  const preloadedSrcsRef = useRef(new Set());
   const [hoveredKey, setHoveredKey] = useState(null);
   const clearSlotRef = useRef(null);
   const clearBtnRef = useRef(null);
   const CLEAR_APPEAR_DEBOUNCE_MS = 300;
-  const visibleRangeRef = useRef({ rowStart: 0, rowStop: -1, columnStart: 0, columnStop: -1 });
-  const [, forceTick] = useState(0);
 
   const setHoverToItemAtPoint = useCallback((x, y) => {
     try {
@@ -150,6 +111,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   const [selectedCategory, setSelectedCategory] = useState(categories.items[0]);
   const [search, setSearch] = useState('');
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   useEffect(() => {
     setSelectedCategory(prev => (categories.items.includes(prev) ? prev : categories.items[0]));
@@ -215,42 +177,6 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   const getColumnsForWidth = useCallback(w => (w >= 900 ? 3 : w >= 640 ? 2 : 1), []);
 
-  const preloadRange = useCallback(
-    (startIdx, endIdx) => {
-      if (!shouldPreload()) return;
-      const urls = [];
-      for (let i = startIdx; i <= Math.min(endIdx, filtered.length - 1); i++) {
-        const url = filtered[i]?.videoUrl;
-        if (!url) continue;
-        const chosen = pickBestSource(url);
-        if (chosen && !preloadedSrcsRef.current.has(chosen)) {
-          urls.push(chosen);
-        }
-      }
-      if (urls.length === 0) return;
-      urls.forEach(src => {
-        try {
-          const v = document.createElement('video');
-          v.preload = 'metadata';
-          v.src = src;
-          const mark = () => {
-            preloadedSrcsRef.current.add(src);
-          };
-          v.addEventListener('loadedmetadata', mark, { once: true });
-          v.addEventListener('loadeddata', mark, { once: true });
-          v.addEventListener('canplaythrough', mark, { once: true });
-          v.load();
-          setTimeout(() => {
-            v.src = '';
-          }, 8000);
-        } catch (e) {
-          // no-op
-        }
-      });
-    },
-    [filtered]
-  );
-
   const clearFilters = () => {
     setSearch('');
     setSelectedCategory(categories.items[0]);
@@ -258,6 +184,127 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   return (
     <Box className="category-page" ref={scrollRef}>
+      <Flex
+        position="relative"
+        w="100%"
+        h="110px"
+        border="1px solid #170D27"
+        overflow="hidden"
+        bg="#060010"
+        mb={6}
+        cursor="pointer"
+        alignItems="center"
+        pl={{ base: 4, md: 8 }}
+        pr={2}
+        borderRadius="25px"
+        onClick={() => setIsVideoOpen(true)}
+      >
+        <Flex
+          direction="column"
+          position="relative"
+          zIndex={1}
+          alignSelf={{ base: 'flex-start', md: 'center' }}
+          pt={{ base: 4, md: 0 }}
+        >
+          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#FFFFFF" letterSpacing={'-.5px'}>
+            React Bits Pro is coming.
+          </Text>
+          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
+            Watch the latest teaser{' '}
+            <Icon boxSize={{ base: 2, md: 3 }} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
+          </Text>
+        </Flex>
+
+        <Box
+          border="1px solid #271E37"
+          h="93px"
+          aspectRatio={{ base: '1', md: '16/9' }}
+          ml="auto"
+          bg="#060010"
+          backgroundImage="url('/assets/demo/poster.jpg')"
+          backgroundSize="cover"
+          backgroundPosition="center"
+          borderRadius="17px"
+          cursor="pointer"
+          filter={'brightness(0.75)'}
+          onClick={() => setIsVideoOpen(true)}
+          _hover={{ borderColor: '#271E37', filter: 'brightness(1.0)' }}
+          transition="all 0.2s"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          zIndex={1}
+        >
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            bg="rgba(6, 0, 16, 0.4)"
+            borderRadius="17px"
+            zIndex={1}
+          />
+          <Box
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            background="linear-gradient(135deg, #FF9FFC 0%, #5227FF 50%, #FF9FFC 100%)"
+            borderRadius="17px"
+            w="100%"
+            h="100%"
+            zIndex={2}
+            pointerEvents="none"
+            opacity={0.3}
+            mixBlendMode="overlay"
+          />
+          <Icon as={FaPlay} boxSize={6} color="#ffffff" zIndex={10} />
+        </Box>
+
+        <Box position="absolute" top={0} left={0} w="100%" h="100%" zIndex={0} rotate={'180deg'} opacity={0.25}>
+          <Aurora colorStops={['#FF9FFC', '#5227FF', '#FF9FFC']} amplitude={6} blend={5} />
+        </Box>
+      </Flex>
+
+      <Dialog.Root open={isVideoOpen} onOpenChange={e => setIsVideoOpen(e.open)} size="xl">
+        <Dialog.Backdrop bg="rgba(0,0,0,0.7)" />
+        <Dialog.Positioner placement="center" display="flex" alignItems="center" justifyContent="center">
+          <Dialog.Content bg="#060010" border="1px solid #170D27" maxW="800px" borderRadius="20px">
+            <Dialog.CloseTrigger color="#B19EEF" />
+            <Dialog.Body>
+              <Box w="100%" aspectRatio={16 / 9} bg="#000" borderRadius="12px" overflow="hidden" my={4}>
+                <video
+                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/rbpteasertwo.mp4"
+                  controls
+                  autoPlay
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </Box>
+              <Button
+                bg="#ffffff"
+                color="#060010"
+                _hover={{ bg: '#f5f5f5' }}
+                size="lg"
+                borderRadius="full"
+                w="100%"
+                onClick={() => {
+                  window.open('https://pro.reactbits.dev/waitlist', '_blank');
+                }}
+              >
+                Join the Waitlist
+              </Button>
+
+              <Text mt={4} color="#B19EEF" textAlign="center">
+                Get an exclusive 35% discount on launch
+              </Text>
+            </Dialog.Body>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+
       <Flex
         className="page-transition-fade"
         mb={12}
@@ -479,12 +526,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                         const to = `/${slug(fromPascal(item.categoryKey))}/${slug(fromPascal(item.componentKey))}`;
                         const isSaved = savedSet.has(item.key) || isComponentSaved(item.key);
                         const isLastCol = columnIndex === columnCount - 1;
-                        const vr = visibleRangeRef.current;
-                        const active =
-                          rowIndex >= vr.rowStart &&
-                          rowIndex <= vr.rowStop &&
-                          columnIndex >= vr.columnStart &&
-                          columnIndex <= vr.columnStop;
+
                         const cellStyle = {
                           ...style,
                           width: columnWidth,
@@ -596,37 +638,14 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   </IconButton>
                                 ) : null}
                               </Box>
-                              <LazyCardMedia key={item.videoUrl || item.key} videoUrl={item.videoUrl} active={active} />
+                              <LazyCardMedia
+                                key={item.videoUrl || item.key}
+                                videoUrl={item.videoUrl}
+                                playing={hoveredKey === item.key}
+                              />
                             </Box>
                           </div>
                         );
-                      };
-
-                      const onSectionRendered = ({
-                        rowStartIndex,
-                        rowStopIndex,
-                        columnStartIndex,
-                        columnStopIndex
-                      }) => {
-                        const prev = visibleRangeRef.current;
-                        if (
-                          prev.rowStart !== rowStartIndex ||
-                          prev.rowStop !== rowStopIndex ||
-                          prev.columnStart !== columnStartIndex ||
-                          prev.columnStop !== columnStopIndex
-                        ) {
-                          visibleRangeRef.current = {
-                            rowStart: rowStartIndex,
-                            rowStop: rowStopIndex,
-                            columnStart: columnStartIndex,
-                            columnStop: columnStopIndex
-                          };
-
-                          forceTick(t => (t + 1) % 1000);
-                        }
-
-                        const lastVisibleIndex = rowStopIndex * columnCount + columnStopIndex;
-                        preloadRange(lastVisibleIndex + 1, lastVisibleIndex + 3);
                       };
 
                       return (
@@ -643,7 +662,6 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                           isScrolling={isScrolling}
                           onScroll={onChildScroll}
                           scrollTop={scrollTop}
-                          onSectionRendered={onSectionRendered}
                         />
                       );
                     }}
@@ -658,9 +676,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   );
 };
 
-const LazyCardMedia = ({ videoUrl, active }) => {
+const LazyCardMedia = ({ videoUrl, playing }) => {
   const videoRef = useRef(null);
-  const show = !!videoUrl && !!active;
+
+  const show = !!videoUrl;
 
   const base = useMemo(() => (videoUrl ? videoUrl.replace(/\.(webm|mp4)$/i, '') : ''), [videoUrl]);
   const webm = base ? `${base}.webm` : '';
@@ -668,60 +687,52 @@ const LazyCardMedia = ({ videoUrl, active }) => {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !show) return;
-    let mounted = true;
+    if (!v) return;
 
-    const tryPlay = () => {
-      if (!mounted) return;
-      try {
-        const p = v.play();
-        if (p && typeof p.then === 'function') p.catch(() => {});
-      } catch (e) {
-        // ignore autoplay errors
-      }
-    };
-
-    if (v.readyState >= 3) {
-      tryPlay();
-    } else {
-      const onLoadedMeta = () => tryPlay();
-      const onCanPlay = () => tryPlay();
-      const onLoadedData = () => tryPlay();
-      const onCanPlayThrough = () => tryPlay();
-      v.addEventListener('loadedmetadata', onLoadedMeta);
-      v.addEventListener('canplay', onCanPlay);
-      v.addEventListener('loadeddata', onLoadedData);
-      v.addEventListener('canplaythrough', onCanPlayThrough);
-      const id = setTimeout(tryPlay, 1200);
-      return () => {
-        clearTimeout(id);
-        v.removeEventListener('loadedmetadata', onLoadedMeta);
-        v.removeEventListener('canplay', onCanPlay);
-        v.removeEventListener('loadeddata', onLoadedData);
-        v.removeEventListener('canplaythrough', onCanPlayThrough);
+    if (playing) {
+      const tryPlay = () => {
+        try {
+          const p = v.play();
+          if (p && typeof p.then === 'function') {
+            p.catch(() => {});
+          }
+        } catch (e) {
+          // ignore
+        }
       };
-    }
 
-    return () => {
-      mounted = false;
+      if (v.readyState >= 3) {
+        tryPlay();
+      } else {
+        const onCanPlay = () => tryPlay();
+        v.addEventListener('canplay', onCanPlay, { once: true });
+        return () => {
+          v.removeEventListener('canplay', onCanPlay);
+        };
+      }
+    } else {
       try {
         v.pause();
       } catch (e) {
-        // ignore pause errors
+        // ignore
       }
-    };
-  }, [show]);
+    }
+  }, [playing]);
+  const handleLoadedMetadata = e => {
+    const v = e.target;
+    v.currentTime = 0.1;
+  };
 
   return (
     <Box h="200px" bg="#000" borderRadius={INNER_RADIUS} overflow="hidden">
       {show ? (
         <video
           ref={videoRef}
-          autoPlay
           loop
           muted
           playsInline
           preload="metadata"
+          onLoadedMetadata={handleLoadedMetadata}
           style={{
             width: '100%',
             height: '100%',

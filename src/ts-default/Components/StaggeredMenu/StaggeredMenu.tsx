@@ -26,6 +26,7 @@ export interface StaggeredMenuProps {
   openMenuButtonColor?: string;
   accentColor?: string;
   changeMenuColorOnOpen?: boolean;
+  closeOnClickAway?: boolean;
   onMenuOpen?: () => void;
   onMenuClose?: () => void;
   isFixed?: boolean;
@@ -45,6 +46,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   changeMenuColorOnOpen = true,
   accentColor = '#5227FF',
   isFixed = false,
+  closeOnClickAway = true,
   onMenuOpen,
   onMenuClose
 }: StaggeredMenuProps) => {
@@ -345,6 +347,38 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     animateColor(target);
     animateText(target);
   }, [playOpen, playClose, animateIcon, animateColor, animateText]);
+
+  const closeMenu = useCallback(() => {
+    if (openRef.current) {
+      openRef.current = false;
+      setOpen(false);
+      onMenuClose?.();
+      playClose();
+      animateIcon(false);
+      animateColor(false);
+      animateText(false);
+    }
+  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+
+  React.useEffect(() => {
+    if (!closeOnClickAway || !open) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node) &&
+        toggleBtnRef.current &&
+        !toggleBtnRef.current.contains(event.target as Node)
+      ) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [closeOnClickAway, open, closeMenu]);
 
   return (
     <div

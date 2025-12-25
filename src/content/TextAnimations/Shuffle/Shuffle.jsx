@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
@@ -49,6 +49,15 @@ const Shuffle = ({
     } else setFontsLoaded(true);
   }, []);
 
+  const scrollTriggerStart = useMemo(() => {
+    const startPct = (1 - threshold) * 100;
+    const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
+    const mv = mm ? parseFloat(mm[1]) : 0;
+    const mu = mm ? mm[2] || 'px' : 'px';
+    const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
+    return `top ${startPct}%${sign}`;
+  }, [threshold, rootMargin]);
+
   useGSAP(
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
@@ -60,12 +69,7 @@ const Shuffle = ({
 
       const el = ref.current;
 
-      const startPct = (1 - threshold) * 100;
-      const mm = /^(-?\d+(?:\.\d+)?)(px|em|rem|%)?$/.exec(rootMargin || '');
-      const mv = mm ? parseFloat(mm[1]) : 0;
-      const mu = mm ? mm[2] || 'px' : 'px';
-      const sign = mv === 0 ? '' : mv < 0 ? `-=${Math.abs(mv)}${mu}` : `+=${mv}${mu}`;
-      const start = `top ${startPct}%${sign}`;
+      const start = scrollTriggerStart;
 
       const removeHover = () => {
         if (hoverHandlerRef.current && ref.current) {
@@ -313,8 +317,7 @@ const Shuffle = ({
         duration,
         maxDelay,
         ease,
-        threshold,
-        rootMargin,
+        scrollTriggerStart,
         fontsLoaded,
         shuffleDirection,
         shuffleTimes,
@@ -327,14 +330,17 @@ const Shuffle = ({
         colorTo,
         triggerOnce,
         respectReducedMotion,
-        triggerOnHover
+        triggerOnHover,
+        onShuffleComplete
       ],
       scope: ref
     }
   );
 
-  const commonStyle = { textAlign, ...style };
-  const classes = `shuffle-parent ${ready ? 'is-ready' : ''} ${className}`;
+  const commonStyle = useMemo(() => ({ textAlign, ...style }), [textAlign, style]);
+
+  const classes = useMemo(() => `shuffle-parent ${ready ? 'is-ready' : ''} ${className}`, [ready, className]);
+
   const Tag = tag || 'p';
   return React.createElement(Tag, { ref, className: classes, style: commonStyle }, text);
 };

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, FC } from 'react';
+import { useEffect, useRef, FC, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import './GridMotion.css';
 
 interface GridMotionProps {
-  items?: string[];
+  items?: (string | ReactNode)[];
   gradientColor?: string;
 }
 
