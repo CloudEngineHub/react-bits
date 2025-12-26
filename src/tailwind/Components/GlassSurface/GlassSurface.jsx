@@ -44,6 +44,8 @@ const GlassSurface = ({
   const redGradId = `red-grad-${uniqueId}`;
   const blueGradId = `blue-grad-${uniqueId}`;
 
+  const [svgSupported, setSvgSupported] = useState(false)
+
   const containerRef = useRef < HTMLDivElement > null;
   const feImageRef = useRef < SVGFEImageElement > null;
   const redChannelRef = useRef < SVGFEDisplacementMapElement > null;
@@ -154,8 +156,17 @@ const GlassSurface = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height]);
 
+  useEffect(() => {
+    setSvgSupported(supportsSVGFilters());
+  }, []);
+
   const supportsSVGFilters = () => {
-    const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return false;
+    }
+
+    const isWebkit =
+      /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
     if (isWebkit || isFirefox) {
@@ -164,8 +175,10 @@ const GlassSurface = ({
 
     const div = document.createElement('div');
     div.style.backdropFilter = `url(#${filterId})`;
+
     return div.style.backdropFilter !== '';
   };
+
 
   const supportsBackdropFilter = () => {
     if (typeof window === 'undefined') return false;
@@ -182,7 +195,6 @@ const GlassSurface = ({
       '--glass-saturation': saturation
     };
 
-    const svgSupported = supportsSVGFilters();
     const backdropFilterSupported = supportsBackdropFilter();
 
     if (svgSupported) {
