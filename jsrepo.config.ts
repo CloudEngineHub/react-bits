@@ -2,6 +2,23 @@ import { defineConfig, type RegistryItem } from 'jsrepo';
 import { output } from '@jsrepo/shadcn';
 import { type Category, componentMetadata, type Variant } from './src/constants/Information';
 
+// Components that have non-code assets which should use manual dependency resolution.
+// Key format: `${category}/${title}` to keep it unique.
+const MANUAL_ASSETS: Record<
+  string,
+  { path: string; dependencyResolution: 'manual' }[]
+> = {
+  'Components/Lanyard': [
+    { path: 'card.glb', dependencyResolution: 'manual' },
+    { path: 'lanyard.png', dependencyResolution: 'manual' }
+  ],
+
+  // Example: if ModelViewer had a model file you wanted to mark as manual too:
+  // 'Components/ModelViewer': [
+  //   { path: 'model.glb', dependencyResolution: 'manual' }
+  // ]
+};
+
 export default defineConfig({
   registry: {
     name: '@react-bits',
@@ -78,6 +95,28 @@ function defineComponent({
     meta
   };
 
+  // Unique key for this component in MANUAL_ASSETS
+  const key = `${category}/${title}`;
+
+   const manualFiles =
+    MANUAL_ASSETS[key] && MANUAL_ASSETS[key].length > 0
+      ? MANUAL_ASSETS[key]
+      : [];
+
+  const withManualFiles = (basePath: string) =>
+    manualFiles.length > 0
+      ? [
+          {
+            path: basePath,
+            files: manualFiles
+          }
+        ]
+      : [
+          {
+            path: basePath
+          }
+        ];
+
   // this might warrant a bit of explanation
   // basically we check if the variant is included in the variants array and if so we return the item as part of an array
   // otherwise we return an empty array
@@ -89,11 +128,7 @@ function defineComponent({
           {
             ...baseItem,
             name: `${baseItem.title}-JS-CSS`,
-            files: [
-              {
-                path: `src/content/${category}/${title}`
-              }
-            ]
+            files: withManualFiles(`src/content/${category}/${title}`)
           }
         ]
       : []),
@@ -104,11 +139,7 @@ function defineComponent({
           {
             ...baseItem,
             name: `${baseItem.title}-JS-TW`,
-            files: [
-              {
-                path: `src/tailwind/${category}/${title}`
-              }
-            ]
+            files: withManualFiles(`src/tailwind/${category}/${title}`)
           }
         ]
       : []),
@@ -119,11 +150,7 @@ function defineComponent({
           {
             ...baseItem,
             name: `${baseItem.title}-TS-CSS`,
-            files: [
-              {
-                path: `src/ts-default/${category}/${title}`
-              }
-            ]
+            files: withManualFiles(`src/ts-default/${category}/${title}`)
           }
         ]
       : []),
@@ -134,11 +161,7 @@ function defineComponent({
           {
             ...baseItem,
             name: `${baseItem.title}-TS-TW`,
-            files: [
-              {
-                path: `src/ts-tailwind/${category}/${title}`
-              }
-            ]
+            files: withManualFiles(`src/ts-tailwind/${category}/${title}`)
           }
         ]
       : [])
