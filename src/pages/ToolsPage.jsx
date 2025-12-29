@@ -9,7 +9,6 @@ import '../tools/tools.css';
 import Footer from '@/components/landing/Footer/Footer';
 import Aurora from '@/content/Backgrounds/Aurora/Aurora';
 
-// Lazy load tools
 const BackgroundStudio = lazy(() => import('../tools/background-studio/BackgroundStudio'));
 const ShapeMagic = lazy(() => import('../tools/shape-magic/ShapeMagic'));
 const TextureLab = lazy(() => import('../tools/texture-lab/TextureLab'));
@@ -59,7 +58,6 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [setIsOpen]);
 
-  // Create tooltip element in body
   useEffect(() => {
     const tooltip = document.createElement('div');
     tooltip.id = 'tool-info-tooltip';
@@ -90,7 +88,6 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
     };
   }, []);
 
-  // Update tooltip visibility and position
   useEffect(() => {
     if (tooltipRef.current && infoRef.current) {
       if (tooltipVisible) {
@@ -280,7 +277,17 @@ export default function ToolsPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
-  // Show tools showcase if no specific tool selected
+  useEffect(() => {
+    if (!toolId) {
+      document.title = 'React Bits - Tools';
+    } else {
+      const tool = TOOLS.find(t => t.id === toolId);
+      if (tool) {
+        document.title = `React Bits - ${tool.label}`;
+      }
+    }
+  }, [toolId]);
+
   if (!toolId) {
     return (
       <Box minH="100vh" bg="#060010" display="flex" flexDirection="column">

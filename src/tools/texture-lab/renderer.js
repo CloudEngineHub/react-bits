@@ -307,6 +307,19 @@ export class WebGLRenderer {
     const width = targetWidth || this.imageWidth;
     const height = targetHeight || this.imageHeight;
 
+    // Calculate what the draft preview resolution would be (max 1000px on longest side)
+    // This is the "reference" resolution that the user designs at
+    let referenceWidth = this.imageWidth;
+    if (this.imageWidth > 1000 || this.imageHeight > 1000) {
+      const previewScale = Math.min(1000 / this.imageWidth, 1000 / this.imageHeight);
+      referenceWidth = Math.round(this.imageWidth * previewScale);
+    }
+
+    // Scale pixel-based effects relative to the preview reference
+    // At preview resolution: renderScale = 1.0 (no change)
+    // At export resolution: renderScale > 1.0 (scale up to maintain visual appearance)
+    const renderScale = referenceWidth > 0 ? width / referenceWidth : 1;
+
     if (this.canvas.width !== width || this.canvas.height !== height) {
       this.canvas.width = width;
       this.canvas.height = height;
@@ -353,7 +366,7 @@ export class WebGLRenderer {
 
       const flipY = isReadingFromSource ? -1.0 : 1.0;
 
-      this._renderEffect(effect, inputTexture, width, height, seed, flipY);
+      this._renderEffect(effect, inputTexture, width, height, seed, flipY, renderScale);
 
       if (!isLast) {
         inputTexture = this.framebuffers[currentFB].texture;
@@ -363,7 +376,7 @@ export class WebGLRenderer {
     }
   }
 
-  _renderEffect(effect, inputTexture, width, height, seed, flipY = 1.0) {
+  _renderEffect(effect, inputTexture, width, height, seed, flipY = 1.0, renderScale = 1.0) {
     switch (effect.type) {
       case EFFECT_TYPES.NOISE:
         this._renderNoise(effect.params, inputTexture, width, height, seed, flipY);
@@ -372,10 +385,10 @@ export class WebGLRenderer {
         this._renderDither(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.HALFTONE:
-        this._renderHalftone(effect.params, inputTexture, width, height, flipY);
+        this._renderHalftone(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.ASCII:
-        this._renderAscii(effect.params, inputTexture, width, height, flipY);
+        this._renderAscii(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.OVERLAY:
         this._renderOverlay(effect.params, inputTexture, width, height, flipY);
@@ -387,13 +400,13 @@ export class WebGLRenderer {
         this._renderVignette(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.SCANLINES:
-        this._renderScanlines(effect.params, inputTexture, width, height, flipY);
+        this._renderScanlines(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.PIXELATE:
-        this._renderPixelate(effect.params, inputTexture, width, height, flipY);
+        this._renderPixelate(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.BLUR:
-        this._renderBlur(effect.params, inputTexture, width, height, flipY);
+        this._renderBlur(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.DISTORTION:
         this._renderDistortion(effect.params, inputTexture, width, height, flipY);
@@ -405,7 +418,7 @@ export class WebGLRenderer {
         this._renderEdge(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.GRAIN:
-        this._renderGrain(effect.params, inputTexture, width, height, seed, flipY);
+        this._renderGrain(effect.params, inputTexture, width, height, seed, flipY, renderScale);
         break;
       case EFFECT_TYPES.COLOR_GRADE:
         this._renderColorGrade(effect.params, inputTexture, width, height, flipY);
@@ -420,7 +433,7 @@ export class WebGLRenderer {
         this._renderDuotone(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.KUWAHARA:
-        this._renderKuwahara(effect.params, inputTexture, width, height, flipY);
+        this._renderKuwahara(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.BARREL:
         this._renderBarrel(effect.params, inputTexture, width, height, flipY);
@@ -435,16 +448,16 @@ export class WebGLRenderer {
         this._renderLightLeak(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.BLOOM:
-        this._renderBloom(effect.params, inputTexture, width, height, flipY);
+        this._renderBloom(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.RADIAL_BLUR:
         this._renderRadialBlur(effect.params, inputTexture, width, height, flipY);
         break;
       case EFFECT_TYPES.MOSAIC:
-        this._renderMosaic(effect.params, inputTexture, width, height, flipY);
+        this._renderMosaic(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.TILT_SHIFT:
-        this._renderTiltShift(effect.params, inputTexture, width, height, flipY);
+        this._renderTiltShift(effect.params, inputTexture, width, height, flipY, renderScale);
         break;
       case EFFECT_TYPES.EXPOSURE:
         this._renderExposure(effect.params, inputTexture, width, height, flipY);
@@ -505,7 +518,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderHalftone(params, inputTexture, width, height, flipY = 1.0) {
+  _renderHalftone(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.halftone;
 
@@ -538,8 +551,11 @@ export class WebGLRenderer {
     };
     const colorModeInt = colorModeMap[params.colorMode] || 0;
 
+    // Scale gridSize proportionally to render resolution so export matches preview
+    const scaledGridSize = (params.gridSize || 8) * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_gridSize, params.gridSize || 8);
+    gl.uniform1f(program.uniforms.u_gridSize, scaledGridSize);
     gl.uniform1f(program.uniforms.u_dotScale, params.dotScale || 1.0);
     gl.uniform1f(program.uniforms.u_angle, params.angle || 45);
     gl.uniform1i(program.uniforms.u_shape, shapeInt);
@@ -555,7 +571,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderAscii(params, inputTexture, width, height, flipY = 1.0) {
+  _renderAscii(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.ascii;
 
@@ -570,9 +586,12 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, this.textures.charAtlas);
 
+    // Scale cellSize proportionally to render resolution so export matches preview
+    const scaledCellSize = params.cellSize * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1i(program.uniforms.u_charAtlas, 1);
-    gl.uniform1f(program.uniforms.u_cellSize, params.cellSize);
+    gl.uniform1f(program.uniforms.u_cellSize, scaledCellSize);
     gl.uniform1i(program.uniforms.u_color, params.color ? 1 : 0);
     gl.uniform1i(program.uniforms.u_invert, params.invert ? 1 : 0);
     gl.uniform1i(program.uniforms.u_charCount, charset.length);
@@ -649,7 +668,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderScanlines(params, inputTexture, width, height, flipY = 1.0) {
+  _renderScanlines(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.scanlines;
 
@@ -658,8 +677,11 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale spacing proportionally to render resolution so export matches preview
+    const scaledSpacing = params.spacing * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_spacing, params.spacing);
+    gl.uniform1f(program.uniforms.u_spacing, scaledSpacing);
     gl.uniform1f(program.uniforms.u_thickness, params.thickness);
     gl.uniform1f(program.uniforms.u_opacity, params.opacity);
     gl.uniform1i(program.uniforms.u_horizontal, params.horizontal ? 1 : 0);
@@ -669,7 +691,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderPixelate(params, inputTexture, width, height, flipY = 1.0) {
+  _renderPixelate(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.pixelate;
 
@@ -678,15 +700,18 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale size proportionally to render resolution so export matches preview
+    const scaledSize = params.size * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_size, params.size);
+    gl.uniform1f(program.uniforms.u_size, scaledSize);
     gl.uniform1i(program.uniforms.u_maintainAspect, params.maintainAspect ? 1 : 0);
     gl.uniform2f(program.uniforms.u_resolution, width, height);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderBlur(params, inputTexture, width, height, flipY = 1.0) {
+  _renderBlur(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.blur;
 
@@ -697,8 +722,11 @@ export class WebGLRenderer {
 
     const typeMap = { gaussian: 0, radial: 1, motion: 2 };
 
+    // Scale radius proportionally to render resolution so export matches preview
+    const scaledRadius = params.radius * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_radius, params.radius);
+    gl.uniform1f(program.uniforms.u_radius, scaledRadius);
     gl.uniform1i(program.uniforms.u_type, typeMap[params.type] ?? 0);
     gl.uniform1f(program.uniforms.u_angle, params.angle);
     gl.uniform2f(program.uniforms.u_resolution, width, height);
@@ -762,7 +790,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderGrain(params, inputTexture, width, height, seed, flipY = 1.0) {
+  _renderGrain(params, inputTexture, width, height, seed, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.grain;
 
@@ -771,9 +799,12 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale grain size proportionally to render resolution so export matches preview
+    const scaledSize = params.size * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1f(program.uniforms.u_intensity, params.intensity);
-    gl.uniform1f(program.uniforms.u_size, params.size);
+    gl.uniform1f(program.uniforms.u_size, scaledSize);
     gl.uniform1f(program.uniforms.u_luminanceResponse, params.luminanceResponse);
     gl.uniform1i(program.uniforms.u_colored, params.colored ? 1 : 0);
     gl.uniform1f(program.uniforms.u_seed, seed);
@@ -875,7 +906,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderKuwahara(params, inputTexture, width, height, flipY = 1.0) {
+  _renderKuwahara(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.kuwahara;
 
@@ -884,8 +915,12 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale radius proportionally to render resolution so export matches preview
+    // Keep the cap at 5 for performance but scale first
+    const scaledRadius = Math.min(Math.round(params.radius * renderScale), 5);
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1i(program.uniforms.u_radius, Math.min(params.radius, 5)); // Cap at 5 for performance
+    gl.uniform1i(program.uniforms.u_radius, scaledRadius);
     gl.uniform1f(program.uniforms.u_sharpness, params.sharpness);
     gl.uniform2f(program.uniforms.u_resolution, width, height);
 
@@ -983,7 +1018,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderBloom(params, inputTexture, width, height, flipY = 1.0) {
+  _renderBloom(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.bloom;
 
@@ -992,8 +1027,11 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale radius proportionally to render resolution so export matches preview
+    const scaledRadius = params.radius * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_radius, params.radius);
+    gl.uniform1f(program.uniforms.u_radius, scaledRadius);
     gl.uniform1f(program.uniforms.u_intensity, params.intensity);
     gl.uniform1f(program.uniforms.u_threshold, params.threshold);
     gl.uniform1f(program.uniforms.u_softThreshold, params.softThreshold);
@@ -1022,7 +1060,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderMosaic(params, inputTexture, width, height, flipY = 1.0) {
+  _renderMosaic(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.mosaic;
 
@@ -1033,10 +1071,14 @@ export class WebGLRenderer {
 
     const edgeColor = this._hexToRgb(params.edgeColor);
 
+    // Scale cellSize and edgeThickness proportionally to render resolution so export matches preview
+    const scaledCellSize = params.cellSize * renderScale;
+    const scaledEdgeThickness = params.edgeThickness * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
-    gl.uniform1f(program.uniforms.u_cellSize, params.cellSize);
+    gl.uniform1f(program.uniforms.u_cellSize, scaledCellSize);
     gl.uniform1f(program.uniforms.u_irregularity, params.irregularity);
-    gl.uniform1f(program.uniforms.u_edgeThickness, params.edgeThickness);
+    gl.uniform1f(program.uniforms.u_edgeThickness, scaledEdgeThickness);
     gl.uniform3f(program.uniforms.u_edgeColor, edgeColor[0], edgeColor[1], edgeColor[2]);
     gl.uniform1f(program.uniforms.u_colorVariation, params.colorVariation);
     gl.uniform2f(program.uniforms.u_resolution, width, height);
@@ -1044,7 +1086,7 @@ export class WebGLRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  _renderTiltShift(params, inputTexture, width, height, flipY = 1.0) {
+  _renderTiltShift(params, inputTexture, width, height, flipY = 1.0, renderScale = 1.0) {
     const gl = this.gl;
     const program = this.programs.tiltShift;
 
@@ -1053,10 +1095,13 @@ export class WebGLRenderer {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, inputTexture);
 
+    // Scale blurRadius proportionally to render resolution so export matches preview
+    const scaledBlurRadius = params.blurRadius * renderScale;
+
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1f(program.uniforms.u_focusPosition, params.focusPosition);
     gl.uniform1f(program.uniforms.u_focusWidth, params.focusWidth);
-    gl.uniform1f(program.uniforms.u_blurRadius, params.blurRadius);
+    gl.uniform1f(program.uniforms.u_blurRadius, scaledBlurRadius);
     gl.uniform1f(program.uniforms.u_angle, params.angle);
     gl.uniform1f(program.uniforms.u_gradientSmooth, params.gradientSmooth);
     gl.uniform2f(program.uniforms.u_resolution, width, height);

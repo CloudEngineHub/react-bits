@@ -1,5 +1,6 @@
 import { Box, Text, Flex, Icon } from '@chakra-ui/react';
 import { Eye, Sparkles, Star, Component } from 'lucide-react';
+import { useEffect } from 'react';
 import Header from '../components/navs/Header';
 import AnnouncementBar from '../components/landing/AnnouncementBar/AnnouncementBar';
 import Sponsors from '../components/landing/Sponsors/Sponsors';
@@ -35,6 +36,10 @@ const StatCard = ({ icon, value, label }) => (
 );
 
 const SponsorsPage = () => {
+  useEffect(() => {
+    document.title = 'React Bits - Sponsors';
+  }, []);
+
   return (
     <Box minH="100vh" bg="#060010" display="flex" flexDirection="column" position="relative" overflow="hidden">
       {/* Animated Background */}
