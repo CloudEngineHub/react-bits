@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import { Flex, Text, Input } from '@chakra-ui/react';
@@ -10,6 +10,8 @@ import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import useForceRerender from '../../hooks/useForceRerender';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import PixelTransition from '../../content/Animations/PixelTransition/PixelTransition';
 import { pixelTransition } from '../../constants/code/Animations/pixelTransitionCode';
@@ -72,102 +74,116 @@ const propData = [
   }
 ];
 
+const DEFAULT_PROPS = {
+  gridSize: 8,
+  pixelColor: '#ffffff',
+  animationStepDuration: 0.4,
+  once: false
+};
+
 const PixelTransitionDemo = () => {
-  const [gridSize, setGridSize] = useState(8);
-  const [pixelColor, setPixelColor] = useState('#ffffff');
-  const [animationStepDuration, setAnimationStepDuration] = useState(0.4);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { gridSize, pixelColor, animationStepDuration, once } = props;
   const [key, forceRerender] = useForceRerender();
-  const [once, setOnce] = useState(false);
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Flex direction="column" position="relative" className="demo-container" minH={400} maxH={400} overflow="hidden">
-          <PixelTransition
-            key={key}
-            firstContent={
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
-                alt="Default"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            }
-            secondContent={
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'grid',
-                  placeItems: 'center',
-                  backgroundColor: '#111'
-                }}
-              >
-                <p style={{ fontWeight: 900, fontSize: '3rem', color: '#ffffff' }}>Meow!</p>
-              </div>
-            }
-            gridSize={gridSize}
-            pixelColor={pixelColor}
-            animationStepDuration={animationStepDuration}
-            once={once}
-            className="custom-pixel-card"
-          />
-          <Text mt={2} color="#a6a6a6">
-            Psst, hover the card!
-          </Text>
-        </Flex>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Flex
+            direction="column"
+            position="relative"
+            className="demo-container"
+            minH={400}
+            maxH={400}
+            overflow="hidden"
+          >
+            <PixelTransition
+              key={key}
+              firstContent={
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
+                  alt="Default"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              }
+              secondContent={
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'grid',
+                    placeItems: 'center',
+                    backgroundColor: '#111'
+                  }}
+                >
+                  <p style={{ fontWeight: 900, fontSize: '3rem', color: '#ffffff' }}>Meow!</p>
+                </div>
+              }
+              gridSize={gridSize}
+              pixelColor={pixelColor}
+              animationStepDuration={animationStepDuration}
+              once={once}
+              className="custom-pixel-card"
+            />
+            <Text mt={2} color="#a6a6a6">
+              Psst, hover the card!
+            </Text>
+          </Flex>
 
-        <Customize>
-          <PreviewSlider
-            title="Grid Size"
-            min={2}
-            max={50}
-            step={1}
-            value={gridSize}
-            onChange={val => {
-              setGridSize(val);
-              forceRerender();
-            }}
-            width={200}
-          />
-
-          <PreviewSlider
-            title="Animation Duration"
-            min={0.1}
-            max={2}
-            step={0.1}
-            value={animationStepDuration}
-            valueUnit="s"
-            onChange={val => {
-              setAnimationStepDuration(val);
-              forceRerender();
-            }}
-            width={200}
-          />
-
-          <Flex gap={4} align="center" mt={4}>
-            <Text fontSize="sm">Pixel Color</Text>
-            <Input
-              type="color"
-              value={pixelColor}
-              onChange={e => {
-                setPixelColor(e.target.value);
+          <Customize>
+            <PreviewSlider
+              title="Grid Size"
+              min={2}
+              max={50}
+              step={1}
+              value={gridSize}
+              onChange={val => {
+                updateProp('gridSize', val);
                 forceRerender();
               }}
-              width="60px"
-              p={0}
+              width={200}
             />
-          </Flex>
-          <PreviewSwitch title="Once" isChecked={once} onChange={checked => setOnce(checked)} />
-        </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
+            <PreviewSlider
+              title="Animation Duration"
+              min={0.1}
+              max={2}
+              step={0.1}
+              value={animationStepDuration}
+              valueUnit="s"
+              onChange={val => {
+                updateProp('animationStepDuration', val);
+                forceRerender();
+              }}
+              width={200}
+            />
 
-      <CodeTab>
-        <CodeExample codeObject={pixelTransition} />
-      </CodeTab>
-    </TabsLayout>
+            <Flex gap={4} align="center" mt={4}>
+              <Text fontSize="sm">Pixel Color</Text>
+              <Input
+                type="color"
+                value={pixelColor}
+                onChange={e => {
+                  updateProp('pixelColor', e.target.value);
+                  forceRerender();
+                }}
+                width="60px"
+                p={0}
+              />
+            </Flex>
+            <PreviewSwitch title="Once" isChecked={once} onChange={checked => updateProp('once', checked)} />
+          </Customize>
+
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gsap']} />
+        </PreviewTab>
+
+        <CodeTab>
+          <CodeExample codeObject={pixelTransition} componentName="PixelTransition" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

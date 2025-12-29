@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <FadeContent blur duration={600}>
+    <FadeContent duration={600}>
       <footer className="landing-footer">
         <div className="footer-content">
           <div className="footer-left">
@@ -37,6 +37,9 @@ const Footer = () => {
             </Link>
             <Link to="/showcase" className="footer-link">
               Showcase
+            </Link>
+            <Link to="/sponsors" className="footer-link">
+              Sponsors
             </Link>
           </div>
         </div>

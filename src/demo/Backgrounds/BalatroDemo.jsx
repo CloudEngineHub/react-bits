@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -13,196 +15,206 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import Balatro from '../../content/Backgrounds/Balatro/Balatro';
 import { balatro } from '../../constants/code/Backgrounds/balatroCode';
 
-const BalatroDemo = () => {
-  const [hideimage, setHideImage] = useState(false);
-  const [color1, setColor1] = useState('#DE443B');
-  const [color2, setColor2] = useState('#006BB4');
-  const [color3, setColor3] = useState('#162325');
-  const [rotate, setRotate] = useState(false);
-  const [mouseInteraction, setMouseInteraction] = useState(true);
-  const [pixelFilter, setPixelFilter] = useState(745.0);
+const DEFAULT_PROPS = {
+  hideImage: false,
+  color1: '#DE443B',
+  color2: '#006BB4',
+  color3: '#162325',
+  rotate: false,
+  mouseInteraction: true,
+  pixelFilter: 745.0
+};
 
-  const propData = [
-    {
-      name: 'spinRotation',
-      type: 'number',
-      default: '-2.0',
-      description: 'Base rotation amount affecting the shader effect.'
-    },
-    {
-      name: 'spinSpeed',
-      type: 'number',
-      default: '7.0',
-      description: 'Speed of the spin animation.'
-    },
-    {
-      name: 'offset',
-      type: '[number, number]',
-      default: '[0.0, 0.0]',
-      description: 'Offset for the shader effect.'
-    },
-    {
-      name: 'color1',
-      type: 'string',
-      default: '"#DE443B"',
-      description: 'Primary color in HEX format.'
-    },
-    {
-      name: 'color2',
-      type: 'string',
-      default: '"#006BB4"',
-      description: 'Secondary color in HEX format.'
-    },
-    {
-      name: 'color3',
-      type: 'string',
-      default: '"#162325"',
-      description: 'Tertiary color in HEX format.'
-    },
-    {
-      name: 'contrast',
-      type: 'number',
-      default: '3.5',
-      description: 'Contrast value affecting color blending.'
-    },
-    {
-      name: 'lighting',
-      type: 'number',
-      default: '0.4',
-      description: 'Lighting factor affecting brightness.'
-    },
-    {
-      name: 'spinAmount',
-      type: 'number',
-      default: '0.25',
-      description: 'Amount of spin influence based on UV length.'
-    },
-    {
-      name: 'pixelFilter',
-      type: 'number',
-      default: '745.0',
-      description: 'Pixel filter factor determining pixelation.'
-    },
-    {
-      name: 'spinEase',
-      type: 'number',
-      default: '1.0',
-      description: 'Ease factor for spin.'
-    },
-    {
-      name: 'isRotate',
-      type: 'boolean',
-      default: 'false',
-      description: 'Determines if the shader rotates continuously.'
-    },
-    {
-      name: 'mouseInteraction',
-      type: 'boolean',
-      default: 'true',
-      description: 'Enables or disables mouse interaction for rotation.'
-    }
-  ];
+const BalatroDemo = () => {
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { hideImage, color1, color2, color3, rotate, mouseInteraction, pixelFilter } = props;
+
+  const propData = useMemo(
+    () => [
+      {
+        name: 'spinRotation',
+        type: 'number',
+        default: '-2.0',
+        description: 'Base rotation amount affecting the shader effect.'
+      },
+      {
+        name: 'spinSpeed',
+        type: 'number',
+        default: '7.0',
+        description: 'Speed of the spin animation.'
+      },
+      {
+        name: 'offset',
+        type: '[number, number]',
+        default: '[0.0, 0.0]',
+        description: 'Offset for the shader effect.'
+      },
+      {
+        name: 'color1',
+        type: 'string',
+        default: '"#DE443B"',
+        description: 'Primary color in HEX format.'
+      },
+      {
+        name: 'color2',
+        type: 'string',
+        default: '"#006BB4"',
+        description: 'Secondary color in HEX format.'
+      },
+      {
+        name: 'color3',
+        type: 'string',
+        default: '"#162325"',
+        description: 'Tertiary color in HEX format.'
+      },
+      {
+        name: 'contrast',
+        type: 'number',
+        default: '3.5',
+        description: 'Contrast value affecting color blending.'
+      },
+      {
+        name: 'lighting',
+        type: 'number',
+        default: '0.4',
+        description: 'Lighting factor affecting brightness.'
+      },
+      {
+        name: 'spinAmount',
+        type: 'number',
+        default: '0.25',
+        description: 'Amount of spin influence based on UV length.'
+      },
+      {
+        name: 'pixelFilter',
+        type: 'number',
+        default: '745.0',
+        description: 'Pixel filter factor determining pixelation.'
+      },
+      {
+        name: 'spinEase',
+        type: 'number',
+        default: '1.0',
+        description: 'Ease factor for spin.'
+      },
+      {
+        name: 'isRotate',
+        type: 'boolean',
+        default: 'false',
+        description: 'Determines if the shader rotates continuously.'
+      },
+      {
+        name: 'mouseInteraction',
+        type: 'boolean',
+        default: 'true',
+        description: 'Enables or disables mouse interaction for rotation.'
+      }
+    ],
+    []
+  );
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
-          <Balatro
-            color1={color1}
-            color2={color2}
-            color3={color3}
-            isRotate={rotate}
-            mouseInteraction={mouseInteraction}
-            pixelFilter={pixelFilter}
-          />
-
-          {!hideimage && (
-            <Image
-              pointerEvents="none"
-              position="absolute"
-              w={200}
-              src="https://oyster.ignimgs.com/mediawiki/apis.ign.com/balatro/e/ef/Joker.png"
-              borderRadius="10px"
-            />
-          )}
-        </Box>
-
-        <Flex gap={4} align="center" mt={7} justifyContent="flex-end" position="absolute" right={0}>
-          <Text fontSize="sm">Hide Image</Text>
-          <PreviewSwitch
-            isChecked={hideimage}
-            onChange={checked => {
-              setHideImage(checked);
-            }}
-          />
-        </Flex>
-
-        <Customize>
-          <Flex gap={4} align="center" mt={4}>
-            <Text fontSize="sm">Colors</Text>
-            <Input
-              type="color"
-              value={color1}
-              onChange={e => {
-                setColor1(e.target.value);
-              }}
-              width="50px"
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+            <Balatro
+              color1={color1}
+              color2={color2}
+              color3={color3}
+              isRotate={rotate}
+              mouseInteraction={mouseInteraction}
+              pixelFilter={pixelFilter}
             />
 
-            <Input
-              type="color"
-              value={color3}
-              onChange={e => {
-                setColor3(e.target.value);
-              }}
-              width="50px"
-            />
+            {!hideImage && (
+              <Image
+                pointerEvents="none"
+                position="absolute"
+                w={200}
+                src="https://oyster.ignimgs.com/mediawiki/apis.ign.com/balatro/e/ef/Joker.png"
+                borderRadius="10px"
+              />
+            )}
+          </Box>
 
-            <Input
-              type="color"
-              value={color2}
-              onChange={e => {
-                setColor2(e.target.value);
+          <Flex gap={4} align="center" mt={7} justifyContent="flex-end" position="absolute" right={0}>
+            <Text fontSize="sm">Hide Image</Text>
+            <PreviewSwitch
+              isChecked={hideImage}
+              onChange={checked => {
+                updateProp('hideImage', checked);
               }}
-              width="50px"
             />
           </Flex>
 
-          <PreviewSlider
-            min={0}
-            max={2000}
-            step={10}
-            title="Pixelation"
-            value={pixelFilter}
-            onChange={val => {
-              setPixelFilter(val);
-            }}
-          />
+          <Customize>
+            <Flex gap={4} align="center" mt={4}>
+              <Text fontSize="sm">Colors</Text>
+              <Input
+                type="color"
+                value={color1}
+                onChange={e => {
+                  updateProp('color1', e.target.value);
+                }}
+                width="50px"
+              />
 
-          <PreviewSwitch
-            title="Enable Mouse Interaction"
-            isChecked={mouseInteraction}
-            onChange={checked => {
-              setMouseInteraction(checked);
-            }}
-          />
+              <Input
+                type="color"
+                value={color3}
+                onChange={e => {
+                  updateProp('color3', e.target.value);
+                }}
+                width="50px"
+              />
 
-          <PreviewSwitch
-            title="Rotate"
-            isChecked={rotate}
-            onChange={checked => {
-              setRotate(checked);
-            }}
-          />
-        </Customize>
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['ogl']} />
-      </PreviewTab>
+              <Input
+                type="color"
+                value={color2}
+                onChange={e => {
+                  updateProp('color2', e.target.value);
+                }}
+                width="50px"
+              />
+            </Flex>
 
-      <CodeTab>
-        <CodeExample codeObject={balatro} />
-      </CodeTab>
-    </TabsLayout>
+            <PreviewSlider
+              min={0}
+              max={2000}
+              step={10}
+              title="Pixelation"
+              value={pixelFilter}
+              onChange={val => {
+                updateProp('pixelFilter', val);
+              }}
+            />
+
+            <PreviewSwitch
+              title="Enable Mouse Interaction"
+              isChecked={mouseInteraction}
+              onChange={checked => {
+                updateProp('mouseInteraction', checked);
+              }}
+            />
+
+            <PreviewSwitch
+              title="Rotate"
+              isChecked={rotate}
+              onChange={checked => {
+                updateProp('rotate', checked);
+              }}
+            />
+          </Customize>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['ogl']} />
+        </PreviewTab>
+
+        <CodeTab>
+          <CodeExample codeObject={balatro} componentName="Balatro" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

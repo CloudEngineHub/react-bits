@@ -70,16 +70,7 @@ const Announcement = () => {
     }
 
     setIsMobile(checkIfMobile());
-
-    const handleResize = () => {
-      setIsMobile(checkIfMobile());
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    // No resize listener - isMobile is only used for share functionality, not layout
   }, [checkIfMobile, announcementMessage, STORAGE_KEYS.lastMessage, STORAGE_KEYS.userClosed]);
 
   const closeAnnouncement = () => {

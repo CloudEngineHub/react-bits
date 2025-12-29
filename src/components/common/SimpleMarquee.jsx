@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   motion,
   useAnimationFrame,
@@ -35,8 +35,23 @@ const SimpleMarquee = ({
   grabCursor = false,
   easing
 }) => {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
   const baseX = useMotionValue(0);
   const baseY = useMotionValue(0);
+
+  // Only animate when visible in viewport
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+      threshold: 0,
+      rootMargin: '50px'
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const { scrollY } = useScroll({
     ...(scrollContainer && {
@@ -68,6 +83,9 @@ const SimpleMarquee = ({
   });
 
   useAnimationFrame((t, delta) => {
+    // Skip animation when not visible to save CPU
+    if (!isVisible) return;
+
     if (isDragging.current && draggable) {
       if (isHorizontal) {
         baseX.set(baseX.get() + dragVelocity.current);
@@ -164,6 +182,7 @@ const SimpleMarquee = ({
 
   return (
     <motion.div
+      ref={containerRef}
       className={baseClasses}
       onHoverStart={() => (isHovered.current = true)}
       onHoverEnd={() => (isHovered.current = false)}

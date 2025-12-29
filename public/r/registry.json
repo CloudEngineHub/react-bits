@@ -2404,7 +2404,9 @@
 			"title": "GradientText",
 			"description": "Animated gradient sweep across live text with speed and color control.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2422,7 +2424,9 @@
 			"title": "GradientText",
 			"description": "Animated gradient sweep across live text with speed and color control.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2436,7 +2440,9 @@
 			"title": "GradientText",
 			"description": "Animated gradient sweep across live text with speed and color control.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2454,7 +2460,9 @@
 			"title": "GradientText",
 			"description": "Animated gradient sweep across live text with speed and color control.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2828,7 +2836,9 @@
 			"title": "ShinyText",
 			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2846,7 +2856,9 @@
 			"title": "ShinyText",
 			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2860,7 +2872,9 @@
 			"title": "ShinyText",
 			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -2878,7 +2892,9 @@
 			"title": "ShinyText",
 			"description": "Metallic sheen sweeps across text producing a reflective highlight.",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
