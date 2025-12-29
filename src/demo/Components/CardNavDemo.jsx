@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box } from '@chakra-ui/react';
 import useForceRerender from '../../hooks/useForceRerender';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -16,66 +18,75 @@ import logoLight from '../../assets/logos/reactbits-gh-black.svg';
 import CardNav from '../../content/Components/CardNav/CardNav';
 import { cardNav } from '../../constants/code/Components/cardNavCode';
 
-const CardNavDemo = () => {
-  const propData = [
-    {
-      name: 'logo',
-      type: 'string',
-      default: '-',
-      description: 'URL for the logo image'
-    },
-    {
-      name: 'logoAlt',
-      type: 'string',
-      default: 'Logo',
-      description: 'Alt text for the logo image'
-    },
-    {
-      name: 'items',
-      type: 'CardNavItem[]',
-      default: '-',
-      description: 'Array of navigation items with label, bgColor, textColor, and links'
-    },
-    {
-      name: 'className',
-      type: 'string',
-      default: "''",
-      description: 'Additional CSS classes for the navigation container'
-    },
-    {
-      name: 'ease',
-      type: 'string',
-      default: 'power3.out',
-      description: 'GSAP easing function for animations'
-    },
-    {
-      name: 'baseColor',
-      type: 'string',
-      default: '#fff',
-      description: 'Background color for the navigation container'
-    },
-    {
-      name: 'menuColor',
-      type: 'string',
-      default: 'undefined',
-      description: 'Color for the hamburger menu lines'
-    },
-    {
-      name: 'buttonBgColor',
-      type: 'string',
-      default: '#111',
-      description: 'Background color for the CTA button'
-    },
-    {
-      name: 'buttonTextColor',
-      type: 'string',
-      default: 'white',
-      description: 'Text color for the CTA button'
-    }
-  ];
+const DEFAULT_PROPS = {
+  theme: 'light',
+  ease: 'power3.out'
+};
 
-  const [theme, setTheme] = useState('light');
-  const [ease, setEase] = useState('power3.out');
+const CardNavDemo = () => {
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { theme, ease } = props;
+
+  const propData = useMemo(
+    () => [
+      {
+        name: 'logo',
+        type: 'string',
+        default: '-',
+        description: 'URL for the logo image'
+      },
+      {
+        name: 'logoAlt',
+        type: 'string',
+        default: 'Logo',
+        description: 'Alt text for the logo image'
+      },
+      {
+        name: 'items',
+        type: 'CardNavItem[]',
+        default: '-',
+        description: 'Array of navigation items with label, bgColor, textColor, and links'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        default: "''",
+        description: 'Additional CSS classes for the navigation container'
+      },
+      {
+        name: 'ease',
+        type: 'string',
+        default: 'power3.out',
+        description: 'GSAP easing function for animations'
+      },
+      {
+        name: 'baseColor',
+        type: 'string',
+        default: '#fff',
+        description: 'Background color for the navigation container'
+      },
+      {
+        name: 'menuColor',
+        type: 'string',
+        default: 'undefined',
+        description: 'Color for the hamburger menu lines'
+      },
+      {
+        name: 'buttonBgColor',
+        type: 'string',
+        default: '#111',
+        description: 'Background color for the CTA button'
+      },
+      {
+        name: 'buttonTextColor',
+        type: 'string',
+        default: 'white',
+        description: 'Text color for the CTA button'
+      }
+    ],
+    []
+  );
+
   const [key, forceRerender] = useForceRerender();
 
   const easeOptions = [
@@ -155,59 +166,61 @@ const CardNavDemo = () => {
   ];
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box
-          position="relative"
-          className="demo-container demo-container-dots"
-          h={550}
-          overflow="hidden"
-          bg={currentTheme.backgroundColor}
-        >
-          <CardNav
-            key={key}
-            logo={currentTheme.logo}
-            items={currentTheme.items}
-            baseColor={currentTheme.baseColor}
-            menuColor={currentTheme.menuColor}
-            buttonBgColor={currentTheme.buttonBgColor}
-            buttonTextColor={currentTheme.buttonTextColor}
-            ease={ease}
-          />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box
+            position="relative"
+            className="demo-container demo-container-dots"
+            h={550}
+            overflow="hidden"
+            bg={currentTheme.backgroundColor}
+          >
+            <CardNav
+              key={key}
+              logo={currentTheme.logo}
+              items={currentTheme.items}
+              baseColor={currentTheme.baseColor}
+              menuColor={currentTheme.menuColor}
+              buttonBgColor={currentTheme.buttonBgColor}
+              buttonTextColor={currentTheme.buttonTextColor}
+              ease={ease}
+            />
+          </Box>
 
-        <Customize>
-          <PreviewSelect
-            title="Example"
-            options={themeOptions}
-            value={theme}
-            onChange={value => {
-              setTheme(value);
-              forceRerender();
-            }}
-            width={150}
-          />
+          <Customize>
+            <PreviewSelect
+              title="Example"
+              options={themeOptions}
+              value={theme}
+              onChange={value => {
+                updateProp('theme', value);
+                forceRerender();
+              }}
+              width={150}
+            />
 
-          <PreviewSelect
-            title="Animation Ease"
-            options={easeOptions}
-            value={ease}
-            onChange={value => {
-              setEase(value);
-              forceRerender();
-            }}
-            width={170}
-          />
-        </Customize>
+            <PreviewSelect
+              title="Animation Ease"
+              options={easeOptions}
+              value={ease}
+              onChange={value => {
+                updateProp('ease', value);
+                forceRerender();
+              }}
+              width={170}
+            />
+          </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gsap']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={cardNav} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={cardNav} componentName="CardNav" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

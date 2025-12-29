@@ -1,4 +1,5 @@
-import { useEffect, useRef, useEffect, useId } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useRef, useId } from 'react';
 import './GlassSurface.css';
 
 const GlassSurface = ({
@@ -28,7 +29,7 @@ const GlassSurface = ({
   const redGradId = `red-grad-${uniqueId}`;
   const blueGradId = `blue-grad-${uniqueId}`;
 
-  const [svgSupported, setSvgSupported] = useState(false)
+  const [svgSupported, setSvgSupported] = useState(false);
 
   const containerRef = useRef(null);
   const feImageRef = useRef(null);
@@ -84,7 +85,6 @@ const GlassSurface = ({
     });
 
     gaussianBlurRef.current?.setAttribute('stdDeviation', displace.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     width,
     height,
@@ -115,7 +115,6 @@ const GlassSurface = ({
     return () => {
       resizeObserver.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -130,12 +129,10 @@ const GlassSurface = ({
     return () => {
       resizeObserver.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setTimeout(updateDisplacementMap, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height]);
 
   useEffect(() => {
@@ -147,8 +144,7 @@ const GlassSurface = ({
       return false;
     }
 
-    const isWebkit =
-      /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
     if (isWebkit || isFirefox) {

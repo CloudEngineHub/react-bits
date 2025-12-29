@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -9,15 +12,22 @@ import Dependencies from '../../components/code/Dependencies';
 import FlowingMenu from '../../content/Components/FlowingMenu/FlowingMenu';
 import { flowingMenu } from '../../constants/code/Components/flowingMenuCode';
 
+const DEFAULT_PROPS = {};
+
 const FlowingMenuDemo = () => {
-  const propData = [
-    {
-      name: 'items',
-      type: 'object[]',
-      default: '[]',
-      description: 'An array of object scontaining: link, text, image.'
-    }
-  ];
+  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+
+  const propData = useMemo(
+    () => [
+      {
+        name: 'items',
+        type: 'object[]',
+        default: '[]',
+        description: 'An array of object scontaining: link, text, image.'
+      }
+    ],
+    []
+  );
 
   const demoItems = [
     { link: '#', text: 'Mojave', image: 'https://picsum.photos/600/400?random=1' },
@@ -27,20 +37,22 @@ const FlowingMenuDemo = () => {
   ];
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden" px={0} pt="100px" pb="100px">
-          <FlowingMenu items={demoItems} />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} overflow="hidden" px={0} pt="100px" pb="100px">
+            <FlowingMenu items={demoItems} />
+          </Box>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gsap']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={flowingMenu} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={flowingMenu} componentName="FlowingMenu" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

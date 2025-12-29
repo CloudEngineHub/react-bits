@@ -5,46 +5,50 @@ import FadeContent from '../content/Animations/FadeContent/FadeContent';
 import Footer from '../components/landing/Footer/Footer';
 
 import '../css/showcase.css';
+import Aurora from '@/content/Backgrounds/Aurora/Aurora';
 
 const ShowcasePage = () => {
   useEffect(() => window.scrollTo(0, 0), []);
 
   const showcaseItems = [
     {
-      name: 'Matthew',
-      url: 'https://www.matthewporteous.com/',
-      using: '<AnimatedContent />'
-    },
-    {
       name: 'Oscar',
       url: 'https://oscarhernandez.vercel.app',
-      using: '<LetterGlitch />'
+      using: '<LetterGlitch />',
+      image: '/assets/showcase/showcase-oscar.webp'
     },
     {
       name: 'Izadoesdev',
       url: 'https://app.databuddy.cc/login',
-      using: '<Iridescence />'
+      using: '<Iridescence />',
+      image: '/assets/showcase/showcase-izadoesdev.webp'
     },
     {
       name: 'Afaq',
       url: 'https://www.evolvion.io/',
-      using: '<SpotlightCard />'
+      using: '<SpotlightCard />',
+      image: '/assets/showcase/showcase-afaq.webp'
     },
     {
       name: 'Deepraj',
       url: 'https://www.architech-dev.tech/',
-      using: '<CardSwap />'
+      using: '<CardSwap />',
+      image: '/assets/showcase/showcase-deepraj.webp'
     },
     {
       name: 'Devraj',
       url: 'https://devrajchatribin.com/about',
-      using: '<CountUp />'
+      using: '<CountUp />',
+      image: '/assets/showcase/showcase-devraj.webp'
     }
   ];
 
   return (
     <>
       <section className="showcase-wrapper">
+        <Box position="fixed" top={0} left={0} right={0} bottom={0} zIndex={0} opacity={0.5} pointerEvents="none">
+          <Aurora colorStops={['#3A0CA3', '#7209B7', '#4C1D95']} amplitude={0.5} blend={0.5} />
+        </Box>
         <title>React Bits - Showcase 🎉</title>
 
         <div className="showcase-header">
@@ -77,13 +81,15 @@ const ShowcasePage = () => {
 
         <FadeContent blur duration={1000} threshold={0} className="fade-grid">
           <div className="grid-container">
-            {showcaseItems.map((item, index) => (
+            {showcaseItems.map(item => (
               <Box as="a" href={item.url} rel="noreferrer" target="_blank" className="grid-item" key={item.url}>
-                <img
-                  className="showcase-img"
-                  src={`https://davidhaz.com/react-bits-showcase/showcase-${index + 1}.webp`}
-                  alt={`Showcase website submitted by: ${item.name ? item.name : 'Anonymous'}`}
-                />
+                <div className="showcase-img-wrapper">
+                  <img
+                    className="showcase-img"
+                    src={item.image}
+                    alt={`Showcase website submitted by: ${item.name ? item.name : 'Anonymous'}`}
+                  />
+                </div>
                 <div className="showcase-info">
                   {item.name && <Text className="author">{item.name}</Text>}
                   <Text className="using">Using {item.using}</Text>

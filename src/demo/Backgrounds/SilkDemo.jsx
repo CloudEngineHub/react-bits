@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text, Input } from '@chakra-ui/react';
 
@@ -8,142 +8,154 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import useForceRerender from '../../hooks/useForceRerender';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 import { silkCode } from '../../constants/code/Backgrounds/silkCode';
 import Silk from '../../content/Backgrounds/Silk/Silk';
 
+const DEFAULT_PROPS = {
+  speed: 5,
+  scale: 1,
+  color: '#5227FF',
+  noiseIntensity: 1.5,
+  rotation: 0
+};
+
 const SilkDemo = () => {
-  const [speed, setSpeed] = useState(5);
-  const [scale, setScale] = useState(1);
-  const [color, setColor] = useState('#5227FF');
-  const [noiseIntensity, setNoiseIntensity] = useState(1.5);
-  const [rotation, setRotation] = useState(0);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { speed, scale, color, noiseIntensity, rotation } = props;
 
   const [key, forceRerender] = useForceRerender();
 
-  const propData = [
-    {
-      name: 'speed',
-      type: 'number',
-      default: '5',
-      description: 'Controls the animation speed of the silk effect.'
-    },
-    {
-      name: 'scale',
-      type: 'number',
-      default: '1',
-      description: 'Controls the scale of the silk pattern.'
-    },
-    {
-      name: 'color',
-      type: 'string',
-      default: "'#7B7481'",
-      description: 'Hex color code for the silk pattern.'
-    },
-    {
-      name: 'noiseIntensity',
-      type: 'number',
-      default: '1.5',
-      description: 'Controls the intensity of the noise effect.'
-    },
-    {
-      name: 'rotation',
-      type: 'number',
-      default: '0',
-      description: 'Controls the rotation of the silk pattern (in radians).'
-    }
-  ];
+  const propData = useMemo(
+    () => [
+      {
+        name: 'speed',
+        type: 'number',
+        default: '5',
+        description: 'Controls the animation speed of the silk effect.'
+      },
+      {
+        name: 'scale',
+        type: 'number',
+        default: '1',
+        description: 'Controls the scale of the silk pattern.'
+      },
+      {
+        name: 'color',
+        type: 'string',
+        default: "'#7B7481'",
+        description: 'Hex color code for the silk pattern.'
+      },
+      {
+        name: 'noiseIntensity',
+        type: 'number',
+        default: '1.5',
+        description: 'Controls the intensity of the noise effect.'
+      },
+      {
+        name: 'rotation',
+        type: 'number',
+        default: '0',
+        description: 'Controls the rotation of the silk pattern (in radians).'
+      }
+    ],
+    []
+  );
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
-          <Silk
-            key={key}
-            speed={speed}
-            scale={scale}
-            color={color}
-            noiseIntensity={noiseIntensity}
-            rotation={rotation}
-          />
+    <ComponentPropsProvider reset={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+            <Silk
+              key={key}
+              speed={speed}
+              scale={scale}
+              color={color}
+              noiseIntensity={noiseIntensity}
+              rotation={rotation}
+            />
 
-          {/* For Demo Purposes Only */}
-          <BackgroundContent pillText="New Background" headline="Silk touch is a good enhancement, Steve!" />
-        </Box>
+            {/* For Demo Purposes Only */}
+            <BackgroundContent pillText="New Background" headline="Silk touch is a good enhancement, Steve!" />
+          </Box>
 
-        <Customize>
-          <PreviewSlider
-            title="Speed"
-            min={0.1}
-            max={20}
-            step={0.1}
-            value={speed}
-            onChange={val => {
-              setSpeed(val);
-              forceRerender();
-            }}
-          />
-
-          <PreviewSlider
-            title="Scale"
-            min={0.1}
-            max={5}
-            step={0.1}
-            value={scale}
-            onChange={val => {
-              setScale(val);
-              forceRerender();
-            }}
-          />
-
-          <PreviewSlider
-            title="Noise Intensity"
-            min={0}
-            max={10}
-            step={0.1}
-            value={noiseIntensity}
-            onChange={val => {
-              setNoiseIntensity(val);
-              forceRerender();
-            }}
-          />
-
-          <PreviewSlider
-            title="Rotation"
-            min={0}
-            max={Math.PI * 2}
-            step={0.01}
-            value={rotation}
-            onChange={val => {
-              setRotation(val);
-              forceRerender();
-            }}
-          />
-
-          <Flex align="center" gap={2} mt={4}>
-            <Text fontSize="sm">Color</Text>
-            <Input
-              type="color"
-              value={color}
-              onChange={e => {
-                setColor(e.target.value);
+          <Customize>
+            <PreviewSlider
+              title="Speed"
+              min={0.1}
+              max={20}
+              step={0.1}
+              value={speed}
+              onChange={val => {
+                updateProp('speed', val);
                 forceRerender();
               }}
-              width="100px"
             />
-          </Flex>
-        </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['three', '@react-three/fiber']} />
-      </PreviewTab>
+            <PreviewSlider
+              title="Scale"
+              min={0.1}
+              max={5}
+              step={0.1}
+              value={scale}
+              onChange={val => {
+                updateProp('scale', val);
+                forceRerender();
+              }}
+            />
 
-      <CodeTab>
-        <CodeExample codeObject={silkCode} />
-      </CodeTab>
-    </TabsLayout>
+            <PreviewSlider
+              title="Noise Intensity"
+              min={0}
+              max={10}
+              step={0.1}
+              value={noiseIntensity}
+              onChange={val => {
+                updateProp('noiseIntensity', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSlider
+              title="Rotation"
+              min={0}
+              max={Math.PI * 2}
+              step={0.01}
+              value={rotation}
+              onChange={val => {
+                updateProp('rotation', val);
+                forceRerender();
+              }}
+            />
+
+            <Flex align="center" gap={2} mt={4}>
+              <Text fontSize="sm">Color</Text>
+              <Input
+                type="color"
+                value={color}
+                onChange={e => {
+                  updateProp('color', e.target.value);
+                  forceRerender();
+                }}
+                width="100px"
+              />
+            </Flex>
+          </Customize>
+
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['three', '@react-three/fiber']} />
+        </PreviewTab>
+
+        <CodeTab>
+          <CodeExample codeObject={silkCode} componentName="Silk" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

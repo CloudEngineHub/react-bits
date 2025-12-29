@@ -69,7 +69,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   const redGradId = `red-grad-${id}`;
   const blueGradId = `blue-grad-${id}`;
 
-  const [svgSupported, setSvgSupported] = useState<boolean>(false)
+  const [svgSupported, setSvgSupported] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const feImageRef = useRef<SVGFEImageElement>(null);
@@ -184,8 +184,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       return false;
     }
 
-    const isWebkit =
-      /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
     if (isWebkit || isFirefox) {

@@ -25,8 +25,8 @@ export interface SplitTextProps {
 const SplitText: React.FC<SplitTextProps> = ({
   text,
   className = '',
-  delay = 100,
-  duration = 0.6,
+  delay = 50,
+  duration = 1.25,
   ease = 'power3.out',
   splitType = 'chars',
   from = { opacity: 0, y: 40 },
@@ -39,7 +39,13 @@ const SplitText: React.FC<SplitTextProps> = ({
 }) => {
   const ref = useRef<HTMLParagraphElement>(null);
   const animationCompletedRef = useRef(false);
+  const onCompleteRef = useRef(onLetterAnimationComplete);
   const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+
+  // Keep callback ref updated
+  useEffect(() => {
+    onCompleteRef.current = onLetterAnimationComplete;
+  }, [onLetterAnimationComplete]);
 
   useEffect(() => {
     if (document.fonts.status === 'loaded') {
@@ -54,6 +60,8 @@ const SplitText: React.FC<SplitTextProps> = ({
   useGSAP(
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
+      // Prevent re-animation if already completed
+      if (animationCompletedRef.current) return;
 
       const el = ref.current as HTMLElement & {
         _rbsplitInstance?: GSAPSplitText;
@@ -111,7 +119,7 @@ const SplitText: React.FC<SplitTextProps> = ({
               },
               onComplete: () => {
                 animationCompletedRef.current = true;
-                onLetterAnimationComplete?.();
+                onCompleteRef.current?.();
               },
               willChange: 'transform, opacity',
               force3D: true
@@ -141,8 +149,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         JSON.stringify(to),
         threshold,
         rootMargin,
-        fontsLoaded,
-        onLetterAnimationComplete
+        fontsLoaded
       ],
       scope: ref
     }

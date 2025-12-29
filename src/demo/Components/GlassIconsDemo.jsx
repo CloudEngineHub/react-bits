@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { FiBarChart2, FiBook, FiCloud, FiEdit, FiFileText, FiHeart } from 'react-icons/fi';
 import { Box } from '@chakra-ui/react';
 
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import CodeExample from '../../components/code/CodeExample';
@@ -12,24 +14,32 @@ import PropTable from '../../components/common/Preview/PropTable';
 import GlassIcons from '../../content/Components/GlassIcons/GlassIcons';
 import { glassIcons } from '../../constants/code/Components/glassIconsCode';
 
-const GlassIconsDemo = () => {
-  const [colorful, setColorful] = useState(false);
+const DEFAULT_PROPS = {
+  colorful: false
+};
 
-  const propData = [
-    {
-      name: 'items',
-      type: 'GlassIconsItem[]',
-      default: '[]',
-      description:
-        'Array of items to render. Each item should include: an icon (React.ReactElement), a color (string), a label (string), and an optional customClass (string).'
-    },
-    {
-      name: 'className',
-      type: 'string',
-      default: "''",
-      description: 'Optional additional CSS class(es) to be added to the container.'
-    }
-  ];
+const GlassIconsDemo = () => {
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { colorful } = props;
+
+  const propData = useMemo(
+    () => [
+      {
+        name: 'items',
+        type: 'GlassIconsItem[]',
+        default: '[]',
+        description:
+          'Array of items to render. Each item should include: an icon (React.ReactElement), a color (string), a label (string), and an optional customClass (string).'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        default: "''",
+        description: 'Optional additional CSS class(es) to be added to the container.'
+      }
+    ],
+    []
+  );
 
   const items = [
     { icon: <FiFileText />, color: colorful ? 'blue' : '#444', label: 'Files' },
@@ -41,29 +51,31 @@ const GlassIconsDemo = () => {
   ];
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={400} overflow="hidden">
-          <GlassIcons items={items} className="my-glass-icons" />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={400} overflow="hidden">
+            <GlassIcons items={items} className="my-glass-icons" />
+          </Box>
 
-        <Customize>
-          <PreviewSwitch
-            title="Colorful"
-            isChecked={colorful}
-            onChange={checked => {
-              setColorful(checked);
-            }}
-          />
-        </Customize>
+          <Customize>
+            <PreviewSwitch
+              title="Colorful"
+              isChecked={colorful}
+              onChange={checked => {
+                updateProp('colorful', checked);
+              }}
+            />
+          </Customize>
 
-        <PropTable data={propData} />
-      </PreviewTab>
+          <PropTable data={propData} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={glassIcons} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={glassIcons} componentName="GlassIcons" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

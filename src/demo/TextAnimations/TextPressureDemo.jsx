@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
@@ -13,6 +13,8 @@ import TextPressure from '../../content/TextAnimations/TextPressure/TextPressure
 import { textPressure } from '../../constants/code/TextAnimations/textPressureCode';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewInput from '../../components/common/Preview/PreviewInput';
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const propData = [
   {
@@ -101,138 +103,153 @@ const propData = [
   }
 ];
 
+const DEFAULT_PROPS = {
+  text: 'Hello!',
+  flex: true,
+  alpha: false,
+  stroke: false,
+  width: true,
+  weight: true,
+  italic: true,
+  textColor: '#ffffff',
+  strokeColor: '#5227FF'
+};
+
 const TextPressureDemo = () => {
-  const [text, setText] = useState('Hello!');
-  const [flex, setFlex] = useState(true);
-  const [alpha, setAlpha] = useState(false);
-  const [stroke, setStroke] = useState(false);
-  const [width, setWidth] = useState(true);
-  const [weight, setWeight] = useState(true);
-  const [italic, setItalic] = useState(true);
-  const [textColor, setTextColor] = useState('#ffffff');
-  const [strokeColor, setStrokeColor] = useState('#5227FF');
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { text, flex, alpha, stroke, width, weight, italic, textColor, strokeColor } = props;
 
   const [key, forceRerender] = useForceRerender();
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" bg="#060010" minH={400} maxH={450} overflow="hidden" mb={6}>
-          <RefreshButton onClick={forceRerender} />
-          <Box w="100%" h="100%">
-            <TextPressure
-              key={key}
-              text={text}
-              flex={flex}
-              alpha={alpha}
-              stroke={stroke}
-              width={width}
-              weight={weight}
-              italic={italic}
-              textColor={textColor}
-              strokeColor={strokeColor}
-              minFontSize={36}
-            />
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box
+            position="relative"
+            className="demo-container"
+            bg="#060010"
+            minH={400}
+            maxH={450}
+            overflow="hidden"
+            mb={6}
+          >
+            <RefreshButton onClick={forceRerender} />
+            <Box w="100%" h="100%">
+              <TextPressure
+                key={key}
+                text={text}
+                flex={flex}
+                alpha={alpha}
+                stroke={stroke}
+                width={width}
+                weight={weight}
+                italic={italic}
+                textColor={textColor}
+                strokeColor={strokeColor}
+                minFontSize={36}
+              />
+            </Box>
           </Box>
-        </Box>
 
-        <Customize>
-          <Flex alignItems="center" gap={4} flexWrap="wrap" mt={6}>
-            <Flex gap={4} align="center">
-              <Text fontSize="sm">Text Color</Text>
-              <input
-                type="color"
-                value={textColor}
-                width="60px"
-                onChange={e => {
-                  setTextColor(e.target.value);
+          <Customize>
+            <Flex alignItems="center" gap={4} flexWrap="wrap" mt={6}>
+              <Flex gap={4} align="center">
+                <Text fontSize="sm">Text Color</Text>
+                <input
+                  type="color"
+                  value={textColor}
+                  width="60px"
+                  onChange={e => {
+                    updateProp('textColor', e.target.value);
+                    forceRerender();
+                  }}
+                />
+              </Flex>
+
+              <Flex gap={4} align="center">
+                <Text fontSize="sm">Stroke Color</Text>
+                <input
+                  type="color"
+                  value={strokeColor}
+                  width="60px"
+                  onChange={e => {
+                    updateProp('strokeColor', e.target.value);
+                    forceRerender();
+                  }}
+                />
+              </Flex>
+            </Flex>
+
+            <PreviewInput
+              title="Text"
+              value={text}
+              placeholder="Your text here..."
+              width={200}
+              maxLength={10}
+              onChange={val => updateProp('text', val)}
+            />
+
+            <Flex gap={4} flexWrap="wrap">
+              <PreviewSwitch
+                title="Flex"
+                isChecked={flex}
+                onChange={checked => {
+                  updateProp('flex', checked);
+                  forceRerender();
+                }}
+              />
+              <PreviewSwitch
+                title="Alpha"
+                isChecked={alpha}
+                onChange={checked => {
+                  updateProp('alpha', checked);
+                  forceRerender();
+                }}
+              />
+              <PreviewSwitch
+                title="Stroke"
+                isChecked={stroke}
+                onChange={checked => {
+                  updateProp('stroke', checked);
+                  forceRerender();
+                }}
+              />
+              <PreviewSwitch
+                title="Width"
+                isChecked={width}
+                onChange={checked => {
+                  updateProp('width', checked);
+                  forceRerender();
+                }}
+              />
+              <PreviewSwitch
+                title="Weight"
+                isChecked={weight}
+                onChange={checked => {
+                  updateProp('weight', checked);
+                  forceRerender();
+                }}
+              />
+              <PreviewSwitch
+                title="Italic"
+                isChecked={italic}
+                onChange={checked => {
+                  updateProp('italic', checked);
                   forceRerender();
                 }}
               />
             </Flex>
+          </Customize>
 
-            <Flex gap={4} align="center">
-              <Text fontSize="sm">Stroke Color</Text>
-              <input
-                type="color"
-                value={strokeColor}
-                width="60px"
-                onChange={e => {
-                  setStrokeColor(e.target.value);
-                  forceRerender();
-                }}
-              />
-            </Flex>
-          </Flex>
+          <PropTable data={propData} />
+        </PreviewTab>
 
-          <PreviewInput
-            title="Text"
-            value={text}
-            placeholder="Your text here..."
-            width={200}
-            maxLength={10}
-            onChange={setText}
-          />
-
-          <Flex gap={4} flexWrap="wrap">
-            <PreviewSwitch
-              title="Flex"
-              isChecked={flex}
-              onChange={checked => {
-                setFlex(checked);
-                forceRerender();
-              }}
-            />
-            <PreviewSwitch
-              title="Alpha"
-              isChecked={alpha}
-              onChange={checked => {
-                setAlpha(checked);
-                forceRerender();
-              }}
-            />
-            <PreviewSwitch
-              title="Stroke"
-              isChecked={stroke}
-              onChange={checked => {
-                setStroke(checked);
-                forceRerender();
-              }}
-            />
-            <PreviewSwitch
-              title="Width"
-              isChecked={width}
-              onChange={checked => {
-                setWidth(checked);
-                forceRerender();
-              }}
-            />
-            <PreviewSwitch
-              title="Weight"
-              isChecked={weight}
-              onChange={checked => {
-                setWeight(checked);
-                forceRerender();
-              }}
-            />
-            <PreviewSwitch
-              title="Italic"
-              isChecked={italic}
-              onChange={checked => {
-                setItalic(checked);
-                forceRerender();
-              }}
-            />
-          </Flex>
-        </Customize>
-
-        <PropTable data={propData} />
-      </PreviewTab>
-
-      <CodeTab>
-        <CodeExample codeObject={textPressure} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={textPressure} componentName="TextPressure" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

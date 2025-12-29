@@ -232,7 +232,7 @@ export default function PixelSnow({
       const renderer = rendererRef.current;
       const material = materialRef.current;
       if (!container || !renderer || !material) return;
-      
+
       const w = container.offsetWidth;
       const h = container.offsetHeight;
       renderer.setSize(w, h);
@@ -309,7 +309,7 @@ export default function PixelSnow({
     const startTime = performance.now();
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
-      
+
       // Only render if visible
       if (isVisibleRef.current) {
         material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
