@@ -12,6 +12,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import PixelSnow from '../../content/Backgrounds/PixelSnow/PixelSnow';
 import { pixelSnow } from '../../constants/code/Backgrounds/pixelSnowCode';
@@ -166,6 +167,40 @@ const PixelSnowDemo = () => {
 
             <BackgroundContent headline="Oh, the weather outside is frightful!" pillText="New Background" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="pixel-snow"
+              currentProps={{
+                color,
+                flakeSize,
+                minFlakeSize,
+                pixelResolution,
+                speed,
+                depthFade,
+                farPlane,
+                brightness,
+                gamma,
+                density,
+                variant,
+                direction
+              }}
+              defaultProps={{
+                color: '#ffffff',
+                flakeSize: 0.01,
+                minFlakeSize: 1.25,
+                pixelResolution: 200,
+                speed: 1.25,
+                depthFade: 8,
+                farPlane: 20,
+                brightness: 1,
+                gamma: 0.4545,
+                density: 0.3,
+                variant: 'square',
+                direction: 125
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSelect

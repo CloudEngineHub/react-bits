@@ -13,6 +13,8 @@ import Dependencies from '../../components/code/Dependencies';
 import RefreshButton from '@/components/common/Preview/RefreshButton';
 import useForceRerender from '@/hooks/useForceRerender';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import LaserFlow from '@/content/Animations/LaserFlow/LaserFlow';
 import { laserFlow } from '@/constants/code/Animations/laserFlowCode';
 
@@ -214,6 +216,26 @@ const LaserFlowDemo = () => {
 
             <RefreshButton onClick={forceRerender} />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="laser-flow"
+              currentProps={{
+                color: laserColor,
+                wispDensity,
+                flowSpeed,
+                verticalSizing,
+                horizontalSizing,
+                fogIntensity,
+                fogScale,
+                wispSpeed,
+                wispIntensity,
+                flowStrength,
+                decay
+              }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSelect

@@ -13,6 +13,8 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import Customize from '../../components/common/Preview/Customize';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import Ribbons from '../../content/Animations/Ribbons/Ribbons';
 import { ribbons } from '../../constants/code/Animations/ribbonsCode';
 
@@ -124,6 +126,14 @@ const RibbonsDemo = () => {
               enableShaderEffect={enableWaves}
             />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="ribbons"
+              currentProps={{ baseThickness, colors, speedMultiplier, maxAge, enableFade, enableShaderEffect: enableWaves }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <Flex gap={4} align="center" mt={4}>

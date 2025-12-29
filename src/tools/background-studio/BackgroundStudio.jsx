@@ -458,7 +458,7 @@ export default function BackgroundStudio({ toolSelector }) {
           </Text>
         </Box>
 
-        <Flex position="absolute" bottom={4} left={4} gap={2} display={{ base: 'none', lg: 'flex' }}>
+        <Flex position="absolute" zIndex={99} bottom={4} left={4} gap={2} display={{ base: 'none', lg: 'flex' }}>
           <Flex
             as="button"
             align="center"

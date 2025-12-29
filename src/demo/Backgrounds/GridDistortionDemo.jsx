@@ -1,7 +1,8 @@
 import { useRef, useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -88,6 +89,27 @@ const GridDistortionDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="Don't just sit there, move your cursor!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="grid-distortion"
+              currentProps={{
+                imageSrc:
+                  'https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                grid,
+                mouse,
+                strength: 0.15,
+                relaxation: 0.9
+              }}
+              defaultProps={{
+                imageSrc: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800',
+                grid: 15,
+                mouse: 0.1,
+                strength: 0.15,
+                relaxation: 0.9
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

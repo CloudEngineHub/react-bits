@@ -13,6 +13,7 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import { lightRays } from '../../constants/code/Backgrounds/lightRaysCode';
@@ -163,6 +164,40 @@ const LightRaysDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="May these lights guide you on your path" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="light-rays"
+              currentProps={{
+                raysOrigin,
+                raysColor,
+                raysSpeed,
+                lightSpread,
+                rayLength,
+                pulsating,
+                fadeDistance,
+                saturation,
+                followMouse: true,
+                mouseInfluence,
+                noiseAmount,
+                distortion
+              }}
+              defaultProps={{
+                raysOrigin: 'top-center',
+                raysColor: '#ffffff',
+                raysSpeed: 1,
+                lightSpread: 1,
+                rayLength: 2,
+                pulsating: false,
+                fadeDistance: 1,
+                saturation: 1,
+                followMouse: true,
+                mouseInfluence: 0.1,
+                noiseAmount: 0,
+                distortion: 0
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

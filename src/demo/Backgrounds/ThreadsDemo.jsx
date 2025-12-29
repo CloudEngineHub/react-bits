@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -74,6 +75,14 @@ const ThreadsDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Not to be confused with the Threads app by Meta!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="threads"
+              currentProps={{ amplitude, distance, enableMouseInteraction }}
+              defaultProps={{ amplitude: 1, distance: 0, enableMouseInteraction: true }}
+            />
+          </Flex>
 
           <Customize onReset={resetProps} onRerender={forceRerender} hasChanges={hasChanges}>
             <PreviewSlider

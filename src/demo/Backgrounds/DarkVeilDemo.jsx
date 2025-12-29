@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -97,6 +98,21 @@ const DarkVeilDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Become emboldened by the flame of ambition" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="dark-veil"
+              currentProps={{ hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount }}
+              defaultProps={{
+                hueShift: 0,
+                noiseIntensity: 0,
+                scanlineIntensity: 0,
+                speed: 0.5,
+                scanlineFrequency: 0,
+                warpAmount: 0
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

@@ -8,6 +8,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
@@ -96,6 +97,38 @@ const ColorBendsDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="You have the power to reshape your own destiny" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="color-bends"
+              currentProps={{
+                rotation,
+                speed,
+                colors: [color],
+                transparent: true,
+                autoRotate,
+                scale,
+                frequency,
+                warpStrength,
+                mouseInfluence,
+                parallax,
+                noise
+              }}
+              defaultProps={{
+                rotation: 45,
+                speed: 0.2,
+                colors: ['#5227FF', '#FF9FFC', '#7cff67'],
+                transparent: true,
+                autoRotate: 0,
+                scale: 1,
+                frequency: 1,
+                warpStrength: 1,
+                mouseInfluence: 1,
+                parallax: 0.5,
+                noise: 0.1
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

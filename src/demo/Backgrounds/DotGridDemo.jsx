@@ -9,6 +9,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -140,6 +141,36 @@ const DotGridDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Organized chaos with every cursor movement!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="dot-grid"
+              currentProps={{
+                dotSize,
+                gap,
+                baseColor,
+                activeColor,
+                proximity,
+                shockRadius,
+                shockStrength,
+                resistance,
+                returnDuration
+              }}
+              defaultProps={{
+                dotSize: 16,
+                gap: 32,
+                baseColor: '#5227FF',
+                activeColor: '#5227FF',
+                proximity: 150,
+                speedTrigger: 100,
+                shockRadius: 250,
+                shockStrength: 5,
+                maxSpeed: 5000,
+                resistance: 750,
+                returnDuration: 1.5
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

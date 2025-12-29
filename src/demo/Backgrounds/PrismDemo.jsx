@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -151,6 +152,34 @@ const PrismDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="A spectrum of colors that spark creativity" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="prism"
+              currentProps={{
+                animationType,
+                timeScale,
+                scale,
+                noise,
+                glow,
+                height,
+                baseWidth,
+                hueShift,
+                colorFrequency
+              }}
+              defaultProps={{
+                animationType: 'rotate',
+                timeScale: 0.5,
+                scale: 3.6,
+                noise: 0,
+                glow: 1,
+                height: 3.5,
+                baseWidth: 5.5,
+                hueShift: 0,
+                colorFrequency: 1
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSelect

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
@@ -75,6 +76,14 @@ const LightningDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="The power of nature's fury, with React Bits!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="lightning"
+              currentProps={{ hue, xOffset, speed, intensity, size }}
+              defaultProps={{ hue: 230, xOffset: 0, speed: 1, intensity: 1, size: 1 }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

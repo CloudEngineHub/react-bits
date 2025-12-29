@@ -12,6 +12,8 @@ import PropTable from '../../components/common/Preview/PropTable';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import Customize from '../../components/common/Preview/Customize';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import Noise from '../../content/Animations/Noise/Noise';
 import { noise } from '../../constants/code/Animations/noiseCode';
 
@@ -81,6 +83,14 @@ const NoiseDemo = () => {
             />
             <RefreshButton onClick={forceRerender} />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="noise"
+              currentProps={{ patternSize, patternScaleX, patternScaleY, patternAlpha }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

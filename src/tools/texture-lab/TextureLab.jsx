@@ -421,7 +421,7 @@ export default function TextureLab({ toolSelector }) {
       ...s,
       isExporting: true,
       exportProgress: 0,
-      exportStatus: 'Exporting...'
+      exportStatus: 'Preparing...'
     }));
 
     const wasPlaying = !video.paused;
@@ -433,17 +433,42 @@ export default function TextureLab({ toolSelector }) {
     const wasLooping = video.loop;
     video.loop = false;
 
-    try {
-      video.currentTime = 0;
-      await new Promise(resolve => {
-        video.onseeked = resolve;
-      });
+    const currentVideo = video;
+    const currentCanvas = canvasRef.current;
+    const currentRenderer = rendererRef.current;
 
-      const videoDuration = video.duration;
-      const stream = canvasRef.current.captureStream(60);
-      const mediaRecorder = new MediaRecorder(stream, {
+    let animationId = null;
+    let mediaRecorder = null;
+
+    try {
+      const videoDuration = currentVideo.duration;
+
+      currentVideo.currentTime = 0;
+      await Promise.race([
+        new Promise(resolve => {
+          const onSeeked = () => {
+            currentVideo.removeEventListener('seeked', onSeeked);
+            resolve();
+          };
+          currentVideo.addEventListener('seeked', onSeeked);
+        }),
+        new Promise(resolve => setTimeout(resolve, 200))
+      ]);
+
+      if (currentVideo.currentTime > 0.1) {
+        currentVideo.currentTime = 0;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      currentRenderer.updateVideoFrame(currentVideo);
+      currentRenderer.render(effects, seed, currentVideo.videoWidth, currentVideo.videoHeight);
+
+      setState(s => ({ ...s, exportStatus: 'Recording...' }));
+
+      const stream = currentCanvas.captureStream(60);
+      mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'video/webm;codecs=vp9',
-        videoBitsPerSecond: 8000000
+        videoBitsPerSecond: 12000000
       });
 
       const chunks = [];
@@ -451,59 +476,92 @@ export default function TextureLab({ toolSelector }) {
         if (e.data.size > 0) chunks.push(e.data);
       };
 
-      const handleRecordingComplete = () => {
-        const webmBlob = new Blob(chunks, { type: 'video/webm' });
+      const recordingDone = new Promise(resolve => {
+        mediaRecorder.onstop = () => resolve(chunks);
+      });
 
-        const url = URL.createObjectURL(webmBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `texture-lab-${Date.now()}.webm`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+      mediaRecorder.start(100);
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-        video.loop = wasLooping;
-        setState(s => ({ ...s, isExporting: false, exportProgress: 0, exportStatus: '' }));
-        toaster.create({
-          title: 'Video exported',
-          description: 'Saved as WebM file',
-          type: 'success',
-          duration: 2000
-        });
+      const renderLoop = () => {
+        currentRenderer.updateVideoFrame(currentVideo);
+        currentRenderer.render(effects, seed, currentVideo.videoWidth, currentVideo.videoHeight);
+
+        const progress = Math.round((currentVideo.currentTime / videoDuration) * 100);
+        setState(s => ({
+          ...s,
+          exportProgress: Math.min(progress, 100),
+          exportStatus: 'Exporting...'
+        }));
+
+        if (!currentVideo.ended && !currentVideo.paused) {
+          animationId = requestAnimationFrame(renderLoop);
+        }
       };
 
-      mediaRecorder.onstop = handleRecordingComplete;
-      mediaRecorder.start();
+      animationId = requestAnimationFrame(renderLoop);
 
-      const frameInterval = 1000 / 60;
-      let intervalId = null;
-      video.play();
+      await currentVideo.play();
 
-      intervalId = setInterval(() => {
-        if (video.ended || video.paused) {
-          clearInterval(intervalId);
-          mediaRecorder.stop();
-          video.currentTime = 0;
-          renderPreview();
+      await new Promise(resolve => {
+        if (currentVideo.ended) {
+          resolve();
           return;
         }
+        currentVideo.addEventListener('ended', resolve, { once: true });
+      });
 
-        rendererRef.current.updateVideoFrame(video);
-        rendererRef.current.render(effects, seed, video.videoWidth, video.videoHeight);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
 
-        const progress = (video.currentTime / videoDuration) * 100;
-        setState(s => ({ ...s, exportProgress: progress }));
-      }, frameInterval);
+      currentRenderer.updateVideoFrame(currentVideo);
+      currentRenderer.render(effects, seed, currentVideo.videoWidth, currentVideo.videoHeight);
 
-      video.onended = () => {
-        clearInterval(intervalId);
-        mediaRecorder.stop();
-        video.currentTime = 0;
-        renderPreview();
-      };
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      mediaRecorder.stop();
+
+      const finalChunks = await recordingDone;
+
+      const webmBlob = new Blob(finalChunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(webmBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `texture-lab-${Date.now()}.webm`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      currentVideo.loop = wasLooping;
+      currentVideo.currentTime = 0;
+      if (wasPlaying) {
+        currentVideo.play();
+        setState(s => ({ ...s, isPlaying: true }));
+      }
+      renderPreview();
+
+      setState(s => ({ ...s, isExporting: false, exportProgress: 0, exportStatus: '' }));
+      toaster.create({
+        title: 'Video exported',
+        description: `Saved as WebM (${(webmBlob.size / 1024 / 1024).toFixed(1)} MB)`,
+        type: 'success',
+        duration: 2000
+      });
     } catch (err) {
-      video.loop = wasLooping;
+      console.error('Video export error:', err);
+
+      if (animationId) cancelAnimationFrame(animationId);
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+
+      currentVideo.loop = wasLooping;
+      currentVideo.pause();
+      currentVideo.currentTime = 0;
+
       setState(s => ({ ...s, isExporting: false, exportProgress: 0, exportStatus: '' }));
       toaster.create({
         title: 'Video export failed',

@@ -2318,7 +2318,13 @@ export default function Controls({
             style={{ display: 'none' }}
           />
           <Flex gap={2}>
-            <ToggleButton icon={Upload} label="Upload" onClick={() => fileInputRef.current?.click()} flex={1} />
+            <ToggleButton
+              icon={Upload}
+              label="Upload"
+              onClick={() => fileInputRef.current?.click()}
+              flex={1}
+              disabled={isExporting}
+            />
             <ToggleButton
               icon={ImageIcon}
               label="Sample"
@@ -2329,8 +2335,9 @@ export default function Controls({
                 )
               }
               flex={1}
+              disabled={isExporting}
             />
-            {(image || video) && <ToggleButton icon={X} label="Clear" onClick={onClearMedia} />}
+            {(image || video) && !isExporting && <ToggleButton icon={X} label="Clear" onClick={onClearMedia} />}
           </Flex>
           <Flex gap={2}>
             <Input
@@ -2346,9 +2353,14 @@ export default function Controls({
               flex={1}
               _placeholder={{ color: '#B19EEF' }}
               _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
-              onKeyDown={e => e.key === 'Enter' && handleLoadUrl()}
+              onKeyDown={e => e.key === 'Enter' && !isExporting && handleLoadUrl()}
+              disabled={isExporting}
             />
-            <ToggleButton icon={Link} onClick={handleLoadUrl} disabled={!urlInput.trim() || isLoadingUrl} />
+            <ToggleButton
+              icon={Link}
+              onClick={handleLoadUrl}
+              disabled={!urlInput.trim() || isLoadingUrl || isExporting}
+            />
           </Flex>
 
           {corsError && (
@@ -2497,10 +2509,11 @@ export default function Controls({
             border="1px solid #271E37"
             borderRadius="8px"
             py={2}
-            cursor="pointer"
-            onClick={onReset}
+            cursor={isExporting ? 'not-allowed' : 'pointer'}
+            opacity={isExporting ? 0.5 : 1}
+            onClick={isExporting ? undefined : onReset}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: isExporting ? '#271E37' : '#5227FF' }}
           >
             <Icon as={RotateCcw} boxSize={4} color="#988BC7" />
             <Text fontSize="12px" color="#988BC7" fontWeight={500}>

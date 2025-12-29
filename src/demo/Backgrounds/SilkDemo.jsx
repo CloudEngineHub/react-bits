@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text, Input } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
 
@@ -83,6 +84,14 @@ const SilkDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Silk touch is a good enhancement, Steve!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="silk"
+              currentProps={{ speed, scale, color, noiseIntensity, rotation }}
+              defaultProps={{ speed: 5, scale: 1, color: '#7B7481', noiseIntensity: 1.5, rotation: 0 }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

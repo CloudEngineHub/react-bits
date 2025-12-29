@@ -10,6 +10,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -195,6 +196,38 @@ const FaultyTerminalDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="It works on my machine, please check again" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="faulty-terminal"
+              currentProps={{
+                scale,
+                digitSize,
+                scanlineIntensity,
+                curvature,
+                tint,
+                mouseReact,
+                mouseStrength,
+                noiseAmp,
+                brightness
+              }}
+              defaultProps={{
+                scale: 1,
+                digitSize: 1.5,
+                scanlineIntensity: 0.3,
+                glitchAmount: 1,
+                flickerAmount: 1,
+                noiseAmp: 0,
+                chromaticAberration: 0,
+                dither: 0,
+                curvature: 0.2,
+                tint: '#ffffff',
+                mouseReact: true,
+                mouseStrength: 0.2,
+                brightness: 1
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

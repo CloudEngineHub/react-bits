@@ -13,6 +13,8 @@ import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import { antigravity } from '@/constants/code/Animations/antigravityCode';
 import Antigravity from '../../ts-default/Animations/Antigravity/Antigravity';
 
@@ -196,6 +198,30 @@ const AntigravityDemo = () => {
               fieldStrength={fieldStrength}
             />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="antigravity"
+              currentProps={{
+                count,
+                magnetRadius,
+                ringRadius,
+                waveSpeed,
+                waveAmplitude,
+                particleSize,
+                lerpSpeed,
+                color,
+                autoAnimate,
+                particleVariance,
+                rotationSpeed,
+                depthFactor,
+                pulseSpeed,
+                particleShape,
+                fieldStrength
+              }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import RefreshButton from '../../components/common/Preview/RefreshButton';
 import CodeExample from '../../components/code/CodeExample';
 import Dependencies from '../../components/code/Dependencies';
@@ -156,6 +157,27 @@ const BallpitDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Balls! What's not to like about them?" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="ballpit"
+              currentProps={{
+                count,
+                gravity,
+                friction,
+                wallBounce,
+                followCursor
+              }}
+              defaultProps={{
+                count: 100,
+                gravity: 0.5,
+                friction: 0.9975,
+                wallBounce: 0.95,
+                followCursor: true,
+                colors: ['#5227FF', '#7cff67', '#ff6b6b']
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSwitch

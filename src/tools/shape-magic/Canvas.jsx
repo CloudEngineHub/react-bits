@@ -15,6 +15,7 @@ const Canvas = forwardRef(
       onShapeUpdate,
       onSelectionChange,
       onDragEnd,
+      onAltDragDuplicate,
       snapToGrid,
       gridSize,
       showBridgeDebug = false,
@@ -33,6 +34,8 @@ const Canvas = forwardRef(
     const [draggedShape, setDraggedShape] = useState(null);
     const [resizeHandle, setResizeHandle] = useState(null);
     const [initialShapeStates, setInitialShapeStates] = useState(null);
+    const [isAltDragging, setIsAltDragging] = useState(false);
+    const altDragDuplicatedRef = useRef(false);
 
     const [marquee, setMarquee] = useState(null);
     const [marqueeStart, setMarqueeStart] = useState(null);
@@ -218,6 +221,24 @@ const Canvas = forwardRef(
           );
 
         if (clickedShape) {
+          if (e.altKey && onAltDragDuplicate) {
+            const shapesToDuplicate = selectedIds.includes(clickedShape.id) ? selectedIds : [clickedShape.id];
+            altDragDuplicatedRef.current = false;
+            setIsAltDragging(true);
+
+            const states = {};
+            shapesToDuplicate.forEach(id => {
+              const s = shapes.find(sh => sh.id === id);
+              if (s) states[id] = { ...s };
+            });
+
+            setDraggedShape(clickedShape);
+            setDragStart({ x: e.clientX, y: e.clientY });
+            setInitialShapeStates(states);
+            setIsDragging(true);
+            return;
+          }
+
           if (e.shiftKey) {
             if (selectedIds.includes(clickedShape.id)) {
               onSelectionChange(selectedIds.filter(id => id !== clickedShape.id));
@@ -240,7 +261,7 @@ const Canvas = forwardRef(
           setInitialShapeStates(states);
           setIsDragging(true);
         } else {
-          if (e.button === 1 || e.altKey) {
+          if (e.button === 1) {
             setIsPanning(true);
             setDragStart({ x: e.clientX, y: e.clientY });
           } else {
@@ -252,7 +273,7 @@ const Canvas = forwardRef(
           }
         }
       },
-      [shapes, selectedIds, screenToCanvas, onSelectionChange, spaceHeld]
+      [shapes, selectedIds, screenToCanvas, onSelectionChange, spaceHeld, onAltDragDuplicate]
     );
 
     const handleMouseMove = useCallback(
@@ -279,6 +300,32 @@ const Canvas = forwardRef(
           const dx = (e.clientX - dragStart.x) / zoom;
           const dy = (e.clientY - dragStart.y) / zoom;
 
+          if (isAltDragging && !altDragDuplicatedRef.current && onAltDragDuplicate) {
+            if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+              const originalIds = Object.keys(initialShapeStates);
+              const duplicates = onAltDragDuplicate(originalIds);
+
+              if (duplicates && duplicates.length > 0) {
+                const newStates = {};
+                duplicates.forEach(dup => {
+                  newStates[dup.id] = { ...dup };
+                });
+                setInitialShapeStates(newStates);
+                setDraggedShape(duplicates[0]);
+                altDragDuplicatedRef.current = true;
+
+                duplicates.forEach(dup => {
+                  onShapeUpdate(dup.id, {
+                    x: snapValue(dup.x + dx),
+                    y: snapValue(dup.y + dy)
+                  });
+                });
+              }
+            }
+            return;
+          }
+
+          // After alt+drag duplication or normal drag - move the shapes
           if (resizeHandle) {
             const ids = Object.keys(initialShapeStates);
 
@@ -371,7 +418,9 @@ const Canvas = forwardRef(
         marqueeStart,
         marquee,
         screenToCanvas,
-        gridSize
+        gridSize,
+        isAltDragging,
+        onAltDragDuplicate
       ]
     );
 
@@ -408,6 +457,8 @@ const Canvas = forwardRef(
       setInitialShapeStates(null);
       setMarquee(null);
       setMarqueeStart(null);
+      setIsAltDragging(false);
+      altDragDuplicatedRef.current = false;
     }, [marquee, marqueeStart, shapes, onSelectionChange, isDragging, onDragEnd]);
 
     useEffect(() => {

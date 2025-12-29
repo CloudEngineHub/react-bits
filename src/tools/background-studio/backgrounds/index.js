@@ -863,16 +863,16 @@ export const BACKGROUNDS = [
       {
         name: 'variant',
         type: 'select',
-        default: 1,
+        default: '1',
         options: [
-          { value: 1, label: 'Variant 1' },
-          { value: 2, label: 'Variant 2' },
-          { value: 3, label: 'Variant 3' },
-          { value: 4, label: 'Variant 4' },
-          { value: 5, label: 'Variant 5' },
-          { value: 6, label: 'Variant 6' },
-          { value: 7, label: 'Variant 7' },
-          { value: 8, label: 'Variant 8' }
+          { value: '1', label: 'Variant 1' },
+          { value: '2', label: 'Variant 2' },
+          { value: '3', label: 'Variant 3' },
+          { value: '4', label: 'Variant 4' },
+          { value: '5', label: 'Variant 5' },
+          { value: '6', label: 'Variant 6' },
+          { value: '7', label: 'Variant 7' },
+          { value: '8', label: 'Variant 8' }
         ],
         label: 'Variant'
       }
@@ -944,19 +944,6 @@ export const BACKGROUNDS = [
         label: 'Refresh Interval'
       },
       { name: 'patternAlpha', type: 'number', default: 15, min: 5, max: 100, step: 5, label: 'Alpha' }
-    ]
-  },
-  {
-    id: 'pixel-trail',
-    label: 'Pixel Trail',
-    component: () => import('../../../content/Animations/PixelTrail/PixelTrail.jsx'),
-    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/animations/pixel-trail"',
-    props: [
-      { name: 'gridSize', type: 'number', default: 40, min: 10, max: 150, step: 5, label: 'Grid Size' },
-      { name: 'trailSize', type: 'number', default: 0.1, min: 0.01, max: 0.5, step: 0.01, label: 'Trail Size' },
-      { name: 'maxAge', type: 'number', default: 250, min: 50, max: 1000, step: 25, label: 'Max Age (ms)' },
-      { name: 'interpolate', type: 'number', default: 5, min: 1, max: 20, step: 1, label: 'Interpolation' },
-      { name: 'color', type: 'color', default: '#ffffff', label: 'Color' }
     ]
   },
   {
@@ -1047,7 +1034,6 @@ const ANIMATION_IDS = [
   'image-trail',
   'laser-flow',
   'noise',
-  'pixel-trail',
   'ribbons',
   'splash-cursor'
 ];

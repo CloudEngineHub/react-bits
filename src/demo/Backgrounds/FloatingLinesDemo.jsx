@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import useForceRerender from '../../hooks/useForceRerender';
@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import FloatingLines from '@/content/Backgrounds/FloatingLines/FloatingLines';
 import { floatingLines } from '../../constants/code/Backgrounds/floatingLinesCode';
@@ -148,6 +149,23 @@ const FloatingLinesDemo = () => {
             />
             <BackgroundContent pillText="New Background" headline="Waves are cool! Even cooler with lines!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="floating-lines"
+              currentProps={{ enabledWaves, lineCount, lineDistance, bendRadius, bendStrength }}
+              defaultProps={{
+                linesGradient: ['#E945F5', '#2F4BC0', '#E945F5'],
+                animationSpeed: 1,
+                interactive: true,
+                bendRadius: 5,
+                bendStrength: -0.5,
+                mouseDamping: 0.05,
+                parallax: true,
+                parallaxStrength: 0.2
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSwitch

@@ -10,6 +10,8 @@ import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import { imageTrail } from '../../constants/code/Animations/imageTrailCode';
 import ImageTrail from '../../content/Animations/ImageTrail/ImageTrail';
 
@@ -69,6 +71,14 @@ const ImageTrailDemo = () => {
               </Text>
             </Flex>
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="image-trail"
+              currentProps={{ variant }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <div className="preview-options">
             <h2 className="demo-title-extra">Customize</h2>

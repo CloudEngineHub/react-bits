@@ -10,6 +10,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -120,6 +121,34 @@ const DitherDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Retro dithered waves to enhance your UI" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="dither"
+              currentProps={{
+                waveColor: colors,
+                disableAnimation,
+                enableMouseInteraction,
+                mouseRadius,
+                colorNum,
+                pixelSize: 2,
+                waveAmplitude,
+                waveFrequency,
+                waveSpeed
+              }}
+              defaultProps={{
+                waveColor: [0.32, 0.15, 1.0],
+                disableAnimation: false,
+                enableMouseInteraction: true,
+                mouseRadius: 1,
+                colorNum: 4,
+                pixelSize: 2,
+                waveAmplitude: 0.3,
+                waveFrequency: 3,
+                waveSpeed: 0.05
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Text fontSize="sm">Colors</Text>
