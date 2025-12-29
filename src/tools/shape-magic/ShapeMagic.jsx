@@ -223,6 +223,52 @@ export default function ShapeMagic({ toolSelector }) {
     [shapes, selectedIds, saveToHistory]
   );
 
+  const clipboardRef = useRef([]);
+
+  const handleCopyShapes = useCallback(() => {
+    if (selectedIds.length === 0) return;
+    const copiedShapes = shapes.filter(s => selectedIds.includes(s.id)).map(s => ({ ...s }));
+    clipboardRef.current = copiedShapes;
+  }, [shapes, selectedIds]);
+
+  const handlePasteShapes = useCallback(() => {
+    if (clipboardRef.current.length === 0) return;
+
+    const pastedShapes = clipboardRef.current.map(s => ({
+      ...s,
+      id: `shape-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      x: s.x + 20,
+      y: s.y + 20
+    }));
+
+    clipboardRef.current = pastedShapes.map(s => ({ ...s }));
+
+    const newShapes = [...shapes, ...pastedShapes];
+    setShapes(newShapes);
+    setSelectedIds(pastedShapes.map(s => s.id));
+    saveToHistory(newShapes);
+  }, [shapes, saveToHistory]);
+
+  const handleAltDragDuplicate = useCallback(
+    shapeIds => {
+      if (shapeIds.length === 0) return [];
+
+      const duplicates = shapes
+        .filter(s => shapeIds.includes(s.id))
+        .map(s => ({
+          ...s,
+          id: `shape-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        }));
+
+      const newShapes = [...shapes, ...duplicates];
+      setShapes(newShapes);
+      setSelectedIds(duplicates.map(s => s.id));
+
+      return duplicates;
+    },
+    [shapes]
+  );
+
   useEffect(() => {
     const handleKeyDown = e => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
@@ -243,11 +289,23 @@ export default function ShapeMagic({ toolSelector }) {
         e.preventDefault();
         handleDuplicateShapes();
       }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+        if (document.activeElement?.tagName !== 'INPUT' && selectedIds.length > 0) {
+          e.preventDefault();
+          handleCopyShapes();
+        }
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'v') {
+        if (document.activeElement?.tagName !== 'INPUT' && clipboardRef.current.length > 0) {
+          e.preventDefault();
+          handlePasteShapes();
+        }
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [undo, redo, selectedIds, handleDeleteShapes, handleDuplicateShapes]);
+  }, [undo, redo, selectedIds, handleDeleteShapes, handleDuplicateShapes, handleCopyShapes, handlePasteShapes]);
 
   return (
     <Flex
@@ -308,6 +366,7 @@ export default function ShapeMagic({ toolSelector }) {
           onShapeUpdate={handleShapeUpdate}
           onSelectionChange={setSelectedIds}
           onDragEnd={handleDragEnd}
+          onAltDragDuplicate={handleAltDragDuplicate}
           snapToGrid={snapToGrid}
           gridSize={gridSize}
           showBridgeDebug={showBridgeDebug}

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -69,6 +70,14 @@ const IridescenceDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Radiant iridescence with customizable colors" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="iridescence"
+              currentProps={{ speed, mouseReact: mouseInteraction }}
+              defaultProps={{ speed: 1.0, amplitude: 0.1, mouseReact: true }}
+            />
+          </Flex>
 
           <Customize className="preview-options">
             <Text fontSize="sm">Colors</Text>

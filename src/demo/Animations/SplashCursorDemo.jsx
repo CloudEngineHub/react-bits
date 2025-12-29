@@ -7,6 +7,8 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import SplashCursor from '../../content/Animations/SplashCursor/SplashCursor';
 import { splashCursor } from '../../constants/code/Animations/splashCursorCode';
 
@@ -129,6 +131,14 @@ const SplashCursorDemo = () => {
               <Text fontSize={'3rem'} textAlign="center" color="#271E37" fontWeight={900} userSelect={'none'}>
                 Move Your Cursor
               </Text>
+            </Flex>
+
+            <Flex justify="flex-end" mt={2} mb={-2}>
+              <OpenInStudioButton
+                backgroundId="splash-cursor"
+                currentProps={{}}
+                defaultProps={DEFAULT_PROPS}
+              />
             </Flex>
 
             <PropTable data={propData} />

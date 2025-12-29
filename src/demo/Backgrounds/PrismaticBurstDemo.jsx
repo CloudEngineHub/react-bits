@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import PrismaticBurst from '../../content/Backgrounds/PrismaticBurst/PrismaticBurst';
 import { prismaticBurst } from '../../constants/code/Backgrounds/prismaticBurstCode';
@@ -117,6 +118,29 @@ const PrismaticBurstDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="A burst of dancing colors, beautifully unleashed" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="prismatic-burst"
+              currentProps={{
+                animationType,
+                intensity,
+                speed,
+                distort,
+                hoverDampness,
+                rayCount,
+                colors: userColors.length ? userColors : undefined
+              }}
+              defaultProps={{
+                animationType: 'rotate3d',
+                intensity: 2,
+                speed: 0.5,
+                distort: 0,
+                hoverDampness: 0.25,
+                rayCount: 0
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" gap={4} mb={2}>

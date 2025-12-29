@@ -10,6 +10,8 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import GhostCursor from '@/content/Animations/GhostCursor/GhostCursor';
 import { ghostCursor } from '@/constants/code/Animations/ghostCursorCode';
 
@@ -168,6 +170,22 @@ const GhostCursorDemo = () => {
               Boo!
             </Text>
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="ghost-cursor"
+              currentProps={{
+                trailLength,
+                inertia,
+                grainIntensity,
+                bloomStrength,
+                bloomRadius,
+                brightness,
+                color
+              }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

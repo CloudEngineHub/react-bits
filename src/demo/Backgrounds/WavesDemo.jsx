@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Box, Flex, Input, Text } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 
@@ -115,6 +116,29 @@ const WavesDemo = () => {
           <Box position="relative" h={600} className="demo-container" overflow="hidden" p={0}>
             <Waves key={key} waveSpeedX={waveSpeedX} lineColor={color} />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="waves"
+              currentProps={{
+                lineColor: color,
+                waveSpeedX
+              }}
+              defaultProps={{
+                lineColor: '#5227FF',
+                backgroundColor: 'transparent',
+                waveSpeedX: 0.02,
+                waveSpeedY: 0.01,
+                waveAmpX: 40,
+                waveAmpY: 20,
+                friction: 0.9,
+                tension: 0.01,
+                maxCursorMove: 120,
+                xGap: 12,
+                yGap: 36
+              }}
+            />
+          </Flex>
 
           <Customize onRerender={forceRerender}>
             <PreviewSlider

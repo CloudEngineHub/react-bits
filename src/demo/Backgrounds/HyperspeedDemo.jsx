@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { hyperspeedPresets } from '../../content/Backgrounds/Hyperspeed/HyperSpeedPresets';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -67,6 +68,14 @@ const HyperspeedDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Click & hold to see the real magic of hyperspeed!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="hyperspeed"
+              currentProps={{ preset: activePreset }}
+              defaultProps={{ preset: 'one' }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSelect

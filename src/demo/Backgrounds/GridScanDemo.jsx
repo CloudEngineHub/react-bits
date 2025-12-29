@@ -16,6 +16,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import { gridScan } from '@/constants/code/Backgrounds/gridScanCode';
 import { GridScan } from '@/content/Backgrounds/GridScan/GridScan';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 const DEFAULT_PROPS = {
   lineThickness: 1,
@@ -123,6 +124,39 @@ const GridScanDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="Hold on, scanning for Angular users." />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="grid-scan"
+              currentProps={{
+                lineThickness,
+                linesColor,
+                scanColor,
+                gridScale,
+                lineJitter,
+                noiseIntensity,
+                scanGlow,
+                scanSoftness
+              }}
+              defaultProps={{
+                sensitivity: 0.55,
+                lineThickness: 1,
+                linesColor: '#392e4e',
+                scanColor: '#FF9FFC',
+                scanOpacity: 0.4,
+                gridScale: 0.1,
+                lineStyle: 'solid',
+                lineJitter: 0.1,
+                scanDirection: 'pingpong',
+                noiseIntensity: 0.01,
+                scanGlow: 0.5,
+                scanSoftness: 2,
+                scanDuration: 2,
+                scanDelay: 2,
+                scanOnClick: false
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4} gap={2}>

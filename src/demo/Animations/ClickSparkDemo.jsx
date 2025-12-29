@@ -12,6 +12,8 @@ import PropTable from '../../components/common/Preview/PropTable';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import Customize from '../../components/common/Preview/Customize';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
+
 import { clickSpark } from '../../constants/code/Animations/clickSparkCode';
 import ClickSpark from '../../content/Animations/ClickSpark/ClickSpark';
 
@@ -110,6 +112,14 @@ const ClickSparkDemo = () => {
               Click Around!
             </Text>
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="click-spark"
+              currentProps={{ sparkColor, sparkSize, sparkRadius, sparkCount, duration, extraScale }}
+              defaultProps={DEFAULT_PROPS}
+            />
+          </Flex>
 
           <Customize>
             <Flex gap={4} align="center" mt={4}>

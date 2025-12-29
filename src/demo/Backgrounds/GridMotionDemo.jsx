@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -53,6 +54,14 @@ const GridMotionDemo = () => {
           <Box position="relative" className="demo-container" h={600} p={0} rounded="3xl" overflow="hidden">
             <GridMotion items={items} gradientColor={gradientColor} />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="grid-motion"
+              currentProps={{ gradientColor }}
+              defaultProps={{ gradientColor: '#5227FF' }}
+            />
+          </Flex>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['gsap']} />

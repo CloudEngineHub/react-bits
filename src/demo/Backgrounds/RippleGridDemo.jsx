@@ -14,6 +14,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import { rippleGrid } from '../../constants/code/Backgrounds/rippleGridCode';
 import RippleGrid from '../../content/Backgrounds/RippleGrid/RippleGrid';
@@ -154,6 +155,40 @@ const RippleGridDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Retro yet futuristic, this is Ripple Grid!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="ripple-grid"
+              currentProps={{
+                enableRainbow,
+                gridColor,
+                rippleIntensity,
+                gridSize,
+                gridThickness,
+                fadeDistance,
+                vignetteStrength,
+                glowIntensity,
+                opacity,
+                gridRotation,
+                mouseInteraction,
+                mouseInteractionRadius
+              }}
+              defaultProps={{
+                enableRainbow: false,
+                gridColor: '#ffffff',
+                rippleIntensity: 0.05,
+                gridSize: 10,
+                gridThickness: 15,
+                fadeDistance: 1.5,
+                vignetteStrength: 2,
+                glowIntensity: 0.1,
+                opacity: 1,
+                gridRotation: 0,
+                mouseInteraction: true,
+                mouseInteractionRadius: 1
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

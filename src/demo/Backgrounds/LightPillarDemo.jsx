@@ -14,6 +14,7 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import LightPillar from '@/content/Backgrounds/LightPillar/LightPillar';
 import { lightPillar } from '../../constants/code/Backgrounds/lightPillarCode';
@@ -158,6 +159,36 @@ const LightPillarDemo = () => {
             />
             <BackgroundContent pillText="New Background" headline="Ethereal light pillar for your hero sections." />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="light-pillar"
+              currentProps={{
+                topColor,
+                bottomColor,
+                intensity,
+                rotationSpeed,
+                interactive,
+                glowAmount,
+                pillarWidth,
+                pillarHeight,
+                noiseIntensity,
+                pillarRotation
+              }}
+              defaultProps={{
+                topColor: '#5227FF',
+                bottomColor: '#FF9FFC',
+                intensity: 1,
+                rotationSpeed: 0.3,
+                interactive: false,
+                glowAmount: 0.005,
+                pillarWidth: 3,
+                pillarHeight: 0.4,
+                noiseIntensity: 0.5,
+                pillarRotation: 0
+              }}
+            />
+          </Flex>
 
           <Customize forceRerender={forceRerender}>
             <Flex alignItems="center" mb={4}>

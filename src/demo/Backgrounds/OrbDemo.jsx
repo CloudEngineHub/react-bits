@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useDebounce } from 'react-haiku';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 
 import Dependencies from '../../components/code/Dependencies';
@@ -88,6 +89,14 @@ const OrbDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="This orb is hiding something, try hovering!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="orb"
+              currentProps={{ hue, hoverIntensity, rotateOnHover, forceHoverState }}
+              defaultProps={{ hue: 0, hoverIntensity: 0.5, rotateOnHover: true, forceHoverState: false }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSlider

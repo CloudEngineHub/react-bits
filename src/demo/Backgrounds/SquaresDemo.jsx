@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Button, ButtonGroup, Flex, Input, Text } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -63,6 +64,26 @@ const SquaresDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Customizable squares moving around smoothly" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="squares"
+              currentProps={{
+                speed,
+                squareSize: size,
+                direction,
+                borderColor,
+                hoverFillColor: hoverColor
+              }}
+              defaultProps={{
+                speed: 0.5,
+                squareSize: 40,
+                direction: 'diagonal',
+                borderColor: '#999',
+                hoverFillColor: '#222'
+              }}
+            />
+          </Flex>
 
           <Customize>
             <ButtonGroup isAttached size="sm">

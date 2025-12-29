@@ -16,6 +16,7 @@ import Dependencies from '../../components/code/Dependencies';
 import LiquidEther from '@/content/Backgrounds/LiquidEther/LiquidEther';
 import { liquidEther } from '@/constants/code/Backgrounds/liquidEtherCode';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 const DEFAULT_PROPS = {
   color0: '#5227FF',
@@ -199,6 +200,35 @@ const LiquidEtherDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="The web, made fluid at your fingertips." />
           </Box>
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="liquid-ether"
+              currentProps={{
+                colors: userColors,
+                mouseForce,
+                cursorSize,
+                isViscous,
+                viscous,
+                autoDemo,
+                autoSpeed,
+                autoIntensity,
+                isBounce,
+                resolution
+              }}
+              defaultProps={{
+                mouseForce: 20,
+                cursorSize: 100,
+                isViscous: false,
+                viscous: 30,
+                colors: ['#5227FF', '#FF9FFC', '#B19EEF'],
+                autoDemo: true,
+                autoSpeed: 0.5,
+                autoIntensity: 2.2,
+                isBounce: false,
+                resolution: 0.5
+              }}
+            />
+          </Flex>
           <Customize className="preview-options">
             <Flex alignItems="center" gap={4} mb={2} wrap="wrap">
               <Text fontSize="sm" mt={2} mb={1}>

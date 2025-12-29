@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Input, Text } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -145,6 +146,35 @@ const ParticlesDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Particles that mimick the dance of the cosmos" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="particles"
+              currentProps={{
+                particleCount,
+                particleSpread,
+                speed,
+                particleColors: [colors],
+                moveParticlesOnHover,
+                alphaParticles,
+                particleBaseSize: baseSize,
+                disableRotation
+              }}
+              defaultProps={{
+                particleCount: 200,
+                particleSpread: 10,
+                speed: 0.1,
+                particleColors: ['#ffffff', '#ffffff', '#ffffff'],
+                moveParticlesOnHover: false,
+                particleHoverFactor: 1,
+                alphaParticles: false,
+                particleBaseSize: 100,
+                sizeRandomness: 1,
+                cameraDistance: 20,
+                disableRotation: false
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex gap={4} align="center" mt={4}>

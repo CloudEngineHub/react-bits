@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { randomHex } from '../../utils/utils';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -90,6 +91,26 @@ const LetterGlitchDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Am I finally a real hacker now, mom?" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="letter-glitch"
+              currentProps={{
+                glitchColors: colors,
+                glitchSpeed: speed,
+                centerVignette: showCenterVignette,
+                outerVignette: showOuterVignette,
+                smooth
+              }}
+              defaultProps={{
+                glitchColors: ['#5227FF', '#7cff67', '#ff6b6b'],
+                glitchSpeed: 50,
+                centerVignette: true,
+                outerVignette: false,
+                smooth: true
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Button

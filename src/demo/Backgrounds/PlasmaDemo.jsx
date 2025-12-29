@@ -10,6 +10,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -91,6 +92,14 @@ const PlasmaDemo = () => {
             />
             <BackgroundContent pillText="New Background" headline="Minimal plasma waves that soothe the eyes" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="plasma"
+              currentProps={{ color, speed, scale, opacity, mouseInteractive }}
+              defaultProps={{ color: '#B19EEF', speed: 1.0, scale: 1.0, opacity: 1.0, mouseInteractive: false }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4}>

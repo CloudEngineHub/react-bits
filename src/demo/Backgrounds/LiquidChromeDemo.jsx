@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import CodeExample from '../../components/code/CodeExample';
@@ -78,6 +79,14 @@ const LiquidChromeDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="Swirl around in the deep sea of liquid chrome!" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="liquid-chrome"
+              currentProps={{ speed, amplitude, interactive }}
+              defaultProps={{ speed: 0.2, amplitude: 0.3, frequencyX: 3, frequencyY: 3, interactive: true }}
+            />
+          </Flex>
 
           <Customize>
             <Text fontSize="sm">Colors</Text>

@@ -15,6 +15,7 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import PixelBlast from '../../content/Backgrounds/PixelBlast/PixelBlast';
 import { pixelBlast } from '../../constants/code/Backgrounds/pixelBlastCode';
@@ -183,6 +184,37 @@ const PixelBlastDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="It's dangerous to go alone! Take this." />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="pixel-blast"
+              currentProps={{
+                variant,
+                pixelSize,
+                color,
+                patternScale,
+                patternDensity,
+                enableRipples,
+                speed,
+                transparent: true,
+                edgeFade
+              }}
+              defaultProps={{
+                variant: 'square',
+                pixelSize: 3,
+                color: '#B19EEF',
+                patternScale: 2,
+                patternDensity: 1,
+                enableRipples: true,
+                rippleSpeed: 0.3,
+                rippleThickness: 0.1,
+                rippleIntensityScale: 1,
+                speed: 0.5,
+                transparent: true,
+                edgeFade: 0.5
+              }}
+            />
+          </Flex>
 
           <Customize onRerender={forceRerender}>
             <Flex alignItems="center" mb={4}>

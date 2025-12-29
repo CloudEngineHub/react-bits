@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -10,6 +10,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import Galaxy from '../../content/Backgrounds/Galaxy/Galaxy';
 import { galaxy } from '../../constants/code/Backgrounds/galaxyCode';
@@ -173,6 +174,37 @@ const GalaxyDemo = () => {
 
             <BackgroundContent headline="Components you shall have, young padawan." pillText="New Background" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="galaxy"
+              currentProps={{
+                density,
+                glowIntensity,
+                saturation,
+                hueShift,
+                twinkleIntensity,
+                rotationSpeed,
+                repulsionStrength,
+                starSpeed,
+                speed,
+                mouseRepulsion
+              }}
+              defaultProps={{
+                starSpeed: 0.5,
+                density: 1,
+                hueShift: 140,
+                speed: 1,
+                glowIntensity: 0.3,
+                saturation: 0,
+                mouseRepulsion: true,
+                repulsionStrength: 2,
+                twinkleIntensity: 0.3,
+                rotationSpeed: 0.1,
+                transparent: true
+              }}
+            />
+          </Flex>
 
           <Customize>
             <PreviewSwitch

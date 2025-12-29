@@ -147,13 +147,16 @@ export default function Canvas({
     setPan({ x: 0, y: 0 });
   }, [image, video, mediaType, containerSize]);
 
-  const handleDragOver = useCallback(e => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer.types.includes('Files')) {
-      setIsDragOver(true);
-    }
-  }, []);
+  const handleDragOver = useCallback(
+    e => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isExporting && e.dataTransfer.types.includes('Files')) {
+        setIsDragOver(true);
+      }
+    },
+    [isExporting]
+  );
 
   const handleDragLeave = useCallback(e => {
     e.preventDefault();
@@ -167,12 +170,14 @@ export default function Canvas({
       e.stopPropagation();
       setIsDragOver(false);
 
+      if (isExporting) return;
+
       const file = e.dataTransfer.files?.[0];
       if (file && (file.type.startsWith('image/') || file.type.startsWith('video/')) && onMediaDrop) {
         onMediaDrop(file);
       }
     },
-    [onMediaDrop]
+    [onMediaDrop, isExporting]
   );
 
   return (

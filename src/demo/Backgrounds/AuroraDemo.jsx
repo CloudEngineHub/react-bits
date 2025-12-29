@@ -11,6 +11,7 @@ import useComponentProps from '../../hooks/useComponentProps';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import Aurora from '../../content/Backgrounds/Aurora/Aurora';
@@ -71,6 +72,14 @@ const AuroraDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Bring the Arctic to you, with one line of code" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="aurora"
+              currentProps={{ colorStops: [color1, color2, color3], speed, blend }}
+              defaultProps={{ colorStops: ['#5227FF', '#7cff67', '#5227FF'], speed: 1, blend: 0.5 }}
+            />
+          </Flex>
 
           <Customize>
             <Flex gap={4} mb={2} align="center" wrap="wrap">

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
 
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -137,6 +138,31 @@ const BalatroDemo = () => {
               />
             )}
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="balatro"
+              currentProps={{
+                color1,
+                color2,
+                color3,
+                isRotate: rotate,
+                mouseInteraction,
+                pixelFilter
+              }}
+              defaultProps={{
+                spinRotation: -2.0,
+                spinSpeed: 7.0,
+                color1: '#DE443B',
+                color2: '#006BB4',
+                color3: '#162325',
+                contrast: 3.5,
+                lighting: 0.4,
+                spinAmount: 0.25,
+                pixelFilter: 700
+              }}
+            />
+          </Flex>
 
           <Flex gap={4} align="center" mt={7} justifyContent="flex-end" position="absolute" right={0}>
             <Text fontSize="sm">Hide Image</Text>

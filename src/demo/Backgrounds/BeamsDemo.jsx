@@ -9,6 +9,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -104,6 +105,23 @@ const BeamsDemo = () => {
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Radiant beams for creative user interfaces" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="beams"
+              currentProps={{ beamWidth, beamHeight, beamNumber, lightColor, speed, noiseIntensity, scale, rotation }}
+              defaultProps={{
+                beamWidth: 2,
+                beamHeight: 15,
+                beamNumber: 12,
+                lightColor: '#ffffff',
+                speed: 2,
+                noiseIntensity: 1.75,
+                scale: 0.2,
+                rotation: 0
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex align="center" gap={2}>

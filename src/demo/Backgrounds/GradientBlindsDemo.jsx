@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
+import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import { gradientBlinds } from '../../constants/code/Backgrounds/gradientBlindsCode';
 import GradientBlinds from '../../ts-default/Backgrounds/GradientBlinds/GradientBlinds';
@@ -170,6 +171,37 @@ const GradientBlindsDemo = () => {
 
             <BackgroundContent pillText="New Background" headline="Smooth gradients make everything better" />
           </Box>
+
+          <Flex justify="flex-end" mt={2} mb={-2}>
+            <OpenInStudioButton
+              backgroundId="gradient-blinds"
+              currentProps={{
+                gradientColors,
+                angle,
+                noise,
+                blindCount,
+                blindMinWidth,
+                spotlightRadius,
+                distortAmount,
+                mouseDampening,
+                shineDirection
+              }}
+              defaultProps={{
+                gradientColors: ['#FF9FFC', '#5227FF'],
+                angle: 0,
+                noise: 0.3,
+                blindCount: 16,
+                blindMinWidth: 60,
+                mouseDampening: 0.15,
+                mirrorGradient: false,
+                spotlightRadius: 0.5,
+                spotlightSoftness: 1,
+                spotlightOpacity: 1,
+                distortAmount: 0,
+                shineDirection: 'left'
+              }}
+            />
+          </Flex>
 
           <Customize>
             <Flex alignItems="center" mb={4} gap={4} wrap="wrap">
