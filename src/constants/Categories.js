@@ -12,7 +12,7 @@ export const NEW = [
   'Reflective Card',
   'Pixel Snow'
 ];
-export const UPDATED = ['Profile Card', 'Logo Loop', 'Animated Content', 'Fade Content', 'Stack'];
+export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [

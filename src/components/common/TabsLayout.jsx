@@ -5,9 +5,11 @@ import TabsFooter from './TabsFooter';
 import { Tabs, Icon, Flex, Tooltip, Box } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine, RiLightbulbLine } from 'react-icons/ri';
+import { RotateCcw } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
+import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
@@ -24,6 +26,7 @@ const TAB_STYLE_PROPS = {
 
 const TabsLayout = ({ children, className }) => {
   const { category, subcategory } = useParams();
+  const { hasChanges, resetProps } = useComponentPropsContext();
 
   const { favoriteKey, componentName } = useMemo(() => {
     if (!category || !subcategory) return null;
@@ -87,6 +90,22 @@ const TabsLayout = ({ children, className }) => {
           </Flex>
 
           <Flex alignItems="center" gap={2} flexShrink={0}>
+            {hasChanges && (
+              <Box
+                as="button"
+                aria-label="Reset to defaults"
+                onClick={resetProps}
+                display="flex"
+                cursor="pointer"
+                alignItems="center"
+                justifyContent="center"
+                gap={2}
+                {...TAB_STYLE_PROPS}
+              >
+                <RotateCcw size={16} color="#fff" /> Reset
+              </Box>
+            )}
+
             {favoriteKey && category !== 'get-started' && (
               <Tooltip.Root openDelay={250} closeDelay={100} positioning={{ placement: 'left', gutter: 8 }}>
                 <Tooltip.Trigger asChild>

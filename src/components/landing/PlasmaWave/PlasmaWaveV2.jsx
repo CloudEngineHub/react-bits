@@ -25,9 +25,9 @@ uniform float bendAdj2;
 uniform float uOpacity;
 
 const float lt   = 0.3;
-const float pi   = 3.141592653589793;
-const float pi2  = pi * 2.0;
-const float pi_2 = pi * 0.5;
+const float pi   = 3.14159;
+const float pi2  = 6.28318;
+const float pi_2 = 1.5708;
 #define MAX_STEPS 14
 
 void mainImage(out vec4 C, in vec2 U) {
@@ -35,49 +35,49 @@ void mainImage(out vec4 C, in vec2 U) {
   float s = 1.0;
   float d = 0.0;
   vec2  R = iResolution;
-  vec2  m = vec2(0.0);
 
   vec3 o = vec3(0.0, 0.0, -7.0);
   vec3 u = normalize(vec3((U - 0.5 * R) / R.y, focalLength));
-  vec3 k = vec3(0.0);
+  vec2 k = vec2(0.0);
   vec3 p;
 
   float t1 = t * 0.7;
   float t2 = t * 0.9;
   float tSpeed1 = t * speed1;
   float tSpeed2 = t * speed2 * dir2;
+  float wob1Base = bend1 + bendAdj1;
+  float wob2Base = bend2 + bendAdj2;
 
-  for (int step = 0; step < MAX_STEPS; ++step) {
+  for (int i = 0; i < MAX_STEPS; ++i) {
     p = o + u * d;
-    p.x  -= 15.0;
+    p.x -= 15.0;
 
     float px = p.x;
-    float wob1 = bend1 + bendAdj1 + sin(t1 + px * 0.8) * 0.1;
-    float wob2 = bend2 + bendAdj2 + cos(t2 + px * 1.1) * 0.1;
+    float wob1 = wob1Base + sin(t1 + px * 0.8) * 0.1;
+    float wob2 = wob2Base + cos(t2 + px * 1.1) * 0.1;
 
     float px2 = px + pi_2;
-    vec2 baseOffset = vec2(px, px2);
-    vec2 sinOffset  = sin(baseOffset + tSpeed1) * wob1;
-    vec2 cosOffset  = cos(baseOffset + tSpeed2) * wob2;
+    vec2 sinOffset = sin(vec2(px, px2) + tSpeed1) * wob1;
+    vec2 cosOffset = cos(vec2(px, px2) + tSpeed2) * wob2;
 
     vec2 yz = p.yz;
-    float wSin = length(yz - sinOffset) - lt;
-    float wCos = length(yz - cosOffset) - lt;
-
-    k.x = max(px + lt, wSin);
-    k.y = max(px + lt, wCos);
+    float pxLt = px + lt;
+    k.x = max(pxLt, length(yz - sinOffset) - lt);
+    k.y = max(pxLt, length(yz - cosOffset) - lt);
 
     float current = min(k.x, k.y);
     s = min(s, current);
-    if (s < 0.001 || d > 400.0) break;
+    if (s < 0.001 || d > 300.0) break;
     d += s * 0.7;
   }
 
-  vec3 c = max(cos(d * pi2) - s * sqrt(d) - k, 0.0);
+  float sqrtD = sqrt(d);
+  vec3 c = max(cos(d * pi2) - s * sqrtD - vec3(k, 0.0), 0.0);
   c.gb += 0.1;
-  if (max(c.r, max(c.g, c.b)) < 0.15) discard;
+  float maxC = max(c.r, max(c.g, c.b));
+  if (maxC < 0.15) discard;
   c = c * 0.4 + c.brg * 0.6 + c * c;
-  C = vec4(clamp(c, 0.0, 1.0), uOpacity);
+  C = vec4(c, uOpacity);
 }
 
 void main() {
@@ -378,6 +378,7 @@ export default function PlasmaWaveV2({
     <div
       ref={containerRef}
       style={{
+        opacity: 0.6,
         position: 'absolute',
         inset: 0,
         overflow: 'hidden',

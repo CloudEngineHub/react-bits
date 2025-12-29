@@ -230,7 +230,7 @@ export default function PixelSnow({
       const renderer = rendererRef.current;
       const material = materialRef.current;
       if (!container || !renderer || !material) return;
-      
+
       const w = container.offsetWidth;
       const h = container.offsetHeight;
       renderer.setSize(w, h);
@@ -307,7 +307,7 @@ export default function PixelSnow({
     const startTime = performance.now();
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
-      
+
       // Only render if visible
       if (isVisibleRef.current) {
         material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
@@ -365,5 +365,11 @@ export default function PixelSnow({
     colorVector
   ]);
 
-  return <div ref={containerRef} className={`absolute inset-0 w-full h-full transform-gpu will-change-transform backface-hidden ${className}`} style={style} />;
+  return (
+    <div
+      ref={containerRef}
+      className={`absolute inset-0 w-full h-full transform-gpu will-change-transform backface-hidden ${className}`}
+      style={style}
+    />
+  );
 }

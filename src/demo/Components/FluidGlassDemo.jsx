@@ -1,6 +1,6 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -14,17 +14,24 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import { fluidGlass } from '../../constants/code/Components/fluidGlassCode';
 import FluidGlass from '../../content/Components/FluidGlass/FluidGlass';
 
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+
+const DEFAULT_PROPS = {
+  mode: 'lens',
+  scale: 0.25,
+  ior: 1.15,
+  thickness: 2,
+  transmission: 1,
+  roughness: 0,
+  chromaticAberration: 0.05,
+  anisotropy: 0.01
+};
+
 const FluidGlassDemo = () => {
   const [key, forceRerender] = useForceRerender();
-  const [mode, setMode] = useState('lens');
-
-  const [scale, setScale] = useState(0.25);
-  const [ior, setIor] = useState(1.15);
-  const [thickness, setThickness] = useState(2);
-  const [transmission, setTransmission] = useState(1);
-  const [roughness, setRoughness] = useState(0);
-  const [chromaticAberration, setChromaticAberration] = useState(0.05);
-  const [anisotropy, setAnisotropy] = useState(0.01);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { mode, scale, ior, thickness, transmission, roughness, chromaticAberration, anisotropy } = props;
 
   const modeOptions = [
     { value: 'lens', label: 'Lens' },
@@ -33,20 +40,20 @@ const FluidGlassDemo = () => {
   ];
 
   const handleModeChange = newMode => {
-    setMode(newMode);
+    updateProp('mode', newMode);
 
     if (newMode === 'bar') {
-      setScale(0.15);
-      setTransmission(1);
-      setRoughness(0);
-      setThickness(10);
-      setIor(1.15);
+      updateProp('scale', 0.15);
+      updateProp('transmission', 1);
+      updateProp('roughness', 0);
+      updateProp('thickness', 10);
+      updateProp('ior', 1.15);
     } else if (newMode === 'lens' || newMode === 'cube') {
-      setScale(0.25);
-      setIor(1.15);
-      setThickness(5);
-      setChromaticAberration(0.1);
-      setAnisotropy(0.01);
+      updateProp('scale', 0.25);
+      updateProp('ior', 1.15);
+      updateProp('thickness', 5);
+      updateProp('chromaticAberration', 0.1);
+      updateProp('anisotropy', 0.01);
     }
 
     forceRerender();
@@ -75,124 +82,137 @@ const FluidGlassDemo = () => {
     return baseProps;
   };
 
-  const propData = [
-    {
-      name: 'mode',
-      type: 'string',
-      default: "'lens'",
-      description: "Display mode of the fluid glass effect. Options: 'lens', 'bar', 'cube'"
-    },
-    {
-      name: 'lensProps',
-      type: 'object',
-      default: '{}',
-      description: 'Props specific to lens mode including material properties like ior, thickness, transmission'
-    },
-    {
-      name: 'barProps',
-      type: 'object',
-      default: '{}',
-      description: 'Props specific to bar mode including navItems array and material properties'
-    },
-    {
-      name: 'cubeProps',
-      type: 'object',
-      default: '{}',
-      description: 'Props specific to cube mode including material properties and interaction settings'
-    }
-  ];
+  const propData = useMemo(
+    () => [
+      {
+        name: 'mode',
+        type: 'string',
+        default: "'lens'",
+        description: "Display mode of the fluid glass effect. Options: 'lens', 'bar', 'cube'"
+      },
+      {
+        name: 'lensProps',
+        type: 'object',
+        default: '{}',
+        description: 'Props specific to lens mode including material properties like ior, thickness, transmission'
+      },
+      {
+        name: 'barProps',
+        type: 'object',
+        default: '{}',
+        description: 'Props specific to bar mode including navItems array and material properties'
+      },
+      {
+        name: 'cubeProps',
+        type: 'object',
+        default: '{}',
+        description: 'Props specific to cube mode including material properties and interaction settings'
+      }
+    ],
+    []
+  );
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
-          <FluidGlass
-            key={key}
-            mode={mode}
-            lensProps={mode === 'lens' ? getModeProps() : {}}
-            barProps={mode === 'bar' ? getModeProps() : {}}
-            cubeProps={mode === 'cube' ? getModeProps() : {}}
-          />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+            <FluidGlass
+              key={key}
+              mode={mode}
+              lensProps={mode === 'lens' ? getModeProps() : {}}
+              barProps={mode === 'bar' ? getModeProps() : {}}
+              cubeProps={mode === 'cube' ? getModeProps() : {}}
+            />
+          </Box>
 
-        <Customize>
-          <PreviewSelect title="Mode:" options={modeOptions} value={mode} onChange={handleModeChange} width={120} />
+          <Customize>
+            <PreviewSelect title="Mode:" options={modeOptions} value={mode} onChange={handleModeChange} width={120} />
 
-          <PreviewSlider
-            title="Scale:"
-            min={0.05}
-            max={0.5}
-            step={0.05}
-            value={scale}
-            onChange={setScale}
-            width={150}
-          />
+            <PreviewSlider
+              title="Scale:"
+              min={0.05}
+              max={0.5}
+              step={0.05}
+              value={scale}
+              onChange={val => updateProp('scale', val)}
+              width={150}
+            />
 
-          <PreviewSlider title="IOR:" min={1.0} max={2.0} step={0.05} value={ior} onChange={setIor} width={150} />
+            <PreviewSlider
+              title="IOR:"
+              min={1.0}
+              max={2.0}
+              step={0.05}
+              value={ior}
+              onChange={val => updateProp('ior', val)}
+              width={150}
+            />
 
-          <PreviewSlider
-            title="Thickness:"
-            min={1}
-            max={20}
-            step={1}
-            value={thickness}
-            onChange={setThickness}
-            width={150}
-          />
+            <PreviewSlider
+              title="Thickness:"
+              min={1}
+              max={20}
+              step={1}
+              value={thickness}
+              onChange={val => updateProp('thickness', val)}
+              width={150}
+            />
 
-          <PreviewSlider
-            title="Chromatic Aberration:"
-            min={0}
-            max={0.5}
-            step={0.01}
-            value={chromaticAberration}
-            onChange={setChromaticAberration}
-            width={150}
-          />
+            <PreviewSlider
+              title="Chromatic Aberration:"
+              min={0}
+              max={0.5}
+              step={0.01}
+              value={chromaticAberration}
+              onChange={val => updateProp('chromaticAberration', val)}
+              width={150}
+            />
 
-          <PreviewSlider
-            title="Anisotropy:"
-            min={0}
-            max={0.1}
-            step={0.01}
-            value={anisotropy}
-            onChange={setAnisotropy}
-            width={150}
-          />
+            <PreviewSlider
+              title="Anisotropy:"
+              min={0}
+              max={0.1}
+              step={0.01}
+              value={anisotropy}
+              onChange={val => updateProp('anisotropy', val)}
+              width={150}
+            />
 
-          {mode === 'bar' && (
-            <>
-              <PreviewSlider
-                title="Transmission:"
-                min={0}
-                max={1}
-                step={0.1}
-                value={transmission}
-                onChange={setTransmission}
-                width={150}
-              />
+            {mode === 'bar' && (
+              <>
+                <PreviewSlider
+                  title="Transmission:"
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  value={transmission}
+                  onChange={val => updateProp('transmission', val)}
+                  width={150}
+                />
 
-              <PreviewSlider
-                title="Roughness:"
-                min={0}
-                max={1}
-                step={0.1}
-                value={roughness}
-                onChange={setRoughness}
-                width={150}
-              />
-            </>
-          )}
-        </Customize>
+                <PreviewSlider
+                  title="Roughness:"
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  value={roughness}
+                  onChange={val => updateProp('roughness', val)}
+                  width={150}
+                />
+              </>
+            )}
+          </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['three', '@react-three/fiber', '@react-three/drei', 'maath']} />
-      </PreviewTab>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['three', '@react-three/fiber', '@react-three/drei', 'maath']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={fluidGlass} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={fluidGlass} componentName="FluidGlass" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

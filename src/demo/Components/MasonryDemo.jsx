@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box } from '@chakra-ui/react';
 
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
 
@@ -15,15 +17,20 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import { masonry } from '../../constants/code/Components/masonryCode';
 import Masonry from '../../content/Components/Masonry/Masonry';
 
+const DEFAULT_PROPS = {
+  ease: 'power3.out',
+  animateFrom: 'bottom',
+  duration: 0.6,
+  stagger: 0.05,
+  scaleOnHover: true,
+  blurToFocus: true,
+  colorShiftOnHover: false
+};
+
 const MasonryDemo = () => {
   const [key, setKey] = useState(0);
-  const [ease, setEase] = useState('power3.out');
-  const [animateFrom, setAnimateFrom] = useState('bottom');
-  const [duration, setDuration] = useState(0.6);
-  const [stagger, setStagger] = useState(0.05);
-  const [scaleOnHover, setScaleOnHover] = useState(true);
-  const [blurToFocus, setBlurToFocus] = useState(true);
-  const [colorShiftOnHover, setColorShiftOnHover] = useState(false);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { ease, animateFrom, duration, stagger, scaleOnHover, blurToFocus, colorShiftOnHover } = props;
 
   const easeOptions = [
     { value: 'power1.out', label: 'power1.out' },
@@ -49,64 +56,67 @@ const MasonryDemo = () => {
     setKey(prev => prev + 1);
   };
 
-  const propData = [
-    {
-      name: 'items',
-      type: 'array',
-      default: 'required',
-      description:
-        'Array of items to display in the masonry layout. Each item should have id, img, url, and height properties.'
-    },
-    {
-      name: 'ease',
-      type: 'string',
-      default: '"power3.out"',
-      description: 'GSAP easing function for animations.'
-    },
-    {
-      name: 'duration',
-      type: 'number',
-      default: '0.6',
-      description: 'Duration of the transition animations in seconds.'
-    },
-    {
-      name: 'stagger',
-      type: 'number',
-      default: '0.05',
-      description: "Delay between each item's animation in seconds."
-    },
-    {
-      name: 'animateFrom',
-      type: 'string',
-      default: '"bottom"',
-      description:
-        "Direction from which items animate in. Options: 'top', 'bottom', 'left', 'right', 'center', 'random'."
-    },
-    {
-      name: 'scaleOnHover',
-      type: 'boolean',
-      default: 'true',
-      description: 'Whether items should scale on hover.'
-    },
-    {
-      name: 'hoverScale',
-      type: 'number',
-      default: '0.95',
-      description: 'Scale value when hovering over items (only applies if scaleOnHover is true).'
-    },
-    {
-      name: 'blurToFocus',
-      type: 'boolean',
-      default: 'true',
-      description: 'Whether items should animate from blurred to focused on initial load.'
-    },
-    {
-      name: 'colorShiftOnHover',
-      type: 'boolean',
-      default: 'false',
-      description: 'Whether to show a color overlay effect on hover.'
-    }
-  ];
+  const propData = useMemo(
+    () => [
+      {
+        name: 'items',
+        type: 'array',
+        default: 'required',
+        description:
+          'Array of items to display in the masonry layout. Each item should have id, img, url, and height properties.'
+      },
+      {
+        name: 'ease',
+        type: 'string',
+        default: '"power3.out"',
+        description: 'GSAP easing function for animations.'
+      },
+      {
+        name: 'duration',
+        type: 'number',
+        default: '0.6',
+        description: 'Duration of the transition animations in seconds.'
+      },
+      {
+        name: 'stagger',
+        type: 'number',
+        default: '0.05',
+        description: "Delay between each item's animation in seconds."
+      },
+      {
+        name: 'animateFrom',
+        type: 'string',
+        default: '"bottom"',
+        description:
+          "Direction from which items animate in. Options: 'top', 'bottom', 'left', 'right', 'center', 'random'."
+      },
+      {
+        name: 'scaleOnHover',
+        type: 'boolean',
+        default: 'true',
+        description: 'Whether items should scale on hover.'
+      },
+      {
+        name: 'hoverScale',
+        type: 'number',
+        default: '0.95',
+        description: 'Scale value when hovering over items (only applies if scaleOnHover is true).'
+      },
+      {
+        name: 'blurToFocus',
+        type: 'boolean',
+        default: 'true',
+        description: 'Whether items should animate from blurred to focused on initial load.'
+      },
+      {
+        name: 'colorShiftOnHover',
+        type: 'boolean',
+        default: 'false',
+        description: 'Whether to show a color overlay effect on hover.'
+      }
+    ],
+    []
+  );
 
   const items = [
     {
@@ -196,71 +206,91 @@ const MasonryDemo = () => {
   ];
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={700} overflow="hidden">
-          <RefreshButton onClick={handleRefresh} />
-          <Masonry
-            key={key}
-            items={items}
-            ease={ease}
-            animateFrom={animateFrom}
-            duration={duration}
-            stagger={stagger}
-            scaleOnHover={scaleOnHover}
-            blurToFocus={blurToFocus}
-            colorShiftOnHover={colorShiftOnHover}
-          />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={700} overflow="hidden">
+            <RefreshButton onClick={handleRefresh} />
+            <Masonry
+              key={key}
+              items={items}
+              ease={ease}
+              animateFrom={animateFrom}
+              duration={duration}
+              stagger={stagger}
+              scaleOnHover={scaleOnHover}
+              blurToFocus={blurToFocus}
+              colorShiftOnHover={colorShiftOnHover}
+            />
+          </Box>
 
-        <Customize>
-          <PreviewSelect title="Ease" options={easeOptions} value={ease} width={120} onChange={setEase} />
+          <Customize>
+            <PreviewSelect
+              title="Ease"
+              options={easeOptions}
+              value={ease}
+              width={120}
+              onChange={val => updateProp('ease', val)}
+            />
 
-          <PreviewSelect
-            title="Animate From"
-            options={animateFromOptions}
-            value={animateFrom}
-            width={120}
-            onChange={setAnimateFrom}
-          />
+            <PreviewSelect
+              title="Animate From"
+              options={animateFromOptions}
+              value={animateFrom}
+              width={120}
+              onChange={val => updateProp('animateFrom', val)}
+            />
 
-          <PreviewSlider
-            title="Duration"
-            min={0.1}
-            max={2.0}
-            step={0.1}
-            value={duration}
-            valueUnit="s"
-            width={150}
-            onChange={setDuration}
-          />
+            <PreviewSlider
+              title="Duration"
+              min={0.1}
+              max={2.0}
+              step={0.1}
+              value={duration}
+              valueUnit="s"
+              width={150}
+              onChange={val => updateProp('duration', val)}
+            />
 
-          <PreviewSlider
-            title="Stagger"
-            min={0.01}
-            max={0.2}
-            step={0.01}
-            value={stagger}
-            valueUnit="s"
-            width={150}
-            onChange={setStagger}
-          />
+            <PreviewSlider
+              title="Stagger"
+              min={0.01}
+              max={0.2}
+              step={0.01}
+              value={stagger}
+              valueUnit="s"
+              width={150}
+              onChange={val => updateProp('stagger', val)}
+            />
 
-          <PreviewSwitch title="Scale on Hover" isChecked={scaleOnHover} onChange={setScaleOnHover} />
+            <PreviewSwitch
+              title="Scale on Hover"
+              isChecked={scaleOnHover}
+              onChange={val => updateProp('scaleOnHover', val)}
+            />
 
-          <PreviewSwitch title="Blur to Focus" isChecked={blurToFocus} onChange={setBlurToFocus} />
+            <PreviewSwitch
+              title="Blur to Focus"
+              isChecked={blurToFocus}
+              onChange={val => updateProp('blurToFocus', val)}
+            />
 
-          <PreviewSwitch title="Color Shift on Hover" isChecked={colorShiftOnHover} onChange={setColorShiftOnHover} />
-        </Customize>
+            <PreviewSwitch
+              title="Color Shift on Hover"
+              isChecked={colorShiftOnHover}
+              onChange={val => updateProp('colorShiftOnHover', val)}
+            />
+          </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gsap']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={masonry} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={masonry} componentName="Masonry" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

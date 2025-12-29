@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import FeatureCards from '../components/landing/FeatureCards/FeatureCards';
-import Testimonials from '../components/landing/Testimonials/Testimonials';
+import Sponsors from '../components/landing/Sponsors/Sponsors';
 import StartBuilding from '../components/landing/StartBuilding/StartBuilding';
-import PlasmaWaveV2 from '../components/landing/PlasmaWave/PlasmaWaveV2';
 import Announcement from '../components/common/Misc/Announcement';
 import Footer from '../components/landing/Footer/Footer';
 import Hero from '../components/landing/Hero/Hero';
 import heroImage from '../assets/common/hero.webp';
 
-const LandingPage = () => {
-  const [isMobile, setIsMobile] = useState(false);
+// Lazy load heavy components
+const PlasmaWaveV2 = lazy(() => import('../components/landing/PlasmaWave/PlasmaWaveV2'));
+const ToolsShowcase = lazy(() => import('../components/landing/ToolsShowcase/ToolsShowcase'));
+const Testimonials = lazy(() => import('../components/landing/Testimonials/Testimonials'));
 
+const LandingPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    const checkIsMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkIsMobile();
-
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
   return (
@@ -26,17 +23,19 @@ const LandingPage = () => {
 
       <Announcement />
 
-      {isMobile && (
-        <div className="mobile-hero-background-container">
-          <img src={heroImage} alt="Hero background" className="mobile-hero-background-image" />
-        </div>
-      )}
+      <div className="mobile-hero-background-container">
+        <img src={heroImage} alt="Hero background" className="mobile-hero-background-image" />
+      </div>
 
-      <PlasmaWaveV2 yOffset={0} xOffset={40} rotationDeg={-45} />
+      <Suspense fallback={null}>
+        <PlasmaWaveV2 yOffset={0} xOffset={40} rotationDeg={-45} scrollPauseThreshold={400} />
+      </Suspense>
 
       <Hero />
       <FeatureCards />
+      <ToolsShowcase />
       <Testimonials />
+      <Sponsors />
       <StartBuilding />
       <Footer />
     </section>
