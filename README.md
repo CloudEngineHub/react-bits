@@ -52,11 +52,11 @@ React Bits helps you **ship stunning interfaces faster**. Instead of spending ho
 
 ### Beyond components, React Bits offers **free creative tools** to supercharge your workflow:
 
-| Tool | What it does |
-|------|--------------|
-| **[Background Studio](https://reactbits.dev/tools)** | Explore animated backgrounds, customize effects, export as video/image/code |
-| **[Shape Magic](https://reactbits.dev/tools)** | Create inner rounded corners between shapes, export as SVG, React code or clip-path code |
-| **[Texture Lab](https://reactbits.dev/tools)** | Apply 20+ effects (noise, dithering, ASCII) to images/videos and export in high quality |
+| Tool                                                 | What it does                                                                             |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **[Background Studio](https://reactbits.dev/tools)** | Explore animated backgrounds, customize effects, export as video/image/code              |
+| **[Shape Magic](https://reactbits.dev/tools)**       | Create inner rounded corners between shapes, export as SVG, React code or clip-path code |
+| **[Texture Lab](https://reactbits.dev/tools)**       | Apply 20+ effects (noise, dithering, ASCII) to images/videos and export in high quality  |
 
 ## 📦 Installation
 
@@ -89,9 +89,9 @@ Please read the [contribution guide](https://github.com/DavidHDev/react-bits/blo
 
 ## 🌐 Official Ports
 
-| Framework | Link |
-|-----------|------|
-| Vue.js | [vue-bits.dev](https://vue-bits.dev/) |
+| Framework | Link                                  |
+| --------- | ------------------------------------- |
+| Vue.js    | [vue-bits.dev](https://vue-bits.dev/) |
 
 ## 📊 Stats
 

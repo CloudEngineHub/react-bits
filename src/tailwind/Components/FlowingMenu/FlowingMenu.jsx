@@ -1,22 +1,41 @@
-import React from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 
-function FlowingMenu({ items = [] }) {
+function FlowingMenu({
+  items = [],
+  speed = 15,
+  textColor = '#fff',
+  bgColor = '#060010',
+  marqueeBgColor = '#fff',
+  marqueeTextColor = '#060010',
+  borderColor = '#fff'
+}) {
   return (
-    <div className="w-full h-full overflow-hidden">
+    <div className="w-full h-full overflow-hidden" style={{ backgroundColor: bgColor }}>
       <nav className="flex flex-col h-full m-0 p-0">
         {items.map((item, idx) => (
-          <MenuItem key={idx} {...item} />
+          <MenuItem
+            key={idx}
+            {...item}
+            speed={speed}
+            textColor={textColor}
+            marqueeBgColor={marqueeBgColor}
+            marqueeTextColor={marqueeTextColor}
+            borderColor={borderColor}
+            isFirst={idx === 0}
+          />
         ))}
       </nav>
     </div>
   );
 }
 
-function MenuItem({ link, text, image }) {
-  const itemRef = React.useRef(null);
-  const marqueeRef = React.useRef(null);
-  const marqueeInnerRef = React.useRef(null);
+function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor, isFirst }) {
+  const itemRef = useRef(null);
+  const marqueeRef = useRef(null);
+  const marqueeInnerRef = useRef(null);
+  const animationRef = useRef(null);
+  const [repetitions, setRepetitions] = useState(4);
 
   const animationDefaults = { duration: 0.6, ease: 'expo' };
 
@@ -26,6 +45,51 @@ function MenuItem({ link, text, image }) {
     return topEdgeDist < bottomEdgeDist ? 'top' : 'bottom';
   };
 
+  useEffect(() => {
+    const calculateRepetitions = () => {
+      if (!marqueeInnerRef.current) return;
+      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part');
+      if (!marqueeContent) return;
+      const contentWidth = marqueeContent.offsetWidth;
+      const viewportWidth = window.innerWidth;
+      const needed = Math.ceil(viewportWidth / contentWidth) + 2;
+      setRepetitions(Math.max(4, needed));
+    };
+
+    calculateRepetitions();
+    window.addEventListener('resize', calculateRepetitions);
+    return () => window.removeEventListener('resize', calculateRepetitions);
+  }, [text, image]);
+
+  useEffect(() => {
+    const setupMarquee = () => {
+      if (!marqueeInnerRef.current) return;
+      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part');
+      if (!marqueeContent) return;
+      const contentWidth = marqueeContent.offsetWidth;
+      if (contentWidth === 0) return;
+
+      if (animationRef.current) {
+        animationRef.current.kill();
+      }
+
+      animationRef.current = gsap.to(marqueeInnerRef.current, {
+        x: -contentWidth,
+        duration: speed,
+        ease: 'none',
+        repeat: -1
+      });
+    };
+
+    const timer = setTimeout(setupMarquee, 50);
+    return () => {
+      clearTimeout(timer);
+      if (animationRef.current) {
+        animationRef.current.kill();
+      }
+    };
+  }, [text, image, repetitions, speed]);
+
   const handleMouseEnter = ev => {
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
@@ -33,9 +97,9 @@ function MenuItem({ link, text, image }) {
 
     gsap
       .timeline({ defaults: animationDefaults })
-      .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' })
-      .set(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' })
-      .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' });
+      .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
+      .set(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0)
+      .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
   };
 
   const handleMouseLeave = ev => {
@@ -45,38 +109,40 @@ function MenuItem({ link, text, image }) {
 
     gsap
       .timeline({ defaults: animationDefaults })
-      .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' })
-      .to(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' });
+      .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
+      .to(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0);
   };
 
-  const repeatedMarqueeContent = Array.from({ length: 4 }).map((_, idx) => (
-    <React.Fragment key={idx}>
-      <span className="text-[#060010] uppercase font-normal text-[4vh] leading-[1.2] p-[1vh_1vw_0]">{text}</span>
-      <div
-        className="w-[200px] h-[7vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${image})` }}
-      />
-    </React.Fragment>
-  ));
-
   return (
-    <div className="flex-1 relative overflow-hidden text-center shadow-[0_-1px_0_0_#fff]" ref={itemRef}>
+    <div
+      className="flex-1 relative overflow-hidden text-center"
+      ref={itemRef}
+      style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
+    >
       <a
-        className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-white text-[4vh] hover:text-[#060010] focus:text-white focus-visible:text-[#060010]"
+        className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-[4vh]"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        style={{ color: textColor }}
       >
         {text}
       </a>
       <div
-        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none bg-white translate-y-[101%]"
+        className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%]"
         ref={marqueeRef}
+        style={{ backgroundColor: marqueeBgColor }}
       >
-        <div className="h-full w-[200%] flex" ref={marqueeInnerRef}>
-          <div className="flex items-center relative h-full w-[200%] will-change-transform animate-marquee">
-            {repeatedMarqueeContent}
-          </div>
+        <div className="h-full w-fit flex" ref={marqueeInnerRef}>
+          {[...Array(repetitions)].map((_, idx) => (
+            <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
+              <span className="uppercase font-normal text-[4vh] leading-[1] px-[1vw]">{text}</span>
+              <div
+                className="w-[200px] h-[7vh] my-[2em] mx-[2vw] py-[1em] rounded-[50px] bg-cover bg-center"
+                style={{ backgroundImage: `url(${image})` }}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -84,26 +150,3 @@ function MenuItem({ link, text, image }) {
 }
 
 export default FlowingMenu;
-
-// Note: this is also needed
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-//   theme: {
-//     extend: {
-//       translate: {
-//         '101': '101%',
-//       },
-//       keyframes: {
-//         marquee: {
-//           'from': { transform: 'translateX(0%)' },
-//           'to': { transform: 'translateX(-50%)' }
-//         }
-//       },
-//       animation: {
-//         marquee: 'marquee 15s linear infinite'
-//       }
-//     }
-//   },
-//   plugins: [],
-// };
