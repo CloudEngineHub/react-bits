@@ -140,6 +140,7 @@
   padding: 6em 2em 2em 2em;
   overflow-y: auto;
   z-index: 10;
+  pointer-events: auto;
 }
 
 [data-position='left'] .staggered-menu-panel {
