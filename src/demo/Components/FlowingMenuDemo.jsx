@@ -12,7 +12,14 @@ import Dependencies from '../../components/code/Dependencies';
 import FlowingMenu from '../../content/Components/FlowingMenu/FlowingMenu';
 import { flowingMenu } from '../../constants/code/Components/flowingMenuCode';
 
-const DEFAULT_PROPS = {};
+const DEFAULT_PROPS = {
+  speed: 15,
+  textColor: '#ffffff',
+  bgColor: '#060010',
+  marqueeBgColor: '#ffffff',
+  marqueeTextColor: '#060010',
+  borderColor: '#ffffff'
+};
 
 const FlowingMenuDemo = () => {
   const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
@@ -23,7 +30,43 @@ const FlowingMenuDemo = () => {
         name: 'items',
         type: 'object[]',
         default: '[]',
-        description: 'An array of object scontaining: link, text, image.'
+        description: 'An array of objects containing: link, text, image.'
+      },
+      {
+        name: 'speed',
+        type: 'number',
+        default: '15',
+        description: 'Duration of the marquee animation in seconds (lower = faster).'
+      },
+      {
+        name: 'textColor',
+        type: 'string',
+        default: '#ffffff',
+        description: 'Color of the static menu text.'
+      },
+      {
+        name: 'bgColor',
+        type: 'string',
+        default: '#060010',
+        description: 'Background color of the menu container.'
+      },
+      {
+        name: 'marqueeBgColor',
+        type: 'string',
+        default: '#ffffff',
+        description: 'Background color of the marquee overlay.'
+      },
+      {
+        name: 'marqueeTextColor',
+        type: 'string',
+        default: '#060010',
+        description: 'Text color inside the marquee.'
+      },
+      {
+        name: 'borderColor',
+        type: 'string',
+        default: '#ffffff',
+        description: 'Color of the dividing lines between menu items.'
       }
     ],
     []
@@ -41,7 +84,15 @@ const FlowingMenuDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} overflow="hidden" px={0} pt="100px" pb="100px">
-            <FlowingMenu items={demoItems} />
+            <FlowingMenu
+              items={demoItems}
+              speed={props.speed}
+              textColor={props.textColor}
+              bgColor={props.bgColor}
+              marqueeBgColor={props.marqueeBgColor}
+              marqueeTextColor={props.marqueeTextColor}
+              borderColor={props.borderColor}
+            />
           </Box>
 
           <PropTable data={propData} />

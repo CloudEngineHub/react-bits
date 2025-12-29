@@ -4,14 +4,11 @@ import { type Category, componentMetadata, type Variant } from './src/constants/
 
 // Components that have non-code assets which should use manual dependency resolution.
 // Key format: `${category}/${title}` to keep it unique.
-const MANUAL_ASSETS: Record<
-  string,
-  { path: string; dependencyResolution: 'manual' }[]
-> = {
+const MANUAL_ASSETS: Record<string, { path: string; dependencyResolution: 'manual' }[]> = {
   'Components/Lanyard': [
     { path: 'card.glb', dependencyResolution: 'manual' },
     { path: 'lanyard.png', dependencyResolution: 'manual' }
-  ],
+  ]
 
   // Example: if ModelViewer had a model file you wanted to mark as manual too:
   // 'Components/ModelViewer': [
@@ -98,10 +95,7 @@ function defineComponent({
   // Unique key for this component in MANUAL_ASSETS
   const key = `${category}/${title}`;
 
-   const manualFiles =
-    MANUAL_ASSETS[key] && MANUAL_ASSETS[key].length > 0
-      ? MANUAL_ASSETS[key]
-      : [];
+  const manualFiles = MANUAL_ASSETS[key] && MANUAL_ASSETS[key].length > 0 ? MANUAL_ASSETS[key] : [];
 
   const withManualFiles = (basePath: string) =>
     manualFiles.length > 0
