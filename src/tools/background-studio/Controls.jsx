@@ -468,6 +468,11 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
         maxH="80vh"
         overflowY="auto"
         onClick={e => e.stopPropagation()}
+        css={{
+          '&::-webkit-scrollbar': { display: 'none' },
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
       >
         <Flex justify="space-between" align="center" mb={6}>
           <Text fontSize="18px" fontWeight={700} color="#fff">
