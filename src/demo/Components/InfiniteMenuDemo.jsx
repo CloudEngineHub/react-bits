@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Spinner } from '@chakra-ui/react';
 
@@ -11,24 +11,35 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import InfiniteMenu from '../../content/Components/InfiniteMenu/InfiniteMenu';
 import { infiniteMenu } from '../../constants/code/Components/infiniteMenuCode';
 
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+
+const DEFAULT_PROPS = {
+  scale: 1.0
+};
+
 const InfiniteMenuDemo = () => {
   const [isHidden, setIsHidden] = useState(true);
-  const [scale, setScale] = useState(1.0);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { scale } = props;
 
-  const propData = [
-    {
-      name: 'items',
-      type: 'object[]',
-      default: '[{...}]',
-      description: 'List of items containing an image, link, title, and description - or just add what you need.'
-    },
-    {
-      name: 'scale',
-      type: 'number',
-      default: '1.0',
-      description: 'Controls camera zoom'
-    }
-  ];
+  const propData = useMemo(
+    () => [
+      {
+        name: 'items',
+        type: 'object[]',
+        default: '[{...}]',
+        description: 'List of items containing an image, link, title, and description - or just add what you need.'
+      },
+      {
+        name: 'scale',
+        type: 'number',
+        default: '1.0',
+        description: 'Controls camera zoom'
+      }
+    ],
+    []
+  );
 
   const items = [
     {
@@ -64,32 +75,41 @@ const InfiniteMenuDemo = () => {
   }, []);
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
-          {isHidden && <Spinner size="lg" position="absolute" />}
-          <Box
-            h={600}
-            overflow="hidden"
-            w="100%"
-            p={0}
-            opacity={isHidden ? 0 : 1}
-            transform={isHidden ? 'scale(5)' : 'scale(1)'}
-            transition="1s ease"
-          >
-            <InfiniteMenu items={items} scale={scale} />
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+            {isHidden && <Spinner size="lg" position="absolute" />}
+            <Box
+              h={600}
+              overflow="hidden"
+              w="100%"
+              p={0}
+              opacity={isHidden ? 0 : 1}
+              transform={isHidden ? 'scale(5)' : 'scale(1)'}
+              transition="1s ease"
+            >
+              <InfiniteMenu items={items} scale={scale} />
+            </Box>
           </Box>
-        </Box>
 
-        <PreviewSlider title="Scale" min={0.1} max={3} step={0.1} value={scale} onChange={val => setScale(val)} />
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gl-matrix']} />
-      </PreviewTab>
+          <PreviewSlider
+            title="Scale"
+            min={0.1}
+            max={3}
+            step={0.1}
+            value={scale}
+            onChange={val => updateProp('scale', val)}
+          />
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gl-matrix']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={infiniteMenu} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={infiniteMenu} componentName="InfiniteMenu" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

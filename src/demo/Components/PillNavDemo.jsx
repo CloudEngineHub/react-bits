@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box } from '@chakra-ui/react';
+
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -16,84 +19,92 @@ import logoLight from '../../assets/logos/react-bits-logo-small.svg';
 import PillNav from '../../content/Components/PillNav/PillNav';
 import { pillNav } from '../../constants/code/Components/pillNavCode';
 
-const PillNavDemo = () => {
-  const propData = [
-    {
-      name: 'logo',
-      type: 'string',
-      default: '-',
-      description: 'URL for the logo image'
-    },
-    {
-      name: 'logoAlt',
-      type: 'string',
-      default: 'Logo',
-      description: 'Alt text for the logo image'
-    },
-    {
-      name: 'items',
-      type: 'PillNavItem[]',
-      default: '-',
-      description: 'Array of navigation items with label, href, and optional ariaLabel'
-    },
-    {
-      name: 'activeHref',
-      type: 'string',
-      default: 'undefined',
-      description: 'The href of the currently active navigation item'
-    },
-    {
-      name: 'className',
-      type: 'string',
-      default: "''",
-      description: 'Additional CSS classes for the navigation container'
-    },
-    {
-      name: 'ease',
-      type: 'string',
-      default: 'power3.easeOut',
-      description: 'GSAP easing function for animations'
-    },
-    {
-      name: 'baseColor',
-      type: 'string',
-      default: '#fff',
-      description: 'Base background color for the navigation'
-    },
-    {
-      name: 'pillColor',
-      type: 'string',
-      default: '#060010',
-      description: 'Background color for navigation pills'
-    },
-    {
-      name: 'hoveredPillTextColor',
-      type: 'string',
-      default: '#060010',
-      description: 'Text color when hovering over pills'
-    },
-    {
-      name: 'pillTextColor',
-      type: 'string',
-      default: 'baseColor',
-      description: 'Text color for navigation pills'
-    },
-    {
-      name: 'onMobileMenuClick',
-      type: '() => void',
-      default: 'undefined',
-      description: 'Callback function triggered when mobile menu button is clicked'
-    },
-    {
-      name: 'initialLoadAnimation',
-      type: 'boolean',
-      default: 'false',
-      description: 'Enable initial load animation for logo scale and nav items reveal'
-    }
-  ];
+const DEFAULT_PROPS = {
+  theme: 'light',
+  initialLoadAnimation: false
+};
 
-  const [theme, setTheme] = useState('light');
-  const [initialLoadAnimation, setInitialLoadAnimation] = useState(false);
+const PillNavDemo = () => {
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { theme, initialLoadAnimation } = props;
+
+  const propData = useMemo(
+    () => [
+      {
+        name: 'logo',
+        type: 'string',
+        default: '-',
+        description: 'URL for the logo image'
+      },
+      {
+        name: 'logoAlt',
+        type: 'string',
+        default: 'Logo',
+        description: 'Alt text for the logo image'
+      },
+      {
+        name: 'items',
+        type: 'PillNavItem[]',
+        default: '-',
+        description: 'Array of navigation items with label, href, and optional ariaLabel'
+      },
+      {
+        name: 'activeHref',
+        type: 'string',
+        default: 'undefined',
+        description: 'The href of the currently active navigation item'
+      },
+      {
+        name: 'className',
+        type: 'string',
+        default: "''",
+        description: 'Additional CSS classes for the navigation container'
+      },
+      {
+        name: 'ease',
+        type: 'string',
+        default: 'power3.easeOut',
+        description: 'GSAP easing function for animations'
+      },
+      {
+        name: 'baseColor',
+        type: 'string',
+        default: '#fff',
+        description: 'Base background color for the navigation'
+      },
+      {
+        name: 'pillColor',
+        type: 'string',
+        default: '#060010',
+        description: 'Background color for navigation pills'
+      },
+      {
+        name: 'hoveredPillTextColor',
+        type: 'string',
+        default: '#060010',
+        description: 'Text color when hovering over pills'
+      },
+      {
+        name: 'pillTextColor',
+        type: 'string',
+        default: 'baseColor',
+        description: 'Text color for navigation pills'
+      },
+      {
+        name: 'onMobileMenuClick',
+        type: '() => void',
+        default: 'undefined',
+        description: 'Callback function triggered when mobile menu button is clicked'
+      },
+      {
+        name: 'initialLoadAnimation',
+        type: 'boolean',
+        default: 'false',
+        description: 'Enable initial load animation for logo scale and nav items reveal'
+      }
+    ],
+    []
+  );
 
   const themeConfigs = {
     light: {
@@ -131,44 +142,52 @@ const PillNavDemo = () => {
   ];
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box
-          position="relative"
-          className="demo-container demo-container-dots"
-          h={300}
-          overflow="hidden"
-          bg={currentTheme.backgroundColor}
-        >
-          <PillNav
-            logo={currentTheme.logo}
-            baseColor={currentTheme.baseColor}
-            pillColor={currentTheme.pillColor}
-            hoveredPillTextColor={currentTheme.hoveredPillTextColor}
-            pillTextColor={currentTheme.pillTextColor}
-            initialLoadAnimation={initialLoadAnimation}
-            items={[{ label: 'Home' }, { label: 'About' }, { label: 'Contact' }]}
-            activeHref="/"
-          />
-        </Box>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box
+            position="relative"
+            className="demo-container demo-container-dots"
+            h={300}
+            overflow="hidden"
+            bg={currentTheme.backgroundColor}
+          >
+            <PillNav
+              logo={currentTheme.logo}
+              baseColor={currentTheme.baseColor}
+              pillColor={currentTheme.pillColor}
+              hoveredPillTextColor={currentTheme.hoveredPillTextColor}
+              pillTextColor={currentTheme.pillTextColor}
+              initialLoadAnimation={initialLoadAnimation}
+              items={[{ label: 'Home' }, { label: 'About' }, { label: 'Contact' }]}
+              activeHref="/"
+            />
+          </Box>
 
-        <Customize>
-          <PreviewSelect title="Example" options={themeOptions} value={theme} onChange={setTheme} width={150} />
-          <PreviewSwitch
-            title="Initial Load Animation"
-            value={initialLoadAnimation}
-            onChange={setInitialLoadAnimation}
-          />
-        </Customize>
+          <Customize>
+            <PreviewSelect
+              title="Example"
+              options={themeOptions}
+              value={theme}
+              onChange={val => updateProp('theme', val)}
+              width={150}
+            />
+            <PreviewSwitch
+              title="Initial Load Animation"
+              value={initialLoadAnimation}
+              onChange={val => updateProp('initialLoadAnimation', val)}
+            />
+          </Customize>
 
-        <PropTable data={propData} />
-        <Dependencies dependencyList={['gsap']} />
-      </PreviewTab>
+          <PropTable data={propData} />
+          <Dependencies dependencyList={['gsap']} />
+        </PreviewTab>
 
-      <CodeTab>
-        <CodeExample codeObject={pillNav} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={pillNav} componentName="PillNav" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 

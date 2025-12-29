@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
@@ -11,237 +11,252 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
+import useComponentProps from '../../hooks/useComponentProps';
+import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+
 import Dither from '../../content/Backgrounds/Dither/Dither';
 import { dither } from '../../constants/code/Backgrounds/ditherCode';
 
+const DEFAULT_PROPS = {
+  colors: [0.5, 0.5, 0.5],
+  mouseRadius: 0.3,
+  colorNum: 4,
+  waveAmplitude: 0.3,
+  waveFrequency: 3,
+  waveSpeed: 0.05,
+  enableMouseInteraction: true,
+  disableAnimation: false
+};
+
 const DitherDemo = () => {
-  const [colors, setColors] = useState([0.5, 0.5, 0.5]);
-  const [mouseRadius, setMouseRadius] = useState(0.3);
-  const [colorNum, setColorNum] = useState(4);
-  const [waveAmplitude, setWaveAmplitude] = useState(0.3);
-  const [waveFrequency, setWaveFrequency] = useState(3);
-  const [waveSpeed, setWaveSpeed] = useState(0.05);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const {
+    colors,
+    mouseRadius,
+    colorNum,
+    waveAmplitude,
+    waveFrequency,
+    waveSpeed,
+    enableMouseInteraction,
+    disableAnimation
+  } = props;
 
-  const [enableMouseInteraction, setEnableMouseInteraction] = useState(true);
-  const [disableAnimation, setDisableAnimation] = useState(false);
-
-  const propData = [
-    {
-      name: 'waveSpeed',
-      type: 'number',
-      default: '0.05',
-      description: 'Speed of the wave animation.'
-    },
-    {
-      name: 'waveFrequency',
-      type: 'number',
-      default: '3',
-      description: 'Frequency of the wave pattern.'
-    },
-    {
-      name: 'waveAmplitude',
-      type: 'number',
-      default: '0.3',
-      description: 'Amplitude of the wave pattern.'
-    },
-    {
-      name: 'waveColor',
-      type: '[number, number, number]',
-      default: '[0.5, 0.5, 0.5]',
-      description: 'Color of the wave, defined as an RGB array.'
-    },
-    {
-      name: 'colorNum',
-      type: 'number',
-      default: '4',
-      description: 'Number of colors to use in the dithering effect.'
-    },
-    {
-      name: 'pixelSize',
-      type: 'number',
-      default: '2',
-      description: 'Size of the pixels for the dithering effect.'
-    },
-    {
-      name: 'disableAnimation',
-      type: 'boolean',
-      default: 'false',
-      description: 'Disable the wave animation when true.'
-    },
-    {
-      name: 'enableMouseInteraction',
-      type: 'boolean',
-      default: 'true',
-      description: 'Enables mouse interaction to influence the wave effect.'
-    },
-    {
-      name: 'mouseRadius',
-      type: 'number',
-      default: '1',
-      description: 'Radius for the mouse interaction effect.'
-    }
-  ];
+  const propData = useMemo(
+    () => [
+      {
+        name: 'waveSpeed',
+        type: 'number',
+        default: '0.05',
+        description: 'Speed of the wave animation.'
+      },
+      {
+        name: 'waveFrequency',
+        type: 'number',
+        default: '3',
+        description: 'Frequency of the wave pattern.'
+      },
+      {
+        name: 'waveAmplitude',
+        type: 'number',
+        default: '0.3',
+        description: 'Amplitude of the wave pattern.'
+      },
+      {
+        name: 'waveColor',
+        type: '[number, number, number]',
+        default: '[0.5, 0.5, 0.5]',
+        description: 'Color of the wave, defined as an RGB array.'
+      },
+      {
+        name: 'colorNum',
+        type: 'number',
+        default: '4',
+        description: 'Number of colors to use in the dithering effect.'
+      },
+      {
+        name: 'pixelSize',
+        type: 'number',
+        default: '2',
+        description: 'Size of the pixels for the dithering effect.'
+      },
+      {
+        name: 'disableAnimation',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disable the wave animation when true.'
+      },
+      {
+        name: 'enableMouseInteraction',
+        type: 'boolean',
+        default: 'true',
+        description: 'Enables mouse interaction to influence the wave effect.'
+      },
+      {
+        name: 'mouseRadius',
+        type: 'number',
+        default: '1',
+        description: 'Radius for the mouse interaction effect.'
+      }
+    ],
+    []
+  );
 
   return (
-    <TabsLayout>
-      <PreviewTab>
-        <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
-          <Dither
-            waveColor={colors}
-            disableAnimation={disableAnimation}
-            enableMouseInteraction={enableMouseInteraction}
-            mouseRadius={mouseRadius}
-            colorNum={colorNum}
-            waveAmplitude={waveAmplitude}
-            waveFrequency={waveFrequency}
-            waveSpeed={waveSpeed}
-          />
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+      <TabsLayout>
+        <PreviewTab>
+          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+            <Dither
+              waveColor={colors}
+              disableAnimation={disableAnimation}
+              enableMouseInteraction={enableMouseInteraction}
+              mouseRadius={mouseRadius}
+              colorNum={colorNum}
+              waveAmplitude={waveAmplitude}
+              waveFrequency={waveFrequency}
+              waveSpeed={waveSpeed}
+            />
 
-          {/* For Demo Purposes Only */}
-          <BackgroundContent pillText="New Background" headline="Retro dithered waves to enhance your UI" />
-        </Box>
+            {/* For Demo Purposes Only */}
+            <BackgroundContent pillText="New Background" headline="Retro dithered waves to enhance your UI" />
+          </Box>
 
-        <Customize>
-          <Text fontSize="sm">Colors</Text>
-          <Flex gap={4} wrap="wrap">
-            <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-              <PreviewSlider
-                min={0}
-                max={1}
-                width={50}
-                step={0.1}
-                value={colors[0]}
-                title="Red"
-                onChange={val => {
-                  setColors(prev => {
-                    const newColors = [...prev];
+          <Customize>
+            <Text fontSize="sm">Colors</Text>
+            <Flex gap={4} wrap="wrap">
+              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
+                <PreviewSlider
+                  min={0}
+                  max={1}
+                  width={50}
+                  step={0.1}
+                  value={colors[0]}
+                  title="Red"
+                  onChange={val => {
+                    const newColors = [...colors];
                     newColors[0] = val;
-                    return newColors;
-                  });
-                }}
-              />
-            </Flex>
+                    updateProp('colors', newColors);
+                  }}
+                />
+              </Flex>
 
-            <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-              <PreviewSlider
-                min={0}
-                max={1}
-                width={50}
-                step={0.1}
-                value={colors[1]}
-                title="Green"
-                onChange={val => {
-                  setColors(prev => {
-                    const newColors = [...prev];
+              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
+                <PreviewSlider
+                  min={0}
+                  max={1}
+                  width={50}
+                  step={0.1}
+                  value={colors[1]}
+                  title="Green"
+                  onChange={val => {
+                    const newColors = [...colors];
                     newColors[1] = val;
-                    return newColors;
-                  });
-                }}
-              />
-            </Flex>
+                    updateProp('colors', newColors);
+                  }}
+                />
+              </Flex>
 
-            <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-              <PreviewSlider
-                min={0}
-                max={1}
-                width={50}
-                step={0.1}
-                value={colors[2]}
-                title="Blue"
-                onChange={val => {
-                  setColors(prev => {
-                    const newColors = [...prev];
+              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
+                <PreviewSlider
+                  min={0}
+                  max={1}
+                  width={50}
+                  step={0.1}
+                  value={colors[2]}
+                  title="Blue"
+                  onChange={val => {
+                    const newColors = [...colors];
                     newColors[2] = val;
-                    return newColors;
-                  });
-                }}
-              />
+                    updateProp('colors', newColors);
+                  }}
+                />
+              </Flex>
             </Flex>
-          </Flex>
 
-          <PreviewSlider
-            title="Color Intensity"
-            min={2.5}
-            max={40}
-            step={0.1}
-            value={colorNum}
-            onChange={val => {
-              setColorNum(val);
-            }}
+            <PreviewSlider
+              title="Color Intensity"
+              min={2.5}
+              max={40}
+              step={0.1}
+              value={colorNum}
+              onChange={val => {
+                updateProp('colorNum', val);
+              }}
+            />
+
+            <PreviewSlider
+              title="Wave Amplitude"
+              min={0}
+              max={1}
+              step={0.01}
+              value={waveAmplitude}
+              onChange={val => {
+                updateProp('waveAmplitude', val);
+              }}
+            />
+
+            <PreviewSlider
+              title="Wave Frequency"
+              min={0}
+              max={10}
+              step={0.1}
+              value={waveFrequency}
+              onChange={val => {
+                updateProp('waveFrequency', val);
+              }}
+            />
+
+            <PreviewSwitch
+              title="Disable Animation"
+              isChecked={disableAnimation}
+              onChange={checked => {
+                updateProp('disableAnimation', checked);
+              }}
+            />
+            <PreviewSlider
+              title="Wave Speed"
+              min={0}
+              max={0.1}
+              isDisabled={disableAnimation}
+              step={0.01}
+              value={waveSpeed}
+              onChange={val => {
+                updateProp('waveSpeed', val);
+              }}
+            />
+
+            <PreviewSwitch
+              title="Mouse Interaction"
+              isChecked={enableMouseInteraction}
+              onChange={checked => {
+                updateProp('enableMouseInteraction', checked);
+              }}
+            />
+
+            <PreviewSlider
+              title="Mouse Radius"
+              min={0}
+              isDisabled={!enableMouseInteraction}
+              max={2}
+              step={0.1}
+              value={mouseRadius}
+              onChange={val => {
+                updateProp('mouseRadius', val);
+              }}
+            />
+          </Customize>
+
+          <PropTable data={propData} />
+          <Dependencies
+            dependencyList={['three', 'postprocessing', '@react-three/fiber', '@react-three/postprocessing']}
           />
+        </PreviewTab>
 
-          <PreviewSlider
-            title="Wave Amplitude"
-            min={0}
-            max={1}
-            step={0.01}
-            value={waveAmplitude}
-            onChange={val => {
-              setWaveAmplitude(val);
-            }}
-          />
-
-          <PreviewSlider
-            title="Wave Frequency"
-            min={0}
-            max={10}
-            step={0.1}
-            value={waveFrequency}
-            onChange={val => {
-              setWaveFrequency(val);
-            }}
-          />
-
-          <PreviewSwitch
-            title="Disable Animation"
-            isChecked={disableAnimation}
-            onChange={checked => {
-              setDisableAnimation(checked);
-            }}
-          />
-          <PreviewSlider
-            title="Wave Speed"
-            min={0}
-            max={0.1}
-            isDisabled={disableAnimation}
-            step={0.01}
-            value={waveSpeed}
-            onChange={val => {
-              setWaveSpeed(val);
-            }}
-          />
-
-          <PreviewSwitch
-            title="Mouse Interaction"
-            isChecked={enableMouseInteraction}
-            onChange={checked => {
-              setEnableMouseInteraction(checked);
-            }}
-          />
-
-          <PreviewSlider
-            title="Mouse Radius"
-            min={0}
-            isDisabled={!enableMouseInteraction}
-            max={2}
-            step={0.1}
-            value={mouseRadius}
-            onChange={val => {
-              setMouseRadius(val);
-            }}
-          />
-        </Customize>
-
-        <PropTable data={propData} />
-        <Dependencies
-          dependencyList={['three', 'postprocessing', '@react-three/fiber', '@react-three/postprocessing']}
-        />
-      </PreviewTab>
-
-      <CodeTab>
-        <CodeExample codeObject={dither} />
-      </CodeTab>
-    </TabsLayout>
+        <CodeTab>
+          <CodeExample codeObject={dither} componentName="Dither" />
+        </CodeTab>
+      </TabsLayout>
+    </ComponentPropsProvider>
   );
 };
 
