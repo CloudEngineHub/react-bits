@@ -8,73 +8,99 @@
     </picture>
 	<br>
 	<br>
-</div>
-
-<br />
-
-<img src="src/assets/common/readme-showcase.png" alt="react-bits logo" width="1000">
-
-<br />
-
-<div align="center">
-  The largest & most creative library of animated React components.
-</div>
-
-<br />
-
-<div align="center">
+  <strong>The largest & most creative library of animated React components.</strong>
+  <br />
+  <sub>Stand out with 110+ free, customizable animations for text, backgrounds, and UI.</sub>
+	<br>
+	<br>
   <a href="https://github.com/davidhdev/react-bits/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/davidhdev/react-bits"></a>
   <a href="https://github.com/davidhdev/react-bits/blob/main/LICENSE.md"><img alt="License" src="https://img.shields.io/badge/License-MIT+Commons_Clause-magenta"></a>
+  <br>
+  <br>
+  <a href="https://reactbits.dev/">📖 Documentation</a> · <a href="https://reactbits.dev/get-started/installation">⚡ Quick Start</a> · <a href="https://reactbits.dev/tools">🛠️ Tools</a>
 </div>
 
-## Documentation
+<br />
 
-Go to [reactbits.dev](https://reactbits.dev/) to view the documentation.
+<div align="center">
+  <img src="src/assets/common/readme-showcase.png" alt="React Bits component showcase" width="1000">
+</div>
 
-## About
+<br />
 
-React Bits is a collection of animated React components, made to help you stand out through your web creations. We have four main component categories - text animations, animations, components and backgrounds - all free for you to use and all enhanced with customization options as props, to make it easy for you to get exactly what you need out of the box.
+## ✨ Why React Bits?
 
-## Key Features
+React Bits helps you **ship stunning interfaces faster**. Instead of spending hours crafting animations from scratch, grab a polished component and customize it to fit your vision.
 
-- 110+ total components (text animations, animations, components, backgrounds), growing every week
-- All components are built with minimal dependencies, and are highly customizable through props
-- You get the code, so you can further personalize and enhance the components
-- Designed to integrate seamlessly with any modern React project
-- Components come in 4 variants, to keep everyone happy: JS-CSS, JS-TW, TS-CSS, TS-TW
+> 💬 **Text Animations** · 🌀 **Animations** · 🧩 **Components** · 🖼️ **Backgrounds**
 
-## Installing Components Via CLI
+## 🚀 Features
 
-React Bits supports both [shadcn](https://ui.shadcn.com/) and [jsrepo](https://jsrepo.dev) for quick installs. </br>
-Each component demo provides CLI commands, ready for you to copy and run. Detailed instructions can also be found [here](https://reactbits.dev/get-started/installation).
+- **110+ components** — text animations, UI elements, and backgrounds, growing weekly
+- **Minimal dependencies** — lightweight and tree-shakeable
+- **Fully customizable** — tweak everything via props or edit the source directly
+- **4 variants per component** — JS-CSS, JS-TW, TS-CSS, TS-TW (everyone's happy)
+- **Copy-paste ready** — works with any modern React project
 
-## How To Contribute?
+## 🛠️ Creative Tools
 
-Contributions are welcome! Check the [Open Issues](https://github.com/DavidHDev/react-bits/issues) to see how you can help or submit ideas using the [Feature Request template](https://github.com/DavidHDev/react-bits/issues/new?template=2-feature-request.yml).</br>
-Please review the [Contribution Guide](https://github.com/DavidHDev/react-bits/blob/main/CONTRIBUTING.md) and follow our standards. Thanks for your time!
+<div align="center">
+  <img src="src/assets/common/tools-readme.webp" alt="React Bits Tools" width="1000" style="border-radius: 30px; max-width: 1920px;">
+</div>
 
-## Contributors
+<hr />
+
+### Beyond components, React Bits offers **free creative tools** to supercharge your workflow:
+
+| Tool | What it does |
+|------|--------------|
+| **[Background Studio](https://reactbits.dev/tools)** | Explore animated backgrounds, customize effects, export as video/image/code |
+| **[Shape Magic](https://reactbits.dev/tools)** | Create inner rounded corners between shapes, export as SVG, React code or clip-path code |
+| **[Texture Lab](https://reactbits.dev/tools)** | Apply 20+ effects (noise, dithering, ASCII) to images/videos and export in high quality |
+
+## 📦 Installation
+
+React Bits supports [shadcn](https://ui.shadcn.com/) and [jsrepo](https://jsrepo.dev) for quick CLI installs.
+
+```bash
+# Example: Add a component via shadcn
+npx shadcn@latest add @react-bits/BlurText-TS-TW
+```
+
+Each component page includes copy-ready CLI commands. See the [installation guide](https://reactbits.dev/get-started/installation) for full details.
+
+You can also select your preferred technologies, and copy the code manually.
+
+## 🤝 Contributing
+
+We'd love your help! Check the [open issues](https://github.com/DavidHDev/react-bits/issues) or submit ideas via the [feature request template](https://github.com/DavidHDev/react-bits/issues/new?template=2-feature-request.yml).
+
+Please read the [contribution guide](https://github.com/DavidHDev/react-bits/blob/main/CONTRIBUTING.md) first — thanks for making React Bits better!
+
+## 🙌 Contributors
 
 <a href="https://github.com/davidhdev/react-bits/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=davidhdev/react-bits" />
 </a>
 
-## Maintainers
+## 👤 Maintainer
 
-[David Haz](https://github.com/DavidHDev)
+**[David Haz](https://github.com/DavidHDev)** — creator & lead maintainer
 
-## Official Ports
+## 🌐 Official Ports
 
-VueJS → https://vue-bits.dev/
+| Framework | Link |
+|-----------|------|
+| Vue.js | [vue-bits.dev](https://vue-bits.dev/) |
 
-## Stats
+## 📊 Stats
 
-![Alt](https://repobeats.axiom.co/api/embed/b1bf4dc0226458617adbdbf5586f2df953eb0922.svg 'Repobeats analytics image')
+![Repobeats analytics](https://repobeats.axiom.co/api/embed/b1bf4dc0226458617adbdbf5586f2df953eb0922.svg 'Repobeats analytics image')
 
-## Credit
+## 📝 Credit
 
-React Bits may sometimes take inspiration from publicly available code examples online. These examples are rewritten as full-fledged, customizable, and reusable components for JS, TS, CSS, and Tailwind codebases. If you recognize any of your work here, just request credit and it will be granted.
+React Bits occasionally draws inspiration from publicly available code examples. These are rewritten as full-fledged, customizable components for JS, TS, CSS, and Tailwind. If you recognize your work, [open an issue](https://github.com/DavidHDev/react-bits/issues) to request credit.
 
-## License
+## 📄 License
 
-Licensed under the [MIT + Commons Clause license](https://github.com/davidhdev/react-bits/blob/main/LICENSE.md).
+[MIT + Commons Clause](https://github.com/davidhdev/react-bits/blob/main/LICENSE.md) — free for personal and commercial use.
