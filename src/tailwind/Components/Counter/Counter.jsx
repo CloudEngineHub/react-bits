@@ -20,11 +20,7 @@ function Number({ mv, number, height }) {
     justifyContent: 'center'
   };
 
-  return (
-    <motion.span style={{ ...baseStyle, y }}>
-      {number}
-    </motion.span>
-  );
+  return <motion.span style={{ ...baseStyle, y }}>{number}</motion.span>;
 }
 
 function Digit({ place, value, height, digitStyle }) {
@@ -56,10 +52,7 @@ function Digit({ place, value, height, digitStyle }) {
   };
 
   return (
-    <span
-      className="relative inline-flex overflow-hidden"
-      style={{ ...defaultStyle, ...digitStyle }}
-    >
+    <span className="relative inline-flex overflow-hidden" style={{ ...defaultStyle, ...digitStyle }}>
       {Array.from({ length: 10 }, (_, i) => (
         <Number key={i} mv={animatedValue} number={i} height={height} />
       ))}
@@ -76,11 +69,7 @@ export default function Counter({
     if (ch === '.') return '.';
     return (
       10 **
-      (a.indexOf('.') === -1
-        ? a.length - i - 1
-        : i < a.indexOf('.')
-        ? a.indexOf('.') - i - 1
-        : -(i - a.indexOf('.')))
+      (a.indexOf('.') === -1 ? a.length - i - 1 : i < a.indexOf('.') ? a.indexOf('.') - i - 1 : -(i - a.indexOf('.')))
     );
   }),
   gap = 8,
@@ -140,13 +129,7 @@ export default function Counter({
     <span style={{ ...defaultContainerStyle, ...containerStyle }}>
       <span style={{ ...defaultCounterStyle, ...counterStyle }}>
         {places.map(place => (
-          <Digit
-            key={place}
-            place={place}
-            value={value}
-            height={height}
-            digitStyle={digitStyle}
-          />
+          <Digit key={place} place={place} value={value} height={height} digitStyle={digitStyle} />
         ))}
       </span>
       <span style={gradientContainerStyle}>
