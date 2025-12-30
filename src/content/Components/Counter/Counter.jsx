@@ -21,30 +21,52 @@ function Number({ mv, number, height }) {
 }
 
 function Digit({ place, value, height, digitStyle }) {
-  let valueRoundedToPlace = Math.floor(value / place);
-  let animatedValue = useSpring(valueRoundedToPlace);
-  useEffect(() => {
-    animatedValue.set(valueRoundedToPlace);
-  }, [animatedValue, valueRoundedToPlace]);
-  return (
-    <div className="counter-digit" style={{ height, ...digitStyle }}>
-      {Array.from({ length: 10 }, (_, i) => (
-        <Number key={i} mv={animatedValue} number={i} height={height} />
-      ))}
-    </div>
-  );
+	if (place === ".") {
+		return (
+			<span className="counter-digit" style={{ height, ...digitStyle, width: "fit-content" }}>
+				.
+			</span>
+		);
+	} else {
+		let valueRoundedToPlace = Math.floor(value / place);
+		let animatedValue = useSpring(valueRoundedToPlace);
+		useEffect(() => {
+			animatedValue.set(valueRoundedToPlace);
+		}, [animatedValue, valueRoundedToPlace]);
+		return (
+			<span className="counter-digit" style={{ height, ...digitStyle }}>
+				{Array.from({ length: 10 }, (_, i) => (
+					<Number key={i} mv={animatedValue} number={i} height={height} />
+				))}
+			</span>
+		);
+	}
 }
 
 export default function Counter({
   value,
   fontSize = 100,
   padding = 0,
-  places = [100, 10, 1],
+  	places = [...value.toString()].map((ch, i, a) => {
+		ch == ".";
+		if (ch === ".") {
+			return ".";
+		} else {
+			return (
+				10 **
+				(a.indexOf(".") === -1
+					? a.length - i - 1
+					: i < a.indexOf(".")
+					? a.indexOf(".") - i - 1
+					: -(i - a.indexOf(".")))
+			);
+		}
+	}),
   gap = 8,
   borderRadius = 4,
   horizontalPadding = 8,
-  textColor = 'white',
-  fontWeight = 'bold',
+  textColor = 'inherit',
+  fontWeight = 'inherit',
   containerStyle,
   counterStyle,
   digitStyle,
@@ -73,19 +95,19 @@ export default function Counter({
     background: `linear-gradient(to top, ${gradientFrom}, ${gradientTo})`
   };
   return (
-    <div className="counter-container" style={containerStyle}>
-      <div className="counter-counter" style={{ ...defaultCounterStyle, ...counterStyle }}>
+    <span className="counter-container" style={containerStyle}>
+      <span className="counter-counter" style={{ ...defaultCounterStyle, ...counterStyle }}>
         {places.map(place => (
           <Digit key={place} place={place} value={value} height={height} digitStyle={digitStyle} />
         ))}
-      </div>
-      <div className="gradient-container">
-        <div className="top-gradient" style={topGradientStyle ? topGradientStyle : defaultTopGradientStyle}></div>
-        <div
+      </span>
+      <span className="gradient-container">
+        <span className="top-gradient" style={topGradientStyle ? topGradientStyle : defaultTopGradientStyle}></span>
+        <span
           className="bottom-gradient"
           style={bottomGradientStyle ? bottomGradientStyle : defaultBottomGradientStyle}
-        ></div>
-      </div>
-    </div>
+        ></span>
+      </span>
+    </span>
   );
 }
