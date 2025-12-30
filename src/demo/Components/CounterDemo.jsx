@@ -17,6 +17,7 @@ import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
+  digitPlaceHolders:true,
   value: 1,
   fontSize: 80,
   gap: 10
@@ -24,9 +25,8 @@ const DEFAULT_PROPS = {
 
 const CounterDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { value, fontSize, gap } = props;
+  const { digitPlaceHolders, value, fontSize, gap } = props;
 
-  const [digitPlaceHolders, setDigitPlaceHolders] = useState(true);
 
 
   const propData = useMemo(
@@ -181,9 +181,9 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => updateProp('value', value - 1)}
+                onClick={() => updateProp('value', value - 0.5)}
               >
-                - 0.3
+                - 0.5
               </Button>
               <Button
                 bg="#170D27"
@@ -217,15 +217,15 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => value < 999 && updateProp('value', value + 0.3)}
+                onClick={() => value < 999 && updateProp('value', value + 0.5)}
               >
-                + 0.3
+                + 0.5
               </Button>
             </Flex>
           </Box>
 
           <Customize>
-          <PreviewSwitch title="digit Place Holders" isChecked={digitPlaceHolders} onChange={setDigitPlaceHolders} />
+          <PreviewSwitch title="digit Place Holders" isChecked={digitPlaceHolders} onChange={v => updateProp('digitPlaceHolders', v)}/>
 
             <PreviewSlider
               title="Value"

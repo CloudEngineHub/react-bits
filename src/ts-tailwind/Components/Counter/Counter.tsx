@@ -1,5 +1,8 @@
 import { MotionValue, motion, useSpring, useTransform } from 'motion/react';
+import type React from 'react';
 import { useEffect } from 'react';
+
+type PlaceValue = number | '.';
 
 interface NumberProps {
   mv: MotionValue<number>;
@@ -8,9 +11,9 @@ interface NumberProps {
 }
 
 function Number({ mv, number, height }: NumberProps) {
-  let y = useTransform(mv, latest => {
-    let placeValue = latest % 10;
-    let offset = (10 + number - placeValue) % 10;
+  const y = useTransform(mv, latest => {
+    const placeValue = latest % 10;
+    const offset = (10 + number - placeValue) % 10;
     let memo = offset * height;
     if (offset > 5) {
       memo -= 10 * height;
@@ -18,30 +21,44 @@ function Number({ mv, number, height }: NumberProps) {
     return memo;
   });
 
-  const style: React.CSSProperties = {
+  const baseStyle: React.CSSProperties = {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+    inset: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   };
 
-  return <motion.span style={{ ...style, y }}>{number}</motion.span>;
+  return (
+    <motion.span style={{ ...baseStyle, y }}>
+      {number}
+    </motion.span>
+  );
 }
 
 interface DigitProps {
-  place: number;
+  place: PlaceValue;
   value: number;
   height: number;
   digitStyle?: React.CSSProperties;
 }
 
 function Digit({ place, value, height, digitStyle }: DigitProps) {
-  let valueRoundedToPlace = Math.floor(value / place);
-  let animatedValue = useSpring(valueRoundedToPlace);
+  // Decimal point digit
+  if (place === '.') {
+    return (
+      <span
+        className="relative inline-flex items-center justify-center"
+        style={{ height, width: 'fit-content', ...digitStyle }}
+      >
+        .
+      </span>
+    );
+  }
+
+  // Numeric digit
+  const valueRoundedToPlace = Math.floor(value / place);
+  const animatedValue = useSpring(valueRoundedToPlace);
 
   useEffect(() => {
     animatedValue.set(valueRoundedToPlace);
@@ -55,11 +72,14 @@ function Digit({ place, value, height, digitStyle }: DigitProps) {
   };
 
   return (
-    <div style={{ ...defaultStyle, ...digitStyle }}>
+    <span
+      className="relative inline-flex overflow-hidden"
+      style={{ ...defaultStyle, ...digitStyle }}
+    >
       {Array.from({ length: 10 }, (_, i) => (
         <Number key={i} mv={animatedValue} number={i} height={height} />
       ))}
-    </div>
+    </span>
   );
 }
 
@@ -67,7 +87,13 @@ interface CounterProps {
   value: number;
   fontSize?: number;
   padding?: number;
-  places?: number[];
+  /**
+   * An array of place values that determines which digit positions
+   * should be displayed. For decimal places, use "." to represent
+   * the decimal point. Leave this prop empty to enable automatic
+   * detection based on the current value.
+   */
+  places?: PlaceValue[];
   gap?: number;
   borderRadius?: number;
   horizontalPadding?: number;
@@ -87,12 +113,27 @@ export default function Counter({
   value,
   fontSize = 100,
   padding = 0,
-  places = [100, 10, 1],
+  places = [...value.toString()].map((ch, i, a) => {
+    if (ch === '.') {
+      return '.';
+    }
+
+    const dotIndex = a.indexOf('.');
+    const isInteger = dotIndex === -1;
+
+    const exponent = isInteger
+      ? a.length - i - 1
+      : i < dotIndex
+      ? dotIndex - i - 1
+      : -(i - dotIndex);
+
+    return 10 ** exponent;
+  }),
   gap = 8,
   borderRadius = 4,
   horizontalPadding = 8,
-  textColor = 'white',
-  fontWeight = 'bold',
+  textColor = 'inherit',
+  fontWeight = 'inherit',
   containerStyle,
   counterStyle,
   digitStyle,
@@ -112,23 +153,23 @@ export default function Counter({
   const defaultCounterStyle: React.CSSProperties = {
     fontSize,
     display: 'flex',
-    gap: gap,
+    gap,
     overflow: 'hidden',
-    borderRadius: borderRadius,
+    borderRadius,
     paddingLeft: horizontalPadding,
     paddingRight: horizontalPadding,
     lineHeight: 1,
     color: textColor,
-    fontWeight: fontWeight
+    fontWeight
   };
 
   const gradientContainerStyle: React.CSSProperties = {
     pointerEvents: 'none',
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
+    inset: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   };
 
   const defaultTopGradientStyle: React.CSSProperties = {
@@ -137,24 +178,27 @@ export default function Counter({
   };
 
   const defaultBottomGradientStyle: React.CSSProperties = {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
     height: gradientHeight,
     background: `linear-gradient(to top, ${gradientFrom}, ${gradientTo})`
   };
 
   return (
-    <div style={{ ...defaultContainerStyle, ...containerStyle }}>
-      <div style={{ ...defaultCounterStyle, ...counterStyle }}>
+    <span style={{ ...defaultContainerStyle, ...containerStyle }}>
+      <span style={{ ...defaultCounterStyle, ...counterStyle }}>
         {places.map(place => (
-          <Digit key={place} place={place} value={value} height={height} digitStyle={digitStyle} />
+          <Digit
+            key={place}
+            place={place}
+            value={value}
+            height={height}
+            digitStyle={digitStyle}
+          />
         ))}
-      </div>
-      <div style={gradientContainerStyle}>
-        <div style={topGradientStyle ? topGradientStyle : defaultTopGradientStyle} />
-        <div style={bottomGradientStyle ? bottomGradientStyle : defaultBottomGradientStyle} />
-      </div>
-    </div>
+      </span>
+      <span style={gradientContainerStyle}>
+        <span style={topGradientStyle ?? defaultTopGradientStyle} />
+        <span style={bottomGradientStyle ?? defaultBottomGradientStyle} />
+      </span>
+    </span>
   );
 }
