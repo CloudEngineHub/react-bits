@@ -228,8 +228,8 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
                   pendingActivePath={pendingActivePath}
                   handleClick={onClose}
                   handleTransitionNavigation={onNavigation}
-                  onItemMouseEnter={() => { }}
-                  onItemMouseLeave={() => { }}
+                  onItemMouseEnter={() => {}}
+                  onItemMouseLeave={() => {}}
                   itemRefs={{}}
                   isTransitioning={isTransitioning}
                   isFirstCategory={i === 0}
