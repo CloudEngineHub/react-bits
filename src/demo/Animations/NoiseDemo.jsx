@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import RefreshButton from '../../components/common/Preview/RefreshButton';
