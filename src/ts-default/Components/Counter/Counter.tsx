@@ -40,10 +40,7 @@ interface DigitProps {
 function Digit({ place, value, height, digitStyle }: DigitProps) {
   if (place === '.') {
     return (
-      <span
-        className="counter-digit"
-        style={{ height, ...digitStyle, width: 'fit-content' }}
-      >
+      <span className="counter-digit" style={{ height, ...digitStyle, width: 'fit-content' }}>
         .
       </span>
     );
@@ -102,11 +99,7 @@ export default function Counter({
     const dotIndex = a.indexOf('.');
     const isInteger = dotIndex === -1;
 
-    const exponent = isInteger
-      ? a.length - i - 1
-      : i < dotIndex
-      ? dotIndex - i - 1
-      : -(i - dotIndex);
+    const exponent = isInteger ? a.length - i - 1 : i < dotIndex ? dotIndex - i - 1 : -(i - dotIndex);
 
     return 10 ** exponent;
   }),
@@ -148,29 +141,14 @@ export default function Counter({
 
   return (
     <span className="counter-container" style={containerStyle}>
-      <span
-        className="counter-counter"
-        style={{ ...defaultCounterStyle, ...counterStyle }}
-      >
+      <span className="counter-counter" style={{ ...defaultCounterStyle, ...counterStyle }}>
         {places.map(place => (
-          <Digit
-            key={place}
-            place={place}
-            value={value}
-            height={height}
-            digitStyle={digitStyle}
-          />
+          <Digit key={place} place={place} value={value} height={height} digitStyle={digitStyle} />
         ))}
       </span>
       <span className="gradient-container">
-        <span
-          className="top-gradient"
-          style={topGradientStyle ?? defaultTopGradientStyle}
-        />
-        <span
-          className="bottom-gradient"
-          style={bottomGradientStyle ?? defaultBottomGradientStyle}
-        />
+        <span className="top-gradient" style={topGradientStyle ?? defaultTopGradientStyle} />
+        <span className="bottom-gradient" style={bottomGradientStyle ?? defaultBottomGradientStyle} />
       </span>
     </span>
   );

@@ -21,47 +21,43 @@ function Number({ mv, number, height }) {
 }
 
 function Digit({ place, value, height, digitStyle }) {
-	if (place === ".") {
-		return (
-			<span className="counter-digit" style={{ height, ...digitStyle, width: "fit-content" }}>
-				.
-			</span>
-		);
-	} else {
-		let valueRoundedToPlace = Math.floor(value / place);
-		let animatedValue = useSpring(valueRoundedToPlace);
-		useEffect(() => {
-			animatedValue.set(valueRoundedToPlace);
-		}, [animatedValue, valueRoundedToPlace]);
-		return (
-			<span className="counter-digit" style={{ height, ...digitStyle }}>
-				{Array.from({ length: 10 }, (_, i) => (
-					<Number key={i} mv={animatedValue} number={i} height={height} />
-				))}
-			</span>
-		);
-	}
+  if (place === '.') {
+    return (
+      <span className="counter-digit" style={{ height, ...digitStyle, width: 'fit-content' }}>
+        .
+      </span>
+    );
+  } else {
+    let valueRoundedToPlace = Math.floor(value / place);
+    let animatedValue = useSpring(valueRoundedToPlace);
+    useEffect(() => {
+      animatedValue.set(valueRoundedToPlace);
+    }, [animatedValue, valueRoundedToPlace]);
+    return (
+      <span className="counter-digit" style={{ height, ...digitStyle }}>
+        {Array.from({ length: 10 }, (_, i) => (
+          <Number key={i} mv={animatedValue} number={i} height={height} />
+        ))}
+      </span>
+    );
+  }
 }
 
 export default function Counter({
   value,
   fontSize = 100,
   padding = 0,
-  	places = [...value.toString()].map((ch, i, a) => {
-		ch == ".";
-		if (ch === ".") {
-			return ".";
-		} else {
-			return (
-				10 **
-				(a.indexOf(".") === -1
-					? a.length - i - 1
-					: i < a.indexOf(".")
-					? a.indexOf(".") - i - 1
-					: -(i - a.indexOf(".")))
-			);
-		}
-	}),
+  places = [...value.toString()].map((ch, i, a) => {
+    ch == '.';
+    if (ch === '.') {
+      return '.';
+    } else {
+      return (
+        10 **
+        (a.indexOf('.') === -1 ? a.length - i - 1 : i < a.indexOf('.') ? a.indexOf('.') - i - 1 : -(i - a.indexOf('.')))
+      );
+    }
+  }),
   gap = 8,
   borderRadius = 4,
   horizontalPadding = 8,

@@ -17,7 +17,7 @@ import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
-  digitPlaceHolders:true,
+  digitPlaceHolders: true,
   value: 1,
   fontSize: 80,
   gap: 10
@@ -26,8 +26,6 @@ const DEFAULT_PROPS = {
 const CounterDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { digitPlaceHolders, value, fontSize, gap } = props;
-
-
 
   const propData = useMemo(
     () => [
@@ -53,7 +51,8 @@ const CounterDemo = () => {
         name: 'places',
         type: 'number[]',
         default: '[100, 10, 1 , "." , 0.1]',
-        description: 'Defines which digit positions to display. Include whole number and decimal place values (use "." for the decimal point). If omitted, place values will be detected automatically.'
+        description:
+          'Defines which digit positions to display. Include whole number and decimal place values (use "." for the decimal point). If omitted, place values will be detected automatically.'
       },
       {
         name: 'gap',
@@ -142,36 +141,34 @@ const CounterDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} overflow="hidden">
-              {digitPlaceHolders ? (
-            <Counter
-              value={parseFloat(value.toFixed(1))}
-              places={[100, 10, 1, ".", 0.1]}
-              gradientFrom="#060010"
-              fontSize={fontSize}
-              padding={5}
-              gap={gap}
-              borderRadius={10}
-              horizontalPadding={15}
-              textColor="white"
-              fontWeight={900}
-            />
-          ) : (
-            <Counter
-              value={value}
-              gradientFrom="#060010"
-              fontSize={fontSize}
-              padding={5}
-              gap={gap}
-              borderRadius={10}
-              horizontalPadding={15}
-              textColor="white"
-              fontWeight={900}
-            />
-          )}
-
+            {digitPlaceHolders ? (
+              <Counter
+                value={parseFloat(value.toFixed(1))}
+                places={[100, 10, 1, '.', 0.1]}
+                gradientFrom="#060010"
+                fontSize={fontSize}
+                padding={5}
+                gap={gap}
+                borderRadius={10}
+                horizontalPadding={15}
+                textColor="white"
+                fontWeight={900}
+              />
+            ) : (
+              <Counter
+                value={value}
+                gradientFrom="#060010"
+                fontSize={fontSize}
+                padding={5}
+                gap={gap}
+                borderRadius={10}
+                horizontalPadding={15}
+                textColor="white"
+                fontWeight={900}
+              />
+            )}
 
             <Flex gap={4} bottom="1em" direction={'row'} justify={'center'} mt={4} position="absolute">
-               
               <Button
                 bg="#170D27"
                 borderRadius="10px"
@@ -180,7 +177,7 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => updateProp('value', ((value * 10) - 4) / 10)}
+                onClick={() => updateProp('value', (value * 10 - 4) / 10)}
               >
                 - 0.4
               </Button>
@@ -216,7 +213,7 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => value < 999 && updateProp('value', ((value * 10) + 4) / 10)}
+                onClick={() => value < 999 && updateProp('value', (value * 10 + 4) / 10)}
               >
                 + 0.4
               </Button>
@@ -224,7 +221,11 @@ const CounterDemo = () => {
           </Box>
 
           <Customize>
-          <PreviewSwitch title="digit Place Holders" isChecked={digitPlaceHolders} onChange={v => updateProp('digitPlaceHolders', v)}/>
+            <PreviewSwitch
+              title="digit Place Holders"
+              isChecked={digitPlaceHolders}
+              onChange={v => updateProp('digitPlaceHolders', v)}
+            />
 
             <PreviewSlider
               title="Value"
