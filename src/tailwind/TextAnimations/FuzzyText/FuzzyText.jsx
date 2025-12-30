@@ -39,8 +39,8 @@ const FuzzyText = ({
       const computedFontFamily =
         fontFamily === 'inherit' ? window.getComputedStyle(canvas).fontFamily || 'sans-serif' : fontFamily;
 
-      const fontSizeStr = typeof fontSize === 'number' ? \`\${fontSize}px\` : fontSize;
-      const fontString = \`\${fontWeight} \${fontSizeStr} \${computedFontFamily}\`;
+      const fontSizeStr = typeof fontSize === 'number' ? `${fontSize}px` : fontSize;
+      const fontString = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
 
       try {
         await document.fonts.load(fontString);
@@ -67,7 +67,7 @@ const FuzzyText = ({
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
 
-      offCtx.font = \`\${fontWeight} \${fontSizeStr} \${computedFontFamily}\`;
+      offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = 'alphabetic';
 
       let totalWidth = 0;
@@ -96,7 +96,7 @@ const FuzzyText = ({
       offscreen.height = tightHeight;
 
       const xOffset = extraWidthBuffer / 2;
-      offCtx.font = \`\${fontWeight} \${fontSizeStr} \${computedFontFamily}\`;
+      offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = 'alphabetic';
 
       if (gradient && Array.isArray(gradient) && gradient.length >= 2) {
@@ -150,7 +150,7 @@ const FuzzyText = ({
 
       if (glitchMode) startGlitchLoop();
 
-      const run = (timestamp) => {
+      const run = timestamp => {
         if (isCancelled) return;
 
         if (timestamp - lastFrameTime < frameDuration) {
@@ -159,7 +159,12 @@ const FuzzyText = ({
         }
         lastFrameTime = timestamp;
 
-        ctx.clearRect(-fuzzRange - 20, -fuzzRange - 10, offscreenWidth + 2 * (fuzzRange + 20), tightHeight + 2 * (fuzzRange + 10));
+        ctx.clearRect(
+          -fuzzRange - 20,
+          -fuzzRange - 10,
+          offscreenWidth + 2 * (fuzzRange + 20),
+          tightHeight + 2 * (fuzzRange + 10)
+        );
 
         if (isClicking) {
           targetIntensity = 1;
@@ -172,7 +177,7 @@ const FuzzyText = ({
         }
 
         if (transitionDuration > 0) {
-          const step = (1 / (transitionDuration / frameDuration));
+          const step = 1 / (transitionDuration / frameDuration);
           if (currentIntensity < targetIntensity) {
             currentIntensity = Math.min(currentIntensity + step, targetIntensity);
           } else if (currentIntensity > targetIntensity) {
@@ -183,7 +188,8 @@ const FuzzyText = ({
         }
 
         for (let j = 0; j < tightHeight; j++) {
-          let dx = 0, dy = 0;
+          let dx = 0,
+            dy = 0;
           if (direction === 'horizontal' || direction === 'both') {
             dx = Math.floor(currentIntensity * (Math.random() - 0.5) * fuzzRange);
           }
@@ -278,7 +284,26 @@ const FuzzyText = ({
         canvas.cleanupFuzzyText();
       }
     };
-  }, [children, fontSize, fontWeight, fontFamily, color, enableHover, baseIntensity, hoverIntensity, fuzzRange, fps, direction, transitionDuration, clickEffect, glitchMode, glitchInterval, glitchDuration, gradient, letterSpacing]);
+  }, [
+    children,
+    fontSize,
+    fontWeight,
+    fontFamily,
+    color,
+    enableHover,
+    baseIntensity,
+    hoverIntensity,
+    fuzzRange,
+    fps,
+    direction,
+    transitionDuration,
+    clickEffect,
+    glitchMode,
+    glitchInterval,
+    glitchDuration,
+    gradient,
+    letterSpacing
+  ]);
 
   return <canvas ref={canvasRef} className={className} />;
 };
