@@ -134,11 +134,7 @@ const SplashCursorDemo = () => {
             </Flex>
 
             <Flex justify="flex-end" mt={2} mb={-2}>
-              <OpenInStudioButton
-                backgroundId="splash-cursor"
-                currentProps={{}}
-                defaultProps={DEFAULT_PROPS}
-              />
+              <OpenInStudioButton backgroundId="splash-cursor" currentProps={{}} defaultProps={DEFAULT_PROPS} />
             </Flex>
 
             <PropTable data={propData} />
