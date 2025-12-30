@@ -25,8 +25,10 @@ function injectPropsIntoCode(usageCode, props, defaultProps, componentName) {
 
   // Match the component tag and capture the leading whitespace for indentation
   // This regex captures: leading whitespace, opening tag with all attributes, and closing
-  const selfClosingRegex = new RegExp(`(^[ \\t]*)(<${componentName})([\\s\\S]*?)(\\/>)`, 'gm');
-  const openingTagRegex = new RegExp(`(^[ \\t]*)(<${componentName})([\\s\\S]*?)(>)`, 'gm');
+  // Use (?![a-zA-Z]) negative lookahead to avoid matching components that start with the same name
+  // (e.g., avoid matching ScrollStackItem when componentName is ScrollStack)
+  const selfClosingRegex = new RegExp(`(^[ \\t]*)(<${componentName}(?![a-zA-Z]))([\\s\\S]*?)(\\/>)`, 'gm');
+  const openingTagRegex = new RegExp(`(^[ \\t]*)(<${componentName}(?![a-zA-Z]))([\\s\\S]*?)(>)`, 'gm');
 
   let result = usageCode;
   let matched = false;
