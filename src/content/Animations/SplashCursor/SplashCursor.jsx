@@ -985,7 +985,6 @@ function SplashCursor({
       }
     }
 
-    let firstTouchHandled = false;
     function handleTouchStart(e) {
       const touches = e.targetTouches;
       let pointer = pointers[0];
@@ -994,7 +993,6 @@ function SplashCursor({
         let posY = scaleByPixelRatio(touches[i].clientY);
         updatePointerDownData(pointer, touches[i].identifier, posX, posY);
       }
-      firstTouchHandled = true;
     }
 
     function handleTouchMove(e) {

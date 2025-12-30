@@ -10,8 +10,6 @@ function PixelTransition({
   aspectRatio = '100%',
   className = '',
   once = false,
-  style = {},
-  aspectRatio = '100%'
   style = {}
 }) {
   const containerRef = useRef(null);
