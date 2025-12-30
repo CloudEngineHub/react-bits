@@ -144,20 +144,34 @@ export default function BackgroundStudio({ toolSelector }) {
   const recordingTimeoutRef = useRef(null);
 
   const backgroundId = searchParams.get('bg') || 'silk';
-  const customPropsRaw = searchParams.get('props');
-
-  const customProps = useMemo(() => {
-    if (!customPropsRaw) return {};
-    try {
-      return JSON.parse(customPropsRaw);
-    } catch {
-      return {};
-    }
-  }, [customPropsRaw]);
 
   const background = useMemo(() => {
     return getBackgroundById(backgroundId) || BACKGROUNDS[0];
   }, [backgroundId]);
+
+  const customProps = useMemo(() => {
+    if (!background?.props) return {};
+    const parsed = {};
+    for (const propDef of background.props) {
+      const value = searchParams.get(propDef.name);
+      if (value !== null) {
+        if (propDef.type === 'number') {
+          parsed[propDef.name] = Number(value);
+        } else if (propDef.type === 'boolean') {
+          parsed[propDef.name] = value === 'true';
+        } else if (propDef.type === 'colorArray') {
+          parsed[propDef.name] = value.split(',').map(c => (c.startsWith('#') ? c : `#${c}`));
+        } else if (propDef.type === 'color') {
+          parsed[propDef.name] = value.startsWith('#') ? value : `#${value}`;
+        } else if (propDef.type === 'rgbArray') {
+          parsed[propDef.name] = value.split(',').map(Number);
+        } else {
+          parsed[propDef.name] = value;
+        }
+      }
+    }
+    return parsed;
+  }, [background, searchParams]);
 
   const baseProps = useMemo(() => {
     const defaults = getDefaultProps(background);
@@ -170,7 +184,7 @@ export default function BackgroundStudio({ toolSelector }) {
 
   useEffect(() => {
     setLocalProps({});
-  }, [customPropsRaw, backgroundId]);
+  }, [searchParams, backgroundId]);
 
   const updateProp = useCallback(
     (name, value) => {
@@ -188,26 +202,35 @@ export default function BackgroundStudio({ toolSelector }) {
       debounceTimer.current = setTimeout(() => {
         const newCustomProps = { ...customProps, ...localProps, [name]: value };
 
-        Object.keys(newCustomProps).forEach(key => {
-          if (JSON.stringify(newCustomProps[key]) === JSON.stringify(defaults[key])) {
-            delete newCustomProps[key];
+        const newParams = new URLSearchParams();
+        newParams.set('bg', backgroundId);
+
+        const propDefs = background?.props || [];
+        const getPropType = key => propDefs.find(p => p.name === key)?.type;
+
+        Object.entries(newCustomProps).forEach(([key, val]) => {
+          if (JSON.stringify(val) === JSON.stringify(defaults[key])) {
+            return;
+          }
+          const propType = getPropType(key);
+          if (propType === 'colorArray' && Array.isArray(val)) {
+            newParams.set(key, val.map(c => c.replace(/^#/, '')).join(','));
+          } else if (propType === 'color' && typeof val === 'string') {
+            newParams.set(key, val.replace(/^#/, ''));
+          } else if (Array.isArray(val)) {
+            newParams.set(key, val.join(','));
+          } else {
+            newParams.set(key, String(val));
           }
         });
 
-        const newParams = new URLSearchParams(searchParams);
-        if (Object.keys(newCustomProps).length > 0) {
-          newParams.set('props', JSON.stringify(newCustomProps));
-        } else {
-          newParams.delete('props');
-        }
-        newParams.set('bg', backgroundId);
         setSearchParams(newParams, { replace: true });
 
         setRenderKey(k => k + 1);
         setLocalProps({});
       }, 300);
     },
-    [background, customProps, localProps, searchParams, backgroundId, setSearchParams]
+    [background, customProps, localProps, backgroundId, setSearchParams]
   );
 
   const changeBackground = useCallback(

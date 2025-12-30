@@ -4892,23 +4892,9 @@
 			"title": "Lanyard",
 			"description": "Swinging 3D lanyard / badge card with realistic inertial motion.",
 			"type": "registry:component",
-			"dependencies": [
-				"@react-three/fiber@^9.3.0",
-				"@react-three/drei@^10.7.4",
-				"@react-three/rapier@^2.1.0",
-				"meshline@^3.3.1",
-				"three@^0.167.1"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.jsx"
-				},
 				{
 					"type": "registry:component",
 					"path": "Lanyard/card.glb"
@@ -4924,19 +4910,9 @@
 			"title": "Lanyard",
 			"description": "Swinging 3D lanyard / badge card with realistic inertial motion.",
 			"type": "registry:component",
-			"dependencies": [
-				"@react-three/fiber@^9.3.0",
-				"@react-three/drei@^10.7.4",
-				"@react-three/rapier@^2.1.0",
-				"meshline@^3.3.1",
-				"three@^0.167.1"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.jsx"
-				},
 				{
 					"type": "registry:component",
 					"path": "Lanyard/card.glb"
@@ -4952,23 +4928,9 @@
 			"title": "Lanyard",
 			"description": "Swinging 3D lanyard / badge card with realistic inertial motion.",
 			"type": "registry:component",
-			"dependencies": [
-				"@react-three/fiber@^9.3.0",
-				"@react-three/drei@^10.7.4",
-				"@react-three/rapier@^2.1.0",
-				"meshline@^3.3.1",
-				"three@^0.167.1"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.css"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.tsx"
-				},
 				{
 					"type": "registry:component",
 					"path": "Lanyard/card.glb"
@@ -4984,19 +4946,9 @@
 			"title": "Lanyard",
 			"description": "Swinging 3D lanyard / badge card with realistic inertial motion.",
 			"type": "registry:component",
-			"dependencies": [
-				"@react-three/fiber@^9.3.0",
-				"@react-three/drei@^10.7.4",
-				"@react-three/rapier@^2.1.0",
-				"meshline@^3.3.1",
-				"three@^0.167.1"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
-				{
-					"type": "registry:component",
-					"path": "Lanyard/Lanyard.tsx"
-				},
 				{
 					"type": "registry:component",
 					"path": "Lanyard/card.glb"
