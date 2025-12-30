@@ -158,7 +158,6 @@ const CounterDemo = () => {
           ) : (
             <Counter
               value={value}
-              places={[100, 10, 1]}
               gradientFrom="#060010"
               fontSize={fontSize}
               padding={5}
@@ -181,9 +180,9 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => updateProp('value', value - 0.5)}
+                onClick={() => updateProp('value', ((value * 10) - 4) / 10)}
               >
-                - 0.5
+                - 0.4
               </Button>
               <Button
                 bg="#170D27"
@@ -217,9 +216,9 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => value < 999 && updateProp('value', value + 0.5)}
+                onClick={() => value < 999 && updateProp('value', ((value * 10) + 4) / 10)}
               >
-                + 0.5
+                + 0.4
               </Button>
             </Flex>
           </Box>
