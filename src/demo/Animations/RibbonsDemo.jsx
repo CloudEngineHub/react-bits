@@ -130,7 +130,14 @@ const RibbonsDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="ribbons"
-              currentProps={{ baseThickness, colors, speedMultiplier, maxAge, enableFade, enableShaderEffect: enableWaves }}
+              currentProps={{
+                baseThickness,
+                colors,
+                speedMultiplier,
+                maxAge,
+                enableFade,
+                enableShaderEffect: enableWaves
+              }}
               defaultProps={DEFAULT_PROPS}
             />
           </Flex>

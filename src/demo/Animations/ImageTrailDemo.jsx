@@ -73,11 +73,7 @@ const ImageTrailDemo = () => {
           </Box>
 
           <Flex justify="flex-end" mt={2} mb={-2}>
-            <OpenInStudioButton
-              backgroundId="image-trail"
-              currentProps={{ variant }}
-              defaultProps={DEFAULT_PROPS}
-            />
+            <OpenInStudioButton backgroundId="image-trail" currentProps={{ variant }} defaultProps={DEFAULT_PROPS} />
           </Flex>
 
           <div className="preview-options">
