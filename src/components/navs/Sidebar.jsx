@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect } from 'react';
+import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
 import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon, Palette, Shapes, ImageIcon } from 'lucide-react';
@@ -228,8 +228,8 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
                   pendingActivePath={pendingActivePath}
                   handleClick={onClose}
                   handleTransitionNavigation={onNavigation}
-                  onItemMouseEnter={() => {}}
-                  onItemMouseLeave={() => {}}
+                  onItemMouseEnter={() => { }}
+                  onItemMouseLeave={() => { }}
                   itemRefs={{}}
                   isTransitioning={isTransitioning}
                   isFirstCategory={i === 0}
@@ -523,7 +523,7 @@ const Sidebar = () => {
 
           <VStack align="stretch" spacing={4}>
             {CATEGORIES.map((cat, i) => (
-              <>
+              <Fragment key={cat.name}>
                 <Category
                   key={cat.name}
                   category={cat}
@@ -561,7 +561,7 @@ const Sidebar = () => {
                     </Stack>
                   </Box>
                 )}
-              </>
+              </Fragment>
             ))}
           </VStack>
         </Box>

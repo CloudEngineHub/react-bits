@@ -340,7 +340,6 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               border="1px solid #271E37"
               color="#fff"
               disabled={controlsDisabled}
-              isDisabled={controlsDisabled}
               tabIndex={controlsDisabled ? -1 : 0}
               onFocus={e => {
                 if (controlsDisabled) {
