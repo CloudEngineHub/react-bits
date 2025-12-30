@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import { Flex, Text, Input } from '@chakra-ui/react';

@@ -14,7 +14,7 @@ import { decayCard } from '../../constants/code/Components/decayCardCode';
 const DEFAULT_PROPS = {};
 
 const DecayCardDemo = () => {
-  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
 
   const propData = useMemo(
     () => [

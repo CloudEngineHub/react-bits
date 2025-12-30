@@ -16,7 +16,7 @@ import { rotatingText } from '../../constants/code/TextAnimations/rotatingTextCo
 const DEFAULT_PROPS = {};
 
 const RotatingTextDemo = () => {
-  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
 
   const propData = useMemo(
     () => [
