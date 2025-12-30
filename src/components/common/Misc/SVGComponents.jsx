@@ -23,7 +23,6 @@ export const Logo = () => {
       svgEl.removeEventListener('mouseenter', handleEnter);
       svgEl.removeEventListener('mouseleave', handleLeave);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
