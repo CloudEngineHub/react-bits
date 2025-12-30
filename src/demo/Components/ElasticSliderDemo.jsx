@@ -22,7 +22,7 @@ const DEFAULT_PROPS = {
 };
 
 const ElasticSliderDemo = () => {
-  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { defaultValue, startingValue, maxValue, isStepped, stepSize } = props;
 
   const propData = useMemo(
