@@ -15,7 +15,7 @@ import { spotlightCard } from '../../constants/code/Components/spotlightCardCode
 const DEFAULT_PROPS = {};
 
 const SpotlightCardDemo = () => {
-  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
 
   const propData = useMemo(
     () => [
