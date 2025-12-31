@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 interface BounceCardsProps {
@@ -30,17 +30,21 @@ export default function BounceCards({
   ],
   enableHover = false
 }: BounceCardsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    gsap.fromTo(
-      '.card',
-      { scale: 0 },
-      {
-        scale: 1,
-        stagger: animationStagger,
-        ease: easeType,
-        delay: animationDelay
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.card',
+        { scale: 0 },
+        {
+          scale: 1,
+          stagger: animationStagger,
+          ease: easeType,
+          delay: animationDelay
+        }
+      );
+    }, containerRef);
+    return () => ctx.revert();
   }, [animationDelay, animationStagger, easeType]);
 
   const getNoRotationTransform = (transformStr: string): string => {
@@ -67,10 +71,11 @@ export default function BounceCards({
   };
 
   const pushSiblings = (hoveredIdx: number) => {
-    if (!enableHover) return;
+    const q = gsap.utils.selector(containerRef);
+    if (!enableHover || !containerRef.current) return;
 
     images.forEach((_, i) => {
-      const selector = `.card-${i}`;
+      const selector = q(`.card-${i}`);
       gsap.killTweensOf(selector);
 
       const baseTransform = transformStyles[i] || 'none';
@@ -102,10 +107,11 @@ export default function BounceCards({
   };
 
   const resetSiblings = () => {
-    if (!enableHover) return;
+    if (!enableHover || !containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
 
     images.forEach((_, i) => {
-      const selector = `.card-${i}`;
+      const selector = q(`.card-${i}`);
       gsap.killTweensOf(selector);
 
       const baseTransform = transformStyles[i] || 'none';
@@ -121,6 +127,7 @@ export default function BounceCards({
   return (
     <div
       className={`relative flex items-center justify-center ${className}`}
+      ref={containerRef}
       style={{
         width: containerWidth,
         height: containerHeight
