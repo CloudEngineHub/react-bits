@@ -46,7 +46,8 @@ import {
   Hexagon,
   SunDim,
   Lightbulb,
-  Palette as PaletteIcon
+  Palette as PaletteIcon,
+  Dices
 } from 'lucide-react';
 import { useState, useCallback, useRef, useMemo } from 'react';
 import { toaster } from '../../components/setup/toaster';
@@ -258,7 +259,8 @@ const EFFECT_ICONS = {
   [EFFECT_TYPES.MOSAIC]: Hexagon,
   [EFFECT_TYPES.TILT_SHIFT]: SunDim,
   [EFFECT_TYPES.EXPOSURE]: Lightbulb,
-  [EFFECT_TYPES.VIBRANCE]: PaletteIcon
+  [EFFECT_TYPES.VIBRANCE]: PaletteIcon,
+  [EFFECT_TYPES.DOT_DITHER]: CircleDot
 };
 
 const EFFECT_NAMES = {
@@ -290,7 +292,8 @@ const EFFECT_NAMES = {
   [EFFECT_TYPES.MOSAIC]: 'Stained Glass',
   [EFFECT_TYPES.TILT_SHIFT]: 'Tilt Shift',
   [EFFECT_TYPES.EXPOSURE]: 'Exposure',
-  [EFFECT_TYPES.VIBRANCE]: 'Vibrance'
+  [EFFECT_TYPES.VIBRANCE]: 'Vibrance',
+  [EFFECT_TYPES.DOT_DITHER]: 'Dot Dither'
 };
 
 const NoiseParams = ({ params, onChange }) => (
@@ -1646,6 +1649,33 @@ const VibranceParams = ({ params, onChange }) => (
   </Flex>
 );
 
+const DotDitherParams = ({ params, onChange }) => (
+  <Flex direction="column" gap={3}>
+    <SliderInput
+      label="Dot Size"
+      value={params.scale}
+      onChange={v => onChange({ ...params, scale: v })}
+      min={1}
+      max={8}
+      step={1}
+      suffix="px"
+    />
+    <SliderInput
+      label="Threshold"
+      value={params.threshold}
+      onChange={v => onChange({ ...params, threshold: v })}
+      min={0.1}
+      max={0.9}
+      step={0.05}
+    />
+    <SwitchInput
+      label="Invert"
+      checked={params.invert}
+      onChange={v => onChange({ ...params, invert: v })}
+    />
+  </Flex>
+);
+
 const EffectCard = ({
   effect,
   onUpdate,
@@ -1690,7 +1720,8 @@ const EffectCard = ({
     [EFFECT_TYPES.MOSAIC]: MosaicParams,
     [EFFECT_TYPES.TILT_SHIFT]: TiltShiftParams,
     [EFFECT_TYPES.EXPOSURE]: ExposureParams,
-    [EFFECT_TYPES.VIBRANCE]: VibranceParams
+    [EFFECT_TYPES.VIBRANCE]: VibranceParams,
+    [EFFECT_TYPES.DOT_DITHER]: DotDitherParams
   }[effect.type];
 
   return (
@@ -1823,6 +1854,7 @@ const EFFECT_CATEGORIES = {
       EFFECT_TYPES.GRAIN,
       EFFECT_TYPES.DITHER,
       EFFECT_TYPES.HALFTONE,
+      EFFECT_TYPES.DOT_DITHER,
       EFFECT_TYPES.SCANLINES
     ]
   },
@@ -2222,6 +2254,513 @@ export default function Controls({
     [onEffectsChange]
   );
 
+  const handleRandomizeEffects = useCallback(() => {
+    // Helper to get random value in range
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const randInt = (min, max) => Math.floor(rand(min, max + 1));
+    const randBool = () => Math.random() > 0.5;
+    const randChoice = arr => arr[Math.floor(Math.random() * arr.length)];
+    const randColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+
+    // All available effect types (excluding some that need custom maps)
+    const availableTypes = [
+      EFFECT_TYPES.NOISE,
+      EFFECT_TYPES.DITHER,
+      EFFECT_TYPES.HALFTONE,
+      EFFECT_TYPES.DOT_DITHER,
+      EFFECT_TYPES.ASCII,
+      EFFECT_TYPES.CHROMATIC,
+      EFFECT_TYPES.VIGNETTE,
+      EFFECT_TYPES.SCANLINES,
+      EFFECT_TYPES.PIXELATE,
+      EFFECT_TYPES.BLUR,
+      EFFECT_TYPES.DISTORTION,
+      EFFECT_TYPES.POSTERIZE,
+      EFFECT_TYPES.EDGE,
+      EFFECT_TYPES.GRAIN,
+      EFFECT_TYPES.COLOR_GRADE,
+      EFFECT_TYPES.GLITCH,
+      EFFECT_TYPES.CRT,
+      EFFECT_TYPES.DUOTONE,
+      EFFECT_TYPES.KUWAHARA,
+      EFFECT_TYPES.RIPPLE,
+      EFFECT_TYPES.LIGHT_LEAK,
+      EFFECT_TYPES.BLOOM,
+      EFFECT_TYPES.RADIAL_BLUR,
+      EFFECT_TYPES.TILT_SHIFT,
+      EFFECT_TYPES.EXPOSURE,
+      EFFECT_TYPES.VIBRANCE
+    ];
+
+    // Randomize params for each effect type - using tamer values to keep image recognizable
+    const randomizeParams = type => {
+      switch (type) {
+        case EFFECT_TYPES.NOISE:
+          return {
+            intensity: rand(0.05, 0.2),
+            scale: rand(0.8, 1.5),
+            monochrome: randBool(),
+            blendMode: randChoice(['overlay', 'soft-light'])
+          };
+        case EFFECT_TYPES.DITHER:
+          return {
+            method: randChoice(['bayer2x2', 'bayer4x4', 'bayer8x8']),
+            levels: randInt(3, 6),
+            threshold: rand(0.4, 0.6),
+            scale: rand(0.8, 1.5)
+          };
+        case EFFECT_TYPES.HALFTONE:
+          return {
+            gridSize: randInt(4, 12),
+            dotScale: rand(0.7, 1.2),
+            angle: randInt(0, 90),
+            shape: randChoice(['circle', 'square', 'diamond']),
+            softness: rand(0.3, 0.6),
+            contrast: rand(-0.1, 0.2),
+            invert: false,
+            colorMode: randChoice(['original', 'monochrome']),
+            dotColor: '#000000',
+            backgroundColor: '#ffffff',
+            mixOriginal: rand(0.1, 0.3)
+          };
+        case EFFECT_TYPES.DOT_DITHER:
+          return {
+            scale: randInt(1, 3),
+            threshold: rand(0.4, 0.6),
+            invert: false
+          };
+        case EFFECT_TYPES.ASCII:
+          return {
+            charset: randChoice([' .:-=+*#%@', ' .-+*#']),
+            cellSize: randInt(4, 8),
+            colorMode: 'original',
+            invert: false,
+            contrast: rand(1.1, 1.4),
+            brightness: rand(1.1, 1.3)
+          };
+        case EFFECT_TYPES.CHROMATIC:
+          return {
+            intensity: rand(0.002, 0.008),
+            angle: randInt(0, 360),
+            radial: randBool()
+          };
+        case EFFECT_TYPES.VIGNETTE:
+          return {
+            intensity: rand(0.2, 0.5),
+            size: rand(0.4, 0.6),
+            softness: rand(0.4, 0.7),
+            color: '#000000'
+          };
+        case EFFECT_TYPES.SCANLINES:
+          return {
+            spacing: randInt(2, 5),
+            thickness: randInt(1, 2),
+            opacity: rand(0.1, 0.3),
+            horizontal: randBool(),
+            offset: randInt(0, 5)
+          };
+        case EFFECT_TYPES.PIXELATE:
+          return {
+            size: randInt(2, 8),
+            maintainAspect: true
+          };
+        case EFFECT_TYPES.BLUR:
+          return {
+            radius: rand(0.5, 2),
+            type: 'gaussian',
+            angle: 0
+          };
+        case EFFECT_TYPES.DISTORTION:
+          return {
+            type: randChoice(['wave', 'bulge']),
+            amplitude: rand(3, 10),
+            frequency: rand(3, 8),
+            centerX: 0.5,
+            centerY: 0.5
+          };
+        case EFFECT_TYPES.POSTERIZE:
+          return {
+            levels: randInt(4, 8),
+            preserveHue: true
+          };
+        case EFFECT_TYPES.EDGE:
+          return {
+            strength: rand(0.5, 1.2),
+            threshold: rand(0.1, 0.25),
+            invert: false,
+            colorize: true
+          };
+        case EFFECT_TYPES.GRAIN:
+          return {
+            intensity: rand(0.05, 0.15),
+            size: rand(1, 2),
+            luminanceResponse: rand(0.3, 0.6),
+            colored: false
+          };
+        case EFFECT_TYPES.COLOR_GRADE:
+          return {
+            brightness: rand(-0.1, 0.1),
+            contrast: rand(-0.15, 0.15),
+            saturation: rand(-0.15, 0.2),
+            temperature: rand(-0.15, 0.15),
+            tint: rand(-0.1, 0.1),
+            shadowInfluence: rand(0, 0.15),
+            highlightInfluence: rand(0, 0.15)
+          };
+        case EFFECT_TYPES.GLITCH:
+          return {
+            intensity: rand(0.1, 0.3),
+            sliceCount: randInt(3, 10),
+            rgbShift: rand(0.005, 0.02),
+            angle: randInt(0, 15),
+            seed: randInt(0, 1000),
+            blockSize: rand(0.03, 0.1),
+            colorShift: randBool()
+          };
+        case EFFECT_TYPES.CRT:
+          return {
+            curvature: rand(0.05, 0.2),
+            scanlineIntensity: rand(0.1, 0.3),
+            scanlineCount: randInt(300, 500),
+            vignetteIntensity: rand(0.1, 0.3),
+            brightness: rand(1.0, 1.15),
+            rgbOffset: rand(0.001, 0.003),
+            flickerIntensity: rand(0.01, 0.03),
+            staticNoise: rand(0.01, 0.05)
+          };
+        case EFFECT_TYPES.DUOTONE: {
+          // Use lighter color pairs that keep image visible
+          const duotonePairs = [
+            { shadow: '#1a1a2e', highlight: '#eeeeff' },
+            { shadow: '#2d132c', highlight: '#ffeef4' },
+            { shadow: '#1a2639', highlight: '#f0f4ff' },
+            { shadow: '#2c3e50', highlight: '#ecf0f1' },
+            { shadow: '#1e3d59', highlight: '#f5f0e1' },
+            { shadow: '#3d1a1a', highlight: '#fff5f5' }
+          ];
+          const pair = randChoice(duotonePairs);
+          return {
+            shadowColor: pair.shadow,
+            highlightColor: pair.highlight,
+            contrast: rand(0.95, 1.05),
+            intensity: rand(0.6, 0.8)
+          };
+        }
+        case EFFECT_TYPES.KUWAHARA:
+          return {
+            radius: randInt(2, 4),
+            sharpness: rand(0.4, 0.7)
+          };
+        case EFFECT_TYPES.BARREL:
+          return {
+            amount: rand(0.05, 0.2),
+            centerX: 0.5,
+            centerY: 0.5,
+            zoom: rand(0.95, 1.05)
+          };
+        case EFFECT_TYPES.RIPPLE:
+          return {
+            amplitude: rand(0.005, 0.02),
+            wavelength: rand(30, 60),
+            speed: rand(0.5, 1.5),
+            centerX: 0.5,
+            centerY: 0.5,
+            damping: rand(0.3, 0.6)
+          };
+        case EFFECT_TYPES.LIGHT_LEAK:
+          return {
+            color1: randColor(),
+            color2: randColor(),
+            position: rand(0.2, 0.4),
+            angle: randInt(0, 360),
+            size: rand(0.4, 0.6),
+            intensity: rand(0.2, 0.4),
+            softness: rand(0.5, 0.8),
+            blendMode: 'screen'
+          };
+        case EFFECT_TYPES.BLOOM:
+          return {
+            radius: randInt(4, 10),
+            intensity: rand(0.3, 0.6),
+            threshold: rand(0.5, 0.7),
+            softThreshold: rand(0.4, 0.6),
+            blendMode: 'screen'
+          };
+        case EFFECT_TYPES.RADIAL_BLUR:
+          return {
+            intensity: rand(0.05, 0.15),
+            centerX: 0.5,
+            centerY: 0.5,
+            samples: randInt(16, 32),
+            zoom: false
+          };
+        case EFFECT_TYPES.MOSAIC:
+          return {
+            cellSize: randInt(15, 30),
+            irregularity: rand(0.3, 0.6),
+            edgeThickness: rand(0.01, 0.03),
+            edgeColor: '#000000',
+            colorVariation: rand(0.05, 0.1)
+          };
+        case EFFECT_TYPES.TILT_SHIFT:
+          return {
+            focusPosition: 0.5,
+            focusWidth: rand(0.2, 0.4),
+            blurRadius: randInt(4, 10),
+            angle: 0,
+            gradientSmooth: rand(0.3, 0.5)
+          };
+        case EFFECT_TYPES.EXPOSURE:
+          return {
+            exposure: rand(-0.25, 0.25),
+            highlights: rand(-0.15, 0.15),
+            shadows: rand(-0.15, 0.15),
+            blacks: rand(-0.1, 0.1),
+            whites: rand(-0.1, 0.1)
+          };
+        case EFFECT_TYPES.VIBRANCE:
+          return {
+            vibrance: rand(-0.15, 0.3),
+            saturation: rand(-0.15, 0.15)
+          };
+        default:
+          return {};
+      }
+    };
+
+    // Generate 2-8 random effects, weighted towards fewer effects
+    // Using exponential distribution: more likely to get 2-4, less likely to get 6-8
+    const getWeightedCount = () => {
+      const r = Math.random();
+      // Weights: 2=30%, 3=25%, 4=20%, 5=12%, 6=7%, 7=4%, 8=2%
+      if (r < 0.30) return 2;
+      if (r < 0.55) return 3;
+      if (r < 0.75) return 4;
+      if (r < 0.87) return 5;
+      if (r < 0.94) return 6;
+      if (r < 0.98) return 7;
+      return 8;
+    };
+    
+    const numEffects = getWeightedCount();
+    const shuffled = [...availableTypes].sort(() => Math.random() - 0.5);
+    const selectedTypes = shuffled.slice(0, numEffects);
+
+    const randomEffects = selectedTypes.map(type => {
+      const effect = createEffect(type);
+      return {
+        ...effect,
+        params: { ...effect.params, ...randomizeParams(type) }
+      };
+    });
+
+    onEffectsChange(randomEffects);
+    onSeedChange(Math.floor(Math.random() * 100000));
+    toaster.create({
+      title: `Applied ${numEffects} random effects`,
+      type: 'success',
+      duration: 2000
+    });
+  }, [onEffectsChange, onSeedChange]);
+
+  // Randomize parameters of currently applied effects
+  const handleRandomizeParams = useCallback(() => {
+    if (effects.length === 0) {
+      toaster.create({
+        title: 'No effects to randomize',
+        type: 'info',
+        duration: 2000
+      });
+      return;
+    }
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const randInt = (min, max) => Math.floor(rand(min, max + 1));
+    const randBool = () => Math.random() > 0.5;
+    const randChoice = arr => arr[Math.floor(Math.random() * arr.length)];
+    const randColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+
+    const randomizeParams = type => {
+      switch (type) {
+        case EFFECT_TYPES.NOISE:
+          return {
+            intensity: rand(0.05, 0.4),
+            scale: rand(0.5, 2),
+            monochrome: randBool(),
+            blendMode: randChoice(['overlay', 'soft-light', 'multiply', 'screen'])
+          };
+        case EFFECT_TYPES.DITHER:
+          return {
+            method: randChoice(['bayer2x2', 'bayer4x4', 'bayer8x8']),
+            levels: randInt(2, 8),
+            threshold: rand(0.3, 0.7),
+            scale: rand(0.5, 2)
+          };
+        case EFFECT_TYPES.HALFTONE:
+          return {
+            gridSize: randInt(4, 16),
+            dotScale: rand(0.5, 1.5),
+            angle: randInt(0, 90),
+            shape: randChoice(['circle', 'square', 'diamond', 'line', 'ellipse', 'cross', 'ring']),
+            softness: rand(0.2, 0.8),
+            contrast: rand(-0.3, 0.3),
+            invert: randBool(),
+            colorMode: randChoice(['original', 'monochrome', 'duotone', 'cmyk']),
+            mixOriginal: rand(0, 0.3)
+          };
+        case EFFECT_TYPES.DOT_DITHER:
+          return {
+            scale: randInt(1, 4),
+            threshold: rand(0.3, 0.7),
+            animated: randBool(),
+            animationSpeed: rand(0.5, 2),
+            invert: randBool()
+          };
+        case EFFECT_TYPES.CHROMATIC:
+          return {
+            intensity: rand(0.002, 0.02),
+            angle: randInt(0, 360),
+            radial: randBool()
+          };
+        case EFFECT_TYPES.VIGNETTE:
+          return {
+            intensity: rand(0.2, 0.8),
+            size: rand(0.3, 0.7),
+            softness: rand(0.3, 0.8),
+            color: randBool() ? '#000000' : randColor()
+          };
+        case EFFECT_TYPES.SCANLINES:
+          return {
+            intensity: rand(0.1, 0.5),
+            count: randInt(100, 400),
+            speed: rand(0, 2)
+          };
+        case EFFECT_TYPES.PIXELATE:
+          return {
+            size: randInt(2, 16)
+          };
+        case EFFECT_TYPES.BLUR:
+          return {
+            radius: rand(1, 8),
+            quality: randChoice(['low', 'medium', 'high'])
+          };
+        case EFFECT_TYPES.DISTORTION:
+          return {
+            intensity: rand(0.01, 0.1),
+            scale: rand(1, 10),
+            speed: rand(0.5, 3)
+          };
+        case EFFECT_TYPES.POSTERIZE:
+          return {
+            levels: randInt(2, 8)
+          };
+        case EFFECT_TYPES.EDGE:
+          return {
+            intensity: rand(0.5, 2),
+            threshold: rand(0.05, 0.3),
+            invert: randBool(),
+            colorize: randBool()
+          };
+        case EFFECT_TYPES.GRAIN:
+          return {
+            intensity: rand(0.1, 0.5),
+            size: rand(1, 3),
+            speed: rand(0.5, 2)
+          };
+        case EFFECT_TYPES.COLOR_GRADE:
+          return {
+            temperature: rand(-0.5, 0.5),
+            tint: rand(-0.3, 0.3),
+            saturation: rand(0.5, 1.5),
+            contrast: rand(0.8, 1.3),
+            brightness: rand(0.9, 1.1)
+          };
+        case EFFECT_TYPES.GLITCH:
+          return {
+            intensity: rand(0.02, 0.15),
+            speed: rand(0.5, 3),
+            blockSize: rand(0.02, 0.1)
+          };
+        case EFFECT_TYPES.CRT:
+          return {
+            curvature: rand(0.5, 3),
+            scanlineIntensity: rand(0.1, 0.4),
+            vignetteIntensity: rand(0.2, 0.5),
+            brightness: rand(1, 1.3),
+            flickerIntensity: rand(0, 0.05)
+          };
+        case EFFECT_TYPES.DUOTONE:
+          return {
+            shadowColor: randColor(),
+            highlightColor: randColor(),
+            contrast: rand(0.8, 1.2)
+          };
+        case EFFECT_TYPES.KUWAHARA:
+          return {
+            radius: randInt(2, 6)
+          };
+        case EFFECT_TYPES.RIPPLE:
+          return {
+            amplitude: rand(0.005, 0.03),
+            frequency: rand(5, 20),
+            speed: rand(0.5, 3),
+            centerX: rand(0.3, 0.7),
+            centerY: rand(0.3, 0.7)
+          };
+        case EFFECT_TYPES.LIGHT_LEAK:
+          return {
+            intensity: rand(0.2, 0.6),
+            color: randColor(),
+            position: rand(0, 1),
+            size: rand(0.3, 0.8)
+          };
+        case EFFECT_TYPES.BLOOM:
+          return {
+            intensity: rand(0.3, 1),
+            threshold: rand(0.5, 0.9),
+            radius: rand(2, 8)
+          };
+        case EFFECT_TYPES.RADIAL_BLUR:
+          return {
+            intensity: rand(0.01, 0.05),
+            centerX: rand(0.3, 0.7),
+            centerY: rand(0.3, 0.7)
+          };
+        case EFFECT_TYPES.TILT_SHIFT:
+          return {
+            blur: rand(2, 8),
+            position: rand(0.3, 0.7),
+            size: rand(0.1, 0.3),
+            angle: randInt(0, 180)
+          };
+        case EFFECT_TYPES.EXPOSURE:
+          return {
+            exposure: rand(-1, 1),
+            gamma: rand(0.8, 1.2)
+          };
+        case EFFECT_TYPES.VIBRANCE:
+          return {
+            vibrance: rand(0, 1),
+            saturation: rand(0.8, 1.2)
+          };
+        default:
+          return {};
+      }
+    };
+
+    const updatedEffects = effects.map(effect => ({
+      ...effect,
+      params: { ...effect.params, ...randomizeParams(effect.type) }
+    }));
+
+    onEffectsChange(updatedEffects);
+    toaster.create({
+      title: `Randomized ${effects.length} effect parameters`,
+      type: 'success',
+      duration: 2000
+    });
+  }, [effects, onEffectsChange]);
+
   const presetInputRef = useRef(null);
 
   const handleExportPreset = useCallback(() => {
@@ -2378,7 +2917,10 @@ export default function Controls({
           <Text fontSize="11px" color="#988BC7" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
             Effects ({effects.length})
           </Text>
-          <ToggleButton icon={Shuffle} onClick={() => onSeedChange(Math.floor(Math.random() * 100000))} />
+          <Flex gap={1}>
+            <ToggleButton icon={Dices} onClick={handleRandomizeEffects} title="Randomize effects" />
+            <ToggleButton icon={Shuffle} onClick={handleRandomizeParams} title="Randomize parameters" />
+          </Flex>
         </Flex>
 
         <AddEffectPanel onAddEffect={handleAddEffect} />

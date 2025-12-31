@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Icon, Slider } from '@chakra-ui/react';
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { ZoomIn, ZoomOut, SplitSquareHorizontal, Eye, Maximize, GripVertical, Play, Pause } from 'lucide-react';
+import { ZoomIn, ZoomOut, SplitSquareHorizontal, Upload, Maximize, GripVertical, Play, Pause, Eye } from 'lucide-react';
 
 const formatTime = seconds => {
   if (!seconds || isNaN(seconds)) return '0:00';
@@ -203,8 +203,6 @@ export default function Canvas({
           right={0}
           bottom={0}
           bg="rgba(82, 39, 255, 0.15)"
-          border="3px dashed #5227FF"
-          borderRadius="8px"
           zIndex={100}
           align="center"
           justify="center"
@@ -222,11 +220,52 @@ export default function Canvas({
         left={0}
         right={0}
         bottom={0}
-        opacity={0.3}
-        backgroundImage="linear-gradient(45deg, #1a1a2e 25%, transparent 25%), linear-gradient(-45deg, #1a1a2e 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a2e 75%), linear-gradient(-45deg, transparent 75%, #1a1a2e 75%)"
-        backgroundSize="20px 20px"
-        backgroundPosition="0 0, 0 10px, 10px -10px, -10px 0px"
+        opacity={0.25}
         pointerEvents="none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #3d3654 1px, transparent 1px),
+            linear-gradient(to bottom, #3d3654 1px, transparent 1px)
+          `,
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0, 0 0',
+          maskImage: `
+            repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)
+          `,
+          WebkitMaskImage: `
+            repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)
+          `,
+          maskComposite: 'intersect',
+          WebkitMaskComposite: 'source-in'
+        }}
       />
 
       <Flex
@@ -389,21 +428,20 @@ export default function Canvas({
           align="center"
           justify="center"
           direction="column"
-          gap={4}
+          gap={1}
         >
           <Box
-            w="80px"
-            h="80px"
+            w="60px"
+            h="60px"
             borderRadius="16px"
-            border="2px dashed #271E37"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
-            <Icon as={Eye} boxSize={8} color="#392e4e" />
+            <Icon as={Upload} boxSize={8} color="#392e4e" />
           </Box>
           <Text fontSize="14px" color="#988BC7" textAlign="center">
-            Upload an image or video
+            Upload an image/video
             <br />
             to get started
           </Text>
@@ -516,6 +554,6 @@ const ControlButton = ({ icon: IconComponent, onClick, isActive }) => (
     transition="all 0.15s"
     _hover={{ bg: isActive ? 'rgba(82, 39, 255, 0.3)' : 'rgba(255,255,255,0.1)' }}
   >
-    <Icon as={IconComponent} boxSize={4} color={isActive ? '#5227FF' : '#988BC7'} />
+    <Icon as={IconComponent} boxSize={4} color={isActive ? '#B19EEF' : '#988BC7'} />
   </Flex>
 );

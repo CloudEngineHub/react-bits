@@ -29,7 +29,8 @@ import {
   MOSAIC_FRAGMENT_SHADER,
   TILT_SHIFT_FRAGMENT_SHADER,
   EXPOSURE_FRAGMENT_SHADER,
-  VIBRANCE_FRAGMENT_SHADER
+  VIBRANCE_FRAGMENT_SHADER,
+  DOT_DITHER_FRAGMENT_SHADER
 } from './shaders';
 import { EFFECT_TYPES, BLEND_MODES, DITHER_METHODS, ASCII_PRESETS } from './types';
 
@@ -167,6 +168,7 @@ export class WebGLRenderer {
     this.programs.tiltShift = this._createProgram(VERTEX_SHADER, TILT_SHIFT_FRAGMENT_SHADER);
     this.programs.exposure = this._createProgram(VERTEX_SHADER, EXPOSURE_FRAGMENT_SHADER);
     this.programs.vibrance = this._createProgram(VERTEX_SHADER, VIBRANCE_FRAGMENT_SHADER);
+    this.programs.dotDither = this._createProgram(VERTEX_SHADER, DOT_DITHER_FRAGMENT_SHADER);
   }
 
   _createTexture(source) {
@@ -464,6 +466,9 @@ export class WebGLRenderer {
         break;
       case EFFECT_TYPES.VIBRANCE:
         this._renderVibrance(effect.params, inputTexture, width, height, flipY);
+        break;
+      case EFFECT_TYPES.DOT_DITHER:
+        this._renderDotDither(effect.params, inputTexture, width, height, seed, flipY, renderScale);
         break;
       default:
         this._renderPassthrough(inputTexture, flipY);
@@ -1140,6 +1145,27 @@ export class WebGLRenderer {
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1f(program.uniforms.u_vibrance, params.vibrance);
     gl.uniform1f(program.uniforms.u_saturation, params.saturation);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+
+  _renderDotDither(params, inputTexture, width, height, seed, flipY = 1.0, renderScale = 1.0) {
+    const gl = this.gl;
+    const program = this.programs.dotDither;
+
+    this._useProgram(program, flipY);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, inputTexture);
+
+    gl.uniform1i(program.uniforms.u_image, 0);
+    gl.uniform2f(program.uniforms.u_resolution, width, height);
+    gl.uniform1f(program.uniforms.u_scale, (params.scale || 1.0) * renderScale);
+    gl.uniform1f(program.uniforms.u_threshold, params.threshold || 0.5);
+    gl.uniform1i(program.uniforms.u_animated, params.animated ? 1 : 0);
+    gl.uniform1f(program.uniforms.u_time, seed);
+    gl.uniform1f(program.uniforms.u_animationSpeed, params.animationSpeed || 1.0);
+    gl.uniform1i(program.uniforms.u_invert, params.invert ? 1 : 0);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
