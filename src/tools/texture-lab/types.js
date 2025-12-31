@@ -27,7 +27,8 @@ export const EFFECT_TYPES = {
   MOSAIC: 'mosaic',
   TILT_SHIFT: 'tilt-shift',
   EXPOSURE: 'exposure',
-  VIBRANCE: 'vibrance'
+  VIBRANCE: 'vibrance',
+  DOT_DITHER: 'dot-dither'
 };
 
 export const BLEND_MODES = {
@@ -300,6 +301,14 @@ export const DEFAULT_VIBRANCE_PARAMS = {
   saturation: 0
 };
 
+export const DEFAULT_DOT_DITHER_PARAMS = {
+  scale: 1.0,
+  threshold: 0.5,
+  animated: false,
+  animationSpeed: 1.0,
+  invert: false
+};
+
 export const createEffect = type => {
   const id = `${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -362,6 +371,8 @@ export const createEffect = type => {
       return { id, type, enabled: true, params: { ...DEFAULT_EXPOSURE_PARAMS } };
     case EFFECT_TYPES.VIBRANCE:
       return { id, type, enabled: true, params: { ...DEFAULT_VIBRANCE_PARAMS } };
+    case EFFECT_TYPES.DOT_DITHER:
+      return { id, type, enabled: true, params: { ...DEFAULT_DOT_DITHER_PARAMS } };
     default:
       throw new Error(`Unknown effect type: ${type}`);
   }

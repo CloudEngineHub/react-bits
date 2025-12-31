@@ -1953,3 +1953,81 @@ export const VIBRANCE_FRAGMENT_SHADER = `
     gl_FragColor = vec4(clamp(result, 0.0, 1.0), color.a);
   }
 `;
+
+// ─── Dot Dither Shader ───────────────────────────────────────────────────────
+// Blue noise stippling dithering - creates proper dot patterns
+export const DOT_DITHER_FRAGMENT_SHADER = `
+  precision highp float;
+  
+  uniform sampler2D u_image;
+  uniform vec2 u_resolution;
+  uniform float u_threshold;
+  uniform float u_scale;
+  uniform bool u_animated;
+  uniform float u_time;
+  uniform float u_animationSpeed;
+  uniform bool u_invert;
+  
+  varying vec2 v_texCoord;
+  
+  // Checkerboard noise to decorrelate pattern between tiles
+  float stepnoise0(vec2 p, float size) {
+    vec2 pp = floor(p / size) * size;
+    float r = fract(sin(dot(pp, vec2(1.0, -7.131))) * 43758.5453);
+    return r;
+  }
+  
+  // Stippling mask - creates the dot pattern
+  float mask(vec2 p, float time) {
+    const float SEED1 = 1.705;
+    const float DMUL = 8.12235325;
+    
+    // Add per-tile random offset to break up regularity
+    float tileNoise = stepnoise0(p, 5.5);
+    p += (tileNoise - 0.5) * DMUL;
+    
+    // Animation: shift the pattern over time
+    if (time > 0.0) {
+      p += vec2(sin(time * 0.7), cos(time * 0.9)) * 2.0;
+    }
+    
+    // Create stippling pattern
+    float f = fract(p.x * SEED1 + p.y / (SEED1 + 0.15555));
+    f *= 1.03; // Avoid zero-stipple in plain white
+    
+    // Tone mapping for proper dot distribution
+    return (pow(f, 150.0) + 1.3 * f) / 2.3;
+  }
+  
+  void main() {
+    vec2 fragCoord = v_texCoord * u_resolution;
+    vec4 originalColor = texture2D(u_image, v_texCoord);
+    
+    // Get luminance
+    float luminance = dot(originalColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    
+    // Apply threshold adjustment
+    luminance = luminance + (u_threshold - 0.5);
+    luminance = clamp(luminance, 0.0, 1.0);
+    
+    // Scale controls dot density - larger scale = bigger dots / less dense
+    // We floor to create pixel-sized dots that scale together
+    float dotSize = max(1.0, floor(u_scale));
+    vec2 scaledCoord = floor(fragCoord / dotSize);
+    
+    // Get animation time
+    float time = u_animated ? u_time * u_animationSpeed : 0.0;
+    
+    // Get stippling mask value
+    float maskVal = mask(scaledCoord, time);
+    
+    // Compare luminance against mask to get final bit
+    float finalBit = step(maskVal, luminance);
+    
+    if (u_invert) {
+      finalBit = 1.0 - finalBit;
+    }
+    
+    gl_FragColor = vec4(vec3(finalBit), originalColor.a);
+  }
+`;
