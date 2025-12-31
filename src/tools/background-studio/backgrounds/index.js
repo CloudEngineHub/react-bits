@@ -819,24 +819,6 @@ export const BACKGROUNDS = [
     ]
   },
   {
-    id: 'cubes',
-    label: 'Cubes',
-    component: () => import('../../../content/Animations/Cubes/Cubes.jsx'),
-    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/animations/cubes"',
-    wrapperStyle: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' },
-    props: [
-      { name: 'gridSize', type: 'number', default: 10, min: 3, max: 20, step: 1, label: 'Grid Size' },
-      { name: 'maxAngle', type: 'number', default: 45, min: 10, max: 90, step: 5, label: 'Max Angle' },
-      { name: 'radius', type: 'number', default: 3, min: 1, max: 10, step: 0.5, label: 'Effect Radius' },
-      { name: 'faceColor', type: 'color', default: '#060010', label: 'Face Color' },
-      { name: 'rippleColor', type: 'color', default: '#ffffff', label: 'Ripple Color' },
-      { name: 'shadow', type: 'boolean', default: false, label: 'Enable Shadow' },
-      { name: 'autoAnimate', type: 'boolean', default: true, label: 'Auto Animate' },
-      { name: 'rippleOnClick', type: 'boolean', default: true, label: 'Ripple on Click' },
-      { name: 'rippleSpeed', type: 'number', default: 2, min: 0.5, max: 5, step: 0.5, label: 'Ripple Speed' }
-    ]
-  },
-  {
     id: 'ghost-cursor',
     label: 'Ghost Cursor',
     component: () => import('../../../content/Animations/GhostCursor/GhostCursor.jsx'),
@@ -1029,7 +1011,6 @@ export const getDefaultProps = background => {
 const ANIMATION_IDS = [
   'antigravity',
   'click-spark',
-  'cubes',
   'ghost-cursor',
   'image-trail',
   'laser-flow',

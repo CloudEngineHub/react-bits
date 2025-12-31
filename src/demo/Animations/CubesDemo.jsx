@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -13,8 +13,6 @@ import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
-
-import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import { cubes } from '../../constants/code/Animations/cubesCode';
 import Cubes from '../../content/Animations/Cubes/Cubes';
@@ -142,14 +140,6 @@ const CubesDemo = () => {
               rippleOnClick={rippleOnClick}
             />
           </Box>
-
-          <Flex justify="flex-end" mt={2} mb={-2}>
-            <OpenInStudioButton
-              backgroundId="cubes"
-              currentProps={{ gridSize, maxAngle, radius, autoAnimate, rippleOnClick }}
-              defaultProps={DEFAULT_PROPS}
-            />
-          </Flex>
 
           <Customize>
             <PreviewSelect
