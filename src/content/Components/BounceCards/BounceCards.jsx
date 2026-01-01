@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import './BounceCards.css';
 
@@ -19,17 +19,22 @@ export default function BounceCards({
   ],
   enableHover = true
 }) {
+  const containerRef = useRef(null);
   useEffect(() => {
-    gsap.fromTo(
-      '.card',
-      { scale: 0 },
-      {
-        scale: 1,
-        stagger: animationStagger,
-        ease: easeType,
-        delay: animationDelay
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.card',
+        { scale: 0 },
+        {
+          scale: 1,
+          stagger: animationStagger,
+          ease: easeType,
+          delay: animationDelay
+        },
+        containerRef
+      );
+    });
+    return () => ctx.revert();
   }, [animationStagger, easeType, animationDelay]);
 
   const getNoRotationTransform = transformStr => {
@@ -56,15 +61,19 @@ export default function BounceCards({
   };
 
   const pushSiblings = hoveredIdx => {
-    if (!enableHover) return;
+    if (!enableHover || !containerRef.current) return;
+
+    const q = gsap.utils.selector(containerRef);
+
     images.forEach((_, i) => {
-      gsap.killTweensOf(`.card-${i}`);
+      const target = q(`.card-${i}`);
+      gsap.killTweensOf(target);
 
       const baseTransform = transformStyles[i] || 'none';
 
       if (i === hoveredIdx) {
         const noRotationTransform = getNoRotationTransform(baseTransform);
-        gsap.to(`.card-${i}`, {
+        gsap.to(target, {
           transform: noRotationTransform,
           duration: 0.4,
           ease: 'back.out(1.4)',
@@ -77,7 +86,7 @@ export default function BounceCards({
         const distance = Math.abs(hoveredIdx - i);
         const delay = distance * 0.05;
 
-        gsap.to(`.card-${i}`, {
+        gsap.to(target, {
           transform: pushedTransform,
           duration: 0.4,
           ease: 'back.out(1.4)',
@@ -89,11 +98,15 @@ export default function BounceCards({
   };
 
   const resetSiblings = () => {
-    if (!enableHover) return;
+    if (!enableHover || !containerRef.current) return;
+
+    const q = gsap.utils.selector(containerRef);
+
     images.forEach((_, i) => {
-      gsap.killTweensOf(`.card-${i}`);
+      const target = q(`.card-${i}`);
+      gsap.killTweensOf(target);
       const baseTransform = transformStyles[i] || 'none';
-      gsap.to(`.card-${i}`, {
+      gsap.to(target, {
         transform: baseTransform,
         duration: 0.4,
         ease: 'back.out(1.4)',
@@ -105,6 +118,7 @@ export default function BounceCards({
   return (
     <div
       className={`bounceCardsContainer ${className}`}
+      ref={containerRef}
       style={{
         position: 'relative',
         width: containerWidth,
