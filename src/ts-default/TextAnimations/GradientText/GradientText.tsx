@@ -67,12 +67,12 @@ export default function GradientText({
 
   const backgroundPosition = useTransform(progress, (p) => {
     if (direction === 'horizontal') {
-      return \`\${p}% 50%\`;
+      return `${p}% 50%`;
     } else if (direction === 'vertical') {
-      return \`50% \${p}%\`;
+      return `50% ${p}%`;
     } else {
       // For diagonal, move only horizontally to avoid interference patterns
-      return \`\${p}% 50%\`;
+      return `${p}% 50%`;
     }
   });
 
@@ -89,14 +89,14 @@ export default function GradientText({
   const gradientColors = [...colors, colors[0]].join(', ');
 
   const gradientStyle = {
-    backgroundImage: \`linear-gradient(\${gradientAngle}, \${gradientColors})\`,
+    backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,
     backgroundSize: direction === 'horizontal' ? '300% 100%' : direction === 'vertical' ? '100% 300%' : '300% 300%',
     backgroundRepeat: 'repeat'
   };
 
   return (
     <motion.div
-      className={\`animated-gradient-text \${showBorder ? 'with-border' : ''} \${className}\`}
+      className={`animated-gradient-text ${showBorder ? 'with-border' : ''} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
