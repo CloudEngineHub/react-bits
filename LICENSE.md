@@ -1,6 +1,6 @@
 MIT + Commons Clause License Condition v1.0
 
-Copyright (c) 2025 David Haz
+Copyright (c) 2026 David Haz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
