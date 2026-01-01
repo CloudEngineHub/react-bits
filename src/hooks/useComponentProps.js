@@ -1,8 +1,7 @@
 import { useQueryStates } from 'nuqs';
 import { useCallback, useMemo, useRef } from 'react';
 
-const isHexColor = value =>
-  typeof value === 'string' && /^#?[0-9a-fA-F]{3,8}$/.test(value);
+const isHexColor = value => typeof value === 'string' && /^#?[0-9a-fA-F]{3,8}$/.test(value);
 
 const createParser = defaultValue => {
   if (typeof defaultValue === 'number') {

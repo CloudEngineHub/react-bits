@@ -430,14 +430,7 @@ export default function Canvas({
           direction="column"
           gap={1}
         >
-          <Box
-            w="60px"
-            h="60px"
-            borderRadius="16px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
             <Icon as={Upload} boxSize={8} color="#392e4e" />
           </Box>
           <Text fontSize="14px" color="#988BC7" textAlign="center">
