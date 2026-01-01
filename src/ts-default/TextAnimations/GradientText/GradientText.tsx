@@ -30,7 +30,7 @@ export default function GradientText({
 
   const animationDuration = animationSpeed * 1000;
 
-  useAnimationFrame((time) => {
+  useAnimationFrame(time => {
     if (isPaused) {
       lastTimeRef.current = null;
       return;
@@ -65,7 +65,7 @@ export default function GradientText({
     progress.set(0);
   }, [animationSpeed, yoyo]);
 
-  const backgroundPosition = useTransform(progress, (p) => {
+  const backgroundPosition = useTransform(progress, p => {
     if (direction === 'horizontal') {
       return `${p}% 50%`;
     } else if (direction === 'vertical') {
@@ -84,7 +84,8 @@ export default function GradientText({
     if (pauseOnHover) setIsPaused(false);
   }, [pauseOnHover]);
 
-  const gradientAngle = direction === 'horizontal' ? 'to right' : direction === 'vertical' ? 'to bottom' : 'to bottom right';
+  const gradientAngle =
+    direction === 'horizontal' ? 'to right' : direction === 'vertical' ? 'to bottom' : 'to bottom right';
   // Duplicate first color at the end for seamless looping
   const gradientColors = [...colors, colors[0]].join(', ');
 
@@ -100,16 +101,8 @@ export default function GradientText({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {showBorder && (
-        <motion.div
-          className="gradient-overlay"
-          style={{ ...gradientStyle, backgroundPosition }}
-        />
-      )}
-      <motion.div
-        className="text-content"
-        style={{ ...gradientStyle, backgroundPosition }}
-      >
+      {showBorder && <motion.div className="gradient-overlay" style={{ ...gradientStyle, backgroundPosition }} />}
+      <motion.div className="text-content" style={{ ...gradientStyle, backgroundPosition }}>
         {children}
       </motion.div>
     </motion.div>

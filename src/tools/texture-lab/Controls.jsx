@@ -1668,11 +1668,7 @@ const DotDitherParams = ({ params, onChange }) => (
       max={0.9}
       step={0.05}
     />
-    <SwitchInput
-      label="Invert"
-      checked={params.invert}
-      onChange={v => onChange({ ...params, invert: v })}
-    />
+    <SwitchInput label="Invert" checked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
   </Flex>
 );
 
@@ -2260,7 +2256,11 @@ export default function Controls({
     const randInt = (min, max) => Math.floor(rand(min, max + 1));
     const randBool = () => Math.random() > 0.5;
     const randChoice = arr => arr[Math.floor(Math.random() * arr.length)];
-    const randColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    const randColor = () =>
+      '#' +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, '0');
 
     // All available effect types (excluding some that need custom maps)
     const availableTypes = [
@@ -2533,7 +2533,7 @@ export default function Controls({
     const getWeightedCount = () => {
       const r = Math.random();
       // Weights: 2=30%, 3=25%, 4=20%, 5=12%, 6=7%, 7=4%, 8=2%
-      if (r < 0.30) return 2;
+      if (r < 0.3) return 2;
       if (r < 0.55) return 3;
       if (r < 0.75) return 4;
       if (r < 0.87) return 5;
@@ -2541,7 +2541,7 @@ export default function Controls({
       if (r < 0.98) return 7;
       return 8;
     };
-    
+
     const numEffects = getWeightedCount();
     const shuffled = [...availableTypes].sort(() => Math.random() - 0.5);
     const selectedTypes = shuffled.slice(0, numEffects);
@@ -2578,7 +2578,11 @@ export default function Controls({
     const randInt = (min, max) => Math.floor(rand(min, max + 1));
     const randBool = () => Math.random() > 0.5;
     const randChoice = arr => arr[Math.floor(Math.random() * arr.length)];
-    const randColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    const randColor = () =>
+      '#' +
+      Math.floor(Math.random() * 16777215)
+        .toString(16)
+        .padStart(6, '0');
 
     const randomizeParams = type => {
       switch (type) {
