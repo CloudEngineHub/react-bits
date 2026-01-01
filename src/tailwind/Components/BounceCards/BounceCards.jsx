@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 export default function BounceCards({
@@ -18,17 +18,23 @@ export default function BounceCards({
   ],
   enableHover = false
 }) {
+  const containerRef = useRef(null);
   useEffect(() => {
-    gsap.fromTo(
-      '.card',
-      { scale: 0 },
-      {
-        scale: 1,
-        stagger: animationStagger,
-        ease: easeType,
-        delay: animationDelay
-      }
+    const ctx = gsap.context(
+      () =>
+        gsap.fromTo(
+          '.card',
+          { scale: 0 },
+          {
+            scale: 1,
+            stagger: animationStagger,
+            ease: easeType,
+            delay: animationDelay
+          }
+        ),
+      containerRef
     );
+    return () => ctx.revert();
   }, [animationDelay, animationStagger, easeType]);
 
   const getNoRotationTransform = transformStr => {
@@ -55,10 +61,11 @@ export default function BounceCards({
   };
 
   const pushSiblings = hoveredIdx => {
-    if (!enableHover) return;
+    if (!enableHover || !containerRef.current) return;
 
+    const q = gsap.utils.selector(containerRef);
     images.forEach((_, i) => {
-      const selector = `.card-${i}`;
+      const selector = q(`.card-${i}`);
       gsap.killTweensOf(selector);
 
       const baseTransform = transformStyles[i] || 'none';
@@ -90,10 +97,10 @@ export default function BounceCards({
   };
 
   const resetSiblings = () => {
-    if (!enableHover) return;
-
+    if (!enableHover || !containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
     images.forEach((_, i) => {
-      const selector = `.card-${i}`;
+      const selector = q(`.card-${i}`);
       gsap.killTweensOf(selector);
 
       const baseTransform = transformStyles[i] || 'none';
@@ -113,6 +120,7 @@ export default function BounceCards({
         width: containerWidth,
         height: containerHeight
       }}
+      ref={containerRef}
     >
       {images.map((src, idx) => (
         <div
