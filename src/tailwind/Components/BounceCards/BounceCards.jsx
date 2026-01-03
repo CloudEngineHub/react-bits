@@ -20,22 +20,20 @@ export default function BounceCards({
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
-    const ctx = gsap.context(
-      () =>
-        gsap.fromTo(
-          '.card',
-          { scale: 0 },
-          {
-            scale: 1,
-            stagger: animationStagger,
-            ease: easeType,
-            delay: animationDelay
-          }
-        ),
-      containerRef
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.card',
+        { scale: 0 },
+        {
+          scale: 1,
+          stagger: animationStagger,
+          ease: easeType,
+          delay: animationDelay
+        }
+      );
+    }, containerRef);
     return () => ctx.revert();
-  }, [animationDelay, animationStagger, easeType]);
+  }, [animationStagger, easeType, animationDelay]);
 
   const getNoRotationTransform = transformStr => {
     const hasRotate = /rotate\([\s\S]*?\)/.test(transformStr);
