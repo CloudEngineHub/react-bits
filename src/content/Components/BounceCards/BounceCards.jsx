@@ -30,10 +30,9 @@ export default function BounceCards({
           stagger: animationStagger,
           ease: easeType,
           delay: animationDelay
-        },
-        containerRef
+        }
       );
-    });
+    }, containerRef);
     return () => ctx.revert();
   }, [animationStagger, easeType, animationDelay]);
 
