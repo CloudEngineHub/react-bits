@@ -1,6 +1,10 @@
 import { diamondSponsors, platinumSponsors, silverSponsors } from '../../../constants/Sponsors';
-import { Gem, Crown, Medal, ArrowRight } from 'lucide-react';
+import { Gem, Crown, Medal, ArrowRight, Heart } from 'lucide-react';
 import './Sponsors.css';
+
+const DIAMOND_SLOTS = 2;
+const PLATINUM_SLOTS = 5;
+const SILVER_SLOTS = 10;
 
 const buildSponsorUrl = (url, tier) => {
   if (!url) return null;
@@ -19,14 +23,8 @@ const buildSponsorUrl = (url, tier) => {
 
 const DiamondSponsor = ({ sponsor }) => {
   const content = (
-    <div className={`sponsor-card sponsor-card--diamond${sponsor.imageUrl ? '' : ' sponsor-card--placeholder'}`}>
-      {sponsor.imageUrl ? (
-        <img src={sponsor.imageUrl} alt={sponsor.name} title={sponsor.name} />
-      ) : (
-        <div className="sponsor-placeholder">
-          <span className="sponsor-placeholder-text">Available</span>
-        </div>
-      )}
+    <div className="sponsor-card sponsor-card--diamond">
+      <img src={sponsor.imageUrl} alt={sponsor.name} title={sponsor.name} />
     </div>
   );
 
@@ -48,14 +46,8 @@ const DiamondSponsor = ({ sponsor }) => {
 
 const PlatinumSponsor = ({ sponsor }) => {
   const content = (
-    <div className={`sponsor-card sponsor-card--platinum${sponsor.imageUrl ? '' : ' sponsor-card--placeholder'}`}>
-      {sponsor.imageUrl ? (
-        <img src={sponsor.imageUrl} alt={sponsor.name} title={sponsor.name} />
-      ) : (
-        <div className="sponsor-placeholder">
-          <span className="sponsor-placeholder-text">Available</span>
-        </div>
-      )}
+    <div className="sponsor-card sponsor-card--platinum" data-tooltip={sponsor.name}>
+      <img src={sponsor.imageUrl} alt={sponsor.name} />
     </div>
   );
 
@@ -65,24 +57,20 @@ const PlatinumSponsor = ({ sponsor }) => {
         href={buildSponsorUrl(sponsor.url, 'platinum')}
         target="_blank"
         rel="noopener noreferrer"
-        className="sponsor-card-link"
+        className="sponsor-card-link sponsor-tooltip-wrapper"
       >
         {content}
       </a>
     );
   }
 
-  return content;
+  return <div className="sponsor-tooltip-wrapper">{content}</div>;
 };
 
 const SilverSponsor = ({ sponsor }) => {
   const content = (
-    <div className={`sponsor-card sponsor-card--silver${sponsor.imageUrl ? '' : ' sponsor-card--placeholder'}`}>
-      {sponsor.imageUrl ? (
-        <img src={sponsor.imageUrl} alt={sponsor.name} title={sponsor.name} />
-      ) : (
-        <span className="sponsor-placeholder-mini"></span>
-      )}
+    <div className="sponsor-card sponsor-card--silver" data-tooltip={sponsor.name}>
+      <img src={sponsor.imageUrl} alt={sponsor.name} />
     </div>
   );
 
@@ -92,51 +80,41 @@ const SilverSponsor = ({ sponsor }) => {
         href={buildSponsorUrl(sponsor.url, 'silver')}
         target="_blank"
         rel="noopener noreferrer"
-        className="sponsor-card-link"
+        className="sponsor-card-link sponsor-tooltip-wrapper"
       >
         {content}
       </a>
     );
   }
 
-  return content;
+  return <div className="sponsor-tooltip-wrapper">{content}</div>;
+};
+
+const AvailableSlots = ({ count }) => {
+  if (count <= 0) return null;
+  return (
+    <div className="available-slots">
+      <span className="available-slots-text">
+        {count} {count === 1 ? 'spot' : 'spots'} available
+      </span>
+    </div>
+  );
 };
 
 const Sponsors = () => {
-  const displayDiamond =
-    diamondSponsors.length > 0
-      ? diamondSponsors
-      : [
-          { id: 'diamond-placeholder-1', name: 'Diamond Sponsor' },
-          { id: 'diamond-placeholder-2', name: 'Diamond Sponsor' }
-        ];
-
-  const displayPlatinum =
-    platinumSponsors.length > 0
-      ? platinumSponsors
-      : Array.from({ length: 4 }, (_, i) => ({
-          id: `platinum-placeholder-${i}`,
-          name: 'Platinum Sponsor'
-        }));
-
-  const displaySilver =
-    silverSponsors.length > 0
-      ? silverSponsors
-      : Array.from({ length: 8 }, (_, i) => ({
-          id: `silver-placeholder-${i}`,
-          name: 'Silver Sponsor'
-        }));
+  const diamondAvailable = DIAMOND_SLOTS - diamondSponsors.length;
+  const platinumAvailable = PLATINUM_SLOTS - platinumSponsors.length;
+  const silverAvailable = SILVER_SLOTS - silverSponsors.length;
 
   return (
     <section className="sponsors-section">
       <div className="sponsors-container">
-        {/* Header - Centered */}
+        {/* Header */}
         <div className="sponsors-header">
           <h2 className="sponsors-title">Our Sponsors</h2>
           <p className="sponsors-subtitle">Backed by amazing companies and developers who believe in open source</p>
         </div>
 
-        {/* Tiers - Left Aligned */}
         <div className="sponsors-tiers">
           {/* Diamond Tier */}
           <div className="sponsors-tier">
@@ -145,12 +123,15 @@ const Sponsors = () => {
                 <Gem size={14} />
                 <span>Diamond</span>
               </div>
+              <AvailableSlots count={diamondAvailable} />
             </div>
-            <div className="tier-grid tier-grid--diamond">
-              {displayDiamond.map(sponsor => (
-                <DiamondSponsor key={sponsor.id} sponsor={sponsor} />
-              ))}
-            </div>
+            {diamondSponsors.length > 0 && (
+              <div className="tier-grid tier-grid--diamond">
+                {diamondSponsors.map(sponsor => (
+                  <DiamondSponsor key={sponsor.id} sponsor={sponsor} />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Platinum Tier */}
@@ -160,12 +141,15 @@ const Sponsors = () => {
                 <Crown size={14} />
                 <span>Platinum</span>
               </div>
+              <AvailableSlots count={platinumAvailable} />
             </div>
-            <div className="tier-grid tier-grid--platinum">
-              {displayPlatinum.map(sponsor => (
-                <PlatinumSponsor key={sponsor.id} sponsor={sponsor} />
-              ))}
-            </div>
+            {platinumSponsors.length > 0 && (
+              <div className="tier-grid tier-grid--platinum">
+                {platinumSponsors.map(sponsor => (
+                  <PlatinumSponsor key={sponsor.id} sponsor={sponsor} />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Silver Tier */}
@@ -175,12 +159,15 @@ const Sponsors = () => {
                 <Medal size={14} />
                 <span>Silver</span>
               </div>
+              <AvailableSlots count={silverAvailable} />
             </div>
-            <div className="tier-grid tier-grid--silver">
-              {displaySilver.map(sponsor => (
-                <SilverSponsor key={sponsor.id} sponsor={sponsor} />
-              ))}
-            </div>
+            {silverSponsors.length > 0 && (
+              <div className="tier-grid tier-grid--silver">
+                {silverSponsors.map(sponsor => (
+                  <SilverSponsor key={sponsor.id} sponsor={sponsor} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -190,6 +177,7 @@ const Sponsors = () => {
             href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
             className="sponsors-cta-button"
           >
+            <Heart size={16} />
             <span>Become a Sponsor</span>
             <ArrowRight size={18} />
           </a>

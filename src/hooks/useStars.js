@@ -4,9 +4,10 @@ import { getStarsCount } from '../utils/utils';
 
 const CACHE_KEY = 'github_stars_cache';
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
+const DEFAULT_STARS = 33200;
 
 export const useStars = () => {
-  const [stars, setStars] = useState(0);
+  const [stars, setStars] = useState(DEFAULT_STARS);
 
   useSingleEffect(() => {
     const fetchStars = async () => {
@@ -17,7 +18,7 @@ export const useStars = () => {
           const { count, timestamp } = JSON.parse(cachedData);
           const now = Date.now();
 
-          if (now - timestamp < CACHE_DURATION) {
+          if (now - timestamp < CACHE_DURATION && count && count !== 'NAN') {
             setStars(count);
             return;
           }
@@ -25,22 +26,31 @@ export const useStars = () => {
 
         const count = await getStarsCount();
 
-        localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({
-            count,
-            timestamp: Date.now()
-          })
-        );
+        // Only update if we got a valid count
+        if (count && count !== 'NAN') {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({
+              count,
+              timestamp: Date.now()
+            })
+          );
 
-        setStars(count);
+          setStars(count);
+        }
       } catch (error) {
         console.error('Error fetching stars:', error);
 
         const cachedData = localStorage.getItem(CACHE_KEY);
         if (cachedData) {
           const { count } = JSON.parse(cachedData);
-          setStars(count);
+          if (count && count !== 'NAN') {
+            setStars(count);
+          } else {
+            setStars(DEFAULT_STARS);
+          }
+        } else {
+          setStars(DEFAULT_STARS);
         }
       }
     };

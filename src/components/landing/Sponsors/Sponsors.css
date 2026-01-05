@@ -1,7 +1,3 @@
-/* ===========================================
-   SPONSORS SECTION
-   =========================================== */
-
 .sponsors-section {
   width: 100%;
   padding: 40px 0 80px;
@@ -15,10 +11,6 @@
   margin: 0 auto;
   padding: 0 24px;
 }
-
-/* ===========================================
-   HEADER
-   =========================================== */
 
 .sponsors-header {
   text-align: center;
@@ -59,11 +51,6 @@
   margin: 0;
   text-align: center;
 }
-
-/* ===========================================
-   TIERS
-   =========================================== */
-
 .sponsors-tiers {
   display: flex;
   flex-direction: column;
@@ -79,6 +66,7 @@
 .tier-header {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .tier-badge {
@@ -106,9 +94,16 @@
   color: rgba(255, 255, 255, 1);
 }
 
-/* ===========================================
-   SPONSOR CARDS
-   =========================================== */
+.available-slots {
+  display: inline-flex;
+  align-items: center;
+}
+
+.available-slots-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
 
 .tier-grid {
   display: flex;
@@ -126,17 +121,17 @@
 }
 
 .tier-grid--silver {
-  gap: 12px;
-  flex-wrap: nowrap;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .sponsor-card-link {
   text-decoration: none;
   display: block;
-  flex: 1;
 }
 
-.sponsor-card-link:has(.sponsor-card--silver) {
+.sponsor-card-link:has(.sponsor-card--diamond),
+.sponsor-card-link:has(.sponsor-card--platinum) {
   flex: 1;
 }
 
@@ -155,7 +150,6 @@
   background: rgba(82, 39, 255, 0.05);
 }
 
-/* Diamond Cards */
 .sponsor-card--diamond {
   flex: 1;
   height: 90px;
@@ -169,36 +163,68 @@
   object-fit: contain;
 }
 
-/* Platinum Cards */
 .sponsor-card--platinum {
   flex: 1;
   height: 70px;
-  border-radius: 10px;
+  width: 70px;
+  border-radius: 50%;
   padding: 16px;
 }
 
 .sponsor-card--platinum img {
   max-width: 100%;
-  max-height: 38px;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-/* Silver Cards */
 .sponsor-card--silver {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 8px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   padding: 10px;
+  flex-shrink: 0;
 }
 
 .sponsor-card--silver img {
-  max-width: 100%;
-  max-height: 36px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 4px;
 }
 
-/* Placeholder States */
+.sponsor-tooltip-wrapper {
+  position: relative;
+}
+
+.sponsor-card[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  padding: 6px 12px;
+  background: rgba(20, 10, 35, 0.95);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.sponsor-card[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
 .sponsor-card--placeholder {
   border-style: dashed;
   cursor: pointer;
@@ -228,10 +254,6 @@
   font-weight: 300;
 }
 
-/* ===========================================
-   CTA
-   =========================================== */
-
 .sponsors-cta {
   margin-top: 48px;
   text-align: center;
@@ -240,7 +262,7 @@
 .sponsors-cta-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 14px 28px;
   background: #5227ff;
   color: #fff;
@@ -255,11 +277,15 @@
   box-shadow: 0 0 40px rgba(82, 39, 255, 0.3);
 }
 
-.sponsors-cta-button svg {
+.sponsors-cta-button svg:first-child {
+  opacity: 0.8;
+}
+
+.sponsors-cta-button svg:last-child {
   transition: transform 0.25s ease;
 }
 
-.sponsors-cta-button:hover svg {
+.sponsors-cta-button:hover svg:last-child {
   transform: translateX(4px);
 }
 
@@ -272,10 +298,6 @@
 .sponsors-cta-text strong {
   color: rgba(255, 255, 255, 0.6);
 }
-
-/* ===========================================
-   RESPONSIVE
-   =========================================== */
 
 @media (max-width: 768px) {
   .sponsors-section {
@@ -320,7 +342,6 @@
     width: 100%;
   }
 
-  /* Silver: wrap to grid on tablet */
   .tier-grid--silver {
     flex-wrap: wrap;
     gap: 10px;
