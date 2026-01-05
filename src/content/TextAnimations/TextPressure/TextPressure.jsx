@@ -193,7 +193,7 @@ const TextPressure = ({
         }
       `}</style>
     );
-  }, [fontFamily, fontUrl, flex, stroke, textColor, strokeColor]);
+  }, [fontFamily, fontUrl, textColor, strokeColor]);
 
   const dynamicClassName = [className, flex ? 'flex' : '', stroke ? 'stroke' : ''].filter(Boolean).join(' ');
 
