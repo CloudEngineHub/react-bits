@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import SimpleMarquee from './SimpleMarquee';
 import '../../css/category.css';
@@ -15,7 +15,6 @@ const DIAMOND_SLOTS = 2;
 const PLATINUM_SLOTS = 5;
 const SILVER_SLOTS = 10;
 
-// Inline styles to guarantee images display - no CSS can override these
 const tierStyles = {
   diamond: {
     container: {
@@ -123,20 +122,42 @@ const tierStyles = {
 
 const tooltipStyle = {
   position: 'absolute',
-  left: 'calc(100% + 10px)',
+  left: '100%',
   top: '50%',
-  transform: 'translateY(-50%)',
+  transform: 'translateY(-50%) translateX(0)',
   background: 'rgba(20, 10, 40, 0.95)',
   color: '#fff',
-  padding: '6px 10px',
-  borderRadius: '6px',
+  padding: '5px 12px',
+  borderRadius: '999px',
   fontSize: '11px',
   fontWeight: 500,
   whiteSpace: 'nowrap',
   pointerEvents: 'none',
   zIndex: 1000,
   border: '1px solid rgba(152, 139, 199, 0.2)',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+  opacity: 1,
+  animation: 'tooltipFadeIn 0.2s ease-out'
+};
+
+const injectTooltipAnimation = () => {
+  if (typeof document !== 'undefined' && !document.getElementById('sponsor-tooltip-styles')) {
+    const style = document.createElement('style');
+    style.id = 'sponsor-tooltip-styles';
+    style.textContent = `
+      @keyframes tooltipFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50%) translateX(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(-50%) translateX(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 };
 
 const buildSponsorUrl = (url, tier) => {
@@ -158,13 +179,15 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const showTooltip = tier === 'platinum' || tier === 'silver';
   const styles = tierStyles[tier];
+
+  useEffect(() => {
+    injectTooltipAnimation();
+  }, []);
   
-  // Apply full width for single diamond sponsor
   let containerStyle = fullWidth && tier === 'diamond' 
     ? { ...styles.container, flex: 1, width: '100%' }
     : { ...styles.container };
   
-  // Apply hover styles
   if (isHovered) {
     containerStyle = { ...containerStyle, ...styles.containerHover };
   }
@@ -173,7 +196,6 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
     ? { ...styles.image, ...styles.imageHover }
     : styles.image;
 
-  // Wrapper style for positioning tooltip outside of overflow:hidden
   const wrapperStyle = {
     position: 'relative',
     display: tier === 'diamond' ? 'flex' : 'inline-block',
@@ -241,7 +263,6 @@ const TierSection = ({ label, availableSlots, children, hasSponsors }) => (
   </div>
 );
 
-// Static sponsor row (no marquee) - used when < 5 sponsors
 const StaticSponsorsRow = ({ sponsors, tier }) => {
   const isDiamond = tier === 'diamond';
   const isSingleSponsor = sponsors.length === 1;
