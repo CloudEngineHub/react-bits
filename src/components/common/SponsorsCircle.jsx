@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import SimpleMarquee from './SimpleMarquee';
 import '../../css/category.css';
@@ -14,6 +15,130 @@ const DIAMOND_SLOTS = 2;
 const PLATINUM_SLOTS = 5;
 const SILVER_SLOTS = 10;
 
+// Inline styles to guarantee images display - no CSS can override these
+const tierStyles = {
+  diamond: {
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '160px',
+      height: '100%',
+      minHeight: '50px',
+      borderRadius: '10px',
+      border: '1px solid #170d27',
+      background: 'rgba(6, 0, 16, 0.4)',
+      overflow: 'hidden',
+      flexShrink: 0,
+      marginRight: '12px',
+      cursor: 'pointer',
+      transition: 'all 0.25s ease'
+    },
+    containerHover: {
+      borderColor: '#b19eef',
+      background: 'rgba(82, 39, 255, 0.1)',
+      boxShadow: '0 0 12px rgba(82, 39, 255, 0.25)'
+    },
+    image: {
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      padding: '8px 24px',
+      transition: 'transform 0.25s ease'
+    },
+    imageHover: {
+      transform: 'scale(1.05)'
+    }
+  },
+  platinum: {
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '50px',
+      height: '50px',
+      borderRadius: '50%',
+      border: '1px solid #170d27',
+      background: 'rgba(6, 0, 16, 0.4)',
+      overflow: 'hidden',
+      flexShrink: 0,
+      marginRight: '12px',
+      cursor: 'pointer',
+      transition: 'all 0.25s ease',
+      position: 'relative'
+    },
+    containerHover: {
+      borderColor: '#b19eef',
+      background: 'rgba(82, 39, 255, 0.1)',
+      boxShadow: '0 0 12px rgba(82, 39, 255, 0.25)'
+    },
+    image: {
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      padding: '8px',
+      transition: 'transform 0.25s ease'
+    },
+    imageHover: {
+      transform: 'scale(1.05)'
+    }
+  },
+  silver: {
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      border: '1px solid #170d27',
+      background: 'rgba(6, 0, 16, 0.4)',
+      overflow: 'hidden',
+      flexShrink: 0,
+      marginRight: '12px',
+      cursor: 'pointer',
+      transition: 'all 0.25s ease',
+      position: 'relative'
+    },
+    containerHover: {
+      borderColor: '#b19eef',
+      background: 'rgba(82, 39, 255, 0.1)',
+      boxShadow: '0 0 12px rgba(82, 39, 255, 0.25)'
+    },
+    image: {
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+      padding: '6px',
+      transition: 'transform 0.25s ease'
+    },
+    imageHover: {
+      transform: 'scale(1.05)'
+    }
+  }
+};
+
+const tooltipStyle = {
+  position: 'absolute',
+  left: 'calc(100% + 10px)',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  background: 'rgba(20, 10, 40, 0.95)',
+  color: '#fff',
+  padding: '6px 10px',
+  borderRadius: '6px',
+  fontSize: '11px',
+  fontWeight: 500,
+  whiteSpace: 'nowrap',
+  pointerEvents: 'none',
+  zIndex: 1000,
+  border: '1px solid rgba(152, 139, 199, 0.2)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+};
+
 const buildSponsorUrl = (url, tier) => {
   if (!url) return null;
   try {
@@ -29,30 +154,77 @@ const buildSponsorUrl = (url, tier) => {
   }
 };
 
-const SponsorItem = ({ sponsor, tier }) => {
+const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const showTooltip = tier === 'platinum' || tier === 'silver';
+  const styles = tierStyles[tier];
+  
+  // Apply full width for single diamond sponsor
+  let containerStyle = fullWidth && tier === 'diamond' 
+    ? { ...styles.container, flex: 1, width: '100%' }
+    : { ...styles.container };
+  
+  // Apply hover styles
+  if (isHovered) {
+    containerStyle = { ...containerStyle, ...styles.containerHover };
+  }
+  
+  const imageStyle = isHovered 
+    ? { ...styles.image, ...styles.imageHover }
+    : styles.image;
+
+  // Wrapper style for positioning tooltip outside of overflow:hidden
+  const wrapperStyle = {
+    position: 'relative',
+    display: tier === 'diamond' ? 'flex' : 'inline-block',
+    height: tier === 'diamond' ? '100%' : 'auto'
+  };
 
   const content = (
-    <div className={`sponsor-item sponsor-item--${tier}`} {...(showTooltip && { 'data-tooltip': sponsor.name })}>
-      <img src={sponsor.imageUrl} alt={sponsor.name} />
+    <div style={wrapperStyle}>
+      <div 
+        style={containerStyle}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <img 
+          src={sponsor.imageUrl} 
+          alt={sponsor.name}
+          width={tier === 'diamond' ? 160 : tier === 'platinum' ? 50 : 40}
+          height={tier === 'diamond' ? 50 : tier === 'platinum' ? 50 : 40}
+          style={imageStyle}
+          loading="eager"
+        />
+      </div>
+      {showTooltip && isHovered && (
+        <div style={tooltipStyle}>{sponsor.name}</div>
+      )}
     </div>
   );
 
   if (sponsor.url) {
     const trackedUrl = buildSponsorUrl(sponsor.url, tier);
+    let linkStyle = { textDecoration: 'none', display: 'block' };
+    
+    if (fullWidth && tier === 'diamond') {
+      linkStyle = { ...linkStyle, flex: 1, width: '100%', height: '100%' };
+    } else if (tier === 'diamond') {
+      linkStyle = { ...linkStyle, height: '100%' };
+    }
+    
     return (
       <a
         href={trackedUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={`sponsor-link${showTooltip ? ' sponsor-tooltip-wrapper' : ''}`}
+        style={linkStyle}
       >
         {content}
       </a>
     );
   }
 
-  return showTooltip ? <div className="sponsor-tooltip-wrapper">{content}</div> : content;
+  return content;
 };
 
 const TierSection = ({ label, availableSlots, children, hasSponsors }) => (
@@ -74,16 +246,24 @@ const StaticSponsorsRow = ({ sponsors, tier }) => {
   const isDiamond = tier === 'diamond';
   const isSingleSponsor = sponsors.length === 1;
   
-  const className = [
-    'static-sponsors-row',
-    isDiamond && 'static-sponsors-row--diamond',
-    isDiamond && isSingleSponsor && 'single-sponsor'
-  ].filter(Boolean).join(' ');
+  const rowStyle = {
+    display: 'flex',
+    alignItems: 'stretch',
+    gap: '10px',
+    padding: '0 1.25em',
+    flexWrap: isDiamond ? 'nowrap' : 'wrap',
+    height: isDiamond ? '50px' : 'auto'
+  };
   
   return (
-    <div className={className}>
+    <div style={rowStyle}>
       {sponsors.map(sponsor => (
-        <SponsorItem key={sponsor.id} sponsor={sponsor} tier={tier} />
+        <SponsorItem 
+          key={sponsor.id} 
+          sponsor={sponsor} 
+          tier={tier} 
+          fullWidth={isDiamond && isSingleSponsor}
+        />
       ))}
     </div>
   );
