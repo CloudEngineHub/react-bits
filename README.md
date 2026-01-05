@@ -84,7 +84,7 @@ React Bits is proudly supported by these amazing sponsors:
 ### Silver
 
 <a href="https://shadcnstudio.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
-  <img src="public/assets/sponsors/shadcnstudio.svg" alt="shadcn studio" style="height: 50px;">
+  <img src="public/assets/sponsors/shadcnstudio.svg" alt="shadcn studio" style="height: 40px;">
 </a>
 
 <br />
