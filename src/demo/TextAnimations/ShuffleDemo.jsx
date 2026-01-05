@@ -36,7 +36,7 @@ const ShuffleDemo = () => {
       { name: 'style', type: 'object', default: '{}', description: 'Inline styles applied to the wrapper element.' },
       {
         name: 'shuffleDirection',
-        type: '"left" | "right"',
+        type: '"left" | "right" | "up" | "down"',
         default: '"right"',
         description: 'Direction the per-letter strip slides to reveal the final character.'
       },
@@ -140,7 +140,9 @@ const ShuffleDemo = () => {
 
   const directionOptions = [
     { label: 'Right', value: 'right' },
-    { label: 'Left', value: 'left' }
+    { label: 'Left', value: 'left' },
+    { label: 'Up', value: 'up' },
+    { label: 'Down', value: 'down' }
   ];
 
   const easeOptions = [
@@ -156,7 +158,7 @@ const ShuffleDemo = () => {
         <PreviewTab>
           <Box
             position="relative"
-            className="demo-container flex items-center justify-center"
+            className="flex justify-center items-center demo-container"
             h={400}
             overflow="hidden"
           >
