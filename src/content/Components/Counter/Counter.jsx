@@ -21,26 +21,31 @@ function Number({ mv, number, height }) {
 }
 
 function Digit({ place, value, height, digitStyle }) {
-  if (place === '.') {
+  const isDecimal = place === '.';
+  const valueRoundedToPlace = isDecimal ? 0 : Math.floor(value / place);
+  const animatedValue = useSpring(valueRoundedToPlace);
+
+  useEffect(() => {
+    if (!isDecimal) {
+      animatedValue.set(valueRoundedToPlace);
+    }
+  }, [animatedValue, valueRoundedToPlace, isDecimal]);
+
+  if (isDecimal) {
     return (
       <span className="counter-digit" style={{ height, ...digitStyle, width: 'fit-content' }}>
         .
       </span>
     );
-  } else {
-    let valueRoundedToPlace = Math.floor(value / place);
-    let animatedValue = useSpring(valueRoundedToPlace);
-    useEffect(() => {
-      animatedValue.set(valueRoundedToPlace);
-    }, [animatedValue, valueRoundedToPlace]);
-    return (
-      <span className="counter-digit" style={{ height, ...digitStyle }}>
-        {Array.from({ length: 10 }, (_, i) => (
-          <Number key={i} mv={animatedValue} number={i} height={height} />
-        ))}
-      </span>
-    );
   }
+
+  return (
+    <span className="counter-digit" style={{ height, ...digitStyle }}>
+      {Array.from({ length: 10 }, (_, i) => (
+        <Number key={i} mv={animatedValue} number={i} height={height} />
+      ))}
+    </span>
+  );
 }
 
 export default function Counter({
