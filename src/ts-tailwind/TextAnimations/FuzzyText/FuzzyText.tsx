@@ -89,7 +89,6 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
 
-
       offCtx.font = `${fontWeight} ${fontSizeStr} ${computedFontFamily}`;
       offCtx.textBaseline = 'alphabetic';
 
