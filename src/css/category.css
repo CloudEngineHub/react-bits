@@ -657,14 +657,62 @@ div:has(> .props-table) {
   margin-bottom: 0;
 }
 
+.sponsor-tier-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 1.25em;
+  margin-bottom: 0.5em;
+}
+
 .sponsor-tier-label {
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: -0.5px;
   color: #988bc7;
-  padding: 0 2em;
-  margin-bottom: 0.5em;
+}
+
+.sponsor-tier-available {
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(152, 139, 199, 0.5);
+}
+
+.static-sponsors-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 1.25em;
+  flex-wrap: wrap;
+}
+
+.static-sponsors-row--diamond {
+  flex-wrap: nowrap;
+}
+
+.static-sponsors-row--diamond.single-sponsor .sponsor-link,
+.static-sponsors-row--diamond.single-sponsor .sponsor-item--diamond {
+  flex: 1;
+  width: 100% !important;
+  max-width: none;
+}
+
+.sponsor-tier-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 2em;
+  margin: 0 2em;
+  border: 1px dashed rgba(152, 139, 199, 0.2);
+  border-radius: 8px;
+  background: rgba(152, 139, 199, 0.03);
+}
+
+.sponsor-tier-empty-text {
+  font-size: 11px;
+  color: rgba(152, 139, 199, 0.4);
+  font-weight: 400;
 }
 
 .sponsors-marquee-wrapper {
@@ -698,6 +746,38 @@ div:has(> .props-table) {
 .sponsor-link {
   text-decoration: none;
   display: block;
+}
+
+.sponsor-tooltip-wrapper {
+  position: relative;
+}
+
+.sponsor-item[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  padding: 5px 10px;
+  background: rgba(20, 10, 35, 0.95);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.sponsor-item[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
 }
 
 .sponsor-item {
