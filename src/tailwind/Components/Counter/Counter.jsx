@@ -24,8 +24,17 @@ function Number({ mv, number, height }) {
 }
 
 function Digit({ place, value, height, digitStyle }) {
-  // Decimal point
-  if (place === '.') {
+  const isDecimal = place === '.';
+  const valueRoundedToPlace = isDecimal ? 0 : Math.floor(value / place);
+  const animatedValue = useSpring(valueRoundedToPlace);
+
+  useEffect(() => {
+    if (!isDecimal) {
+      animatedValue.set(valueRoundedToPlace);
+    }
+  }, [animatedValue, valueRoundedToPlace, isDecimal]);
+
+  if (isDecimal) {
     return (
       <span
         className="relative inline-flex items-center justify-center"
@@ -35,14 +44,6 @@ function Digit({ place, value, height, digitStyle }) {
       </span>
     );
   }
-
-  // Numeric digit
-  const valueRoundedToPlace = Math.floor(value / place);
-  const animatedValue = useSpring(valueRoundedToPlace);
-
-  useEffect(() => {
-    animatedValue.set(valueRoundedToPlace);
-  }, [animatedValue, valueRoundedToPlace]);
 
   const defaultStyle = {
     height,
