@@ -93,6 +93,7 @@ React Bits is proudly supported by these amazing sponsors:
   </picture>
 </a>
 
+<hr />
 <br />
 
 **[Become a sponsor](https://reactbits.dev/sponsors)** — Get your brand in front of 500K+ developers monthly.
