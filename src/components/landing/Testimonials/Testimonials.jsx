@@ -56,16 +56,23 @@ const tweets = [
   {
     id: 8,
     avatar: 'https://pbs.twimg.com/profile_images/1920165535351742464/CJU2uWMU_400x400.jpg',
-    text: 'Was scrolling X, I saw a post regarding UI library and got to know about React Bits and its just wow, the components are incredibly well designed! Really loved the overall feel and quality.',
+    text: 'Got to know about React Bits and its just wow, the components are incredibly well designed! Really loved the overall feel and quality.',
     handle: '@irohandev',
     url: 'https://x.com/irohandev/status/1934877463064268822'
   },
   {
     id: 9,
-    avatar: 'https://pbs.twimg.com/profile_images/1915754015381483520/07SpEJWa_400x400.jpg',
-    text: "Today, I explored React Bits, a lightweight library to add beautiful animations to your React apps! It's super easy to use and helps make UIs feel much more dynamic and interactive ✨",
-    handle: '@Alishahzad2000M',
-    url: 'https://x.com/Alishahzad2000M/status/1916556455232127010'
+    avatar: 'https://pbs.twimg.com/profile_images/1756766826736893952/6Gvg6jha_400x400.jpg',
+    text: "React Bits has become the ultimate visual animation library for React. This level of flexibility doesn't exist anywhere else.",
+    handle: '@orcdev',
+    url: 'https://x.com/orcdev/status/2005627805938422123?s=20'
+  },
+  {
+    id: 10,
+    avatar: 'https://pbs.twimg.com/profile_images/1957717329397141507/7ctDgOuc_400x400.jpg',
+    text: 'The next shadcn is emerging this year 🙌',
+    handle: 'ajaypatel_aj',
+    url: 'https://x.com/ajaypatel_aj/status/2006990484045193652?s=20'
   }
 ];
 
@@ -97,9 +104,10 @@ const MarqueeRow = memo(({ tweets, direction = 'left', speed = 3 }) => {
         slowdownOnHover={true}
         slowDownFactor={0.15}
         repeat={4}
+        draggable={false}
         className="overflow-hidden"
       >
-        <Box className="flex" userSelect="none" gap="20px" mr="20px">
+        <Box className="flex" gap="20px" mr="20px" style={{ pointerEvents: 'auto' }}>
           {tweets.map(tweet => (
             <TweetCard key={tweet.id} tweet={tweet} />
           ))}
@@ -115,9 +123,9 @@ const Testimonials = () => {
   const [titleVisible, setTitleVisible] = useState(false);
   const headerRef = useRef(null);
 
-  const row1Tweets = tweets.slice(0, 3);
-  const row2Tweets = tweets.slice(3, 6);
-  const row3Tweets = tweets.slice(6, 9);
+  const row1Tweets = tweets.slice(0, 4);
+  const row2Tweets = tweets.slice(4, 7);
+  const row3Tweets = tweets.slice(7, 10);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
