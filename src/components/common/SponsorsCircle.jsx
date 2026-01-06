@@ -21,29 +21,27 @@ const tierStyles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '160px',
-      height: '100%',
-      minHeight: '50px',
-      borderRadius: '10px',
+      width: '100%',
+      height: '60px',
+      borderRadius: '12px',
       border: '1px solid #170d27',
-      background: 'rgba(6, 0, 16, 0.4)',
+      background: 'transparent',
       overflow: 'hidden',
       flexShrink: 0,
-      marginRight: '12px',
       cursor: 'pointer',
       transition: 'all 0.25s ease'
     },
     containerHover: {
       borderColor: '#b19eef',
       background: 'rgba(82, 39, 255, 0.1)',
-      boxShadow: '0 0 12px rgba(82, 39, 255, 0.25)'
+      boxShadow: '0 0 16px rgba(82, 39, 255, 0.3)'
     },
     image: {
       display: 'block',
       width: '100%',
       height: '100%',
       objectFit: 'contain',
-      padding: '8px 24px',
+      padding: '10px 16px',
       transition: 'transform 0.25s ease'
     },
     imageHover: {
@@ -212,8 +210,8 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
         <img 
           src={sponsor.imageUrl} 
           alt={sponsor.name}
-          width={tier === 'diamond' ? 160 : tier === 'platinum' ? 50 : 40}
-          height={tier === 'diamond' ? 50 : tier === 'platinum' ? 50 : 40}
+          width={tier === 'diamond' ? 220 : tier === 'platinum' ? 50 : 40}
+          height={tier === 'diamond' ? 70 : tier === 'platinum' ? 50 : 40}
           style={imageStyle}
           loading="eager"
         />
@@ -265,15 +263,14 @@ const TierSection = ({ label, availableSlots, children, hasSponsors }) => (
 
 const StaticSponsorsRow = ({ sponsors, tier }) => {
   const isDiamond = tier === 'diamond';
-  const isSingleSponsor = sponsors.length === 1;
   
   const rowStyle = {
     display: 'flex',
-    alignItems: 'stretch',
+    flexDirection: isDiamond ? 'column' : 'row',
+    alignItems: isDiamond ? 'stretch' : 'center',
     gap: '10px',
     padding: '0 1.25em',
-    flexWrap: isDiamond ? 'nowrap' : 'wrap',
-    height: isDiamond ? '50px' : 'auto'
+    flexWrap: isDiamond ? 'nowrap' : 'wrap'
   };
   
   return (
@@ -283,7 +280,7 @@ const StaticSponsorsRow = ({ sponsors, tier }) => {
           key={sponsor.id} 
           sponsor={sponsor} 
           tier={tier} 
-          fullWidth={isDiamond && isSingleSponsor}
+          fullWidth={isDiamond}
         />
       ))}
     </div>

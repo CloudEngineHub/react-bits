@@ -5,14 +5,18 @@ export const diamondSponsors = [
     name: 'shadcnblocks.com',
     imageUrl: '/assets/sponsors/shadcnblocks.svg',
     url: 'https://www.shadcnblocks.com/'
+  },
+  {
+    id: 1,
+    name: 'shadcn studio',
+    imageUrl: '/assets/sponsors/shadcnstudio.svg',
+    url: 'https://shadcnstudio.com/'
   }
 ];
 
 export const platinumSponsors = [];
 
-export const silverSponsors = [
-  { id: 1, name: 'shadcn studio', imageUrl: '/assets/sponsors/shadcnstudio.svg', url: 'https://shadcnstudio.com/' }
-];
+export const silverSponsors = [];
 
 export const hasSponsors = diamondSponsors.length > 0 || platinumSponsors.length > 0 || silverSponsors.length > 0;
 export const hasDiamondSponsors = diamondSponsors.length > 0;
