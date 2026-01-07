@@ -93,6 +93,16 @@ React Bits is proudly supported by these amazing sponsors:
   </picture>
 </a>
 
+### Silver
+
+<a href="https://nextjsweekly.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/nextjsweekly.svg">
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/nextjsweekly-lightmode.svg">
+    <img src="public/assets/sponsors/nextjsweekly.svg" alt="Next.js Weekly" style="height: 40px;">
+  </picture>
+</a>
+
 <hr />
 
 **[Become a sponsor](https://reactbits.dev/sponsors)** — Get your brand in front of 500K+ developers monthly.
