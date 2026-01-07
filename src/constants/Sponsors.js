@@ -16,7 +16,14 @@ export const diamondSponsors = [
 
 export const platinumSponsors = [];
 
-export const silverSponsors = [];
+export const silverSponsors = [
+  {
+    id: 1,
+    name: 'Next.js Weekly',
+    imageUrl: '/assets/sponsors/nextjsweekly.svg',
+    url: 'https://nextjsweekly.com/'
+  }
+];
 
 export const hasSponsors = diamondSponsors.length > 0 || platinumSponsors.length > 0 || silverSponsors.length > 0;
 export const hasDiamondSponsors = diamondSponsors.length > 0;
