@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { JSX, useEffect, useRef } from 'react';
 import './ImageTrail.css';
 
 function lerp(a: number, b: number, n: number): number {
