@@ -181,7 +181,12 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         }
         lastFrameTime = timestamp;
 
-        ctx.clearRect(-fuzzRange - 20, -fuzzRange - 10, offscreenWidth + 2 * (fuzzRange + 20), tightHeight + 2 * (fuzzRange + 10));
+        ctx.clearRect(
+          -fuzzRange - 20,
+          -fuzzRange - 10,
+          offscreenWidth + 2 * (fuzzRange + 20),
+          tightHeight + 2 * (fuzzRange + 10)
+        );
 
         if (isClicking) {
           targetIntensity = 1;
@@ -194,7 +199,7 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         }
 
         if (transitionDuration > 0) {
-          const step = (1 / (transitionDuration / frameDuration));
+          const step = 1 / (transitionDuration / frameDuration);
           if (currentIntensity < targetIntensity) {
             currentIntensity = Math.min(currentIntensity + step, targetIntensity);
           } else if (currentIntensity > targetIntensity) {
@@ -205,7 +210,8 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         }
 
         for (let j = 0; j < tightHeight; j++) {
-          let dx = 0, dy = 0;
+          let dx = 0,
+            dy = 0;
           if (direction === 'horizontal' || direction === 'both') {
             dx = Math.floor(currentIntensity * (Math.random() - 0.5) * fuzzRange);
           }
@@ -299,7 +305,26 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         canvas.cleanupFuzzyText();
       }
     };
-  }, [children, fontSize, fontWeight, fontFamily, color, enableHover, baseIntensity, hoverIntensity, fuzzRange, fps, direction, transitionDuration, clickEffect, glitchMode, glitchInterval, glitchDuration, gradient, letterSpacing]);
+  }, [
+    children,
+    fontSize,
+    fontWeight,
+    fontFamily,
+    color,
+    enableHover,
+    baseIntensity,
+    hoverIntensity,
+    fuzzRange,
+    fps,
+    direction,
+    transitionDuration,
+    clickEffect,
+    glitchMode,
+    glitchInterval,
+    glitchDuration,
+    gradient,
+    letterSpacing
+  ]);
 
   return <canvas ref={canvasRef} className={className} />;
 };
