@@ -53,9 +53,9 @@ const tierStyles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '50px',
-      height: '50px',
-      borderRadius: '50%',
+      width: '120px',
+      height: '60px',
+      borderRadius: '10px',
       border: '1px solid #170d27',
       background: 'rgba(6, 0, 16, 0.4)',
       overflow: 'hidden',
@@ -87,7 +87,7 @@ const tierStyles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '85px',
+      width: '80px',
       height: '40px',
       borderRadius: '10px',
       border: '1px solid #170d27',
@@ -181,18 +181,15 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
   useEffect(() => {
     injectTooltipAnimation();
   }, []);
-  
-  let containerStyle = fullWidth && tier === 'diamond' 
-    ? { ...styles.container, flex: 1, width: '100%' }
-    : { ...styles.container };
-  
+
+  let containerStyle =
+    fullWidth && tier === 'diamond' ? { ...styles.container, flex: 1, width: '100%' } : { ...styles.container };
+
   if (isHovered) {
     containerStyle = { ...containerStyle, ...styles.containerHover };
   }
-  
-  const imageStyle = isHovered 
-    ? { ...styles.image, ...styles.imageHover }
-    : styles.image;
+
+  const imageStyle = isHovered ? { ...styles.image, ...styles.imageHover } : styles.image;
 
   const wrapperStyle = {
     position: 'relative',
@@ -202,43 +199,32 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
 
   const content = (
     <div style={wrapperStyle}>
-      <div 
-        style={containerStyle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <img 
-          src={sponsor.imageUrl} 
+      <div style={containerStyle} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        <img
+          src={sponsor.imageUrl}
           alt={sponsor.name}
-          width={tier === 'diamond' ? 220 : tier === 'platinum' ? 50 : 40}
-          height={tier === 'diamond' ? 70 : tier === 'platinum' ? 50 : 40}
+          width={tier === 'diamond' ? 220 : tier === 'platinum' ? 150 : 70}
+          height={tier === 'diamond' ? 70 : tier === 'platinum' ? 70 : 32}
           style={imageStyle}
           loading="eager"
         />
       </div>
-      {showTooltip && isHovered && (
-        <div style={tooltipStyle}>{sponsor.name}</div>
-      )}
+      {showTooltip && isHovered && <div style={tooltipStyle}>{sponsor.name}</div>}
     </div>
   );
 
   if (sponsor.url) {
     const trackedUrl = buildSponsorUrl(sponsor.url, tier);
     let linkStyle = { textDecoration: 'none', display: 'block' };
-    
+
     if (fullWidth && tier === 'diamond') {
       linkStyle = { ...linkStyle, flex: 1, width: '100%', height: '100%' };
     } else if (tier === 'diamond') {
       linkStyle = { ...linkStyle, height: '100%' };
     }
-    
+
     return (
-      <a
-        href={trackedUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={linkStyle}
-      >
+      <a href={trackedUrl} target="_blank" rel="noopener noreferrer" style={linkStyle}>
         {content}
       </a>
     );
@@ -263,7 +249,7 @@ const TierSection = ({ label, availableSlots, children, hasSponsors }) => (
 
 const StaticSponsorsRow = ({ sponsors, tier }) => {
   const isDiamond = tier === 'diamond';
-  
+
   const rowStyle = {
     display: 'flex',
     flexDirection: isDiamond ? 'column' : 'row',
@@ -272,16 +258,11 @@ const StaticSponsorsRow = ({ sponsors, tier }) => {
     padding: '0 1.25em',
     flexWrap: isDiamond ? 'nowrap' : 'wrap'
   };
-  
+
   return (
     <div style={rowStyle}>
       {sponsors.map(sponsor => (
-        <SponsorItem 
-          key={sponsor.id} 
-          sponsor={sponsor} 
-          tier={tier} 
-          fullWidth={isDiamond}
-        />
+        <SponsorItem key={sponsor.id} sponsor={sponsor} tier={tier} fullWidth={isDiamond} />
       ))}
     </div>
   );
