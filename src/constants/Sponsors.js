@@ -22,6 +22,12 @@ export const silverSponsors = [
     name: 'Next.js Weekly',
     imageUrl: '/assets/sponsors/nextjsweekly.svg',
     url: 'https://nextjsweekly.com/'
+  },
+  {
+    id: 2,
+    name: 'Shadcraft',
+    imageUrl: '/assets/sponsors/shadcraft.svg',
+    url: 'https://shadcraft.com/'
   }
 ];
 
