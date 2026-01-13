@@ -106,7 +106,7 @@ React Bits is proudly supported by these amazing sponsors:
 <a href="https://shadcraft.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcraft.svg">
-    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcraft-lightmode.svg">
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcraft-lightmode.png">
     <img src="public/assets/sponsors/shadcraft.svg" alt="Shadcraft" style="height: 40px;">
   </picture>
 </a>
