@@ -630,8 +630,9 @@ div:has(> .props-table) {
 
 .sponsors-marquee-container {
   user-select: none;
-  padding: 0.5em 0;
+  padding: 1.5em 0 0.5em;
   position: relative;
+  overflow: visible;
 }
 
 .sponsors-empty {
@@ -651,6 +652,7 @@ div:has(> .props-table) {
 
 .sponsor-tier-section {
   margin-bottom: 0.75em;
+  overflow: visible;
 }
 
 .sponsor-tier-section:last-child {

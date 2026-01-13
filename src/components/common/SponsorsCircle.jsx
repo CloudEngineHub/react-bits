@@ -87,14 +87,13 @@ const tierStyles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '80px',
-      height: '40px',
+      width: '92px',
+      height: '52px',
       borderRadius: '10px',
       border: '1px solid #170d27',
       background: 'rgba(6, 0, 16, 0.4)',
       overflow: 'hidden',
       flexShrink: 0,
-      marginRight: '12px',
       cursor: 'pointer',
       transition: 'all 0.25s ease',
       position: 'relative'
@@ -118,40 +117,37 @@ const tierStyles = {
   }
 };
 
-const tooltipStyle = {
-  position: 'absolute',
-  left: '100%',
-  top: '50%',
-  transform: 'translateY(-50%) translateX(0)',
-  background: 'rgba(20, 10, 40, 0.95)',
-  color: '#fff',
-  padding: '5px 12px',
-  borderRadius: '999px',
-  fontSize: '11px',
-  fontWeight: 500,
-  whiteSpace: 'nowrap',
-  pointerEvents: 'none',
-  zIndex: 1000,
-  border: '1px solid rgba(152, 139, 199, 0.2)',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-  opacity: 1,
-  animation: 'tooltipFadeIn 0.2s ease-out'
-};
-
-const injectTooltipAnimation = () => {
+const injectTooltipStyles = () => {
   if (typeof document !== 'undefined' && !document.getElementById('sponsor-tooltip-styles')) {
     const style = document.createElement('style');
     style.id = 'sponsor-tooltip-styles';
     style.textContent = `
-      @keyframes tooltipFadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(-50%) translateX(-4px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(-50%) translateX(0);
-        }
+      .sponsor-item-wrapper[data-tooltip]::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(100% + 6px);
+        margin: 0 auto;
+        width: fit-content;
+        background: rgba(20, 10, 40, 0.95);
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 1000;
+        border: 1px solid rgba(152, 139, 199, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.15s ease, visibility 0.15s ease;
+      }
+      .sponsor-item-wrapper[data-tooltip]:hover::before {
+        opacity: 1;
+        visibility: visible;
       }
     `;
     document.head.appendChild(style);
@@ -179,7 +175,7 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
   const styles = tierStyles[tier];
 
   useEffect(() => {
-    injectTooltipAnimation();
+    injectTooltipStyles();
   }, []);
 
   let containerStyle =
@@ -191,14 +187,18 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
 
   const imageStyle = isHovered ? { ...styles.image, ...styles.imageHover } : styles.image;
 
-  const wrapperStyle = {
-    position: 'relative',
-    display: tier === 'diamond' ? 'flex' : 'inline-block',
-    height: tier === 'diamond' ? '100%' : 'auto'
+  const wrapperProps = {
+    className: 'sponsor-item-wrapper',
+    style: {
+      position: 'relative',
+      display: tier === 'diamond' ? 'flex' : 'inline-block',
+      height: tier === 'diamond' ? '100%' : 'auto'
+    },
+    ...(showTooltip && { 'data-tooltip': sponsor.name })
   };
 
   const content = (
-    <div style={wrapperStyle}>
+    <div {...wrapperProps}>
       <div style={containerStyle} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
         <img
           src={sponsor.imageUrl}
@@ -209,7 +209,6 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
           loading="eager"
         />
       </div>
-      {showTooltip && isHovered && <div style={tooltipStyle}>{sponsor.name}</div>}
     </div>
   );
 
