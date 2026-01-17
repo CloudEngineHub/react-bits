@@ -9,7 +9,9 @@ const ComponentPropsContext = createContext({
   props: {},
   defaultProps: {},
   hasChanges: false,
-  resetProps: () => {}
+  resetProps: () => {},
+  demoOnlyProps: [],
+  computedProps: {}
 });
 
 /**
@@ -21,19 +23,31 @@ const ComponentPropsContext = createContext({
  *   defaultProps={DEFAULT_PROPS}
  *   resetProps={resetProps}
  *   hasChanges={hasChanges}
+ *   demoOnlyProps={['color1', 'color2', 'color3']}
+ *   computedProps={{ colorStops: [color1, color2, color3] }}
  * >
  *   <TabsLayout>...</TabsLayout>
  * </ComponentPropsProvider>
  */
-export function ComponentPropsProvider({ children, props, defaultProps, resetProps, hasChanges }) {
+export function ComponentPropsProvider({
+  children,
+  props,
+  defaultProps,
+  resetProps,
+  hasChanges,
+  demoOnlyProps = [],
+  computedProps = {}
+}) {
   const value = useMemo(
     () => ({
       props,
       defaultProps,
       hasChanges,
-      resetProps
+      resetProps,
+      demoOnlyProps,
+      computedProps
     }),
-    [props, defaultProps, hasChanges, resetProps]
+    [props, defaultProps, hasChanges, resetProps, demoOnlyProps, computedProps]
   );
 
   return <ComponentPropsContext.Provider value={value}>{children}</ComponentPropsContext.Provider>;

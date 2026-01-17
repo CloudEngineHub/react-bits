@@ -24,7 +24,7 @@ const DEFAULT_PROPS = {
   particleCount: 200,
   particleSpread: 10,
   speed: 0.1,
-  baseSize: 100,
+  particleBaseSize: 100,
   moveParticlesOnHover: true,
   alphaParticles: false,
   disableRotation: false,
@@ -38,7 +38,7 @@ const ParticlesDemo = () => {
     particleCount,
     particleSpread,
     speed,
-    baseSize,
+    particleBaseSize,
     moveParticlesOnHover,
     alphaParticles,
     disableRotation,
@@ -126,7 +126,14 @@ const ParticlesDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['colors']}
+      computedProps={{ particleColors: [colors] }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
@@ -136,7 +143,7 @@ const ParticlesDemo = () => {
               particleCount={particleCount}
               particleSpread={particleSpread}
               speed={speed}
-              particleBaseSize={baseSize}
+              particleBaseSize={particleBaseSize}
               moveParticlesOnHover={moveParticlesOnHover}
               alphaParticles={alphaParticles}
               disableRotation={disableRotation}
@@ -157,7 +164,7 @@ const ParticlesDemo = () => {
                 particleColors: [colors],
                 moveParticlesOnHover,
                 alphaParticles,
-                particleBaseSize: baseSize,
+                particleBaseSize,
                 disableRotation
               }}
               defaultProps={{
@@ -222,8 +229,8 @@ const ParticlesDemo = () => {
               min={100}
               max={1000}
               step={100}
-              value={baseSize}
-              onChange={val => updateProp('baseSize', val)}
+              value={particleBaseSize}
+              onChange={val => updateProp('particleBaseSize', val)}
             />
 
             <PreviewSwitch

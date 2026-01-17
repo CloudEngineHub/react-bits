@@ -20,7 +20,7 @@ import { laserFlow } from '@/constants/code/Animations/laserFlowCode';
 
 const DEFAULT_PROPS = {
   selectedExample: 'box',
-  laserColor: '#CF9EFF',
+  color: '#CF9EFF',
   horizontalSizing: 0.5,
   verticalSizing: 2.0,
   wispDensity: 1,
@@ -42,7 +42,7 @@ const LaserFlowDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const {
     selectedExample,
-    laserColor,
+    color,
     horizontalSizing,
     verticalSizing,
     wispDensity,
@@ -122,7 +122,13 @@ const LaserFlowDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['selectedExample']}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box
@@ -165,7 +171,7 @@ const LaserFlowDemo = () => {
               fogFallSpeed={fogFallSpeed}
               decay={decay}
               falloffStart={falloffStart}
-              color={laserColor}
+              color={color}
               key={key}
               className={`laser-flow-demo-${selectedExample}`}
             />
@@ -183,7 +189,7 @@ const LaserFlowDemo = () => {
                   height="60%"
                   backgroundColor="#060010"
                   borderRadius="20px"
-                  border={`2px solid ${laserColor}`}
+                  border={`2px solid ${color}`}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
@@ -221,7 +227,7 @@ const LaserFlowDemo = () => {
             <OpenInStudioButton
               backgroundId="laser-flow"
               currentProps={{
-                color: laserColor,
+                color,
                 wispDensity,
                 flowSpeed,
                 verticalSizing,
@@ -239,7 +245,7 @@ const LaserFlowDemo = () => {
 
           <Customize>
             <PreviewSelect
-              title="Example:"
+              title="Demo Example"
               options={exampleOptions}
               value={selectedExample}
               onChange={v => updateProp('selectedExample', v)}
@@ -251,9 +257,9 @@ const LaserFlowDemo = () => {
               </Text>
               <Input
                 type="color"
-                value={laserColor}
+                value={color}
                 onChange={e => {
-                  updateProp('laserColor', e.target.value);
+                  updateProp('color', e.target.value);
                 }}
                 width="50px"
               />

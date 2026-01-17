@@ -24,12 +24,12 @@ const DEFAULT_PROPS = {
   speedMultiplier: 0.5,
   maxAge: 500,
   enableFade: false,
-  enableWaves: false
+  enableShaderEffect: false
 };
 
 const RibbonsDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { baseThickness, colors, speedMultiplier, maxAge, enableFade, enableWaves } = props;
+  const { baseThickness, colors, speedMultiplier, maxAge, enableFade, enableShaderEffect } = props;
 
   const propData = useMemo(
     () => [
@@ -123,7 +123,7 @@ const RibbonsDemo = () => {
               speedMultiplier={speedMultiplier}
               maxAge={maxAge}
               enableFade={enableFade}
-              enableShaderEffect={enableWaves}
+              enableShaderEffect={enableShaderEffect}
             />
           </Box>
 
@@ -136,7 +136,7 @@ const RibbonsDemo = () => {
                 speedMultiplier,
                 maxAge,
                 enableFade,
-                enableShaderEffect: enableWaves
+                enableShaderEffect
               }}
               defaultProps={DEFAULT_PROPS}
             />
@@ -214,8 +214,8 @@ const RibbonsDemo = () => {
 
             <PreviewSwitch
               title="Enable Waves"
-              isChecked={enableWaves}
-              onChange={checked => updateProp('enableWaves', checked)}
+              isChecked={enableShaderEffect}
+              onChange={checked => updateProp('enableShaderEffect', checked)}
             />
           </Customize>
 

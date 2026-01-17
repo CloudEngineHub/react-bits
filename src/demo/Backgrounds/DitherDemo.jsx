@@ -19,7 +19,7 @@ import Dither from '../../content/Backgrounds/Dither/Dither';
 import { dither } from '../../constants/code/Backgrounds/ditherCode';
 
 const DEFAULT_PROPS = {
-  colors: [0.5, 0.5, 0.5],
+  waveColor: [0.5, 0.5, 0.5],
   mouseRadius: 0.3,
   colorNum: 4,
   waveAmplitude: 0.3,
@@ -32,7 +32,7 @@ const DEFAULT_PROPS = {
 const DitherDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const {
-    colors,
+    waveColor,
     mouseRadius,
     colorNum,
     waveAmplitude,
@@ -108,7 +108,7 @@ const DitherDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
             <Dither
-              waveColor={colors}
+              waveColor={waveColor}
               disableAnimation={disableAnimation}
               enableMouseInteraction={enableMouseInteraction}
               mouseRadius={mouseRadius}
@@ -126,7 +126,7 @@ const DitherDemo = () => {
             <OpenInStudioButton
               backgroundId="dither"
               currentProps={{
-                waveColor: colors,
+                waveColor,
                 disableAnimation,
                 enableMouseInteraction,
                 mouseRadius,
@@ -159,12 +159,12 @@ const DitherDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[0]}
+                  value={waveColor[0]}
                   title="Red"
                   onChange={val => {
-                    const newColors = [...colors];
+                    const newColors = [...waveColor];
                     newColors[0] = val;
-                    updateProp('colors', newColors);
+                    updateProp('waveColor', newColors);
                   }}
                 />
               </Flex>
@@ -175,12 +175,12 @@ const DitherDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[1]}
+                  value={waveColor[1]}
                   title="Green"
                   onChange={val => {
-                    const newColors = [...colors];
+                    const newColors = [...waveColor];
                     newColors[1] = val;
-                    updateProp('colors', newColors);
+                    updateProp('waveColor', newColors);
                   }}
                 />
               </Flex>
@@ -191,12 +191,12 @@ const DitherDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[2]}
+                  value={waveColor[2]}
                   title="Blue"
                   onChange={val => {
-                    const newColors = [...colors];
+                    const newColors = [...waveColor];
                     newColors[2] = val;
-                    updateProp('colors', newColors);
+                    updateProp('waveColor', newColors);
                   }}
                 />
               </Flex>

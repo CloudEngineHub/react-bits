@@ -136,7 +136,14 @@ const ModelViewerDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['selectedModel']}
+      computedProps={{ url: urlMap[selectedModel] }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box

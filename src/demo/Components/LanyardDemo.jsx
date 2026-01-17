@@ -59,7 +59,14 @@ const LanyardDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['cameraDistance', 'stopGravity']}
+      computedProps={{ position: [0, 0, cameraDistance], gravity: stopGravity ? [0, 0, 0] : [0, -40, 0] }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box

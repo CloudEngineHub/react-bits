@@ -16,13 +16,13 @@ import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
-  color: '#ffffff',
+  lineColor: '#ffffff',
   waveSpeedX: 0.0125
 };
 
 const WavesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { color, waveSpeedX } = props;
+  const { lineColor, waveSpeedX } = props;
   const [key, forceRerender] = useForceRerender();
 
   const propData = useMemo(
@@ -110,18 +110,18 @@ const WavesDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" h={600} className="demo-container" overflow="hidden" p={0}>
-            <Waves key={key} waveSpeedX={waveSpeedX} lineColor={color} />
+            <Waves key={key} waveSpeedX={waveSpeedX} lineColor={lineColor} />
           </Box>
 
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="waves"
               currentProps={{
-                lineColor: color,
+                lineColor,
                 waveSpeedX
               }}
               defaultProps={{
@@ -152,7 +152,12 @@ const WavesDemo = () => {
 
             <Flex gap={4} align="center" mt={4}>
               <Text fontSize="sm">Waves Color</Text>
-              <Input type="color" value={color} onChange={e => updateProp('color', e.target.value)} width="50px" />
+              <Input
+                type="color"
+                value={lineColor}
+                onChange={e => updateProp('lineColor', e.target.value)}
+                width="50px"
+              />
             </Flex>
           </Customize>
 

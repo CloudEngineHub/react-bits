@@ -63,7 +63,14 @@ const AuroraDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['color1', 'color2', 'color3']}
+      computedProps={{ colorStops: [color1, color2, color3] }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
