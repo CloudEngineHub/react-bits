@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Image, Input, Text } from '@chakra-ui/react';
+import { Box, Flex, Input, Text } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -17,18 +17,17 @@ import Balatro from '../../content/Backgrounds/Balatro/Balatro';
 import { balatro } from '../../constants/code/Backgrounds/balatroCode';
 
 const DEFAULT_PROPS = {
-  hideImage: false,
   color1: '#DE443B',
   color2: '#006BB4',
   color3: '#162325',
-  rotate: false,
+  isRotate: false,
   mouseInteraction: true,
   pixelFilter: 745.0
 };
 
 const BalatroDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { hideImage, color1, color2, color3, rotate, mouseInteraction, pixelFilter } = props;
+  const { color1, color2, color3, isRotate, mouseInteraction, pixelFilter } = props;
 
   const propData = useMemo(
     () => [
@@ -123,20 +122,10 @@ const BalatroDemo = () => {
               color1={color1}
               color2={color2}
               color3={color3}
-              isRotate={rotate}
+              isRotate={isRotate}
               mouseInteraction={mouseInteraction}
               pixelFilter={pixelFilter}
             />
-
-            {!hideImage && (
-              <Image
-                pointerEvents="none"
-                position="absolute"
-                w={200}
-                src="https://oyster.ignimgs.com/mediawiki/apis.ign.com/balatro/e/ef/Joker.png"
-                borderRadius="10px"
-              />
-            )}
           </Box>
 
           <Flex justify="flex-end" mt={2} mb={-2}>
@@ -146,7 +135,7 @@ const BalatroDemo = () => {
                 color1,
                 color2,
                 color3,
-                isRotate: rotate,
+                isRotate,
                 mouseInteraction,
                 pixelFilter
               }}
@@ -160,16 +149,6 @@ const BalatroDemo = () => {
                 lighting: 0.4,
                 spinAmount: 0.25,
                 pixelFilter: 700
-              }}
-            />
-          </Flex>
-
-          <Flex gap={4} align="center" mt={7} justifyContent="flex-end" position="absolute" right={0}>
-            <Text fontSize="sm">Hide Image</Text>
-            <PreviewSwitch
-              isChecked={hideImage}
-              onChange={checked => {
-                updateProp('hideImage', checked);
               }}
             />
           </Flex>
@@ -226,9 +205,9 @@ const BalatroDemo = () => {
 
             <PreviewSwitch
               title="Rotate"
-              isChecked={rotate}
+              isChecked={isRotate}
               onChange={checked => {
-                updateProp('rotate', checked);
+                updateProp('isRotate', checked);
               }}
             />
           </Customize>

@@ -50,7 +50,14 @@ const HyperspeedDemo = () => {
   ];
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['activePreset']}
+      computedProps={{ effectOptions: hyperspeedPresets[activePreset] }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box

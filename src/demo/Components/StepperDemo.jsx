@@ -113,7 +113,14 @@ const StepperDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['name', 'step']}
+      computedProps={{ initialStep: step }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} overflow="hidden">

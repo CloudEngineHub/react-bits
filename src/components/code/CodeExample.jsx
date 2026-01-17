@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { getLanguage } from '../../utils/utils';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
-import { generatePropsString } from '../../utils/codeGeneration';
+import { formatPropValue } from '../../utils/codeGeneration';
 import CliInstallation from './CliInstallation';
 import CodeHighlighter from './CodeHighlighter';
 import CodeOptions, { CSS, Tailwind, TSCSS, TSTailwind } from './CodeOptions';
@@ -10,74 +10,99 @@ const SKIP_KEYS = new Set(['tailwind', 'css', 'tsTailwind', 'tsCode', 'dependenc
 
 /**
  * Injects current prop values into a usage code string.
- * Finds the component JSX and replaces its props with the current values.
+ * Updates changed props in place, and adds new props that don't exist yet.
  */
-function injectPropsIntoCode(usageCode, props, defaultProps, componentName) {
+function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demoOnlyProps = []) {
   if (!usageCode || !props || !componentName) return usageCode;
 
-  // Generate props string from current values (without base indentation - we'll add it later)
-  const propsString = generatePropsString(props, defaultProps, {
-    exclude: ['className', 'key', 'ref', 'children', 'onAnimationComplete', 'onLetterAnimationComplete'],
-    indent: 2
-  });
+  const demoOnlySet = new Set(demoOnlyProps);
+  const changedProps = {};
+  for (const [key, value] of Object.entries(props)) {
+    if (demoOnlySet.has(key)) continue;
 
-  if (!propsString) return usageCode;
+    if (JSON.stringify(value) !== JSON.stringify(defaultProps[key])) {
+      changedProps[key] = value;
+    }
+  }
 
-  // Match the component tag and capture the leading whitespace for indentation
-  // This regex captures: leading whitespace, opening tag with all attributes, and closing
-  // Use (?![a-zA-Z]) negative lookahead to avoid matching components that start with the same name
-  // (e.g., avoid matching ScrollStackItem when componentName is ScrollStack)
-  const selfClosingRegex = new RegExp(`(^[ \\t]*)(<${componentName}(?![a-zA-Z]))([\\s\\S]*?)(\\/>)`, 'gm');
-  const openingTagRegex = new RegExp(`(^[ \\t]*)(<${componentName}(?![a-zA-Z]))([\\s\\S]*?)(>)`, 'gm');
+  if (Object.keys(changedProps).length === 0) return usageCode;
 
   let result = usageCode;
-  let matched = false;
+  const propsToAdd = [];
 
-  // Handle self-closing tags: <Component ... />
-  result = result.replace(selfClosingRegex, (match, indent, openTag, existingProps, closeTag) => {
-    matched = true;
-    // Extract className if present in existing props
-    const classMatch = existingProps.match(/className="[^"]*"/);
-    const classString = classMatch ? `\n${indent}  ${classMatch[0]}` : '';
+  for (const [propName, propValue] of Object.entries(changedProps)) {
+    const formattedValue = formatPropValue(propValue, propName);
+    const newPropLine =
+      typeof propValue === 'boolean' && propValue === true ? propName : `${propName}=${formattedValue}`;
 
-    // Indent each prop line with the base indentation
-    const indentedProps = propsString
-      .split('\n')
-      .map(line => indent + line)
-      .join('\n');
+    const simplePropRegex = new RegExp(`(^[ \\t]*)(${propName})(?:=(?:"[^"]*"|\\{[^{}\\n]*\\}))?[ \\t]*$`, 'gm');
 
-    return `${indent}${openTag.trim()}\n${indentedProps}${classString}\n${indent}${closeTag}`;
-  });
+    const hasSimpleMatch = simplePropRegex.test(result);
+    simplePropRegex.lastIndex = 0;
 
-  if (matched) return result;
+    if (hasSimpleMatch) {
+      result = result.replace(simplePropRegex, `$1${newPropLine}`);
+      continue;
+    }
 
-  // Handle opening tags: <Component ...>children</Component>
-  result = result.replace(openingTagRegex, (match, indent, openTag, existingProps, closeTag) => {
-    // Extract className if present in existing props
-    const classMatch = existingProps.match(/className="[^"]*"/);
-    const classString = classMatch ? `\n${indent}  ${classMatch[0]}` : '';
+    const multiLineStart = new RegExp(`^([ \\t]*)(${propName})=\\{`, 'gm');
+    let match;
+    let updated = false;
 
-    // Indent each prop line with the base indentation
-    const indentedProps = propsString
-      .split('\n')
-      .map(line => indent + line)
-      .join('\n');
+    while ((match = multiLineStart.exec(result)) !== null) {
+      const indent = match[1];
+      const startIndex = match.index;
+      const openBraceIndex = match.index + match[0].length - 1;
 
-    return `${indent}${openTag.trim()}\n${indentedProps}${classString}\n${indent}${closeTag}`;
-  });
+      let braceCount = 1;
+      let i = openBraceIndex + 1;
+      while (i < result.length && braceCount > 0) {
+        if (result[i] === '{') braceCount++;
+        else if (result[i] === '}') braceCount--;
+        i++;
+      }
+
+      if (braceCount === 0) {
+        const before = result.slice(0, startIndex);
+        const after = result.slice(i);
+        result = before + indent + newPropLine + after;
+        updated = true;
+        break;
+      }
+    }
+
+    if (!updated) {
+      propsToAdd.push(newPropLine);
+    }
+  }
+
+  if (propsToAdd.length > 0) {
+    const indentMatch = result.match(/\n([ \t]+)\w/);
+    const indent = indentMatch ? indentMatch[1] : '  ';
+
+    const newPropsStr = propsToAdd.map(p => `${indent}${p}`).join('\n');
+
+    const closingIndex = result.lastIndexOf('/>');
+    if (closingIndex !== -1) {
+      const before = result.slice(0, closingIndex);
+      const after = result.slice(closingIndex);
+      result = before.trimEnd() + '\n' + newPropsStr + '\n' + after.trim();
+    }
+  }
 
   return result;
 }
 
 const CodeExample = ({ codeObject, componentName }) => {
   const { tailwind, css, tsTailwind, tsCode, code, usage, dependencies } = codeObject;
-  const { props, defaultProps, hasChanges } = useComponentPropsContext();
+  const { props, hasChanges, demoOnlyProps, computedProps } = useComponentPropsContext();
 
-  // Generate dynamic usage code with current props
   const dynamicUsage = useMemo(() => {
-    if (!usage || !hasChanges || !componentName) return usage;
-    return injectPropsIntoCode(usage, props, defaultProps, componentName);
-  }, [usage, props, defaultProps, hasChanges, componentName]);
+    if (!usage || !componentName || !props || Object.keys(props).length === 0) return usage;
+
+    const mergedProps = { ...props, ...computedProps };
+    return injectPropsIntoCode(usage, mergedProps, {}, componentName, demoOnlyProps);
+  }, [usage, props, computedProps, componentName, demoOnlyProps]);
 
   const renderCssSection = () =>
     css && (
@@ -91,7 +116,6 @@ const CodeExample = ({ codeObject, componentName }) => {
     <>
       <CliInstallation deps={dependencies} />
 
-      {/* Dynamic Usage Section - shows first if props changed */}
       {dynamicUsage && (
         <div>
           <h2 className="demo-title">
@@ -103,7 +127,7 @@ const CodeExample = ({ codeObject, componentName }) => {
 
       {Object.entries(codeObject).map(([name, snippet]) => {
         if (SKIP_KEYS.has(name)) return null;
-        if (name === 'usage') return null; // Already rendered above
+        if (name === 'usage') return null;
 
         if (name === 'code' || name === 'tsCode') {
           return (

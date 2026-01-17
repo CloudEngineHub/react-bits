@@ -93,8 +93,22 @@ const ElectricBorderDemo = () => {
   const activeProps = props[activePropsKey];
   const updateActiveProps = updates => updateProp(activePropsKey, { ...activeProps, ...updates });
 
+  const activeProps = example === 'card' ? cardProps : example === 'button' ? buttonProps : circleProps;
+
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['example', 'cardProps', 'buttonProps', 'circleProps']}
+      computedProps={{
+        color: activeProps.color,
+        speed: activeProps.speed,
+        chaos: activeProps.chaos,
+        borderRadius: activeProps.borderRadius
+      }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} overflow="hidden">

@@ -19,14 +19,14 @@ import Iridescence from '../../content/Backgrounds/Iridescence/Iridescence';
 import { iridescence } from '../../constants/code/Backgrounds/iridescenceCode';
 
 const DEFAULT_PROPS = {
-  colors: [0.5, 0.6, 0.8],
+  color: [0.5, 0.6, 0.8],
   speed: 1,
-  mouseInteraction: true
+  mouseReact: true
 };
 
 const IridescenceDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { colors, speed, mouseInteraction } = props;
+  const { color, speed, mouseReact } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -65,7 +65,7 @@ const IridescenceDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
-            <Iridescence key={key} speed={speed} color={colors} mouseReact={mouseInteraction} />
+            <Iridescence key={key} speed={speed} color={color} mouseReact={mouseReact} />
 
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Radiant iridescence with customizable colors" />
@@ -74,7 +74,7 @@ const IridescenceDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="iridescence"
-              currentProps={{ speed, mouseReact: mouseInteraction }}
+              currentProps={{ speed, mouseReact }}
               defaultProps={{ speed: 1.0, amplitude: 0.1, mouseReact: true }}
             />
           </Flex>
@@ -88,12 +88,12 @@ const IridescenceDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[0]}
+                  value={color[0]}
                   title="Red"
                   onChange={val => {
-                    const newColors = [...colors];
-                    newColors[0] = val;
-                    updateProp('colors', newColors);
+                    const newColor = [...color];
+                    newColor[0] = val;
+                    updateProp('color', newColor);
                   }}
                 />
               </Flex>
@@ -104,12 +104,12 @@ const IridescenceDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[1]}
+                  value={color[1]}
                   title="Green"
                   onChange={val => {
-                    const newColors = [...colors];
-                    newColors[1] = val;
-                    updateProp('colors', newColors);
+                    const newColor = [...color];
+                    newColor[1] = val;
+                    updateProp('color', newColor);
                   }}
                 />
               </Flex>
@@ -120,12 +120,12 @@ const IridescenceDemo = () => {
                   max={1}
                   width={50}
                   step={0.1}
-                  value={colors[2]}
+                  value={color[2]}
                   title="Blue"
                   onChange={val => {
-                    const newColors = [...colors];
-                    newColors[2] = val;
-                    updateProp('colors', newColors);
+                    const newColor = [...color];
+                    newColor[2] = val;
+                    updateProp('color', newColor);
                   }}
                   minWidth="60px"
                   maxWidth="60px"
@@ -147,9 +147,9 @@ const IridescenceDemo = () => {
 
             <PreviewSwitch
               title="Enable Mouse Interaction"
-              isChecked={mouseInteraction}
+              isChecked={mouseReact}
               onChange={checked => {
-                updateProp('mouseInteraction', checked);
+                updateProp('mouseReact', checked);
                 forceRerender();
               }}
             />

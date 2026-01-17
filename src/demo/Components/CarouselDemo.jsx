@@ -17,7 +17,7 @@ import { carousel } from '../../constants/code/Components/carouselCode';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 
 const DEFAULT_PROPS = {
-  width: 300,
+  baseWidth: 300,
   autoplay: false,
   autoplayDelay: 3000,
   pauseOnHover: false,
@@ -27,7 +27,7 @@ const DEFAULT_PROPS = {
 
 const CarouselDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { width, autoplay, autoplayDelay, pauseOnHover, loop, round } = props;
+  const { baseWidth, autoplay, autoplayDelay, pauseOnHover, loop, round } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -86,7 +86,7 @@ const CarouselDemo = () => {
           <Box position="relative" className="demo-container" h={400} overflow="hidden">
             <Carousel
               key={key}
-              baseWidth={width}
+              baseWidth={baseWidth}
               autoplay={autoplay}
               autoplayDelay={autoplayDelay}
               pauseOnHover={pauseOnHover}
@@ -101,9 +101,9 @@ const CarouselDemo = () => {
               min={250}
               max={330}
               step={10}
-              value={width}
+              value={baseWidth}
               onChange={val => {
-                updateProp('width', val);
+                updateProp('baseWidth', val);
                 forceRerender();
               }}
             />

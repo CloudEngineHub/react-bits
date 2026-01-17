@@ -15,12 +15,12 @@ import { pixelCard } from '../../constants/code/Components/pixelCardCode';
 import PixelCard from '../../content/Components/PixelCard/PixelCard';
 
 const DEFAULT_PROPS = {
-  selectedVariant: 'default'
+  variant: 'default'
 };
 
 const PixelCardDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { selectedVariant } = props;
+  const { variant } = props;
 
   const propData = useMemo(
     () => [
@@ -89,7 +89,7 @@ const PixelCardDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden">
-            <PixelCard variant={selectedVariant}>
+            <PixelCard variant={variant}>
               <Flex w="100%" h="100%" position="absolute" justifyContent="center" alignItems="center">
                 <Text fontSize="3rem" userSelect="none" fontWeight={900} mixBlendMode="screen" color="#271E37">
                   Hover Me.
@@ -102,11 +102,11 @@ const PixelCardDemo = () => {
             <PreviewSelect
               title="Variant"
               options={options}
-              value={selectedVariant}
+              value={variant}
               name="variant"
               width={150}
               onChange={val => {
-                updateProp('selectedVariant', val);
+                updateProp('variant', val);
               }}
             />
           </Customize>
