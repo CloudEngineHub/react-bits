@@ -30,7 +30,8 @@ const DEFAULT_PROPS = {
   pillarHeight: 0.4,
   noiseIntensity: 0.5,
   mixBlendMode: 'screen',
-  pillarRotation: 25
+  pillarRotation: 25,
+  quality: 'high'
 };
 
 const LightPillarDemo = () => {
@@ -46,7 +47,8 @@ const LightPillarDemo = () => {
     pillarHeight,
     noiseIntensity,
     mixBlendMode,
-    pillarRotation
+    pillarRotation,
+    quality
   } = props;
 
   const [key, forceRerender] = useForceRerender();
@@ -58,6 +60,12 @@ const LightPillarDemo = () => {
     { value: 'lighten', label: 'Lighten' },
     { value: 'color-dodge', label: 'Color Dodge' },
     { value: 'luminosity', label: 'Luminosity' }
+  ];
+
+  const qualityOptions = [
+    { value: 'low', label: 'Low' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'high', label: 'High' }
   ];
 
   const propData = useMemo(
@@ -133,6 +141,12 @@ const LightPillarDemo = () => {
         type: 'number',
         default: '0',
         description: 'Rotation angle of the pillar in degrees (0-360).'
+      },
+      {
+        name: 'quality',
+        type: "'low' | 'medium' | 'high'",
+        default: "'high'",
+        description: 'Rendering quality level. Lower settings improve performance on mobile devices. Mobile devices automatically downgrade from high to medium.'
       }
     ],
     []
@@ -156,6 +170,7 @@ const LightPillarDemo = () => {
               noiseIntensity={noiseIntensity}
               mixBlendMode={mixBlendMode}
               pillarRotation={pillarRotation}
+              quality={quality}
             />
             <BackgroundContent pillText="New Background" headline="Ethereal light pillar for your hero sections." />
           </Box>
@@ -279,6 +294,13 @@ const LightPillarDemo = () => {
               options={blendModeOptions}
               value={mixBlendMode}
               onChange={v => updateProp('mixBlendMode', v)}
+              width={150}
+            />
+            <PreviewSelect
+              title="Quality"
+              options={qualityOptions}
+              value={quality}
+              onChange={v => updateProp('quality', v)}
               width={150}
             />
           </Customize>

@@ -14,6 +14,7 @@ interface LightPillarProps {
   noiseIntensity?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
   pillarRotation?: number;
+  quality?: 'low' | 'medium' | 'high';
 }
 
 const LightPillar: React.FC<LightPillarProps> = ({
@@ -28,7 +29,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
   pillarHeight = 0.4,
   noiseIntensity = 0.5,
   mixBlendMode = 'screen',
-  pillarRotation = 0
+  pillarRotation = 0,
+  quality = 'high'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -47,7 +49,6 @@ const LightPillar: React.FC<LightPillarProps> = ({
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) {
       setWebGLSupported(false);
-      console.warn('WebGL is not supported in this browser');
     }
   }, []);
 
@@ -57,6 +58,21 @@ const LightPillar: React.FC<LightPillarProps> = ({
     const container = containerRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isLowEndDevice = isMobile || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+    
+    let effectiveQuality = quality;
+    if (isLowEndDevice && quality === 'high') effectiveQuality = 'medium';
+    if (isMobile && quality !== 'low') effectiveQuality = 'low';
+
+    const qualitySettings = {
+      low: { iterations: 24, waveIterations: 1, pixelRatio: 0.5, precision: 'mediump', stepMultiplier: 1.5 },
+      medium: { iterations: 40, waveIterations: 2, pixelRatio: 0.65, precision: 'mediump', stepMultiplier: 1.2 },
+      high: { iterations: 80, waveIterations: 4, pixelRatio: Math.min(window.devicePixelRatio, 2), precision: 'highp', stepMultiplier: 1.0 }
+    };
+
+    const settings = qualitySettings[effectiveQuality] || qualitySettings.medium;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -69,8 +85,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
       renderer = new THREE.WebGLRenderer({
         antialias: false,
         alpha: true,
-        powerPreference: 'high-performance',
-        precision: 'lowp',
+        powerPreference: effectiveQuality === 'low' ? 'low-power' : 'high-performance',
+        precision: settings.precision,
         stencil: false,
         depth: false
       });
@@ -81,7 +97,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
     }
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(settings.pixelRatio);
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -113,61 +129,32 @@ const LightPillar: React.FC<LightPillarProps> = ({
       uniform float uPillarHeight;
       uniform float uNoiseIntensity;
       uniform float uPillarRotation;
+      uniform float uRotCos;
+      uniform float uRotSin;
+      uniform float uPillarRotCos;
+      uniform float uPillarRotSin;
+      uniform float uWaveSin[4];
+      uniform float uWaveCos[4];
       varying vec2 vUv;
 
       const float PI = 3.141592653589793;
       const float EPSILON = 0.001;
       const float E = 2.71828182845904523536;
-      const float HALF = 0.5;
 
-      mat2 rot(float angle) {
-        float s = sin(angle);
-        float c = cos(angle);
-        return mat2(c, -s, s, c);
-      }
-
-      // Procedural noise function
       float noise(vec2 coord) {
-        float G = E;
-        vec2 r = (G * sin(G * coord));
+        vec2 r = (E * sin(E * coord));
         return fract(r.x * r.y * (1.0 + coord.x));
-      }
-
-      // Apply layered wave deformation to position
-      vec3 applyWaveDeformation(vec3 pos, float timeOffset) {
-        float frequency = 1.0;
-        float amplitude = 1.0;
-        vec3 deformed = pos;
-        
-        for(float i = 0.0; i < 4.0; i++) {
-          deformed.xz *= rot(0.4);
-          float phase = timeOffset * i * 2.0;
-          vec3 oscillation = cos(deformed.zxy * frequency - phase);
-          deformed += oscillation * amplitude;
-          frequency *= 2.0;
-          amplitude *= HALF;
-        }
-        return deformed;
-      }
-
-      // Polynomial smooth blending between two values
-      float blendMin(float a, float b, float k) {
-        float scaledK = k * 4.0;
-        float h = max(scaledK - abs(a - b), 0.0);
-        return min(a, b) - h * h * 0.25 / scaledK;
-      }
-
-      float blendMax(float a, float b, float k) {
-        return -blendMin(-a, -b, k);
       }
 
       void main() {
         vec2 fragCoord = vUv * uResolution;
         vec2 uv = (fragCoord * 2.0 - uResolution) / uResolution.y;
         
-        // Apply 2D rotation to UV coordinates
-        float rotAngle = uPillarRotation * PI / 180.0;
-        uv *= rot(rotAngle);
+        // Apply 2D rotation to UV coordinates using pre-computed values
+        uv = vec2(
+          uv.x * uPillarRotCos - uv.y * uPillarRotSin,
+          uv.x * uPillarRotSin + uv.y * uPillarRotCos
+        );
 
         vec3 origin = vec3(0.0, 0.0, -10.0);
         vec3 direction = normalize(vec3(uv, 1.0));
@@ -175,36 +162,69 @@ const LightPillar: React.FC<LightPillarProps> = ({
         float maxDepth = 50.0;
         float depth = 0.1;
 
-        mat2 rotX = rot(uTime * 0.3);
+        // Use pre-computed rotation values (or mouse-based)
+        float rotCos = uRotCos;
+        float rotSin = uRotSin;
         if(uInteractive && length(uMouse) > 0.0) {
-          rotX = rot(uMouse.x * PI * 2.0);
+          float mouseAngle = uMouse.x * PI * 2.0;
+          rotCos = cos(mouseAngle);
+          rotSin = sin(mouseAngle);
         }
 
         vec3 color = vec3(0.0);
         
-        for(float i = 0.0; i < 100.0; i++) {
+        const int ITERATIONS = ${settings.iterations};
+        const int WAVE_ITERATIONS = ${settings.waveIterations};
+        const float STEP_MULT = ${settings.stepMultiplier.toFixed(1)};
+        
+        for(int i = 0; i < ITERATIONS; i++) {
           vec3 pos = origin + direction * depth;
-          pos.xz *= rotX;
+          
+          // Inline rotation: pos.xz *= rotMat
+          float newX = pos.x * rotCos - pos.z * rotSin;
+          float newZ = pos.x * rotSin + pos.z * rotCos;
+          pos.x = newX;
+          pos.z = newZ;
 
           // Apply vertical scaling and wave deformation
           vec3 deformed = pos;
           deformed.y *= uPillarHeight;
-          deformed = applyWaveDeformation(deformed + vec3(0.0, uTime, 0.0), uTime);
+          deformed = deformed + vec3(0.0, uTime, 0.0);
+          
+          // Inlined wave deformation
+          float frequency = 1.0;
+          float amplitude = 1.0;
+          for(int j = 0; j < WAVE_ITERATIONS; j++) {
+            // Inline rotation: deformed.xz *= rot(0.4) using pre-computed
+            float wx = deformed.x * uWaveCos[j] - deformed.z * uWaveSin[j];
+            float wz = deformed.x * uWaveSin[j] + deformed.z * uWaveCos[j];
+            deformed.x = wx;
+            deformed.z = wz;
+            
+            float phase = uTime * float(j) * 2.0;
+            vec3 oscillation = cos(deformed.zxy * frequency - phase);
+            deformed += oscillation * amplitude;
+            frequency *= 2.0;
+            amplitude *= 0.5;
+          }
           
           // Calculate distance field using cosine pattern
           vec2 cosinePair = cos(deformed.xz);
           float fieldDistance = length(cosinePair) - 0.2;
           
-          // Radial boundary constraint
+          // Radial boundary constraint (inlined blendMax)
           float radialBound = length(pos.xz) - uPillarWidth;
-          fieldDistance = blendMax(radialBound, fieldDistance, 1.0);
+          float k = 4.0;
+          float h = max(k - abs(-radialBound - (-fieldDistance)), 0.0);
+          fieldDistance = -(min(-radialBound, -fieldDistance) - h * h * 0.25 / k);
+          
           fieldDistance = abs(fieldDistance) * 0.15 + 0.01;
 
           vec3 gradient = mix(uBottomColor, uTopColor, smoothstep(15.0, -15.0, pos.y));
-          color += gradient * pow(1.0 / fieldDistance, 1.0);
+          color += gradient / fieldDistance;
 
           if(fieldDistance < EPSILON || depth > maxDepth) break;
-          depth += fieldDistance;
+          depth += fieldDistance * STEP_MULT;
         }
 
         // Normalize by pillar width to maintain consistent glow regardless of size
@@ -218,6 +238,20 @@ const LightPillar: React.FC<LightPillarProps> = ({
         gl_FragColor = vec4(color * uIntensity, 1.0);
       }
     `;
+
+    // Pre-compute wave rotation values
+    const waveAngle = 0.4;
+    const waveSinValues = new Float32Array(4);
+    const waveCosValues = new Float32Array(4);
+    for (let i = 0; i < 4; i++) {
+      waveSinValues[i] = Math.sin(waveAngle);
+      waveCosValues[i] = Math.cos(waveAngle);
+    }
+
+    // Pre-compute pillar rotation
+    const pillarRotRad = (pillarRotation * Math.PI) / 180.0;
+    const pillarRotCos = Math.cos(pillarRotRad);
+    const pillarRotSin = Math.sin(pillarRotRad);
 
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -234,7 +268,13 @@ const LightPillar: React.FC<LightPillarProps> = ({
         uPillarWidth: { value: pillarWidth },
         uPillarHeight: { value: pillarHeight },
         uNoiseIntensity: { value: noiseIntensity },
-        uPillarRotation: { value: pillarRotation }
+        uPillarRotation: { value: pillarRotation },
+        uRotCos: { value: 1.0 },
+        uRotSin: { value: 0.0 },
+        uPillarRotCos: { value: pillarRotCos },
+        uPillarRotSin: { value: pillarRotSin },
+        uWaveSin: { value: waveSinValues },
+        uWaveCos: { value: waveCosValues }
       },
       transparent: true,
       depthWrite: false,
@@ -270,7 +310,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
 
     // Animation loop with fixed timestep
     let lastTime = performance.now();
-    const targetFPS = 60;
+    const targetFPS = effectiveQuality === 'low' ? 30 : 60;
     const frameTime = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
@@ -281,6 +321,12 @@ const LightPillar: React.FC<LightPillarProps> = ({
       if (deltaTime >= frameTime) {
         timeRef.current += 0.016 * rotationSpeed;
         materialRef.current.uniforms.uTime.value = timeRef.current;
+
+        // Pre-compute rotation on CPU
+        const rotAngle = timeRef.current * 0.3;
+        materialRef.current.uniforms.uRotCos.value = Math.cos(rotAngle);
+        materialRef.current.uniforms.uRotSin.value = Math.sin(rotAngle);
+
         rendererRef.current.render(sceneRef.current, cameraRef.current);
         lastTime = currentTime - (deltaTime % frameTime);
       }
@@ -348,7 +394,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
     pillarHeight,
     noiseIntensity,
     pillarRotation,
-    webGLSupported
+    webGLSupported,
+    quality
   ]);
 
   if (!webGLSupported) {
