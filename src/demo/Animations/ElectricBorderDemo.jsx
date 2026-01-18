@@ -93,8 +93,6 @@ const ElectricBorderDemo = () => {
   const activeProps = props[activePropsKey];
   const updateActiveProps = updates => updateProp(activePropsKey, { ...activeProps, ...updates });
 
-  const activeProps = example === 'card' ? cardProps : example === 'button' ? buttonProps : circleProps;
-
   return (
     <ComponentPropsProvider
       props={props}

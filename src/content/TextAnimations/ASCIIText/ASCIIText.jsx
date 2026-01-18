@@ -257,7 +257,7 @@ class CanvAscii {
       // Font loading failed, continue with fallback
     }
     await document.fonts.ready;
-    
+
     this.setMesh();
     this.setRenderer();
   }

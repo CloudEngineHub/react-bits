@@ -146,7 +146,8 @@ const LightPillarDemo = () => {
         name: 'quality',
         type: "'low' | 'medium' | 'high'",
         default: "'high'",
-        description: 'Rendering quality level. Lower settings improve performance on mobile devices. Mobile devices automatically downgrade from high to medium.'
+        description:
+          'Rendering quality level. Lower settings improve performance on mobile devices. Mobile devices automatically downgrade from high to medium.'
       }
     ],
     []

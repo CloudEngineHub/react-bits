@@ -660,8 +660,7 @@ export const componentMetadata = {
     category: 'Components',
     name: 'ProfileCard',
     docsUrl: 'https://reactbits.dev/components/profile-card',
-    tags: [],
-    variants: ['JS-CSS', 'TS-CSS']
+    tags: []
   },
   'Components/ScrollStack': {
     videoUrl: '/assets/video/scrollstack.webm',

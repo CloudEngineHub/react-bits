@@ -50,7 +50,7 @@ const LightPillar = ({
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const isLowEndDevice = isMobile || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
-    
+
     let effectiveQuality = quality;
     if (isLowEndDevice && quality === 'high') effectiveQuality = 'medium';
     if (isMobile && quality !== 'low') effectiveQuality = 'low';
@@ -58,7 +58,13 @@ const LightPillar = ({
     const qualitySettings = {
       low: { iterations: 24, waveIterations: 1, pixelRatio: 0.5, precision: 'mediump', stepMultiplier: 1.5 },
       medium: { iterations: 40, waveIterations: 2, pixelRatio: 0.65, precision: 'mediump', stepMultiplier: 1.2 },
-      high: { iterations: 80, waveIterations: 4, pixelRatio: Math.min(window.devicePixelRatio, 2), precision: 'highp', stepMultiplier: 1.0 }
+      high: {
+        iterations: 80,
+        waveIterations: 4,
+        pixelRatio: Math.min(window.devicePixelRatio, 2),
+        precision: 'highp',
+        stepMultiplier: 1.0
+      }
     };
 
     const settings = qualitySettings[effectiveQuality] || qualitySettings.medium;
@@ -179,7 +185,7 @@ const LightPillar = ({
       }
     `;
 
-    const pillarRotRad = pillarRotation * Math.PI / 180;
+    const pillarRotRad = (pillarRotation * Math.PI) / 180;
     const waveSin = Math.sin(0.4);
     const waveCos = Math.cos(0.4);
 
