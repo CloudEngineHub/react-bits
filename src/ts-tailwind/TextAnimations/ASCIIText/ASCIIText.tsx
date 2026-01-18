@@ -322,10 +322,17 @@ class CanvAscii {
     this.camera.position.z = 30;
 
     this.scene = new THREE.Scene();
-    this.mouse = { x: 0, y: 0 };
+    this.mouse = { x: this.width / 2, y: this.height / 2 };
 
     this.onMouseMove = this.onMouseMove.bind(this);
+  }
 
+  async init() {
+    try {
+      await document.fonts.load('600 200px "IBM Plex Mono"');
+      await document.fonts.load('500 12px "IBM Plex Mono"');
+    } catch (e) {}
+    await document.fonts.ready;
     this.setMesh();
     this.setRenderer();
   }
@@ -454,12 +461,18 @@ class CanvAscii {
 
   dispose() {
     cancelAnimationFrame(this.animationFrameId);
-    this.filter.dispose();
-    this.container.removeChild(this.filter.domElement);
+    if (this.filter) {
+      this.filter.dispose();
+      if (this.filter.domElement.parentNode) {
+        this.container.removeChild(this.filter.domElement);
+      }
+    }
     this.container.removeEventListener('mousemove', this.onMouseMove);
     this.container.removeEventListener('touchmove', this.onMouseMove);
     this.clear();
-    this.renderer.dispose();
+    if (this.renderer) {
+      this.renderer.dispose();
+    }
   }
 }
 
@@ -486,73 +499,71 @@ export default function ASCIIText({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const { width, height } = containerRef.current.getBoundingClientRect();
+    let cancelled = false;
+    let observer: IntersectionObserver | null = null;
+    let ro: ResizeObserver | null = null;
 
-    if (width === 0 || height === 0) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting && entry.boundingClientRect.width > 0 && entry.boundingClientRect.height > 0) {
-            const { width: w, height: h } = entry.boundingClientRect;
-
-            asciiRef.current = new CanvAscii(
-              {
-                text,
-                asciiFontSize,
-                textFontSize,
-                textColor,
-                planeBaseHeight,
-                enableWaves
-              },
-              containerRef.current!,
-              w,
-              h
-            );
-            asciiRef.current.load();
-
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.1 }
+    const createAndInit = async (container: HTMLDivElement, w: number, h: number) => {
+      const instance = new CanvAscii(
+        { text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves },
+        container,
+        w,
+        h
       );
+      await instance.init();
+      return instance;
+    };
 
-      observer.observe(containerRef.current);
+    const setup = async () => {
+      const { width, height } = containerRef.current!.getBoundingClientRect();
 
-      return () => {
-        observer.disconnect();
-        if (asciiRef.current) {
-          asciiRef.current.dispose();
-        }
-      };
-    }
+      if (width === 0 || height === 0) {
+        observer = new IntersectionObserver(
+          async ([entry]) => {
+            if (cancelled) return;
+            if (entry.isIntersecting && entry.boundingClientRect.width > 0 && entry.boundingClientRect.height > 0) {
+              const { width: w, height: h } = entry.boundingClientRect;
+              observer?.disconnect();
+              observer = null;
 
-    asciiRef.current = new CanvAscii(
-      {
-        text,
-        asciiFontSize,
-        textFontSize,
-        textColor,
-        planeBaseHeight,
-        enableWaves
-      },
-      containerRef.current,
-      width,
-      height
-    );
-    asciiRef.current.load();
-
-    const ro = new ResizeObserver(entries => {
-      if (!entries[0] || !asciiRef.current) return;
-      const { width: w, height: h } = entries[0].contentRect;
-      if (w > 0 && h > 0) {
-        asciiRef.current.setSize(w, h);
+              if (!cancelled) {
+                asciiRef.current = await createAndInit(containerRef.current!, w, h);
+                if (!cancelled && asciiRef.current) {
+                  asciiRef.current.load();
+                }
+              }
+            }
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(containerRef.current!);
+        return;
       }
-    });
-    ro.observe(containerRef.current);
+
+      asciiRef.current = await createAndInit(containerRef.current!, width, height);
+      if (!cancelled && asciiRef.current) {
+        asciiRef.current.load();
+
+        ro = new ResizeObserver(entries => {
+          if (!entries[0] || !asciiRef.current) return;
+          const { width: w, height: h } = entries[0].contentRect;
+          if (w > 0 && h > 0) {
+            asciiRef.current.setSize(w, h);
+          }
+        });
+        ro.observe(containerRef.current!);
+      }
+    };
+
+    setup();
 
     return () => {
-      ro.disconnect();
+      cancelled = true;
+      if (observer) observer.disconnect();
+      if (ro) ro.disconnect();
       if (asciiRef.current) {
         asciiRef.current.dispose();
+        asciiRef.current = null;
       }
     };
   }, [text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves]);
@@ -568,12 +579,7 @@ export default function ASCIIText({
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
-
-        body {
-          margin: 0;
-          padding: 0;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap');
 
         .ascii-text-container canvas {
           position: absolute;
