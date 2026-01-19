@@ -1,4 +1,5 @@
-const variantForShadcn = (language, style) => `${(language || 'JS').toUpperCase()}-${(style || 'CSS').toUpperCase()}`;
+const variantForShadcn = (language, style) =>
+  `${(language || 'JS').toUpperCase()}-${(style || 'CSS').toUpperCase().replace('TAILWIND', 'TW')}`;
 
 const UPPERCASE_PARTS = new Set(['ascii']);
 
