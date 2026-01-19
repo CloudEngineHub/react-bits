@@ -42,55 +42,55 @@ const WavesDemo = () => {
       {
         name: 'waveSpeedX',
         type: 'number',
-        default: 0.0125,
+        default: '0.0125',
         description: 'Horizontal speed factor for the wave animation.'
       },
       {
         name: 'waveSpeedY',
         type: 'number',
-        default: 0.005,
+        default: '0.005',
         description: 'Vertical speed factor for the wave animation.'
       },
       {
         name: 'waveAmpX',
         type: 'number',
-        default: 32,
+        default: '32',
         description: 'Horizontal amplitude of each wave.'
       },
       {
         name: 'waveAmpY',
         type: 'number',
-        default: 16,
+        default: '16',
         description: 'Vertical amplitude of each wave.'
       },
       {
         name: 'xGap',
         type: 'number',
-        default: 10,
+        default: '10',
         description: 'Horizontal gap between individual wave lines.'
       },
       {
         name: 'yGap',
         type: 'number',
-        default: 32,
+        default: '32',
         description: 'Vertical gap between points on each wave line.'
       },
       {
         name: 'friction',
         type: 'number',
-        default: 0.925,
+        default: '0.925',
         description: 'Controls how quickly the cursor effect slows down.'
       },
       {
         name: 'tension',
         type: 'number',
-        default: 0.005,
+        default: '0.005',
         description: "Determines the 'springiness' of the cursor effect on points."
       },
       {
         name: 'maxCursorMove',
         type: 'number',
-        default: 100,
+        default: '100',
         description: 'Limits how far each point can shift due to cursor movement.'
       },
       {

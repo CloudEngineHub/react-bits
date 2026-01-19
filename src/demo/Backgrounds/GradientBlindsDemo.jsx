@@ -60,62 +60,62 @@ const GradientBlindsDemo = () => {
       {
         name: 'angle',
         type: 'number',
-        default: 0,
+        default: '0',
         description: 'Rotation of the gradient in degrees (0 = horizontal left→right).'
       },
       {
         name: 'noise',
         type: 'number',
-        default: 0.3,
+        default: '0.3',
         description: 'Strength of per‑pixel noise added to the final color (0 = clean).'
       },
       {
         name: 'blindCount',
         type: 'number',
-        default: 16,
+        default: '16',
         description: 'Target number of vertical blinds. Acts as an upper bound when blindMinWidth is set.'
       },
       {
         name: 'blindMinWidth',
         type: 'number',
-        default: 60,
+        default: '60',
         description:
           'Minimum pixel width for each blind. Reduces effective blindCount if necessary to satisfy this width.'
       },
       {
         name: 'mouseDampening',
         type: 'number',
-        default: 0.15,
+        default: '0.15',
         description: 'Easing time constant (seconds) for the spotlight to follow the cursor. 0 = immediate.'
       },
       {
         name: 'mirrorGradient',
         type: 'boolean',
-        default: false,
+        default: 'false',
         description: 'Creates a mirrored ping‑pong gradient progression instead of a linear wrap.'
       },
       {
         name: 'spotlightRadius',
         type: 'number',
-        default: 0.5,
+        default: '0.5',
         description: 'Normalized spotlight radius relative to the shorter canvas dimension.'
       },
       {
         name: 'spotlightSoftness',
         type: 'number',
-        default: 1,
+        default: '1',
         description: 'Falloff exponent for spotlight edge. Higher = sharper edge (values >1 increase contrast).'
       },
       {
         name: 'spotlightOpacity',
         type: 'number',
-        default: 1,
+        default: '1',
         description: 'Overall intensity multiplier for the spotlight highlight.'
       },
       {
         name: 'distortAmount',
         type: 'number',
-        default: 0,
+        default: '0',
         description: 'Sin/cos warp intensity applied to UVs for subtle wavy distortion.'
       },
       {
@@ -133,7 +133,7 @@ const GradientBlindsDemo = () => {
       {
         name: 'paused',
         type: 'boolean',
-        default: false,
+        default: 'false',
         description: 'If true, stops rendering updates (freezing the current frame).'
       },
       {
