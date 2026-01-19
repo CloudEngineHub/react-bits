@@ -476,7 +476,7 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
       >
         <Flex justify="space-between" align="center" mb={6}>
           <Text fontSize="18px" fontWeight={700} color="#fff">
-            Export Code
+            Export Your Background
           </Text>
           <Flex
             as="button"
@@ -495,7 +495,7 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
 
         <Box mb={6}>
           <Text className="demo-title" mb={3}>
-            Install Command
+            Step 1: Install via CLI
           </Text>
           <Box className="cli-install">
             <Box className="cli-install-section cli-mode">
@@ -542,7 +542,7 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
 
         <Box>
           <Text className="demo-title" mb={3}>
-            Code
+            Step 2: Copy Code
           </Text>
           <CodeHighlighter
             language="jsx"
