@@ -207,10 +207,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
           pt={{ base: 4, md: 0 }}
         >
           <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#FFFFFF" letterSpacing={'-.5px'}>
-            React Bits Pro is coming.
+            React Bits Pro launches February 11.
           </Text>
           <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
-            Watch the latest teaser{' '}
+            Watch the final teaser{' '}
             <Icon boxSize={{ base: 2, md: 3 }} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
           </Text>
         </Flex>
