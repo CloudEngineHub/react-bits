@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef, ReactNode } from 'react';
-import { motion, HTMLMotionProps } from 'motion/react';
+import { useEffect, useState, useRef } from 'react';
+import { motion } from 'motion/react';
+import type { HTMLMotionProps } from 'motion/react';
 
 const styles = {
   wrapper: {
@@ -7,7 +8,7 @@ const styles = {
     whiteSpace: 'pre-wrap'
   },
   srOnly: {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     width: '1px',
     height: '1px',
     padding: 0,
