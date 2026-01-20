@@ -221,7 +221,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
           aspectRatio={{ base: '1', md: '16/9' }}
           ml="auto"
           bg="#060010"
-          backgroundImage="url('/assets/demo/poster.jpg')"
+          backgroundImage="url('/assets/demo/poster.webp')"
           backgroundSize="cover"
           backgroundPosition="center"
           borderRadius="17px"
@@ -277,7 +277,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Dialog.Body>
               <Box w="100%" aspectRatio={16 / 9} bg="#000" borderRadius="12px" overflow="hidden" my={4}>
                 <video
-                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/rbpteasertwo.mp4"
+                  src="https://agppshzgclcewcknqkgj.supabase.co/storage/v1/object/public/videos/rbpteaser3.mp4"
                   controls
                   autoPlay
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
