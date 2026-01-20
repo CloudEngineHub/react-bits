@@ -12,7 +12,7 @@ export const NEW = [
   'Reflective Card',
   'Pixel Snow'
 ];
-export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu'];
+export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
