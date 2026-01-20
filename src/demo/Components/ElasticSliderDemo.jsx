@@ -30,20 +30,20 @@ const ElasticSliderDemo = () => {
       {
         name: 'defaultValue',
         type: 'number',
-        default: 50,
+        default: '50',
         description: 'The initial value of the slider. It can be less than startingValue or greater than maxValue.'
       },
       {
         name: 'startingValue',
         type: 'number',
-        default: 0,
+        default: '0',
         description:
           "The starting point for the slider's range, e.g., startingValue=100 allows the slider to start at 100."
       },
       {
         name: 'maxValue',
         type: 'number',
-        default: 100,
+        default: '100',
         description: 'The maximum value the slider can reach.'
       },
       {
@@ -55,13 +55,13 @@ const ElasticSliderDemo = () => {
       {
         name: 'isStepped',
         type: 'boolean',
-        default: false,
+        default: 'false',
         description: 'Enables or disables stepped increments on the slider.'
       },
       {
         name: 'stepSize',
         type: 'number',
-        default: 1,
+        default: '1',
         description: 'The size of the increments for the slider when isStepped is enabled.'
       },
       {

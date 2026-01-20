@@ -61,25 +61,25 @@ const BounceCardsDemo = () => {
       {
         name: 'containerWidth',
         type: 'number',
-        default: 400,
+        default: '400',
         description: 'Width of the container (px).'
       },
       {
         name: 'containerHeight',
         type: 'number',
-        default: 400,
+        default: '400',
         description: 'Height of the container (px).'
       },
       {
         name: 'animationDelay',
         type: 'number',
-        default: 0.5,
+        default: '0.5',
         description: 'Delay (in seconds) before the animation starts.'
       },
       {
         name: 'animationStagger',
         type: 'number',
-        default: 0.06,
+        default: '0.06',
         description: "Time (in seconds) between each card's animation."
       },
       {
