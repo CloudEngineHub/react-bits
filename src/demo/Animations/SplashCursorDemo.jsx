@@ -22,73 +22,73 @@ const SplashCursorDemo = () => {
       {
         name: 'SIM_RESOLUTION',
         type: 'number',
-        default: 128,
+        default: '128',
         description: 'Fluid simulation resolution for velocity fields.'
       },
       {
         name: 'DYE_RESOLUTION',
         type: 'number',
-        default: 1440,
+        default: '1440',
         description: 'Resolution of the color/dye texture.'
       },
       {
         name: 'CAPTURE_RESOLUTION',
         type: 'number',
-        default: 512,
+        default: '512',
         description: 'Resolution used for certain capture operations (rarely changed).'
       },
       {
         name: 'DENSITY_DISSIPATION',
         type: 'number',
-        default: 3.5,
+        default: '3.5',
         description: 'Rate at which color/density dissipates over time.'
       },
       {
         name: 'VELOCITY_DISSIPATION',
         type: 'number',
-        default: 2,
+        default: '2',
         description: 'Rate at which velocity dissipates over time.'
       },
       {
         name: 'PRESSURE',
         type: 'number',
-        default: 0.1,
+        default: '0.1',
         description: 'Base pressure for the fluid simulation.'
       },
       {
         name: 'PRESSURE_ITERATIONS',
         type: 'number',
-        default: 20,
+        default: '20',
         description: 'Number of Jacobi iterations used for the pressure solver.'
       },
       {
         name: 'CURL',
         type: 'number',
-        default: 3,
+        default: '3',
         description: 'Amount of vorticity/curl to apply for swirling effects.'
       },
       {
         name: 'SPLAT_RADIUS',
         type: 'number',
-        default: 0.2,
+        default: '0.2',
         description: "Radius of the 'splat' effect when user interacts."
       },
       {
         name: 'SPLAT_FORCE',
         type: 'number',
-        default: 6000,
+        default: '6000',
         description: "Force of the fluid 'splat' on each interaction."
       },
       {
         name: 'SHADING',
         type: 'boolean',
-        default: true,
+        default: 'true',
         description: 'Toggles simple lighting/shading on the fluid.'
       },
       {
         name: 'COLOR_UPDATE_SPEED',
         type: 'number',
-        default: 10,
+        default: '10',
         description: 'Frequency at which pointer colors are re-randomized.'
       },
       {
@@ -100,12 +100,14 @@ const SplashCursorDemo = () => {
       {
         name: 'TRANSPARENT',
         type: 'boolean',
-        default: true,
+        default: 'true',
         description: 'Determines if the canvas background should be rendered with alpha.'
       }
     ],
     []
   );
+
+  console.log(propData);
 
   return (
     <>
