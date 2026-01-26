@@ -24,6 +24,12 @@ const ShowcasePage = () => {
       image: '/assets/showcase/showcase-izadoesdev.webp'
     },
     {
+      name: 'Dominik Koch',
+      url: 'https://app.usenotra.com/login',
+      using: '<PixelBlast />',
+      image: '/assets/showcase/showcase-dominik.webp'
+    },
+    {
       name: 'Afaq',
       url: 'https://www.evolvion.io/',
       using: '<SpotlightCard />',
