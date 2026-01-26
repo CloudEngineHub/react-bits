@@ -2,10 +2,6 @@ import { diamondSponsors, platinumSponsors, silverSponsors } from '../../../cons
 import { Gem, Crown, Medal, ArrowRight, Heart } from 'lucide-react';
 import './Sponsors.css';
 
-const DIAMOND_SLOTS = 2;
-const PLATINUM_SLOTS = 5;
-const SILVER_SLOTS = 10;
-
 const buildSponsorUrl = (url, tier) => {
   if (!url) return null;
   try {
@@ -90,22 +86,7 @@ const SilverSponsor = ({ sponsor }) => {
   return <div className="sponsor-tooltip-wrapper">{content}</div>;
 };
 
-const AvailableSlots = ({ count }) => {
-  if (count <= 0) return null;
-  return (
-    <div className="available-slots">
-      <span className="available-slots-text">
-        {count} {count === 1 ? 'spot' : 'spots'} available
-      </span>
-    </div>
-  );
-};
-
 const Sponsors = () => {
-  const diamondAvailable = DIAMOND_SLOTS - diamondSponsors.length;
-  const platinumAvailable = PLATINUM_SLOTS - platinumSponsors.length;
-  const silverAvailable = SILVER_SLOTS - silverSponsors.length;
-
   return (
     <section className="sponsors-section">
       <div className="sponsors-container">
@@ -117,58 +98,55 @@ const Sponsors = () => {
 
         <div className="sponsors-tiers">
           {/* Diamond Tier */}
-          <div className="sponsors-tier">
-            <div className="tier-header">
-              <div className="tier-badge tier-badge--diamond">
-                <Gem size={14} />
-                <span>Diamond</span>
+          {diamondSponsors.length > 0 && (
+            <div className="sponsors-tier">
+              <div className="tier-header">
+                <div className="tier-badge tier-badge--diamond">
+                  <Gem size={14} />
+                  <span>Diamond</span>
+                </div>
               </div>
-              <AvailableSlots count={diamondAvailable} />
-            </div>
-            {diamondSponsors.length > 0 && (
               <div className="tier-grid tier-grid--diamond">
                 {diamondSponsors.map(sponsor => (
                   <DiamondSponsor key={sponsor.id} sponsor={sponsor} />
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Platinum Tier */}
-          <div className="sponsors-tier">
-            <div className="tier-header">
-              <div className="tier-badge tier-badge--platinum">
-                <Crown size={14} />
-                <span>Platinum</span>
+          {platinumSponsors.length > 0 && (
+            <div className="sponsors-tier">
+              <div className="tier-header">
+                <div className="tier-badge tier-badge--platinum">
+                  <Crown size={14} />
+                  <span>Platinum</span>
+                </div>
               </div>
-              <AvailableSlots count={platinumAvailable} />
-            </div>
-            {platinumSponsors.length > 0 && (
               <div className="tier-grid tier-grid--platinum">
                 {platinumSponsors.map(sponsor => (
                   <PlatinumSponsor key={sponsor.id} sponsor={sponsor} />
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Silver Tier */}
-          <div className="sponsors-tier">
-            <div className="tier-header">
-              <div className="tier-badge tier-badge--silver">
-                <Medal size={14} />
-                <span>Silver</span>
+          {silverSponsors.length > 0 && (
+            <div className="sponsors-tier">
+              <div className="tier-header">
+                <div className="tier-badge tier-badge--silver">
+                  <Medal size={14} />
+                  <span>Silver</span>
+                </div>
               </div>
-              <AvailableSlots count={silverAvailable} />
-            </div>
-            {silverSponsors.length > 0 && (
               <div className="tier-grid tier-grid--silver">
                 {silverSponsors.map(sponsor => (
                   <SilverSponsor key={sponsor.id} sponsor={sponsor} />
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* CTA */}

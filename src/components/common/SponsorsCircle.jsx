@@ -11,10 +11,6 @@ import {
   hasSilverSponsors
 } from '../../constants/Sponsors';
 
-const DIAMOND_SLOTS = 2;
-const PLATINUM_SLOTS = 5;
-const SILVER_SLOTS = 10;
-
 const tierStyles = {
   diamond: {
     container: {
@@ -232,19 +228,17 @@ const SponsorItem = ({ sponsor, tier, fullWidth = false }) => {
   return content;
 };
 
-const TierSection = ({ label, availableSlots, children, hasSponsors }) => (
-  <div className="sponsor-tier-section">
-    <div className="sponsor-tier-header">
-      <Text className="sponsor-tier-label">{label}</Text>
-      {availableSlots > 0 && (
-        <Text className="sponsor-tier-available">
-          {availableSlots} {availableSlots === 1 ? 'spot left' : 'spots left'}
-        </Text>
-      )}
+const TierSection = ({ label, children, hasSponsors }) => {
+  if (!hasSponsors) return null;
+  return (
+    <div className="sponsor-tier-section">
+      <div className="sponsor-tier-header">
+        <Text className="sponsor-tier-label">{label}</Text>
+      </div>
+      {children}
     </div>
-    {hasSponsors && children}
-  </div>
-);
+  );
+};
 
 const StaticSponsorsRow = ({ sponsors, tier }) => {
   const isDiamond = tier === 'diamond';
@@ -270,10 +264,6 @@ const StaticSponsorsRow = ({ sponsors, tier }) => {
 const MIN_FOR_MARQUEE = 5;
 
 const SponsorsCircle = () => {
-  const diamondAvailable = DIAMOND_SLOTS - diamondSponsors.length;
-  const platinumAvailable = PLATINUM_SLOTS - platinumSponsors.length;
-  const silverAvailable = SILVER_SLOTS - silverSponsors.length;
-
   const useDiamondMarquee = diamondSponsors.length >= MIN_FOR_MARQUEE;
   const usePlatinumMarquee = platinumSponsors.length >= MIN_FOR_MARQUEE;
   const useSilverMarquee = silverSponsors.length >= MIN_FOR_MARQUEE;
@@ -281,7 +271,7 @@ const SponsorsCircle = () => {
   return (
     <div className="sponsors-marquee-container">
       {/* Diamond Sponsors */}
-      <TierSection label="Diamond" availableSlots={diamondAvailable} hasSponsors={hasDiamondSponsors}>
+      <TierSection label="Diamond" hasSponsors={hasDiamondSponsors}>
         {useDiamondMarquee ? (
           <div className="sponsors-marquee-wrapper">
             <SimpleMarquee
@@ -305,7 +295,7 @@ const SponsorsCircle = () => {
       </TierSection>
 
       {/* Platinum Sponsors */}
-      <TierSection label="Platinum" availableSlots={platinumAvailable} hasSponsors={hasPlatinumSponsors}>
+      <TierSection label="Platinum" hasSponsors={hasPlatinumSponsors}>
         {usePlatinumMarquee ? (
           <div className="sponsors-marquee-wrapper">
             <SimpleMarquee
@@ -329,7 +319,7 @@ const SponsorsCircle = () => {
       </TierSection>
 
       {/* Silver Sponsors */}
-      <TierSection label="Silver" availableSlots={silverAvailable} hasSponsors={hasSilverSponsors}>
+      <TierSection label="Silver" hasSponsors={hasSilverSponsors}>
         {useSilverMarquee ? (
           <div className="sponsors-marquee-wrapper">
             <SimpleMarquee
