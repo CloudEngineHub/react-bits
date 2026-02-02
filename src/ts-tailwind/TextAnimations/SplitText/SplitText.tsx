@@ -155,7 +155,6 @@ const SplitText: React.FC<SplitTextProps> = ({
     }
   );
 
-  
   const renderTag = () => {
     const style: React.CSSProperties = {
       textAlign,
@@ -171,8 +170,6 @@ const SplitText: React.FC<SplitTextProps> = ({
       </Tag>
     );
   };
-
-  
 
   return renderTag();
 };
