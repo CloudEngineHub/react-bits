@@ -208,7 +208,7 @@ const Grainient: React.FC<GrainientProps> = ({
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       renderer.setSize(width, height);
-      const res = program.uniforms.iResolution.value as Float32Array;
+      const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
     };
@@ -220,7 +220,7 @@ const Grainient: React.FC<GrainientProps> = ({
     let raf = 0;
     const t0 = performance.now();
     const loop = (t: number) => {
-      (program.uniforms.iTime as any).value = (t - t0) * 0.001;
+      (program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
