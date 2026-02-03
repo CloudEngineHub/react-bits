@@ -538,6 +538,36 @@ export const BACKGROUNDS = [
     ]
   },
   {
+    id: 'grainient',
+    label: 'Grainient',
+    component: () => import('../../../content/Backgrounds/Grainient/Grainient.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/grainient"',
+    props: [
+      { name: 'color1', type: 'color', default: '#FF9FFC', label: 'Color 1' },
+      { name: 'color2', type: 'color', default: '#5227FF', label: 'Color 2' },
+      { name: 'color3', type: 'color', default: '#B19EEF', label: 'Color 3' },
+      { name: 'timeSpeed', type: 'number', default: 0.25, min: 0, max: 5, step: 0.05, label: 'Time Speed' },
+      { name: 'colorBalance', type: 'number', default: 0.0, min: -1, max: 1, step: 0.01, label: 'Color Balance' },
+      { name: 'warpStrength', type: 'number', default: 1.0, min: 0, max: 4, step: 0.05, label: 'Warp Strength' },
+      { name: 'warpFrequency', type: 'number', default: 5.0, min: 0, max: 12, step: 0.1, label: 'Warp Frequency' },
+      { name: 'warpSpeed', type: 'number', default: 2.0, min: 0, max: 6, step: 0.1, label: 'Warp Speed' },
+      { name: 'warpAmplitude', type: 'number', default: 50.0, min: 5, max: 80, step: 1, label: 'Warp Amplitude' },
+      { name: 'blendAngle', type: 'number', default: 0.0, min: -180, max: 180, step: 1, label: 'Blend Angle' },
+      { name: 'blendSoftness', type: 'number', default: 0.05, min: 0, max: 1, step: 0.01, label: 'Blend Softness' },
+      { name: 'rotationAmount', type: 'number', default: 500.0, min: 0, max: 1440, step: 10, label: 'Rotation Amount' },
+      { name: 'noiseScale', type: 'number', default: 2.0, min: 0, max: 4, step: 0.05, label: 'Noise Scale' },
+      { name: 'grainAmount', type: 'number', default: 0.1, min: 0, max: 0.4, step: 0.01, label: 'Grain Amount' },
+      { name: 'grainScale', type: 'number', default: 2.0, min: 0.2, max: 8, step: 0.1, label: 'Grain Scale' },
+      { name: 'grainAnimated', type: 'boolean', default: false, label: 'Grain Animated' },
+      { name: 'contrast', type: 'number', default: 1.5, min: 0, max: 2.5, step: 0.05, label: 'Contrast' },
+      { name: 'gamma', type: 'number', default: 1.0, min: 0.4, max: 2.5, step: 0.05, label: 'Gamma' },
+      { name: 'saturation', type: 'number', default: 1.0, min: 0, max: 2.5, step: 0.05, label: 'Saturation' },
+      { name: 'centerX', type: 'number', default: 0.0, min: -1, max: 1, step: 0.01, label: 'Center X' },
+      { name: 'centerY', type: 'number', default: 0.0, min: -1, max: 1, step: 0.01, label: 'Center Y' },
+      { name: 'zoom', type: 'number', default: 0.9, min: 0.3, max: 3, step: 0.05, label: 'Zoom' }
+    ]
+  },
+  {
     id: 'prismatic-burst',
     label: 'Prismatic Burst',
     component: () => import('../../../content/Backgrounds/PrismaticBurst/PrismaticBurst.jsx'),

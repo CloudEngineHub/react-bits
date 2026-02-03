@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { GoArrowRight } from 'react-icons/go';
 import { Icon } from '@chakra-ui/react';
-import { ToolCaseIcon } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -11,12 +11,12 @@ const Hero = () => {
 
       <div className="hero-main-content">
         <div className="hero-tag-fade">
-          <Link to="/tools" className="hero-new-badge-container">
+          <Link to="/backgrounds/grainient" className="hero-new-badge-container">
             <span className="hero-new-badge">
-              New <Icon boxSize={4} as={ToolCaseIcon} />
+              New <Icon boxSize={4} as={Sparkles} />
             </span>
             <div className="hero-new-badge-text">
-              <span>React Bits Tools</span>
+              <span>Grainient</span>
               <GoArrowRight />
             </div>
           </Link>

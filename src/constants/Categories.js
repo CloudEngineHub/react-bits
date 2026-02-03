@@ -1,16 +1,12 @@
 // Highlighted sidebar items
 export const NEW = [
-  'Liquid Ether',
-  'Shuffle',
-  'Laser Flow',
-  'Ghost Cursor',
   'Color Bends',
-  'Grid Scan',
   'Floating Lines',
   'Light Pillar',
   'Antigravity',
   'Reflective Card',
-  'Pixel Snow'
+  'Pixel Snow',
+  'Grainient',
 ];
 export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint'];
 
@@ -136,6 +132,7 @@ export const CATEGORIES = [
       'Plasma',
       'Particles',
       'Gradient Blinds',
+      'Grainient',
       'Grid Scan',
       'Beams',
       'Pixel Snow',

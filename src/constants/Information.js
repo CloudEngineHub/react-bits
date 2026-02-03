@@ -808,6 +808,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/gradient-blinds',
     tags: []
   },
+  'Backgrounds/Grainient': {
+    videoUrl: '/assets/video/grainient.webm',
+    description: 'Grainy gradient swirls with soft wave distortion.',
+    category: 'Backgrounds',
+    name: 'Grainient',
+    docsUrl: 'https://reactbits.dev/backgrounds/grainient',
+    tags: []
+  },
   'Backgrounds/GridScan': {
     videoUrl: '/assets/video/gridscan.webm',
     description: 'Animated grid room 3D scan effect and cool interactions.',
