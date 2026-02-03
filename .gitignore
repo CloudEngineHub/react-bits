@@ -18,6 +18,7 @@ public/default
 public/tailwind
 public/ts/default
 public/ts/tailwind
+AGENTS.md
 
 # Editor directories and files
 .vscode/*

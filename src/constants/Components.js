@@ -126,6 +126,7 @@ const backgrounds = {
   'plasma': () => import('../demo/Backgrounds/PlasmaDemo'),
   'prism': () => import('../demo/Backgrounds/PrismDemo'),
   'gradient-blinds': () => import('../demo/Backgrounds/GradientBlindsDemo'),
+  'grainient': () => import('../demo/Backgrounds/GrainientDemo.jsx'),
   'prismatic-burst': () => import('../demo/Backgrounds/PrismaticBurstDemo.jsx'),
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
