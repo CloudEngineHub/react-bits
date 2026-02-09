@@ -42,7 +42,7 @@ const TextType = ({
   }, [variableSpeed, typingSpeed]);
 
   const getCurrentTextColor = () => {
-    if (textColors.length === 0) return;
+    if (textColors.length === 0) return 'inherit';
     return textColors[currentTextIndex % textColors.length];
   };
 
