@@ -1,12 +1,11 @@
 import './AnnouncementBar.css';
 import { Icon } from '@chakra-ui/react';
-import { LuArrowRight } from 'react-icons/lu';
-import { RiSparklingFill } from 'react-icons/ri';
+import { LuArrowRight, LuRocket } from 'react-icons/lu';
 
 const AnnouncementBar = ({ message, link, linkText, backgroundColor, noBorder, className }) => {
   const content = (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <Icon as={RiSparklingFill} color="#ffffff" boxSize="14px" className="header-announcement-icon" />
+      <Icon as={LuRocket} color="#ffffff" boxSize="14px" className="header-announcement-icon" />
       <span className="header-announcement-message">
         {message}
         {linkText && (

@@ -216,12 +216,7 @@ const GrainientDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider
-      props={props}
-      defaultProps={DEFAULT_PROPS}
-      resetProps={resetProps}
-      hasChanges={hasChanges}
-    >
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
@@ -313,34 +308,19 @@ const GrainientDemo = () => {
                 <Text fontSize="sm" mr={2}>
                   Color 1
                 </Text>
-                <Input
-                  type="color"
-                  value={color1}
-                  onChange={e => updateProp('color1', e.target.value)}
-                  width="50px"
-                />
+                <Input type="color" value={color1} onChange={e => updateProp('color1', e.target.value)} width="50px" />
               </Flex>
               <Flex alignItems="center">
                 <Text fontSize="sm" mr={2}>
                   Color 2
                 </Text>
-                <Input
-                  type="color"
-                  value={color2}
-                  onChange={e => updateProp('color2', e.target.value)}
-                  width="50px"
-                />
+                <Input type="color" value={color2} onChange={e => updateProp('color2', e.target.value)} width="50px" />
               </Flex>
               <Flex alignItems="center">
                 <Text fontSize="sm" mr={2}>
                   Color 3
                 </Text>
-                <Input
-                  type="color"
-                  value={color3}
-                  onChange={e => updateProp('color3', e.target.value)}
-                  width="50px"
-                />
+                <Input type="color" value={color3} onChange={e => updateProp('color3', e.target.value)} width="50px" />
               </Flex>
             </SimpleGrid>
 

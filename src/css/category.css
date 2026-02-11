@@ -623,6 +623,46 @@ div:has(> .props-table) {
   }
 }
 
+/* Pro Card */
+.pro-card-link {
+  display: block;
+  text-decoration: none;
+  margin-bottom: 1em;
+}
+
+.pro-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.pro-card:hover {
+  border-color: #271e37 !important;
+}
+
+.pro-card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #5227ff;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 50px;
+  width: 100%;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(82, 39, 255, 0.25);
+}
+
+.pro-card:hover .pro-card-cta {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(82, 39, 255, 0.35);
+}
+
 /* Sponsors Card */
 .sponsors-card {
   overflow: visible;

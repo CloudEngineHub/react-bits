@@ -6682,6 +6682,78 @@
 			]
 		},
 		{
+			"name": "Grainient-JS-CSS",
+			"title": "Grainient",
+			"description": "Grainy gradient swirls with soft wave distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.jsx"
+				}
+			]
+		},
+		{
+			"name": "Grainient-JS-TW",
+			"title": "Grainient",
+			"description": "Grainy gradient swirls with soft wave distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.jsx"
+				}
+			]
+		},
+		{
+			"name": "Grainient-TS-CSS",
+			"title": "Grainient",
+			"description": "Grainy gradient swirls with soft wave distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.tsx"
+				}
+			]
+		},
+		{
+			"name": "Grainient-TS-TW",
+			"title": "Grainient",
+			"description": "Grainy gradient swirls with soft wave distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Grainient/Grainient.tsx"
+				}
+			]
+		},
+		{
 			"name": "GridScan-JS-CSS",
 			"title": "GridScan",
 			"description": "Animated grid room 3D scan effect and cool interactions.",
