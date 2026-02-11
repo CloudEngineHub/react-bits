@@ -3,13 +3,14 @@ import Announcement from '../../components/common/Misc/Announcement';
 import AnnouncementBar from '../landing/AnnouncementBar/AnnouncementBar';
 import Header from '../../components/navs/Header';
 import Sidebar from '../../components/navs/Sidebar';
+import ProCard from '../common/ProCard';
 import SponsorsCard from '../common/SponsorsCard';
 
 export default function SidebarLayout({ children }) {
   return (
     <main className="app-container">
       <AnnouncementBar
-        message="React Bits Pro is coming: 65+ pro components, 100+ UI blocks, 5 full templates. Click to join waitlist."
+        message="React Bits Pro is live - 25% off launch special (limited time) →"
         link="https://pro.reactbits.dev"
         backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
         noBorder={true}
@@ -23,6 +24,7 @@ export default function SidebarLayout({ children }) {
 
         <aside className="right-panel">
           <Box className="right-panel-inner">
+            <ProCard />
             <SponsorsCard />
           </Box>
         </aside>

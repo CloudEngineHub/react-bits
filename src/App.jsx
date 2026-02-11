@@ -6,6 +6,7 @@ import { ActiveRouteProvider } from './components/context/ActiveRouteContext/Act
 import { forceChakraDarkTheme } from './utils/utils';
 
 import AnnouncementBar from './components/landing/AnnouncementBar/AnnouncementBar';
+import LaunchModal from './components/common/LaunchModal/LaunchModal';
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
 import SidebarLayout from './components/layout/SidebarLayout';
 import LandingPage from './pages/LandingPage';
@@ -36,7 +37,7 @@ function AppContent() {
       {!isSidebarPage && !isToolsPage && !isSponsorsPage && (
         <>
           <AnnouncementBar
-            message="React Bits Pro is coming: 65+ pro components, 100+ UI blocks, 5 full templates. Click to join waitlist."
+            message="React Bits Pro is live - 25% off launch special (limited time) →"
             link="https://pro.reactbits.dev"
             backgroundColor={location.pathname === '/' ? undefined : '#5227FF'}
             noBorder={location.pathname !== '/'}
@@ -84,6 +85,7 @@ export default function App() {
       <NuqsAdapter>
         <ActiveRouteProvider>
           <AppContent />
+          <LaunchModal />
         </ActiveRouteProvider>
       </NuqsAdapter>
     </Router>
