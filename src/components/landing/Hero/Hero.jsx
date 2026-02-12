@@ -11,12 +11,12 @@ const Hero = () => {
 
       <div className="hero-main-content">
         <div className="hero-tag-fade">
-          <Link to="/backgrounds/grainient" className="hero-new-badge-container">
+          <Link to="/animations/orbit-images" className="hero-new-badge-container">
             <span className="hero-new-badge">
               New <Icon boxSize={4} as={Sparkles} />
             </span>
             <div className="hero-new-badge-text">
-              <span>Grainient</span>
+              <span>Orbit Images</span>
               <GoArrowRight />
             </div>
           </Link>
