@@ -1816,6 +1816,70 @@
 			]
 		},
 		{
+			"name": "OrbitImages-JS-CSS",
+			"title": "OrbitImages",
+			"description": "SVG Path customizable orbiting images effect",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.jsx"
+				}
+			]
+		},
+		{
+			"name": "OrbitImages-JS-TW",
+			"title": "OrbitImages",
+			"description": "SVG Path customizable orbiting images effect",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.jsx"
+				}
+			]
+		},
+		{
+			"name": "OrbitImages-TS-CSS",
+			"title": "OrbitImages",
+			"description": "SVG Path customizable orbiting images effect",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.tsx"
+				}
+			]
+		},
+		{
+			"name": "OrbitImages-TS-TW",
+			"title": "OrbitImages",
+			"description": "SVG Path customizable orbiting images effect",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "OrbitImages/OrbitImages.tsx"
+				}
+			]
+		},
+		{
 			"name": "ASCIIText-JS-CSS",
 			"title": "ASCIIText",
 			"description": "Renders text with an animated ASCII background for a retro feel.",
