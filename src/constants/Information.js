@@ -249,6 +249,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/antigravity',
     tags: []
   },
+  'Animations/OrbitImages': {
+    videoUrl: '/assets/video/orbitimages.webm',
+    description: 'SVG Path customizable orbiting images effect',
+    category: 'Animations',
+    name: 'OrbitImages',
+    docsUrl: 'https://reactbits.dev/animations/orbit-images',
+    tags: []
+  },
 
   //! Text Animations -------------------------------------------------------------------------------------------------------------------------------
 
