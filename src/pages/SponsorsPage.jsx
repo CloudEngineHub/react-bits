@@ -135,7 +135,7 @@ const SponsorsPage = () => {
         {/* Stats Section */}
         <Flex justify="center" gap={4} px={4} mb={16} flexWrap="wrap" maxW="900px" mx="auto">
           <StatCard icon={Eye} value="500K+" label="Monthly Visitors" />
-          <StatCard icon={Star} value="32K+" label="GitHub Stars" />
+          <StatCard icon={Star} value="35K+" label="GitHub Stars" />
           <StatCard icon={Component} value="110+" label="Components" />
         </Flex>
 
