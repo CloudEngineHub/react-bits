@@ -1820,7 +1820,9 @@
 			"title": "OrbitImages",
 			"description": "SVG Path customizable orbiting images effect",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -1838,7 +1840,9 @@
 			"title": "OrbitImages",
 			"description": "SVG Path customizable orbiting images effect",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -1852,7 +1856,9 @@
 			"title": "OrbitImages",
 			"description": "SVG Path customizable orbiting images effect",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -1870,7 +1876,9 @@
 			"title": "OrbitImages",
 			"description": "SVG Path customizable orbiting images effect",
 			"type": "registry:component",
-			"dependencies": [],
+			"dependencies": [
+				"motion@^12.23.12"
+			],
 			"registryDependencies": [],
 			"files": [
 				{

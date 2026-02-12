@@ -30,7 +30,8 @@ const animations = {
   'electric-border': () => import('../demo/Animations/ElectricBorderDemo'),
   'laser-flow': () => import('../demo/Animations/LaserFlowDemo'),
   'ghost-cursor': () => import('../demo/Animations/GhostCursorDemo'),
-  'antigravity': () => import('../demo/Animations/AntigravityDemo')
+  'antigravity': () => import('../demo/Animations/AntigravityDemo'),
+  'orbit-images': () => import('../demo/Animations/OrbitImagesDemo')
 };
 
 const textAnimations = {

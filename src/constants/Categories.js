@@ -7,6 +7,7 @@ export const NEW = [
   'Reflective Card',
   'Pixel Snow',
   'Grainient',
+  'Orbit Images',
 ];
 export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint'];
 
@@ -50,6 +51,7 @@ export const CATEGORIES = [
       'Animated Content',
       'Fade Content',
       'Electric Border',
+      'Orbit Images',
       'Pixel Transition',
       'Glare Hover',
       'Antigravity',
