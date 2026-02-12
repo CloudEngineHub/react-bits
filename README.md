@@ -115,7 +115,7 @@ React Bits is proudly supported by these amazing sponsors:
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/efferd.svg">
     <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/efferd-lightmode.svg">
-    <img src="public/assets/sponsors/efferd.svg" alt="Efferd" style="height: 40px;">
+    <img src="public/assets/sponsors/efferd.svg" alt="Efferd" height="40">
   </picture>
 </a>
 
