@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const args = process.argv.slice(2);
 if (args.length < 2) {
-  console.error('Usage: npm run generate:component <ComponentType> <ComponentName>');
+  console.error('Usage: npm run new:component <ComponentType> <ComponentName>');
   process.exit(1);
 }
 
