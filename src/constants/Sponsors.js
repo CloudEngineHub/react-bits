@@ -28,6 +28,12 @@ export const silverSponsors = [
     name: 'Shadcraft',
     imageUrl: '/assets/sponsors/shadcraft.svg',
     url: 'https://shadcraft.com/'
+  },
+  {
+    id: 3,
+    name: 'Efferd',
+    imageUrl: '/assets/sponsors/efferd.svg',
+    url: 'https://efferd.com/'
   }
 ];
 
