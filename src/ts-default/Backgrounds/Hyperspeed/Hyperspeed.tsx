@@ -1232,7 +1232,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
     const container = hyperspeed.current;
     if (!container) return;
 
-    const options: HyperspeedOptions = { ...defaultOptions, ...effectOptions };
+    const options: HyperspeedOptions = { ...defaultOptions, ...effectOptions, colors: { ...defaultOptions.colors, ...effectOptions.colors } };
     if (typeof options.distortion === 'string') {
       options.distortion = distortions[options.distortion];
     }
