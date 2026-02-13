@@ -11,6 +11,8 @@ export const hyperspeed = {
 
 // the component will fill the height/width of its parent container, edit the CSS to change this
 // the options below are the default values
+// TIP: if you pass custom effectOptions, memoize the object (e.g. useMemo or a constant)
+// to avoid unnecessary re-renders and WebGL scene recreations
 
 <Hyperspeed
   effectOptions={{
