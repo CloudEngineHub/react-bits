@@ -29,7 +29,7 @@ const DiamondSponsor = ({ sponsor }) => {
       <a
         href={buildSponsorUrl(sponsor.url, 'diamond')}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener"
         className="sponsor-card-link"
       >
         {content}
@@ -52,7 +52,7 @@ const PlatinumSponsor = ({ sponsor }) => {
       <a
         href={buildSponsorUrl(sponsor.url, 'platinum')}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener"
         className="sponsor-card-link sponsor-tooltip-wrapper"
       >
         {content}
@@ -75,7 +75,7 @@ const SilverSponsor = ({ sponsor }) => {
       <a
         href={buildSponsorUrl(sponsor.url, 'silver')}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener"
         className="sponsor-card-link sponsor-tooltip-wrapper"
       >
         {content}
