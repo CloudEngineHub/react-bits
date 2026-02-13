@@ -1097,7 +1097,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
     (function () {
       const container = document.getElementById('lights');
-      const options = { ...effectOptions };
+      const options = { ...DEFAULT_EFFECT_OPTIONS, ...effectOptions };
       options.distortion = distortions[options.distortion];
 
       const myApp = new App(container, options);
