@@ -161,8 +161,24 @@ const ProfileCardDemo = () => {
     []
   );
 
+  const computedProps = useMemo(
+    () => ({
+      iconUrl: showIcon ? '/assets/demo/iconpattern.png' : undefined,
+      behindGlowEnabled: showBehindGlow,
+      innerGradient: customInnerGradient
+    }),
+    [showIcon, showBehindGlow, customInnerGradient]
+  );
+
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+      demoOnlyProps={['showIcon', 'showBehindGlow', 'customInnerGradient']}
+      computedProps={computedProps}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={700} overflow="hidden">
