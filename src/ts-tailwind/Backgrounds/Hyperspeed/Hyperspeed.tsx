@@ -1216,11 +1216,9 @@ class App {
   }
 }
 
-const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
-  const mergedOptions: HyperspeedOptions = {
-    ...defaultOptions,
-    ...effectOptions
-  };
+const DEFAULT_EFFECT_OPTIONS: Partial<HyperspeedOptions> = {};
+
+const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
   const hyperspeed = useRef<HTMLDivElement>(null);
   const appRef = useRef<App | null>(null);
 
@@ -1238,7 +1236,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
     const container = hyperspeed.current;
     if (!container) return;
 
-    const options = { ...mergedOptions };
+    const options: HyperspeedOptions = { ...defaultOptions, ...effectOptions, colors: { ...defaultOptions.colors, ...effectOptions.colors } };
     if (typeof options.distortion === 'string') {
       options.distortion = distortions[options.distortion];
     }
@@ -1252,7 +1250,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = {} }) => {
         appRef.current.dispose();
       }
     };
-  }, [mergedOptions]);
+  }, [effectOptions]);
 
   return <div id="lights" className="w-full h-full" ref={hyperspeed}></div>;
 };
