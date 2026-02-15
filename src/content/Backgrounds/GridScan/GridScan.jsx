@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { EffectComposer, RenderPass, EffectPass, BloomEffect, ChromaticAberrationEffect } from 'postprocessing';
-import * as THREE from 'three';
 import * as faceapi from 'face-api.js';
+import { BloomEffect, ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
+import { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 import './GridScan.css';
 
 const vert = `
@@ -566,6 +566,7 @@ export const GridScan = ({
         composerRef.current = null;
       }
       renderer.dispose();
+      renderer.forceContextLoss();
       container.removeChild(renderer.domElement);
     };
   }, [

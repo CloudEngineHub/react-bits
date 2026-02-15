@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 import {
-  Scene,
-  OrthographicCamera,
-  WebGLRenderer,
-  PlaneGeometry,
+  Clock,
   Mesh,
+  OrthographicCamera,
+  PlaneGeometry,
+  Scene,
   ShaderMaterial,
-  Vector3,
   Vector2,
-  Clock
+  Vector3,
+  WebGLRenderer
 } from 'three';
 
 import './FloatingLines.css';
@@ -447,6 +447,7 @@ export default function FloatingLines({
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
       if (renderer.domElement.parentElement) {
         renderer.domElement.parentElement.removeChild(renderer.domElement);
       }

@@ -1,7 +1,6 @@
-/* eslint-disable react/no-unknown-property */
-import React, { useMemo } from 'react';
-import { Canvas, useThree, CanvasProps, ThreeEvent } from '@react-three/fiber';
 import { shaderMaterial, useTrailTexture } from '@react-three/drei';
+import { Canvas, CanvasProps, ThreeEvent, useThree } from '@react-three/fiber';
+import React, { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
 interface GooeyFilterProps {
@@ -40,7 +39,7 @@ interface PixelTrailProps {
 
 const GooeyFilter: React.FC<GooeyFilterProps> = ({ id = 'goo-filter', strength = 10 }) => {
   return (
-    <svg className="absolute overflow-hidden z-1">
+    <svg className="z-1 absolute overflow-hidden">
       <defs>
         <filter id={id}>
           <feGaussianBlur in="SourceGraphic" stdDeviation={strength} result="blur" />
@@ -95,27 +94,38 @@ const DotMaterial = shaderMaterial(
   `
 );
 
+const identityEase = (x: number) => x;
+
 function Scene({ gridSize, trailSize, maxAge, interpolate, easingFunction, pixelColor }: SceneProps) {
   const size = useThree(s => s.size);
   const viewport = useThree(s => s.viewport);
 
   const dotMaterial = useMemo(() => new DotMaterial(), []);
-  dotMaterial.uniforms.pixelColor.value = new THREE.Color(pixelColor);
+  useEffect(() => {
+    return () => {
+      dotMaterial.dispose();
+    };
+  }, [dotMaterial]);
+
+  useEffect(() => {
+    (dotMaterial.uniforms.pixelColor.value as THREE.Color).set(pixelColor);
+  }, [dotMaterial, pixelColor]);
 
   const [trail, onMove] = useTrailTexture({
     size: 512,
     radius: trailSize,
     maxAge: maxAge,
     interpolate: interpolate || 0.1,
-    ease: easingFunction || ((x: number) => x)
+    ease: easingFunction || identityEase
   }) as [THREE.Texture | null, (e: ThreeEvent<PointerEvent>) => void];
 
-  if (trail) {
+  useEffect(() => {
+    if (!trail) return;
     trail.minFilter = THREE.NearestFilter;
     trail.magFilter = THREE.NearestFilter;
     trail.wrapS = THREE.ClampToEdgeWrapping;
     trail.wrapT = THREE.ClampToEdgeWrapping;
-  }
+  }, [trail]);
 
   const scale = Math.max(viewport.width, viewport.height) / 2;
 
@@ -137,7 +147,7 @@ export default function PixelTrail({
   trailSize = 0.1,
   maxAge = 250,
   interpolate = 5,
-  easingFunction = (x: number) => x,
+  easingFunction = identityEase,
   canvasProps = {},
   glProps = {
     antialias: false,

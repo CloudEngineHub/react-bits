@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { EffectComposer, RenderPass, EffectPass, BloomEffect, ChromaticAberrationEffect } from 'postprocessing';
-import * as THREE from 'three';
 import * as faceapi from 'face-api.js';
+import { BloomEffect, ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 
 type GridScanProps = {
   enableWebcam?: boolean;
@@ -597,6 +597,7 @@ export const GridScan: React.FC<GridScanProps> = ({
         composerRef.current = null;
       }
       renderer.dispose();
+      renderer.forceContextLoss();
       container.removeChild(renderer.domElement);
     };
   }, [
@@ -804,9 +805,9 @@ export const GridScan: React.FC<GridScanProps> = ({
   return (
     <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className ?? ''}`} style={style}>
       {showPreview && (
-        <div className="absolute right-3 bottom-3 w-[220px] h-[132px] rounded-lg overflow-hidden border border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.4)] bg-black text-white text-[12px] leading-[1.2] font-sans pointer-events-none">
+        <div className="right-3 bottom-3 absolute bg-black shadow-[0_4px_16px_rgba(0,0,0,0.4)] border border-white/25 rounded-lg w-[220px] h-[132px] overflow-hidden font-sans text-[12px] text-white leading-[1.2] pointer-events-none">
           <video ref={videoRef} muted playsInline autoPlay className="w-full h-full object-cover -scale-x-100" />
-          <div className="absolute left-2 top-2 px-[6px] py-[2px] bg-black/50 rounded-[6px] backdrop-blur-[4px]">
+          <div className="top-2 left-2 absolute bg-black/50 backdrop-blur-[4px] px-[6px] py-[2px] rounded-[6px]">
             {enableWebcam
               ? modelsReady
                 ? uiFaceActive

@@ -1,30 +1,30 @@
-import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { Observer } from 'gsap/Observer';
+import React, { useEffect, useRef } from 'react';
 import {
+  ACESFilmicToneMapping,
+  AmbientLight,
   Clock,
-  PerspectiveCamera,
-  Scene,
-  WebGLRenderer,
-  WebGLRendererParameters,
-  SRGBColorSpace,
+  Color,
+  InstancedMesh,
   MathUtils,
+  MeshPhysicalMaterial,
+  Object3D,
+  PerspectiveCamera,
+  Plane,
+  PMREMGenerator,
+  PointLight,
+  Raycaster,
+  Scene,
+  ShaderChunk,
+  SphereGeometry,
+  SRGBColorSpace,
   Vector2,
   Vector3,
-  MeshPhysicalMaterial,
-  ShaderChunk,
-  Color,
-  Object3D,
-  InstancedMesh,
-  PMREMGenerator,
-  SphereGeometry,
-  AmbientLight,
-  PointLight,
-  ACESFilmicToneMapping,
-  Raycaster,
-  Plane
+  WebGLRenderer,
+  WebGLRendererParameters
 } from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { Observer } from 'gsap/Observer';
-import { gsap } from 'gsap';
 
 gsap.registerPlugin(Observer);
 
@@ -277,6 +277,7 @@ class X {
     this.clear();
     this.#postprocessing?.dispose();
     this.renderer.dispose();
+    this.renderer.forceContextLoss();
     this.isDisposed = true;
   }
 
@@ -429,6 +430,7 @@ class Y extends MeshPhysicalMaterial {
     thicknessPower: { value: 2 },
     thicknessScale: { value: 10 }
   };
+  defines: { USE_UV: string; };
 
   constructor(params: any) {
     super(params);

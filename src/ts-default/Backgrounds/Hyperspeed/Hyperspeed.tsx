@@ -1,6 +1,6 @@
-import { useEffect, useRef, FC } from 'react';
-import * as THREE from 'three';
 import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
+import { FC, useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 import './Hyperspeed.css';
 
@@ -1010,7 +1010,8 @@ class App {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onContextMenu = this.onContextMenu.bind(this);
 
-    window.addEventListener('resize', this.onWindowResize.bind(this));
+    this.onWindowResize = this.onWindowResize.bind(this);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   onWindowResize() {
@@ -1171,17 +1172,36 @@ class App {
   dispose() {
     this.disposed = true;
 
+    if (this.scene) {
+      this.scene.traverse(object => {
+        const obj = object as unknown as THREE.Mesh;
+        if (!obj.isMesh) return;
+
+        if (obj.geometry) obj.geometry.dispose();
+
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach(material => material.dispose());
+          } else {
+            obj.material.dispose();
+          }
+        }
+      });
+      this.scene.clear();
+    }
+
     if (this.renderer) {
       this.renderer.dispose();
+      this.renderer.forceContextLoss();
+      if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+      }
     }
     if (this.composer) {
       this.composer.dispose();
     }
-    if (this.scene) {
-      this.scene.clear();
-    }
 
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    window.removeEventListener('resize', this.onWindowResize);
     if (this.container) {
       this.container.removeEventListener('mousedown', this.onMouseDown);
       this.container.removeEventListener('mouseup', this.onMouseUp);
@@ -1232,7 +1252,11 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
     const container = hyperspeed.current;
     if (!container) return;
 
-    const options: HyperspeedOptions = { ...defaultOptions, ...effectOptions, colors: { ...defaultOptions.colors, ...effectOptions.colors } };
+    const options: HyperspeedOptions = {
+      ...defaultOptions,
+      ...effectOptions,
+      colors: { ...defaultOptions.colors, ...effectOptions.colors }
+    };
     if (typeof options.distortion === 'string') {
       options.distortion = distortions[options.distortion];
     }

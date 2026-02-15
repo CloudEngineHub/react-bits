@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 const GhostCursor = ({
   className,
@@ -431,6 +431,7 @@ const GhostCursor = ({
       material.dispose();
       composer.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
 
       if (renderer.domElement && renderer.domElement.parentElement) {
         renderer.domElement.parentElement.removeChild(renderer.domElement);

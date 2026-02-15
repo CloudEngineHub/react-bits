@@ -531,6 +531,7 @@ export const LaserFlow = ({
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
       if (mount.contains(canvas)) mount.removeChild(canvas);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

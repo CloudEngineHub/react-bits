@@ -1,6 +1,6 @@
+import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { BloomEffect, EffectComposer, EffectPass, RenderPass, SMAAEffect, SMAAPreset } from 'postprocessing';
 
 const DEFAULT_EFFECT_OPTIONS = {
   onSpeedUp: () => {},
@@ -413,7 +413,8 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         this.onTouchEnd = this.onTouchEnd.bind(this);
         this.onContextMenu = this.onContextMenu.bind(this);
 
-        window.addEventListener('resize', this.onWindowResize.bind(this));
+        this.onWindowResize = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.onWindowResize);
       }
 
       onWindowResize() {
@@ -564,7 +565,6 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         if (updateCamera) {
           this.camera.updateProjectionMatrix();
         }
-
       }
 
       render(delta) {
@@ -574,17 +574,36 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
       dispose() {
         this.disposed = true;
 
+        if (this.scene) {
+          this.scene.traverse(object => {
+            const obj = object;
+            if (!obj.isMesh) return;
+
+            if (obj.geometry) obj.geometry.dispose();
+
+            if (obj.material) {
+              if (Array.isArray(obj.material)) {
+                obj.material.forEach(material => material.dispose());
+              } else {
+                obj.material.dispose();
+              }
+            }
+          });
+          this.scene.clear();
+        }
+
         if (this.renderer) {
           this.renderer.dispose();
+          this.renderer.forceContextLoss();
+          if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+            this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+          }
         }
         if (this.composer) {
           this.composer.dispose();
         }
-        if (this.scene) {
-          this.scene.clear();
-        }
 
-        window.removeEventListener('resize', this.onWindowResize.bind(this));
+        window.removeEventListener('resize', this.onWindowResize);
         if (this.container) {
           this.container.removeEventListener('mousedown', this.onMouseDown);
           this.container.removeEventListener('mouseup', this.onMouseUp);
@@ -1097,7 +1116,11 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
     (function () {
       const container = document.getElementById('lights');
-      const options = { ...DEFAULT_EFFECT_OPTIONS, ...effectOptions, colors: { ...DEFAULT_EFFECT_OPTIONS.colors, ...effectOptions.colors } };
+      const options = {
+        ...DEFAULT_EFFECT_OPTIONS,
+        ...effectOptions,
+        colors: { ...DEFAULT_EFFECT_OPTIONS.colors, ...effectOptions.colors }
+      };
       options.distortion = distortions[options.distortion];
 
       const myApp = new App(container, options);

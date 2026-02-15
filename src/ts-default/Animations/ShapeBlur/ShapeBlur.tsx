@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = /* glsl */ `
@@ -236,6 +236,7 @@ const ShapeBlur = ({
       document.removeEventListener('pointermove', onPointerMove);
       mount.removeChild(renderer.domElement);
       renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 

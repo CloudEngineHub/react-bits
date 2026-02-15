@@ -233,6 +233,7 @@ export default function ColorBends({
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
       if (renderer.domElement && renderer.domElement.parentElement === container) {
         container.removeChild(renderer.domElement);
       }
