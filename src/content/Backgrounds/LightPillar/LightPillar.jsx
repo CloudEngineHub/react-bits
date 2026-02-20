@@ -26,6 +26,7 @@ const LightPillar = ({
   const geometryRef = useRef(null);
   const mouseRef = useRef(new THREE.Vector2(0, 0));
   const timeRef = useRef(0);
+  const rotationSpeedRef = useRef(rotationSpeed);
   const [webGLSupported, setWebGLSupported] = useState(true);
 
   useEffect(() => {
@@ -225,13 +226,10 @@ const LightPillar = ({
     let mouseMoveTimeout = null;
     const handleMouseMove = event => {
       if (!interactive) return;
-
       if (mouseMoveTimeout) return;
-
       mouseMoveTimeout = window.setTimeout(() => {
         mouseMoveTimeout = null;
       }, 16);
-
       const rect = container.getBoundingClientRect();
       const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -252,7 +250,7 @@ const LightPillar = ({
       const deltaTime = currentTime - lastTime;
 
       if (deltaTime >= frameTime) {
-        timeRef.current += 0.016 * rotationSpeed;
+        timeRef.current += 0.016 * rotationSpeedRef.current;
         const t = timeRef.current;
         materialRef.current.uniforms.uTime.value = t;
         materialRef.current.uniforms.uRotCos.value = Math.cos(t * 0.3);
@@ -297,12 +295,8 @@ const LightPillar = ({
           container.removeChild(rendererRef.current.domElement);
         }
       }
-      if (materialRef.current) {
-        materialRef.current.dispose();
-      }
-      if (geometryRef.current) {
-        geometryRef.current.dispose();
-      }
+      if (materialRef.current) materialRef.current.dispose();
+      if (geometryRef.current) geometryRef.current.dispose();
 
       rendererRef.current = null;
       materialRef.current = null;
@@ -311,20 +305,66 @@ const LightPillar = ({
       geometryRef.current = null;
       rafRef.current = null;
     };
-  }, [
-    topColor,
-    bottomColor,
-    intensity,
-    rotationSpeed,
-    interactive,
-    glowAmount,
-    pillarWidth,
-    pillarHeight,
-    noiseIntensity,
-    pillarRotation,
-    webGLSupported,
-    quality
-  ]);
+  }, [webGLSupported, quality]);
+
+  useEffect(() => {
+    rotationSpeedRef.current = rotationSpeed;
+  }, [rotationSpeed]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const parseColor = hex => {
+      const color = new THREE.Color(hex);
+      return new THREE.Vector3(color.r, color.g, color.b);
+    };
+    materialRef.current.uniforms.uTopColor.value = parseColor(topColor);
+  }, [topColor]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const parseColor = hex => {
+      const color = new THREE.Color(hex);
+      return new THREE.Vector3(color.r, color.g, color.b);
+    };
+    materialRef.current.uniforms.uBottomColor.value = parseColor(bottomColor);
+  }, [bottomColor]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uIntensity.value = intensity;
+  }, [intensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uInteractive.value = interactive;
+  }, [interactive]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uGlowAmount.value = glowAmount;
+  }, [glowAmount]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uPillarWidth.value = pillarWidth;
+  }, [pillarWidth]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uPillarHeight.value = pillarHeight;
+  }, [pillarHeight]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uNoiseIntensity.value = noiseIntensity;
+  }, [noiseIntensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const pillarRotRad = (pillarRotation * Math.PI) / 180;
+    materialRef.current.uniforms.uPillarRotCos.value = Math.cos(pillarRotRad);
+    materialRef.current.uniforms.uPillarRotSin.value = Math.sin(pillarRotRad);
+  }, [pillarRotation]);
 
   if (!webGLSupported) {
     return (

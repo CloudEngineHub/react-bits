@@ -47,7 +47,8 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
   useEffect(() => {
     if (appRef.current) {
       appRef.current.dispose();
-      const container = document.getElementById('lights');
+      appRef.current = null;
+      const container = hyperspeed.current;
       if (container) {
         while (container.firstChild) {
           container.removeChild(container.firstChild);
@@ -349,21 +350,21 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
           };
         }
         this.container = container;
+        this.hasValidSize = false;
+
+        const initW = Math.max(1, container.offsetWidth);
+        const initH = Math.max(1, container.offsetHeight);
+
         this.renderer = new THREE.WebGLRenderer({
           antialias: false,
           alpha: true
         });
-        this.renderer.setSize(container.offsetWidth, container.offsetHeight, false);
+        this.renderer.setSize(initW, initH, false);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.composer = new EffectComposer(this.renderer);
         container.append(this.renderer.domElement);
 
-        this.camera = new THREE.PerspectiveCamera(
-          options.fov,
-          container.offsetWidth / container.offsetHeight,
-          0.1,
-          10000
-        );
+        this.camera = new THREE.PerspectiveCamera(options.fov, initW / initH, 0.1, 10000);
         this.camera.position.z = -5;
         this.camera.position.y = 8;
         this.camera.position.x = 0;
@@ -415,16 +416,26 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
 
         this.onWindowResize = this.onWindowResize.bind(this);
         window.addEventListener('resize', this.onWindowResize);
+
+        if (container.offsetWidth > 0 && container.offsetHeight > 0) {
+          this.hasValidSize = true;
+        }
       }
 
       onWindowResize() {
         const width = this.container.offsetWidth;
         const height = this.container.offsetHeight;
 
+        if (width <= 0 || height <= 0) {
+          this.hasValidSize = false;
+          return;
+        }
+
         this.renderer.setSize(width, height);
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
         this.composer.setSize(width, height);
+        this.hasValidSize = true;
       }
 
       initPasses() {
@@ -617,19 +628,46 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
       }
 
       setSize(width, height, updateStyles) {
+        if (width <= 0 || height <= 0) {
+          this.hasValidSize = false;
+          return;
+        }
         this.composer.setSize(width, height, updateStyles);
+        this.hasValidSize = true;
       }
 
       tick() {
-        if (this.disposed || !this) return;
+        if (this.disposed) return;
+
+        if (!this.hasValidSize) {
+          const w = this.container.offsetWidth;
+          const h = this.container.offsetHeight;
+          if (w > 0 && h > 0) {
+            this.renderer.setSize(w, h, false);
+            this.camera.aspect = w / h;
+            this.camera.updateProjectionMatrix();
+            this.composer.setSize(w, h);
+            this.hasValidSize = true;
+          } else {
+            requestAnimationFrame(this.tick);
+            return;
+          }
+        }
+
         if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
           const canvas = this.renderer.domElement;
-          this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-          this.camera.updateProjectionMatrix();
+          if (this.hasValidSize) {
+            this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            this.camera.updateProjectionMatrix();
+          }
         }
-        const delta = this.clock.getDelta();
-        this.render(delta);
-        this.update(delta);
+
+        if (this.hasValidSize) {
+          const delta = this.clock.getDelta();
+          this.render(delta);
+          this.update(delta);
+        }
+
         requestAnimationFrame(this.tick);
       }
     }
@@ -1107,6 +1145,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
       const canvas = renderer.domElement;
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
+      if (width <= 0 || height <= 0) return false;
       const needResize = canvas.width !== width || canvas.height !== height;
       if (needResize) {
         setSize(width, height, false);
@@ -1114,19 +1153,19 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
       return needResize;
     }
 
-    (function () {
-      const container = document.getElementById('lights');
-      const options = {
-        ...DEFAULT_EFFECT_OPTIONS,
-        ...effectOptions,
-        colors: { ...DEFAULT_EFFECT_OPTIONS.colors, ...effectOptions.colors }
-      };
-      options.distortion = distortions[options.distortion];
+    const container = hyperspeed.current;
+    if (!container) return;
 
-      const myApp = new App(container, options);
-      appRef.current = myApp;
-      myApp.loadAssets().then(myApp.init);
-    })();
+    const options = {
+      ...DEFAULT_EFFECT_OPTIONS,
+      ...effectOptions,
+      colors: { ...DEFAULT_EFFECT_OPTIONS.colors, ...effectOptions.colors }
+    };
+    options.distortion = distortions[options.distortion];
+
+    const myApp = new App(container, options);
+    appRef.current = myApp;
+    myApp.loadAssets().then(myApp.init);
 
     return () => {
       if (appRef.current) {
@@ -1135,7 +1174,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
     };
   }, [effectOptions]);
 
-  return <div id="lights" className="w-full h-full" ref={hyperspeed}></div>;
+  return <div className="w-full h-full" ref={hyperspeed}></div>;
 };
 
 export default Hyperspeed;

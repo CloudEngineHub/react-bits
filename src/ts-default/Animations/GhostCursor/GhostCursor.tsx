@@ -70,6 +70,7 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
   const lastMoveTimeRef = useRef(typeof performance !== 'undefined' ? performance.now() : Date.now());
   const pointerActiveRef = useRef(false);
   const runningRef = useRef(false);
+  const hasValidSizeRef = useRef(false);
 
   const isTouch = useMemo(
     () => typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
@@ -241,6 +242,8 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
     const parent = host?.parentElement;
     if (!host || !parent) return;
 
+    let active = true;
+
     const prevParentPos = parent.style.position;
     if (!prevParentPos || prevParentPos === 'static') {
       parent.style.position = 'relative';
@@ -319,9 +322,16 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
     composer.addPass(UnpremultiplyPass);
 
     const resize = () => {
+      if (!active) return;
+
       const rect = host.getBoundingClientRect();
-      const cssW = Math.max(1, Math.floor(rect.width));
-      const cssH = Math.max(1, Math.floor(rect.height));
+      const cssW = Math.floor(rect.width);
+      const cssH = Math.floor(rect.height);
+
+      if (cssW <= 0 || cssH <= 0) {
+        hasValidSizeRef.current = false;
+        return;
+      }
 
       const currentDPR = Math.min(
         typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
@@ -342,6 +352,8 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
       material.uniforms.iResolution.value.set(wpx, hpx, 1);
       material.uniforms.iScale.value = calculateScale(host);
       bloomPass.setSize(wpx, hpx);
+
+      hasValidSizeRef.current = true;
     };
 
     resize();
@@ -352,6 +364,13 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
 
     const start = typeof performance !== 'undefined' ? performance.now() : Date.now();
     const animate = () => {
+      if (!active) return;
+
+      if (!hasValidSizeRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
       const now = performance.now();
       const t = (now - start) / 1000;
 
@@ -437,6 +456,9 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
     ensureLoop();
 
     return () => {
+      active = false;
+      hasValidSizeRef.current = false;
+
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       runningRef.current = false;
       rafRef.current = null;
@@ -449,9 +471,12 @@ const GhostCursor: React.FC<GhostCursorProps> = ({
       scene.clear();
       geom.dispose();
       material.dispose();
+      materialRef.current = null;
       composer.dispose();
+      composerRef.current = null;
       renderer.dispose();
       renderer.forceContextLoss();
+      rendererRef.current = null;
 
       if (renderer.domElement && renderer.domElement.parentElement) {
         renderer.domElement.parentElement.removeChild(renderer.domElement);

@@ -153,6 +153,7 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     const mount = mountRef.current;
     if (!mount) return;
 
+    let active = true;
     let animationFrameId: number;
     let time = 0,
       lastTime = 0;
@@ -170,6 +171,7 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setClearColor(0x000000, 0);
+    if (!mount) return;
     mount.appendChild(renderer.domElement);
 
     const geo = new THREE.PlaneGeometry(1, 1);
@@ -195,17 +197,19 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     scene.add(quad);
 
     const onPointerMove = (e: PointerEvent | MouseEvent) => {
+      if (!mount) return;
       const rect = mount.getBoundingClientRect();
       vMouse.set(e.clientX - rect.left, e.clientY - rect.top);
     };
 
-    mount.addEventListener('mousemove', onPointerMove);
-    mount.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('mousemove', onPointerMove);
+    document.addEventListener('pointermove', onPointerMove);
 
     const resize = () => {
+      if (!active) return;
       w = mount.clientWidth;
       h = mount.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio, 2);
 
       renderer.setSize(w, h);
       renderer.setPixelRatio(dpr);
@@ -224,14 +228,17 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     resize();
     window.addEventListener('resize', resize);
 
-    const ro = new ResizeObserver(() => resize());
+    const ro = new ResizeObserver(() => {
+      if (!active) return;
+      resize();
+    });
     ro.observe(mount);
 
     const update = () => {
+      if (!active) return;
       time = performance.now() * 0.001;
       const dt = time - lastTime;
       lastTime = time;
-
       vMouseDamp.x = THREE.MathUtils.damp(vMouseDamp.x, vMouse.x, 8, dt);
       vMouseDamp.y = THREE.MathUtils.damp(vMouseDamp.y, vMouse.y, 8, dt);
 
@@ -241,47 +248,22 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     update();
 
     return () => {
+      active = false;
+
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
       ro.disconnect();
-      mount.removeEventListener('mousemove', onPointerMove);
-      mount.removeEventListener('pointermove', onPointerMove);
-      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
-
-      scene.clear();
-      geo.dispose();
-      material.dispose();
+      document.removeEventListener('mousemove', onPointerMove);
+      document.removeEventListener('pointermove', onPointerMove);
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
+      }
       renderer.dispose();
-      materialRef.current = null;
       renderer.forceContextLoss();
     };
-  }, [variation]);
+  }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_shapeSize.value = shapeSize;
-  }, [shapeSize]);
-
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_roundness.value = roundness;
-  }, [roundness]);
-
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_borderSize.value = borderSize;
-  }, [borderSize]);
-
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_circleSize.value = circleSize;
-  }, [circleSize]);
-
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_circleEdge.value = circleEdge;
-  }, [circleEdge]);
-
-  useEffect(() => {
-    if (materialRef.current) materialRef.current.uniforms.u_pixelRatio.value = pixelRatioProp;
-  }, [pixelRatioProp]);
-
-  return <div ref={mountRef} className={`w-full h-full ${className}`} />;
+  return <div className={`w-full h-full ${className}`} ref={mountRef} />;
 };
 
 export default ShapeBlur;

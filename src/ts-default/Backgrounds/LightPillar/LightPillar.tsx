@@ -41,7 +41,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const geometryRef = useRef<THREE.PlaneGeometry | null>(null);
   const mouseRef = useRef<THREE.Vector2>(new THREE.Vector2(0, 0));
-  const timeRef = useRef<number>(0);
+  const timeRef = useRef(0);
+  const rotationSpeedRef = useRef(rotationSpeed);
   const [webGLSupported, setWebGLSupported] = useState<boolean>(true);
 
   // Check WebGL support
@@ -269,7 +270,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
       const deltaTime = currentTime - lastTime;
 
       if (deltaTime >= frameTime) {
-        timeRef.current += 0.016 * rotationSpeed;
+        timeRef.current += 0.016 * rotationSpeedRef.current;
         const t = timeRef.current;
         materialRef.current.uniforms.uTime.value = t;
         materialRef.current.uniforms.uRotCos.value = Math.cos(t * 0.3);
@@ -328,20 +329,66 @@ const LightPillar: React.FC<LightPillarProps> = ({
       geometryRef.current = null;
       rafRef.current = null;
     };
-  }, [
-    topColor,
-    bottomColor,
-    intensity,
-    rotationSpeed,
-    interactive,
-    glowAmount,
-    pillarWidth,
-    pillarHeight,
-    noiseIntensity,
-    pillarRotation,
-    webGLSupported,
-    quality
-  ]);
+  }, [webGLSupported, quality]);
+
+  useEffect(() => {
+    rotationSpeedRef.current = rotationSpeed;
+  }, [rotationSpeed]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const parseColor = (hex: string) => {
+      const color = new THREE.Color(hex);
+      return new THREE.Vector3(color.r, color.g, color.b);
+    };
+    materialRef.current.uniforms.uTopColor.value = parseColor(topColor);
+  }, [topColor]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const parseColor = (hex: string) => {
+      const color = new THREE.Color(hex);
+      return new THREE.Vector3(color.r, color.g, color.b);
+    };
+    materialRef.current.uniforms.uBottomColor.value = parseColor(bottomColor);
+  }, [bottomColor]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uIntensity.value = intensity;
+  }, [intensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uInteractive.value = interactive;
+  }, [interactive]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uGlowAmount.value = glowAmount;
+  }, [glowAmount]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uPillarWidth.value = pillarWidth;
+  }, [pillarWidth]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uPillarHeight.value = pillarHeight;
+  }, [pillarHeight]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uNoiseIntensity.value = noiseIntensity;
+  }, [noiseIntensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    const pillarRotRad = (pillarRotation * Math.PI) / 180;
+    materialRef.current.uniforms.uPillarRotCos.value = Math.cos(pillarRotRad);
+    materialRef.current.uniforms.uPillarRotSin.value = Math.sin(pillarRotRad);
+  }, [pillarRotation]);
 
   if (!webGLSupported) {
     return (

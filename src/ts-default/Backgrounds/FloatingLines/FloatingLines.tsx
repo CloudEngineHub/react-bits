@@ -301,7 +301,10 @@ export default function FloatingLines({
   const bottomLineDistance = enabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    let active = true;
 
     const scene = new Scene();
 
@@ -312,7 +315,7 @@ export default function FloatingLines({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
-    containerRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const uniforms = {
       iTime: { value: 0 },
@@ -401,11 +404,15 @@ export default function FloatingLines({
 
     setSize();
 
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(setSize) : null;
+    const ro =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(() => {
+            if (!active) return;
+            setSize();
+          })
+        : null;
 
-    if (ro && containerRef.current) {
-      ro.observe(containerRef.current);
-    }
+    if (ro) ro.observe(container);
 
     const handlePointerMove = (event: PointerEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -436,6 +443,8 @@ export default function FloatingLines({
 
     let raf = 0;
     const renderLoop = () => {
+      if (!active) return;
+
       uniforms.iTime.value = clock.getElapsedTime();
 
       if (interactive) {
@@ -457,10 +466,11 @@ export default function FloatingLines({
     renderLoop();
 
     return () => {
+      active = false;
+
       cancelAnimationFrame(raf);
-      if (ro && containerRef.current) {
-        ro.disconnect();
-      }
+
+      if (ro) ro.disconnect();
 
       if (interactive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
