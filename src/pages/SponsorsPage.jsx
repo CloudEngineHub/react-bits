@@ -82,7 +82,7 @@ const SponsorsPage = () => {
       />
 
       <AnnouncementBar
-        message="React Bits Pro is live - 25% off launch special (limited time) →"
+        message="React Bits Pro is here - 65 components, 100+ UI blocks, 5 full templates - check it out!"
         link="https://pro.reactbits.dev"
         backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
         noBorder={true}
