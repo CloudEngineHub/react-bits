@@ -30,7 +30,7 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   className?: string;
   parentClassName?: string;
   encryptedClassName?: string;
-  animateOn?: 'view' | 'hover' | 'both';
+  animateOn?: 'view' | 'hover' | 'inViewHover' | 'click';
 }
 
 export default function DecryptedText({
@@ -49,6 +49,7 @@ export default function DecryptedText({
 }: DecryptedTextProps) {
   const [displayText, setDisplayText] = useState<string>(text);
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [clickCount, setClickCount] = useState<number>(0);
   const [isScrambling, setIsScrambling] = useState<boolean>(false);
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
   const [hasAnimated, setHasAnimated] = useState<boolean>(false);
@@ -164,7 +165,17 @@ export default function DecryptedText({
   }, [isHovering, text, speed, maxIterations, sequential, revealDirection, characters, useOriginalCharsOnly]);
 
   useEffect(() => {
-    if (animateOn !== 'view' && animateOn !== 'both') return;
+    if (animateOn !== 'click') return;
+    if (clickCount === 0) return;
+
+    setIsHovering(false);
+    const timeout = setTimeout(() => setIsHovering(true), 0);
+
+    return () => clearTimeout(timeout);
+  }, [clickCount, animateOn]);
+
+  useEffect(() => {
+    if (animateOn !== 'view' && animateOn !== 'inViewHover') return;
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
@@ -194,16 +205,20 @@ export default function DecryptedText({
     };
   }, [animateOn, hasAnimated]);
 
-  const hoverProps =
-    animateOn === 'hover' || animateOn === 'both'
+  const animateProps =
+    animateOn === 'hover' || animateOn === 'inViewHover'
       ? {
           onMouseEnter: () => setIsHovering(true),
           onMouseLeave: () => setIsHovering(false)
         }
-      : {};
+      : animateOn === 'click'
+        ? {
+            onClick: () => setClickCount(c => c + 1)
+          }
+        : {};
 
   return (
-    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...hoverProps} {...props}>
+    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
       <span style={styles.srOnly}>{displayText}</span>
 
       <span aria-hidden="true">

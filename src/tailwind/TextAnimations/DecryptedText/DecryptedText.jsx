@@ -17,6 +17,7 @@ export default function DecryptedText({
 }) {
   const [displayText, setDisplayText] = useState(text);
   const [isHovering, setIsHovering] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
   const [isScrambling, setIsScrambling] = useState(false);
   const [revealedIndices, setRevealedIndices] = useState(new Set());
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -131,7 +132,17 @@ export default function DecryptedText({
   }, [isHovering, text, speed, maxIterations, sequential, revealDirection, characters, useOriginalCharsOnly]);
 
   useEffect(() => {
-    if (animateOn !== 'view' && animateOn !== 'both') return;
+    if (animateOn !== 'click') return;
+    if (clickCount === 0) return;
+
+    setIsHovering(false);
+    const timeout = setTimeout(() => setIsHovering(true), 0);
+
+    return () => clearTimeout(timeout);
+  }, [clickCount, animateOn]);
+
+  useEffect(() => {
+    if (animateOn !== 'view' && animateOn !== 'inViewHover') return;
 
     const observerCallback = entries => {
       entries.forEach(entry => {
@@ -159,19 +170,23 @@ export default function DecryptedText({
     };
   }, [animateOn, hasAnimated]);
 
-  const hoverProps =
-    animateOn === 'hover' || animateOn === 'both'
+  const animateProps =
+    animateOn === 'hover' || animateOn === 'inViewHover'
       ? {
           onMouseEnter: () => setIsHovering(true),
           onMouseLeave: () => setIsHovering(false)
         }
-      : {};
+      : animateOn === 'click'
+        ? {
+            onClick: () => setClickCount(c => c + 1)
+          }
+        : {};
 
   return (
     <motion.span
       ref={containerRef}
       className={`inline-block whitespace-pre-wrap ${parentClassName}`}
-      {...hoverProps}
+      {...animateProps}
       {...props}
     >
       <span className="sr-only">{displayText}</span>

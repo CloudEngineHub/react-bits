@@ -90,7 +90,7 @@ const DecryptedTextDemo = () => {
       },
       {
         name: 'animateOn',
-        type: `"view" | "hover"`,
+        type: `"view" | "hover" | "inViewHover" | "click"`,
         default: `"hover"`,
         description: 'Trigger scrambling on hover or scroll-into-view.'
       }
@@ -101,7 +101,8 @@ const DecryptedTextDemo = () => {
   const animateOptions = [
     { label: 'View', value: 'view' },
     { label: 'Hover', value: 'hover' },
-    { label: 'Both', value: 'both' }
+    { label: 'View & Hover', value: 'inViewHover' },
+    { label: 'Click', value: 'click' }
   ];
   const directionOptions = [
     { label: 'Start', value: 'start' },
