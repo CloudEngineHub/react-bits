@@ -256,7 +256,7 @@ const GridScanDemo = () => {
           </Customize>
 
           <PropTable data={propData} />
-          <Dependencies dependencyList={['three']} />
+          <Dependencies dependencyList={['three', 'face-api.js']} />
         </PreviewTab>
 
         <CodeTab>

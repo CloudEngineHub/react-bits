@@ -5,7 +5,7 @@ import tsCode from '@ts-default/Backgrounds/GridScan/GridScan.tsx?raw';
 import tsTailwind from '@ts-tailwind/Backgrounds/GridScan/GridScan.tsx?raw';
 
 export const gridScan = {
-  dependencies: `three`,
+  dependencies: `three face-api.js`,
   usage: `import GridScan from './GridScan';
 
 <div style={{ width: '100%', height: '600px', position: 'relative' }}>
