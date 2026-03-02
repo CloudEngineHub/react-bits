@@ -23,6 +23,8 @@ const DEFAULT_PROPS = {
   gap: 10
 };
 
+const roundToTenth = num => Math.round(num * 10) / 10;
+
 const CounterDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { digitPlaceHolders, value, fontSize, gap } = props;
@@ -177,7 +179,7 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => updateProp('value', (value * 10 - 4) / 10)}
+                onClick={() => updateProp('value', roundToTenth(value - 0.4))}
               >
                 - 0.4
               </Button>
@@ -213,7 +215,7 @@ const CounterDemo = () => {
                 color="#fff"
                 h={10}
                 w={16}
-                onClick={() => value < 999 && updateProp('value', (value * 10 + 4) / 10)}
+                onClick={() => value < 999 && updateProp('value', roundToTenth(value + 0.4))}
               >
                 + 0.4
               </Button>

@@ -37,7 +37,7 @@ function AppContent() {
       {!isSidebarPage && !isToolsPage && !isSponsorsPage && (
         <>
           <AnnouncementBar
-            message="React Bits Pro is live - 25% off launch special (limited time) →"
+            message="React Bits Pro is here - 65 components, 100+ UI blocks, 5 full templates - check it out!"
             link="https://pro.reactbits.dev"
             backgroundColor={location.pathname === '/' ? undefined : '#5227FF'}
             noBorder={location.pathname !== '/'}
