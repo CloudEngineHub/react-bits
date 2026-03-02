@@ -150,7 +150,7 @@ const DecryptedTextDemo = () => {
               options={animateOptions}
               value={animateOn}
               name="animateOn"
-              width={120}
+              width={150}
               onChange={val => {
                 updateProp('animateOn', val);
                 forceRerender();
