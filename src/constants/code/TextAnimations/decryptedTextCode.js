@@ -21,13 +21,20 @@ parentClassName="all-letters"
 encryptedClassName="encrypted"
 />
 
-{/* Example 3: Animate on view (runs once) */}
-<div style={{ marginTop: '4rem' }}>
+{/* Example 3: Click to decrypt (toggle mode) */}
 <DecryptedText
+text="Click to decrypt"
+animateOn="click"
+clickMode="toggle"
+/>
+
+{/* Example 4: Animate on view (runs once) */}
+<div style={{ marginTop: '4rem' }}>
+  <DecryptedText
   text="This text animates when in view"
   animateOn="view"
   revealDirection="center"
-/>
+  />
 </div>`,
   code,
   tailwind,
