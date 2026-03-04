@@ -102,7 +102,7 @@ export const ScrollVelocity = ({
     for (let i = 0; i < numCopies; i++) {
       spans.push(
         <span className={className} key={i} ref={i === 0 ? copyRef : null}>
-          {children}
+          {children}&nbsp;
         </span>
       );
     }
@@ -133,7 +133,7 @@ export const ScrollVelocity = ({
           parallaxStyle={parallaxStyle}
           scrollerStyle={scrollerStyle}
         >
-          {text}&nbsp;
+          {text}
         </VelocityText>
       ))}
     </section>
