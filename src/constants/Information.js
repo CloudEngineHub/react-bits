@@ -257,6 +257,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/orbit-images',
     tags: []
   },
+  'Animations/MagicRings': {
+    videoUrl: '/assets/video/magicrings.webm',
+    description: 'Interactive magic rings effect with customizable parameters.',
+    category: 'Animations',
+    name: 'MagicRings',
+    docsUrl: 'https://reactbits.dev/animations/magic-rings',
+    tags: []
+  },
 
   //! Text Animations -------------------------------------------------------------------------------------------------------------------------------
 

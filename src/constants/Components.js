@@ -31,7 +31,8 @@ const animations = {
   'laser-flow': () => import('../demo/Animations/LaserFlowDemo'),
   'ghost-cursor': () => import('../demo/Animations/GhostCursorDemo'),
   'antigravity': () => import('../demo/Animations/AntigravityDemo'),
-  'orbit-images': () => import('../demo/Animations/OrbitImagesDemo')
+  'orbit-images': () => import('../demo/Animations/OrbitImagesDemo'),
+  'magic-rings': () => import('../demo/Animations/MagicRingsDemo'),
 };
 
 const textAnimations = {
