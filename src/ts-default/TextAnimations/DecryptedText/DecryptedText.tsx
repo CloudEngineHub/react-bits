@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { motion } from 'motion/react';
 import type { HTMLMotionProps } from 'motion/react';
 
@@ -30,8 +30,11 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   className?: string;
   parentClassName?: string;
   encryptedClassName?: string;
-  animateOn?: 'view' | 'hover' | 'both';
+  animateOn?: 'view' | 'hover' | 'inViewHover' | 'click';
+  clickMode?: 'once' | 'toggle';
 }
+
+type Direction = 'forward' | 'reverse';
 
 export default function DecryptedText({
   text,
@@ -45,16 +48,123 @@ export default function DecryptedText({
   parentClassName = '',
   encryptedClassName = '',
   animateOn = 'hover',
+  clickMode = 'once',
   ...props
 }: DecryptedTextProps) {
   const [displayText, setDisplayText] = useState<string>(text);
-  const [isHovering, setIsHovering] = useState<boolean>(false);
-  const [isScrambling, setIsScrambling] = useState<boolean>(false);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
   const [hasAnimated, setHasAnimated] = useState<boolean>(false);
+  const [isDecrypted, setIsDecrypted] = useState<boolean>(animateOn !== 'click');
+  const [direction, setDirection] = useState<Direction>('forward');
+
   const containerRef = useRef<HTMLSpanElement>(null);
+  const orderRef = useRef<number[]>([]);
+  const pointerRef = useRef<number>(0);
+
+  const availableChars = useMemo<string[]>(() => {
+    return useOriginalCharsOnly
+      ? Array.from(new Set(text.split(''))).filter(char => char !== ' ')
+      : characters.split('');
+  }, [useOriginalCharsOnly, text, characters]);
+
+  const shuffleText = useCallback(
+    (originalText: string, currentRevealed: Set<number>) => {
+      return originalText
+        .split('')
+        .map((char, i) => {
+          if (char === ' ') return ' ';
+          if (currentRevealed.has(i)) return originalText[i];
+          return availableChars[Math.floor(Math.random() * availableChars.length)];
+        })
+        .join('');
+    },
+    [availableChars]
+  );
+
+  const computeOrder = useCallback(
+    (len: number): number[] => {
+      const order: number[] = [];
+      if (len <= 0) return order;
+      if (revealDirection === 'start') {
+        for (let i = 0; i < len; i++) order.push(i);
+        return order;
+      }
+      if (revealDirection === 'end') {
+        for (let i = len - 1; i >= 0; i--) order.push(i);
+        return order;
+      }
+      // center
+      const middle = Math.floor(len / 2);
+      let offset = 0;
+      while (order.length < len) {
+        if (offset % 2 === 0) {
+          const idx = middle + offset / 2;
+          if (idx >= 0 && idx < len) order.push(idx);
+        } else {
+          const idx = middle - Math.ceil(offset / 2);
+          if (idx >= 0 && idx < len) order.push(idx);
+        }
+        offset++;
+      }
+      return order.slice(0, len);
+    },
+    [revealDirection]
+  );
+
+  const fillAllIndices = useCallback((): Set<number> => {
+    const s = new Set<number>();
+    for (let i = 0; i < text.length; i++) s.add(i);
+    return s;
+  }, [text]);
+
+  const removeRandomIndices = useCallback((set: Set<number>, count: number): Set<number> => {
+    const arr = Array.from(set);
+    for (let i = 0; i < count && arr.length > 0; i++) {
+      const idx = Math.floor(Math.random() * arr.length);
+      arr.splice(idx, 1);
+    }
+    return new Set(arr);
+  }, []);
+
+  const encryptInstantly = useCallback(() => {
+    const emptySet = new Set<number>();
+    setRevealedIndices(emptySet);
+    setDisplayText(shuffleText(text, emptySet));
+    setIsDecrypted(false);
+  }, [text, shuffleText]);
+
+  const triggerDecrypt = useCallback(() => {
+    if (sequential) {
+      orderRef.current = computeOrder(text.length);
+      pointerRef.current = 0;
+      setRevealedIndices(new Set());
+    } else {
+      setRevealedIndices(new Set());
+    }
+    setDirection('forward');
+    setIsAnimating(true);
+  }, [sequential, computeOrder, text.length]);
+
+  const triggerReverse = useCallback(() => {
+    if (sequential) {
+      // compute forward order then reverse it: we'll remove indices in that order
+      orderRef.current = computeOrder(text.length).slice().reverse();
+      pointerRef.current = 0;
+      setRevealedIndices(fillAllIndices()); // start fully revealed
+      setDisplayText(shuffleText(text, fillAllIndices()));
+    } else {
+      // non-seq: start from fully revealed as well
+      setRevealedIndices(fillAllIndices());
+      setDisplayText(shuffleText(text, fillAllIndices()));
+    }
+    setDirection('reverse');
+    setIsAnimating(true);
+  }, [sequential, computeOrder, fillAllIndices, shuffleText, text]);
 
   useEffect(() => {
+    if (!isAnimating) return;
+
     let interval: ReturnType<typeof setInterval>;
     let currentIteration = 0;
 
@@ -84,51 +194,11 @@ export default function DecryptedText({
       }
     };
 
-    const availableChars = useOriginalCharsOnly
-      ? Array.from(new Set(text.split(''))).filter(char => char !== ' ')
-      : characters.split('');
-
-    const shuffleText = (originalText: string, currentRevealed: Set<number>): string => {
-      if (useOriginalCharsOnly) {
-        const positions = originalText.split('').map((char, i) => ({
-          char,
-          isSpace: char === ' ',
-          index: i,
-          isRevealed: currentRevealed.has(i)
-        }));
-
-        const nonSpaceChars = positions.filter(p => !p.isSpace && !p.isRevealed).map(p => p.char);
-
-        for (let i = nonSpaceChars.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [nonSpaceChars[i], nonSpaceChars[j]] = [nonSpaceChars[j], nonSpaceChars[i]];
-        }
-
-        let charIndex = 0;
-        return positions
-          .map(p => {
-            if (p.isSpace) return ' ';
-            if (p.isRevealed) return originalText[p.index];
-            return nonSpaceChars[charIndex++];
-          })
-          .join('');
-      } else {
-        return originalText
-          .split('')
-          .map((char, i) => {
-            if (char === ' ') return ' ';
-            if (currentRevealed.has(i)) return originalText[i];
-            return availableChars[Math.floor(Math.random() * availableChars.length)];
-          })
-          .join('');
-      }
-    };
-
-    if (isHovering) {
-      setIsScrambling(true);
-      interval = setInterval(() => {
-        setRevealedIndices(prevRevealed => {
-          if (sequential) {
+    interval = setInterval(() => {
+      setRevealedIndices(prevRevealed => {
+        if (sequential) {
+          // Forward
+          if (direction === 'forward') {
             if (prevRevealed.size < text.length) {
               const nextIndex = getNextIndex(prevRevealed);
               const newRevealed = new Set(prevRevealed);
@@ -137,39 +207,135 @@ export default function DecryptedText({
               return newRevealed;
             } else {
               clearInterval(interval);
-              setIsScrambling(false);
+              setIsAnimating(false);
+              setIsDecrypted(true);
               return prevRevealed;
             }
-          } else {
+          }
+          // Reverse
+          if (direction === 'reverse') {
+            if (pointerRef.current < orderRef.current.length) {
+              const idxToRemove = orderRef.current[pointerRef.current++];
+              const newRevealed = new Set(prevRevealed);
+              newRevealed.delete(idxToRemove);
+              setDisplayText(shuffleText(text, newRevealed));
+              if (newRevealed.size === 0) {
+                clearInterval(interval);
+                setIsAnimating(false);
+                setIsDecrypted(false);
+              }
+              return newRevealed;
+            } else {
+              clearInterval(interval);
+              setIsAnimating(false);
+              setIsDecrypted(false);
+              return prevRevealed;
+            }
+          }
+        } else {
+          // Non-Sequential
+          if (direction === 'forward') {
             setDisplayText(shuffleText(text, prevRevealed));
             currentIteration++;
             if (currentIteration >= maxIterations) {
               clearInterval(interval);
-              setIsScrambling(false);
+              setIsAnimating(false);
               setDisplayText(text);
+              setIsDecrypted(true);
             }
             return prevRevealed;
           }
-        });
-      }, speed);
-    } else {
-      setDisplayText(text);
-      setRevealedIndices(new Set());
-      setIsScrambling(false);
+
+          // Non-Sequential Reverse
+          if (direction === 'reverse') {
+            let currentSet = prevRevealed;
+            if (currentSet.size === 0) {
+              currentSet = fillAllIndices();
+            }
+            const removeCount = Math.max(1, Math.ceil(text.length / Math.max(1, maxIterations)));
+            const nextSet = removeRandomIndices(currentSet, removeCount);
+            setDisplayText(shuffleText(text, nextSet));
+            currentIteration++;
+            if (nextSet.size === 0 || currentIteration >= maxIterations) {
+              clearInterval(interval);
+              setIsAnimating(false);
+              setIsDecrypted(false);
+              // ensure final scrambled state
+              setDisplayText(shuffleText(text, new Set()));
+              return new Set();
+            }
+            return nextSet;
+          }
+        }
+        return prevRevealed;
+      });
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [
+    isAnimating,
+    text,
+    speed,
+    maxIterations,
+    sequential,
+    revealDirection,
+    shuffleText,
+    direction,
+    fillAllIndices,
+    removeRandomIndices,
+    characters,
+    useOriginalCharsOnly
+  ]);
+
+  /* Click Behaviour */
+  const handleClick = () => {
+    if (animateOn !== 'click') return;
+
+    if (clickMode === 'once') {
+      if (isDecrypted) return;
+      setDirection('forward');
+      triggerDecrypt();
     }
 
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isHovering, text, speed, maxIterations, sequential, revealDirection, characters, useOriginalCharsOnly]);
+    if (clickMode === 'toggle') {
+      if (isDecrypted) {
+        triggerReverse();
+      } else {
+        setDirection('forward');
+        triggerDecrypt();
+      }
+    }
+  };
 
+  /* Hover Behaviour */
+  const triggerHoverDecrypt = useCallback(() => {
+    if (isAnimating) return;
+
+    // Reset animation state cleanly
+    setRevealedIndices(new Set());
+    setIsDecrypted(false);
+    setDisplayText(text);
+
+    setDirection('forward');
+    setIsAnimating(true);
+  }, [isAnimating, text]);
+
+  const resetToPlainText = useCallback(() => {
+    setIsAnimating(false);
+    setRevealedIndices(new Set());
+    setDisplayText(text);
+    setIsDecrypted(true);
+    setDirection('forward');
+  }, [text]);
+
+  /* View Observer */
   useEffect(() => {
-    if (animateOn !== 'view' && animateOn !== 'both') return;
+    if (animateOn !== 'view' && animateOn !== 'inViewHover') return;
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !hasAnimated) {
-          setIsHovering(true);
+          triggerDecrypt();
           setHasAnimated(true);
         }
       });
@@ -192,23 +358,38 @@ export default function DecryptedText({
         observer.unobserve(currentRef);
       }
     };
-  }, [animateOn, hasAnimated]);
+  }, [animateOn, hasAnimated, triggerDecrypt]);
 
-  const hoverProps =
-    animateOn === 'hover' || animateOn === 'both'
+  useEffect(() => {
+    if (animateOn === 'click') {
+      encryptInstantly();
+    } else {
+      setDisplayText(text);
+      setIsDecrypted(true);
+    }
+    setRevealedIndices(new Set());
+    setDirection('forward');
+  }, [animateOn, text, encryptInstantly]);
+
+  const animateProps =
+    animateOn === 'hover' || animateOn === 'inViewHover'
       ? {
-          onMouseEnter: () => setIsHovering(true),
-          onMouseLeave: () => setIsHovering(false)
+          onMouseEnter: triggerHoverDecrypt,
+          onMouseLeave: resetToPlainText
         }
-      : {};
+      : animateOn === 'click'
+        ? {
+            onClick: handleClick
+          }
+        : {};
 
   return (
-    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...hoverProps} {...props}>
+    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
       <span style={styles.srOnly}>{displayText}</span>
 
       <span aria-hidden="true">
         {displayText.split('').map((char, index) => {
-          const isRevealedOrDone = revealedIndices.has(index) || !isScrambling || !isHovering;
+          const isRevealedOrDone = revealedIndices.has(index) || (!isAnimating && isDecrypted);
 
           return (
             <span key={index} className={isRevealedOrDone ? className : encryptedClassName}>

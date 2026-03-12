@@ -32,6 +32,17 @@ function Number({ mv, number, height }: NumberProps) {
   return <motion.span style={{ ...baseStyle, y }}>{number}</motion.span>;
 }
 
+function normalizeNearInteger(num: number): number {
+  const nearest = Math.round(num);
+  const tolerance = 1e-9 * Math.max(1, Math.abs(num));
+  return Math.abs(num - nearest) < tolerance ? nearest : num;
+}
+
+function getValueRoundedToPlace(value: number, place: number): number {
+  const scaled = value / place;
+  return Math.floor(normalizeNearInteger(scaled));
+}
+
 interface DigitProps {
   place: PlaceValue;
   value: number;
@@ -53,7 +64,7 @@ function Digit({ place, value, height, digitStyle }: DigitProps) {
   }
 
   // Numeric digit
-  const valueRoundedToPlace = Math.floor(value / place);
+  const valueRoundedToPlace = getValueRoundedToPlace(value, place);
   const animatedValue = useSpring(valueRoundedToPlace);
 
   useEffect(() => {

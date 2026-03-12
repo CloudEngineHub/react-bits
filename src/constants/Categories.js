@@ -1,13 +1,10 @@
 // Highlighted sidebar items
 export const NEW = [
   'Color Bends',
-  'Floating Lines',
-  'Light Pillar',
   'Antigravity',
-  'Reflective Card',
-  'Pixel Snow',
   'Grainient',
   'Orbit Images',
+  'Magic Rings'
 ];
 export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint'];
 
@@ -57,6 +54,7 @@ export const CATEGORIES = [
       'Antigravity',
       'Logo Loop',
       'Target Cursor',
+      'Magic Rings',
       'Laser Flow',
       'Magnet Lines',
       'Ghost Cursor',
@@ -75,7 +73,7 @@ export const CATEGORIES = [
       'Splash Cursor',
       'Meta Balls',
       'Blob Cursor',
-      'Star Border'
+      'Star Border',
     ]
   },
   {

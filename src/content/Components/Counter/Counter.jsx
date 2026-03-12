@@ -20,9 +20,20 @@ function Number({ mv, number, height }) {
   );
 }
 
+function normalizeNearInteger(num) {
+  const nearest = Math.round(num);
+  const tolerance = 1e-9 * Math.max(1, Math.abs(num));
+  return Math.abs(num - nearest) < tolerance ? nearest : num;
+}
+
+function getValueRoundedToPlace(value, place) {
+  const scaled = value / place;
+  return Math.floor(normalizeNearInteger(scaled));
+}
+
 function Digit({ place, value, height, digitStyle }) {
   const isDecimal = place === '.';
-  const valueRoundedToPlace = isDecimal ? 0 : Math.floor(value / place);
+  const valueRoundedToPlace = isDecimal ? 0 : getValueRoundedToPlace(value, place);
   const animatedValue = useSpring(valueRoundedToPlace);
 
   useEffect(() => {

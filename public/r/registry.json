@@ -1888,6 +1888,78 @@
 			]
 		},
 		{
+			"name": "MagicRings-JS-CSS",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.jsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-JS-TW",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.jsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-TS-CSS",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.tsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-TS-TW",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.tsx"
+				}
+			]
+		},
+		{
 			"name": "ASCIIText-JS-CSS",
 			"title": "ASCIIText",
 			"description": "Renders text with an animated ASCII background for a retro feel.",

@@ -23,12 +23,13 @@ const DEFAULT_PROPS = {
   sequential: true,
   useOriginalCharsOnly: false,
   revealDirection: 'start',
-  animateOn: 'view'
+  animateOn: 'view',
+  clickMode: 'once'
 };
 
 const DecryptedTextDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { speed, maxIterations, sequential, useOriginalCharsOnly, revealDirection, animateOn } = props;
+  const { speed, maxIterations, sequential, useOriginalCharsOnly, revealDirection, animateOn, clickMode } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -90,9 +91,15 @@ const DecryptedTextDemo = () => {
       },
       {
         name: 'animateOn',
-        type: `"view" | "hover"`,
+        type: `"view" | "hover" | "inViewHover" | "click"`,
         default: `"hover"`,
         description: 'Trigger scrambling on hover or scroll-into-view.'
+      },
+      {
+        name: 'clickMode',
+        type: `"once" | "toggle"`,
+        default: `"once"`,
+        description: 'Controls click behavior; only applies when animateOn is "click".'
       }
     ],
     []
@@ -101,7 +108,12 @@ const DecryptedTextDemo = () => {
   const animateOptions = [
     { label: 'View', value: 'view' },
     { label: 'Hover', value: 'hover' },
-    { label: 'Both', value: 'both' }
+    { label: 'View & Hover', value: 'inViewHover' },
+    { label: 'Click', value: 'click' }
+  ];
+  const clickOptions = [
+    { label: 'Once', value: 'once' },
+    { label: 'Toggle', value: 'toggle' }
   ];
   const directionOptions = [
     { label: 'Start', value: 'start' },
@@ -127,6 +139,7 @@ const DecryptedTextDemo = () => {
                 parentClassName="decrypted-text"
                 useOriginalCharsOnly={useOriginalCharsOnly}
                 animateOn={animateOn}
+                clickMode={clickMode}
               />
             </Flex>
           </Box>
@@ -137,9 +150,22 @@ const DecryptedTextDemo = () => {
               options={animateOptions}
               value={animateOn}
               name="animateOn"
-              width={100}
+              width={150}
               onChange={val => {
                 updateProp('animateOn', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              isDisabled={animateOn !== 'click'}
+              title="Click Mode"
+              options={clickOptions}
+              value={clickMode}
+              name="clickMode"
+              width={100}
+              onChange={val => {
+                updateProp('clickMode', val);
                 forceRerender();
               }}
             />
