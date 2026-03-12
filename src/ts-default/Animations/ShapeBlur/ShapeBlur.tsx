@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = /* glsl */ `
@@ -139,6 +139,9 @@ const ShapeBlur = ({
 
   useEffect(() => {
     const mount = mountRef.current;
+    if (!mount) return;
+
+    let active = true;
     let animationFrameId: number;
     let time = 0,
       lastTime = 0;
@@ -190,10 +193,9 @@ const ShapeBlur = ({
     document.addEventListener('pointermove', onPointerMove);
 
     const resize = () => {
-      const container = mountRef.current;
-      if (!container) return;
-      w = container.clientWidth;
-      h = container.clientHeight;
+      if (!active) return;
+      w = mount.clientWidth;
+      h = mount.clientHeight;
       const dpr = Math.min(window.devicePixelRatio, 2);
 
       renderer.setSize(w, h);
@@ -213,10 +215,14 @@ const ShapeBlur = ({
     resize();
     window.addEventListener('resize', resize);
 
-    const ro = new ResizeObserver(() => resize());
-    if (mountRef.current) ro.observe(mountRef.current);
+    const ro = new ResizeObserver(() => {
+      if (!active) return;
+      resize();
+    });
+    ro.observe(mount);
 
     const update = () => {
+      if (!active) return;
       time = performance.now() * 0.001;
       const dt = time - lastTime;
       lastTime = time;
@@ -229,13 +235,18 @@ const ShapeBlur = ({
     update();
 
     return () => {
+      active = false;
+
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
-      if (ro) ro.disconnect();
+      ro.disconnect();
       document.removeEventListener('mousemove', onPointerMove);
       document.removeEventListener('pointermove', onPointerMove);
-      mount.removeChild(renderer.domElement);
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
+      }
       renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 

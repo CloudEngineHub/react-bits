@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './GridDistortion.css';
 
@@ -249,6 +249,7 @@ const GridDistortion: React.FC<GridDistortionProps> = ({
 
       if (renderer) {
         renderer.dispose();
+        renderer.forceContextLoss();
         if (container.contains(renderer.domElement)) {
           container.removeChild(renderer.domElement);
         }

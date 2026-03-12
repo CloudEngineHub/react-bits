@@ -1,6 +1,6 @@
 // Component ported and enhanced from https://codepen.io/JuanFuentes/pen/eYEeoyE
 
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -395,6 +395,7 @@ class CanvAscii {
     this.clear();
     if (this.renderer) {
       this.renderer.dispose();
+      this.renderer.forceContextLoss();
     }
   }
 }

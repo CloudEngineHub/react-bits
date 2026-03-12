@@ -1191,8 +1191,8 @@
 			"description": "Pixelated cursor trail emitting fading squares with retro digital feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
+				"@react-three/fiber@^9.3.0",
 				"three@^0.167.1"
 			],
 			"registryDependencies": [],
@@ -6201,8 +6201,8 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"gsap@^3.13.0"
+				"gsap@^3.13.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6218,8 +6218,8 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"gsap@^3.13.0"
+				"gsap@^3.13.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6903,9 +6903,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6925,9 +6925,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6943,9 +6943,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6965,9 +6965,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7127,8 +7127,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7152,8 +7152,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7173,8 +7173,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7198,8 +7198,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7699,8 +7699,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7720,8 +7720,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7737,8 +7737,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7758,8 +7758,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
