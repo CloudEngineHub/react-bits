@@ -6,7 +6,7 @@ import { ActiveRouteProvider } from './components/context/ActiveRouteContext/Act
 import { forceChakraDarkTheme } from './utils/utils';
 
 import AnnouncementBar from './components/landing/AnnouncementBar/AnnouncementBar';
-import LaunchModal from './components/common/LaunchModal/LaunchModal';
+import AnnouncementModal from './components/common/AnnouncementModal/AnnouncementModal';
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
 import SidebarLayout from './components/layout/SidebarLayout';
 import LandingPage from './pages/LandingPage';
@@ -85,7 +85,7 @@ export default function App() {
       <NuqsAdapter>
         <ActiveRouteProvider>
           <AppContent />
-          <LaunchModal />
+          <AnnouncementModal />
         </ActiveRouteProvider>
       </NuqsAdapter>
     </Router>

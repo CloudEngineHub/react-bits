@@ -1,14 +1,16 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { LuX, LuRocket } from 'react-icons/lu';
-import './LaunchModal.css';
+import './AnnouncementModal.css';
 
 const STORAGE_KEY = 'rb-pro-launch-seen';
 const SHOW_DELAY = 1500;
 const IMAGE_CYCLE_INTERVAL = 5000;
 const IMAGES = ['/assets/rbp/components.webp', '/assets/rbp/blocks.webp'];
 
-const LaunchModal = () => {
+const DISABLED = true;
+
+const AnnouncementModal = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -18,7 +20,7 @@ const LaunchModal = () => {
   useEffect(() => {
     const hasSeenModal = localStorage.getItem(STORAGE_KEY);
 
-    if (hasSeenModal) return;
+    if (hasSeenModal || DISABLED) return;
 
     const timer = setTimeout(() => {
       previouslyFocusedElement.current = document.activeElement;
@@ -96,7 +98,7 @@ const LaunchModal = () => {
     <AnimatePresence>
       {!isClosing && (
         <motion.div
-          className="launch-modal-backdrop"
+          className="announcement-modal-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -106,11 +108,11 @@ const LaunchModal = () => {
         >
           <motion.div
             ref={modalRef}
-            className="launch-modal"
+            className="announcement-modal"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="launch-modal-title"
-            aria-describedby="launch-modal-description"
+            aria-labelledby="announcement-modal-title"
+            aria-describedby="announcement-modal-description"
             tabIndex={-1}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -118,11 +120,11 @@ const LaunchModal = () => {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             onClick={e => e.stopPropagation()}
           >
-            <button className="launch-modal-close" onClick={handleDismiss} aria-label="Close announcement">
+            <button className="announcement-modal-close" onClick={handleDismiss} aria-label="Close announcement">
               <LuX size={20} />
             </button>
 
-            <div className="launch-modal-image">
+            <div className="announcement-modal-image">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentImageIndex}
@@ -137,16 +139,16 @@ const LaunchModal = () => {
               </AnimatePresence>
             </div>
 
-            <div className="launch-modal-content">
-              <div className="launch-modal-icon">
+            <div className="announcement-modal-content">
+              <div className="announcement-modal-icon">
                 <LuRocket size={24} />
               </div>
 
-              <h2 id="launch-modal-title" className="launch-modal-title">
+              <h2 id="announcement-modal-title" className="announcement-modal-title">
                 React Bits Pro just launched!
               </h2>
 
-              <p id="launch-modal-description" className="launch-modal-description">
+              <p id="announcement-modal-description" className="announcement-modal-description">
                 65+ unique components, 100+ blocks, and 5 full page templates for building memorable products.
               </p>
 
@@ -154,12 +156,12 @@ const LaunchModal = () => {
                 href="https://pro.reactbits.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="launch-modal-cta"
+                className="announcement-modal-cta"
               >
                 Check It Out
               </a>
 
-              <div className="launch-modal-highlight">
+              <div className="announcement-modal-highlight">
                 <span>🎉</span> Launch special: 25% off (limited time)
               </div>
             </div>
@@ -170,4 +172,4 @@ const LaunchModal = () => {
   );
 };
 
-export default LaunchModal;
+export default AnnouncementModal;
