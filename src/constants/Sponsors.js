@@ -7,7 +7,7 @@ export const diamondSponsors = [
     url: 'https://www.shadcnblocks.com/'
   },
   {
-    id: 1,
+    id: 2,
     name: 'shadcn studio',
     imageUrl: '/assets/sponsors/shadcnstudio.svg',
     url: 'https://shadcnstudio.com/'
