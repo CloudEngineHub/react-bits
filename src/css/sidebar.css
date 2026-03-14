@@ -5,10 +5,10 @@
 
 .sidebar::before {
   content: '';
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   height: 200px;
   pointer-events: none;
   background: linear-gradient(to top, #060010, transparent);
@@ -21,9 +21,12 @@
 }
 
 .sidebar {
+  position: relative;
   min-width: fit-content;
   max-width: 160px;
   padding: 7.5rem 0 6em 0 !important;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
 }
 
 @media only screen and (max-width: 967px) {
@@ -73,6 +76,12 @@
   padding: 0.15em 0;
   display: flex;
   align-items: center;
+  gap: 0.25rem;
+  min-height: 1.75rem;
+  line-height: 1.35;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
   transition:
     color 0.2s ease,
     transform 0.2s ease;
@@ -99,7 +108,8 @@
 .sidebar-item .updated-tag {
   margin-left: 0.6em;
   font-size: 10px;
-  line-height: 0;
+  line-height: 1;
+  flex-shrink: 0;
   border-radius: 6px;
   font-weight: 500;
   padding: 1em 0.4em 0.8em 0.4em;
