@@ -26,7 +26,6 @@ import {
   removeSavedComponent,
   toggleSavedComponent
 } from '../../utils/favorites';
-import { FaChevronRight } from 'react-icons/fa';
 import { ArrowRightIcon } from 'lucide-react';
 import Aurora from '@/content/Backgrounds/Aurora/Aurora';
 
@@ -210,8 +209,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             React Bits Pro is live!
           </Text>
           <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
-            25% off launch special (limited){' '}
-            <Icon boxSize={{ base: 2, md: 3 }} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
+            Explore unique components, UI blocks, and templates to supercharge your work.
           </Text>
         </Flex>
 
