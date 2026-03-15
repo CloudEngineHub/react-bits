@@ -101,7 +101,7 @@ export const ScrollVelocity = ({
     for (let i = 0; i < (numCopies ?? 1); i++) {
       spans.push(
         <span className={`flex-shrink-0 ${className}`} key={i} ref={i === 0 ? copyRef : null}>
-          {children}
+          {children}&nbsp;
         </span>
       );
     }
@@ -135,7 +135,7 @@ export const ScrollVelocity = ({
           parallaxStyle={parallaxStyle}
           scrollerStyle={scrollerStyle}
         >
-          {text}&nbsp;
+          {text}
         </VelocityText>
       ))}
     </section>

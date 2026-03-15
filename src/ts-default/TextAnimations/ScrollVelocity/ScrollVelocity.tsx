@@ -32,7 +32,7 @@ interface VelocityTextProps {
 
 interface ScrollVelocityProps {
   scrollContainerRef?: React.RefObject<HTMLElement>;
-  texts: string[];
+  texts: React.ReactNode[];
   velocity?: number;
   className?: string;
   damping?: number;
@@ -134,10 +134,10 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     });
 
     const spans = [];
-    for (let i = 0; i < numCopies!; i++) {
+    for (let i = 0; i < (numCopies ?? 6); i++) {
       spans.push(
         <span className={className} key={i} ref={i === 0 ? copyRef : null}>
-          {children}
+          {children}&nbsp;
         </span>
       );
     }
@@ -153,7 +153,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
 
   return (
     <section>
-      {texts.map((text: string, index: number) => (
+      {texts.map((text, index) => (
         <VelocityText
           key={index}
           className={className}
@@ -168,7 +168,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
           parallaxStyle={parallaxStyle}
           scrollerStyle={scrollerStyle}
         >
-          {text}&nbsp;
+          {text}
         </VelocityText>
       ))}
     </section>
