@@ -20,12 +20,13 @@ const DEFAULT_PROPS = {
   borderColor: '#271E37',
   hoverColor: '#222222',
   size: 40,
-  speed: 0.5
+  speed: 0.5,
+  shape: 'square'
 };
 
 const SquaresDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { direction, borderColor, hoverColor, size, speed } = props;
+  const { direction, borderColor, hoverColor, size, speed, shape } = props;
 
   const propData = useMemo(
     () => [
@@ -43,6 +44,12 @@ const SquaresDemo = () => {
         type: 'string',
         default: "'#222'",
         description: 'Fill color when hovering over squares.'
+      },
+      {
+        name: 'shape',
+        type: 'string',
+        default: "'square'",
+        description: "Shape of the grid tiles. Options: 'square', 'hexagon'."
       }
     ],
     []
@@ -59,6 +66,7 @@ const SquaresDemo = () => {
               direction={direction}
               borderColor={borderColor}
               hoverFillColor={hoverColor}
+              shape={shape}
             />
 
             {/* For Demo Purposes Only */}
@@ -73,19 +81,47 @@ const SquaresDemo = () => {
                 squareSize: size,
                 direction,
                 borderColor,
-                hoverFillColor: hoverColor
+                hoverFillColor: hoverColor,
+                shape
               }}
               defaultProps={{
                 speed: 0.5,
                 squareSize: 40,
                 direction: 'diagonal',
                 borderColor: '#999',
-                hoverFillColor: '#222'
+                hoverFillColor: '#222',
+                shape: 'square'
               }}
             />
           </Flex>
 
           <Customize>
+            <ButtonGroup isAttached size="sm" mb={4}>
+              <Text fontSize="sm" mr={2}>
+                Shape
+              </Text>
+              <Button
+                bg={shape === 'square' ? '#5227FF' : '#170D27'}
+                _hover={{ backgroundColor: `${shape === 'square' ? '#5227FF' : '#170D27'}` }}
+                color="white"
+                fontSize="xs"
+                h={8}
+                onClick={() => updateProp('shape', 'square')}
+              >
+                Square
+              </Button>
+              <Button
+                bg={shape === 'hexagon' ? '#5227FF' : '#170D27'}
+                _hover={{ backgroundColor: `${shape === 'hexagon' ? '#5227FF' : '#170D27'}` }}
+                color="white"
+                fontSize="xs"
+                h={8}
+                onClick={() => updateProp('shape', 'hexagon')}
+              >
+                Hexagon
+              </Button>
+            </ButtonGroup>
+
             <ButtonGroup isAttached size="sm">
               <Text fontSize="sm" mr={2}>
                 Direction
