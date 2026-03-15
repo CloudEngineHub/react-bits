@@ -292,7 +292,7 @@ export default function ToolsPage() {
     return (
       <Box minH="100vh" bg="#060010" display="flex" flexDirection="column">
         <AnnouncementBar
-          message="React Bits Pro is here - 65 components, 100+ UI blocks, 5 full templates - check it out!"
+          message="Get React Bits Pro - 65 components, 100+ UI blocks, 5 full templates - click here!"
           link="https://pro.reactbits.dev"
           backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
           noBorder={true}
@@ -331,7 +331,7 @@ export default function ToolsPage() {
   return (
     <Box h="100vh" bg="#060010" overflow="hidden">
       <AnnouncementBar
-        message="React Bits Pro is here - 65 components, 100+ UI blocks, 5 full templates - check it out!"
+        message="Get React Bits Pro - 65 components, 100+ UI blocks, 5 full templates - click here!"
         link="https://pro.reactbits.dev"
         backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
         noBorder={true}
