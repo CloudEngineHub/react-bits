@@ -33,9 +33,9 @@ const ScrollVelocityDemo = () => {
       },
       {
         name: 'texts',
-        type: 'string[]',
+        type: 'React.ReactNode[]',
         default: '[]',
-        description: 'Array of strings to display as scrolling text.'
+        description: 'Array of items to display as scrolling content. Accepts strings, JSX elements, icons, or any valid React node.'
       },
       {
         name: 'velocity',
