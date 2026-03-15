@@ -13,6 +13,7 @@ squareSize={40}
 direction='diagonal' // up, down, left, right, diagonal
 borderColor='#fff'
 hoverFillColor='#222'
+shape='square' // square, hexagon
 />`,
   code,
   css,

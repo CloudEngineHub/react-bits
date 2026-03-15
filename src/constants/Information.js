@@ -970,18 +970,10 @@ export const componentMetadata = {
   },
   'Backgrounds/Squares': {
     videoUrl: '/assets/video/squares.webm',
-    description: 'Animated squares with scaling + direction customization.',
+    description: 'Animated grid with shape variants (square, hexagon) + direction customization.',
     category: 'Backgrounds',
     name: 'Squares',
     docsUrl: 'https://reactbits.dev/backgrounds/squares',
-    tags: []
-  },
-  'Backgrounds/Hexagons': {
-    videoUrl: '',
-    description: 'Animated hexagonal grid with smooth scrolling + hover effects.',
-    category: 'Backgrounds',
-    name: 'Hexagons',
-    docsUrl: 'https://reactbits.dev/backgrounds/hexagons',
     tags: []
   },
   'Backgrounds/Threads': {
