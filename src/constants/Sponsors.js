@@ -31,12 +31,6 @@ export const silverSponsors = [
   },
   {
     id: 3,
-    name: 'Efferd',
-    imageUrl: '/assets/sponsors/efferd.svg',
-    url: 'https://efferd.com/'
-  },
-  {
-    id: 4,
     name: 'shadcnspace',
     imageUrl: '/assets/sponsors/shadcnspace.svg',
     url: 'https://shadcnspace.com/'
