@@ -104,6 +104,7 @@ const backgrounds = {
   'silk': () => import('../demo/Backgrounds/SilkDemo'),
   'aurora': () => import('../demo/Backgrounds/AuroraDemo'),
   'squares': () => import('../demo/Backgrounds/SquaresDemo'),
+  'hexagons': () => import('../demo/Backgrounds/HexagonsDemo'),
   'hyperspeed': () => import('../demo/Backgrounds/HyperspeedDemo'),
   'iridescence': () => import('../demo/Backgrounds/IridescenceDemo'),
   'grid-motion': () => import('../demo/Backgrounds/GridMotionDemo'),

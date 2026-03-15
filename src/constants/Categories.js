@@ -153,6 +153,7 @@ export const CATEGORIES = [
       'Letter Glitch',
       'Grid Motion',
       'Squares',
+      'Hexagons',
       'Liquid Chrome',
       'Balatro'
     ]

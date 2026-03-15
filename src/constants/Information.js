@@ -976,6 +976,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/squares',
     tags: []
   },
+  'Backgrounds/Hexagons': {
+    videoUrl: '',
+    description: 'Animated hexagonal grid with smooth scrolling + hover effects.',
+    category: 'Backgrounds',
+    name: 'Hexagons',
+    docsUrl: 'https://reactbits.dev/backgrounds/hexagons',
+    tags: []
+  },
   'Backgrounds/Threads': {
     videoUrl: '/assets/video/threads.webm',
     description: 'Animated pattern of lines forming a fabric-like motion.',
