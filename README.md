@@ -111,14 +111,6 @@ React Bits is proudly supported by these amazing sponsors:
   </picture>
 </a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://efferd.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/efferd.svg">
-    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/efferd-lightmode.svg">
-    <img src="public/assets/sponsors/efferd.svg" alt="Efferd" style="height: 30px;">
-  </picture>
-</a>
-&nbsp;&nbsp;&nbsp;
 <a href="https://shadcnspace.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcnspace.svg">
