@@ -968,12 +968,12 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/silk',
     tags: []
   },
-  'Backgrounds/Squares': {
+  'Backgrounds/ShapeGrid': {
     videoUrl: '/assets/video/squares.webm',
-    description: 'Animated grid with shape variants (square, hexagon) + direction customization.',
+    description: 'Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.',
     category: 'Backgrounds',
-    name: 'Squares',
-    docsUrl: 'https://reactbits.dev/backgrounds/squares',
+    name: 'ShapeGrid',
+    docsUrl: 'https://reactbits.dev/backgrounds/shape-grid',
     tags: []
   },
   'Backgrounds/Threads': {

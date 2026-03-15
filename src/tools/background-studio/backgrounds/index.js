@@ -57,10 +57,10 @@ export const BACKGROUNDS = [
     ]
   },
   {
-    id: 'squares',
-    label: 'Squares',
-    component: () => import('../../../content/Backgrounds/Squares/Squares.jsx'),
-    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/squares"',
+    id: 'shape-grid',
+    label: 'Shape Grid',
+    component: () => import('../../../content/Backgrounds/ShapeGrid/ShapeGrid.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/shape-grid"',
     props: [
       { name: 'speed', type: 'number', default: 0.5, min: 0, max: 2, step: 0.05, label: 'Speed' },
       { name: 'squareSize', type: 'number', default: 40, min: 10, max: 100, step: 5, label: 'Square Size' },
@@ -72,7 +72,15 @@ export const BACKGROUNDS = [
         label: 'Direction'
       },
       { name: 'borderColor', type: 'color', default: '#999', label: 'Border Color' },
-      { name: 'hoverFillColor', type: 'color', default: '#222', label: 'Hover Fill Color' }
+      { name: 'hoverFillColor', type: 'color', default: '#222', label: 'Hover Fill Color' },
+      {
+        name: 'shape',
+        type: 'select',
+        default: 'square',
+        options: ['square', 'hexagon', 'circle', 'triangle'],
+        label: 'Shape'
+      },
+      { name: 'hoverTrailAmount', type: 'number', default: 0, min: 0, max: 20, step: 1, label: 'Hover Trail' }
     ]
   },
   {

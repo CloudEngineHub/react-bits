@@ -70,6 +70,7 @@ Notes:
 - [Image Trail](https://www.reactbits.dev/animations/image-trail): Cursor-based image trail with several built-in variants. CLI: `ImageTrail`.
 - [Laser Flow](https://www.reactbits.dev/animations/laser-flow): Dynamic laser light that flows onto a surface, customizable effect. CLI: `LaserFlow`.
 - [Logo Loop](https://www.reactbits.dev/animations/logo-loop): Continuously looping marquee of brand or tech logos with seamless repeat and hover pause. CLI: `LogoLoop`.
+- [Magic Rings](https://www.reactbits.dev/animations/magic-rings): Interactive magic rings effect with customizable parameters. CLI: `MagicRings`.
 - [Magnet](https://www.reactbits.dev/animations/magnet): Elements magnetically ease toward the cursor then settle back with spring physics. CLI: `Magnet`.
 - [Magnet Lines](https://www.reactbits.dev/animations/magnet-lines): Animated field lines bend toward the cursor. CLI: `MagnetLines`.
 - [Meta Balls](https://www.reactbits.dev/animations/meta-balls): Liquid metaball blobs that merge and separate with smooth implicit surface animation. CLI: `MetaBalls`.
@@ -157,8 +158,8 @@ Notes:
 - [Prism](https://www.reactbits.dev/backgrounds/prism): Rotating prism with configurable intensity, size, and colors. CLI: `Prism`.
 - [Prismatic Burst](https://www.reactbits.dev/backgrounds/prismatic-burst): Burst of light rays with controllable color, distortion, amount. CLI: `PrismaticBurst`.
 - [Ripple Grid](https://www.reactbits.dev/backgrounds/ripple-grid): A grid that continuously animates with a ripple effect. CLI: `RippleGrid`.
+- [Shape Grid](https://www.reactbits.dev/backgrounds/shape-grid): Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization. CLI: `ShapeGrid`.
 - [Silk](https://www.reactbits.dev/backgrounds/silk): Smooth waves background with soft lighting. CLI: `Silk`.
-- [Squares](https://www.reactbits.dev/backgrounds/squares): Animated squares with scaling + direction customization. CLI: `Squares`.
 - [Threads](https://www.reactbits.dev/backgrounds/threads): Animated pattern of lines forming a fabric-like motion. CLI: `Threads`.
 - [Waves](https://www.reactbits.dev/backgrounds/waves): Layered lines that form smooth wave patterns with animation. CLI: `Waves`.
 

@@ -1,5 +1,6 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Shape Grid',
   'Color Bends',
   'Antigravity',
   'Grainient',
@@ -152,7 +153,7 @@ export const CATEGORIES = [
       'Orb',
       'Letter Glitch',
       'Grid Motion',
-      'Squares',
+      'Shape Grid',
       'Liquid Chrome',
       'Balatro'
     ]
