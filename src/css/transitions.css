@@ -12,7 +12,11 @@
 
 .sidebar-item {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  /* padding-left: 0; */
+  padding-left: 0;
+}
+
+.sidebar-item:hover {
+  padding-left: 2px;
 }
 
 .sidebar-item.transitioning {
