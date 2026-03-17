@@ -89,6 +89,7 @@ Notes:
 ## Components
 
 - [Animated List](https://www.reactbits.dev/components/animated-list): List items enter with staggered motion variants for polished reveals. CLI: `AnimatedList`.
+- [Border Glow](https://www.reactbits.dev/components/border-glow): Glowing mesh-gradient border that follows cursor direction and intensifies near edges. CLI: `BorderGlow`.
 - [Bounce Cards](https://www.reactbits.dev/components/bounce-cards): Cards bounce that bounce in on mount. CLI: `BounceCards`.
 - [Bubble Menu](https://www.reactbits.dev/components/bubble-menu): Floating circular expanding menu with staggered item reveal. CLI: `BubbleMenu`.
 - [Card Nav](https://www.reactbits.dev/components/card-nav): Expandable navigation bar with card panels revealing nested links. CLI: `CardNav`.
@@ -134,6 +135,7 @@ Notes:
 - [Dark Veil](https://www.reactbits.dev/backgrounds/dark-veil): Subtle dark background with a smooth animation and postprocessing. CLI: `DarkVeil`.
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.
+- [Evil Eye](https://www.reactbits.dev/backgrounds/evil-eye): Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow. CLI: `EvilEye`.
 - [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): Terminal CRT scanline squares effect with flicker + noise. CLI: `FaultyTerminal`.
 - [Floating Lines](https://www.reactbits.dev/backgrounds/floating-lines): 3D floating lines that react to cursor movement. CLI: `FloatingLines`.
 - [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Parallax realistic starfield with pointer interactions. CLI: `Galaxy`.
@@ -148,6 +150,7 @@ Notes:
 - [Lightning](https://www.reactbits.dev/backgrounds/lightning): Procedural lightning bolts with branching and glow flicker. CLI: `Lightning`.
 - [Light Pillar](https://www.reactbits.dev/backgrounds/light-pillar): Vertical pillar of light with glow effects. CLI: `LightPillar`.
 - [Light Rays](https://www.reactbits.dev/backgrounds/light-rays): Volumetric light rays/beams with customizable direction. CLI: `LightRays`.
+- [Line Waves](https://www.reactbits.dev/backgrounds/line-waves): Animated line wave pattern with colorful warped distortion. CLI: `LineWaves`.
 - [Liquid Chrome](https://www.reactbits.dev/backgrounds/liquid-chrome): Liquid metallic chrome shader with flowing reflective surface. CLI: `LiquidChrome`.
 - [Liquid Ether](https://www.reactbits.dev/backgrounds/liquid-ether): Interactive liquid shader with flowing distortion and customizable colors. CLI: `LiquidEther`.
 - [Orb](https://www.reactbits.dev/backgrounds/orb): Floating energy orb with customizable hover effect. CLI: `Orb`.
@@ -157,9 +160,11 @@ Notes:
 - [Plasma](https://www.reactbits.dev/backgrounds/plasma): Organic plasma gradients swirl + morph with smooth turbulence. CLI: `Plasma`.
 - [Prism](https://www.reactbits.dev/backgrounds/prism): Rotating prism with configurable intensity, size, and colors. CLI: `Prism`.
 - [Prismatic Burst](https://www.reactbits.dev/backgrounds/prismatic-burst): Burst of light rays with controllable color, distortion, amount. CLI: `PrismaticBurst`.
+- [Radar](https://www.reactbits.dev/backgrounds/radar): Radar sweep effect with concentric rings, radial spokes, and a rotating beam. CLI: `Radar`.
 - [Ripple Grid](https://www.reactbits.dev/backgrounds/ripple-grid): A grid that continuously animates with a ripple effect. CLI: `RippleGrid`.
 - [Shape Grid](https://www.reactbits.dev/backgrounds/shape-grid): Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization. CLI: `ShapeGrid`.
 - [Silk](https://www.reactbits.dev/backgrounds/silk): Smooth waves background with soft lighting. CLI: `Silk`.
+- [Soft Aurora](https://www.reactbits.dev/backgrounds/soft-aurora): Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes. CLI: `SoftAurora`.
 - [Threads](https://www.reactbits.dev/backgrounds/threads): Animated pattern of lines forming a fabric-like motion. CLI: `Threads`.
 - [Waves](https://www.reactbits.dev/backgrounds/waves): Layered lines that form smooth wave patterns with animation. CLI: `Waves`.
 

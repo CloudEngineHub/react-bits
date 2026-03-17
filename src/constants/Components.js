@@ -66,6 +66,7 @@ const components = {
   'stack': () => import('../demo/Components/StackDemo'),
   'dock': () => import('../demo/Components/DockDemo'),
   'spotlight-card': () => import('../demo/Components/SpotlightCardDemo'),
+  'border-glow': () => import('../demo/Components/BorderGlowDemo'),
   'elastic-slider': () => import('../demo/Components/ElasticSliderDemo'),
   'decay-card': () => import('../demo/Components/DecayCardDemo'),
   'bounce-cards': () => import('../demo/Components/BounceCardsDemo'),
@@ -133,10 +134,14 @@ const backgrounds = {
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
   'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
+  'line-waves': () => import('../demo/Backgrounds/LineWavesDemo.jsx'),
   'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx'),
   'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx'),
   'light-pillar': () => import('../demo/Backgrounds/LightPillarDemo.jsx'),
-  'pixel-snow': () => import('../demo/Backgrounds/PixelSnowDemo.jsx')
+  'pixel-snow': () => import('../demo/Backgrounds/PixelSnowDemo.jsx'),
+  'radar': () => import('../demo/Backgrounds/RadarDemo.jsx'),
+  'soft-aurora': () => import('../demo/Backgrounds/SoftAuroraDemo.jsx'),
+  'evil-eye': () => import('../demo/Backgrounds/EvilEyeDemo.jsx')
 };
 
 export const componentMap = {

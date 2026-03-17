@@ -807,6 +807,90 @@ export const BACKGROUNDS = [
     ]
   },
   {
+    id: 'line-waves',
+    label: 'Line Waves',
+    component: () => import('../../../content/Backgrounds/LineWaves/LineWaves.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/line-waves"',
+    props: [
+      { name: 'speed', type: 'number', default: 0.3, min: 0.1, max: 3, step: 0.1, label: 'Speed' },
+      { name: 'innerLineCount', type: 'number', default: 32, min: 2, max: 40, step: 1, label: 'Inner Line Count' },
+      { name: 'outerLineCount', type: 'number', default: 36, min: 2, max: 40, step: 1, label: 'Outer Line Count' },
+      { name: 'warpIntensity', type: 'number', default: 1.0, min: 0.1, max: 3, step: 0.1, label: 'Warp Intensity' },
+      { name: 'rotation', type: 'number', default: -45, min: -180, max: 180, step: 1, label: 'Rotation' },
+      { name: 'edgeFadeWidth', type: 'number', default: 0.0, min: 0, max: 1, step: 0.05, label: 'Edge Fade Width' },
+      { name: 'colorCycleSpeed', type: 'number', default: 1.0, min: 0.1, max: 5, step: 0.1, label: 'Color Cycle Speed' },
+      { name: 'brightness', type: 'number', default: 0.2, min: 0.1, max: 3, step: 0.1, label: 'Brightness' },
+      { name: 'color1', type: 'color', default: '#ffffff', label: 'Color 1' },
+      { name: 'color2', type: 'color', default: '#ffffff', label: 'Color 2' },
+      { name: 'color3', type: 'color', default: '#ffffff', label: 'Color 3' },
+      { name: 'enableMouseInteraction', type: 'boolean', default: true, label: 'Mouse Interaction' },
+      { name: 'mouseInfluence', type: 'number', default: 2.0, min: 0.1, max: 2, step: 0.1, label: 'Mouse Influence' }
+    ]
+  },
+  {
+    id: 'evil-eye',
+    label: 'Evil Eye',
+    component: () => import('../../../content/Backgrounds/EvilEye/EvilEye.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/evil-eye"',
+    props: [
+      { name: 'eyeColor', type: 'color', default: '#FF6F37', label: 'Eye Color' },
+      { name: 'intensity', type: 'number', default: 1.5, min: 0.5, max: 5, step: 0.1, label: 'Intensity' },
+      { name: 'pupilSize', type: 'number', default: 0.6, min: 0.1, max: 2, step: 0.05, label: 'Pupil Size' },
+      { name: 'irisWidth', type: 'number', default: 0.25, min: 0.1, max: 0.8, step: 0.05, label: 'Iris Width' },
+      { name: 'glowIntensity', type: 'number', default: 0.35, min: 0, max: 1.5, step: 0.05, label: 'Glow Intensity' },
+      { name: 'scale', type: 'number', default: 0.8, min: 0.2, max: 3, step: 0.1, label: 'Scale' },
+      { name: 'noiseScale', type: 'number', default: 1.0, min: 0.1, max: 3, step: 0.1, label: 'Noise Scale' },
+      { name: 'pupilFollow', type: 'number', default: 1.0, min: 0, max: 2, step: 0.1, label: 'Pupil Follow' },
+      { name: 'flameSpeed', type: 'number', default: 1.0, min: 0.1, max: 5, step: 0.1, label: 'Flame Speed' },
+      { name: 'backgroundColor', type: 'color', default: '#000000', label: 'Background Color' }
+    ]
+  },
+  {
+    id: 'radar',
+    label: 'Radar',
+    component: () => import('../../../content/Backgrounds/Radar/Radar.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/radar"',
+    props: [
+      { name: 'speed', type: 'number', default: 1.0, min: 0.1, max: 5, step: 0.1, label: 'Speed' },
+      { name: 'scale', type: 'number', default: 0.5, min: 0.1, max: 3, step: 0.1, label: 'Scale' },
+      { name: 'ringCount', type: 'number', default: 10, min: 1, max: 30, step: 1, label: 'Ring Count' },
+      { name: 'spokeCount', type: 'number', default: 10, min: 1, max: 36, step: 1, label: 'Spoke Count' },
+      { name: 'ringThickness', type: 'number', default: 0.05, min: 0.01, max: 0.3, step: 0.01, label: 'Ring Thickness' },
+      { name: 'spokeThickness', type: 'number', default: 0.01, min: 0.01, max: 0.2, step: 0.01, label: 'Spoke Thickness' },
+      { name: 'sweepSpeed', type: 'number', default: 1.0, min: 0.1, max: 5, step: 0.1, label: 'Sweep Speed' },
+      { name: 'sweepWidth', type: 'number', default: 2, min: 1, max: 20, step: 1, label: 'Sweep Width' },
+      { name: 'sweepLobes', type: 'number', default: 1, min: 1, max: 6, step: 1, label: 'Sweep Lobes' },
+      { name: 'color', type: 'color', default: '#9f29ff', label: 'Color' },
+      { name: 'backgroundColor', type: 'color', default: '#000000', label: 'Background Color' },
+      { name: 'falloff', type: 'number', default: 2.0, min: 0.1, max: 3, step: 0.1, label: 'Falloff' },
+      { name: 'brightness', type: 'number', default: 1.0, min: 0.1, max: 3, step: 0.1, label: 'Brightness' },
+      { name: 'enableMouseInteraction', type: 'boolean', default: true, label: 'Mouse Interaction' },
+      { name: 'mouseInfluence', type: 'number', default: 0.1, min: 0.1, max: 1, step: 0.05, label: 'Mouse Influence' }
+    ]
+  },
+  {
+    id: 'soft-aurora',
+    label: 'Soft Aurora',
+    component: () => import('../../../content/Backgrounds/SoftAurora/SoftAurora.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/soft-aurora"',
+    props: [
+      { name: 'speed', type: 'number', default: 0.6, min: 0.1, max: 5, step: 0.1, label: 'Speed' },
+      { name: 'scale', type: 'number', default: 1.5, min: 0.1, max: 3, step: 0.1, label: 'Scale' },
+      { name: 'brightness', type: 'number', default: 1.0, min: 0.1, max: 3, step: 0.1, label: 'Brightness' },
+      { name: 'color1', type: 'color', default: '#f7f7f7', label: 'Color 1' },
+      { name: 'color2', type: 'color', default: '#e100ff', label: 'Color 2' },
+      { name: 'noiseFrequency', type: 'number', default: 2.5, min: 0.5, max: 10, step: 0.5, label: 'Noise Frequency' },
+      { name: 'noiseAmplitude', type: 'number', default: 1.0, min: 0.5, max: 10, step: 0.5, label: 'Noise Amplitude' },
+      { name: 'bandHeight', type: 'number', default: 0.5, min: 0, max: 1, step: 0.05, label: 'Band Height' },
+      { name: 'bandSpread', type: 'number', default: 1.0, min: 0.1, max: 3, step: 0.1, label: 'Band Spread' },
+      { name: 'octaveDecay', type: 'number', default: 0.1, min: 0.01, max: 0.5, step: 0.01, label: 'Octave Decay' },
+      { name: 'layerOffset', type: 'number', default: 0, min: 0, max: 1, step: 0.05, label: 'Layer Offset' },
+      { name: 'colorSpeed', type: 'number', default: 1.0, min: 0.1, max: 5, step: 0.1, label: 'Color Speed' },
+      { name: 'enableMouseInteraction', type: 'boolean', default: true, label: 'Mouse Interaction' },
+      { name: 'mouseInfluence', type: 'number', default: 0.25, min: 0.1, max: 1, step: 0.05, label: 'Mouse Influence' }
+    ]
+  },
+  {
     id: 'antigravity',
     label: 'Antigravity',
     component: () => import('../../../content/Animations/Antigravity/Antigravity.jsx'),
