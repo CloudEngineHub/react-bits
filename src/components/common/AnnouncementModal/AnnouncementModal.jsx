@@ -149,7 +149,7 @@ const AnnouncementModal = () => {
               </h2>
 
               <p id="announcement-modal-description" className="announcement-modal-description">
-                65+ unique components, 100+ blocks, and 5 full page templates for building memorable products.
+                85+ unique components, 100+ blocks, and 5 full page templates for building memorable products.
               </p>
 
               <a
