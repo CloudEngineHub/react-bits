@@ -5660,6 +5660,70 @@
 			]
 		},
 		{
+			"name": "BorderGlow-JS-CSS",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-JS-TW",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-TS-CSS",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.tsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-TS-TW",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.tsx"
+				}
+			]
+		},
+		{
 			"name": "Stack-JS-CSS",
 			"title": "Stack",
 			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
@@ -7474,6 +7538,294 @@
 				{
 					"type": "registry:component",
 					"path": "Lightning/Lightning.tsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-JS-CSS",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.jsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-JS-TW",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.jsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-TS-CSS",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.tsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-TS-TW",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.tsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-JS-CSS",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.jsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-JS-TW",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.jsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-TS-CSS",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.tsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-TS-TW",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.tsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-JS-CSS",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.jsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-JS-TW",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.jsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-TS-CSS",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.tsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-TS-TW",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.tsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-JS-CSS",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.jsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-JS-TW",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.jsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-TS-CSS",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.tsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-TS-TW",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.tsx"
 				}
 			]
 		},
