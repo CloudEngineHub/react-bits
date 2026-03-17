@@ -11,12 +11,12 @@ const Hero = () => {
 
       <div className="hero-main-content">
         <div className="hero-tag-fade">
-          <Link to="/animations/magic-rings" className="hero-new-badge-container">
+          <Link to="/components/border-glow" className="hero-new-badge-container">
             <span className="hero-new-badge">
               New <Icon boxSize={4} as={Sparkles} />
             </span>
             <div className="hero-new-badge-text">
-              <span>Magic Rings</span>
+              <span>Border Glow</span>
               <GoArrowRight />
             </div>
           </Link>

@@ -14,7 +14,7 @@ const ProCard = () => {
           </Flex>
 
           <Text fontSize="12px" color="#988BC7" letterSpacing="-.25px" lineHeight="1.5">
-            65+ components, 100+ blocks & 5 templates to ship memorable products faster.
+            85+ components, 100+ blocks & 5 templates to ship memorable products faster.
           </Text>
 
           <Flex align="center" justify="center" className="pro-card-cta" gap={2}>
