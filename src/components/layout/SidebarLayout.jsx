@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import Announcement from '../../components/common/Announcement';
-import AnnouncementBar from '../landing/AnnouncementBar/AnnouncementBar';
+import AnnouncementBar from '../common/AnnouncementBar/AnnouncementBar';
 import { PRO_ANNOUNCEMENT } from '../../constants/Site';
 import Header from '../../components/navs/Header';
 import Sidebar from '../../components/navs/Sidebar';

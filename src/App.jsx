@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { ActiveRouteProvider } from './components/context/ActiveRouteContext/ActiveRouteContext';
 import { forceChakraDarkTheme } from './utils/utils';
 
-import AnnouncementBar from './components/landing/AnnouncementBar/AnnouncementBar';
+import AnnouncementBar from './components/common/AnnouncementBar/AnnouncementBar';
 import { PRO_ANNOUNCEMENT } from './constants/Site';
 import AnnouncementModal from './components/common/AnnouncementModal/AnnouncementModal';
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
