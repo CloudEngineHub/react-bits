@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import FeatureCards from '../components/landing/FeatureCards/FeatureCards';
 import Sponsors from '../components/landing/Sponsors/Sponsors';
 import StartBuilding from '../components/landing/StartBuilding/StartBuilding';
@@ -6,6 +6,7 @@ import Announcement from '../components/common/Announcement';
 import Footer from '../components/landing/Footer/Footer';
 import Hero from '../components/landing/Hero/Hero';
 import heroImage from '../assets/common/hero.webp';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 // Lazy load heavy components
 const PlasmaWaveV2 = lazy(() => import('../components/landing/PlasmaWave/PlasmaWaveV2'));
@@ -13,9 +14,7 @@ const ToolsShowcase = lazy(() => import('../components/landing/ToolsShowcase/Too
 const Testimonials = lazy(() => import('../components/landing/Testimonials/Testimonials'));
 
 const LandingPage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useScrollToTop();
 
   return (
     <section className="landing-wrapper">

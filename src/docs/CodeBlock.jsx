@@ -1,33 +1,23 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { TbCopy, TbCheck } from 'react-icons/tb';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+const COPY_RESET_MS = 2000;
+
 const CodeBlock = ({ children, language = null, showLineNumbers = false }) => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
+    const text = String(children).trim();
     try {
-      const textToCopy = typeof children === 'string' ? children : children.toString();
-      await navigator.clipboard.writeText(textToCopy.trim());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-      try {
-        const textArea = document.createElement('textarea');
-        textArea.value = typeof children === 'string' ? children : children.toString();
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (fallbackErr) {
-        console.error('Fallback copy failed: ', fallbackErr);
-      }
+      await navigator.clipboard.writeText(text);
+    } catch {
+      return;
     }
-  };
+    setCopied(true);
+    setTimeout(() => setCopied(false), COPY_RESET_MS);
+  }, [children]);
 
   return (
     <div className="docs-code">
