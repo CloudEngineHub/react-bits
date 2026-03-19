@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import useScrollToTop from '../hooks/useScrollToTop';
 import DocsButtonBar from './DocsButtonBar';
 
 const Introduction = () => {
-  useEffect(() => window.scrollTo(0, 0), []);
+  useScrollToTop();
 
   return (
     <section className="docs-section">

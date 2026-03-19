@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Box, Text } from '@chakra-ui/react';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 import FadeContent from '../content/Animations/FadeContent/FadeContent';
 import Footer from '../components/landing/Footer/Footer';
@@ -9,7 +9,7 @@ import '../css/showcase.css';
 import Aurora from '../content/Backgrounds/Aurora/Aurora';
 
 const ShowcasePage = () => {
-  useEffect(() => window.scrollTo(0, 0), []);
+  useScrollToTop();
 
   return (
     <>
