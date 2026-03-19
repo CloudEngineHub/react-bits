@@ -27,11 +27,39 @@ import {
   toggleSavedComponent
 } from '../../utils/favorites';
 import { ArrowRightIcon } from 'lucide-react';
-import Aurora from '@/content/Backgrounds/Aurora/Aurora';
+import Aurora from '../../content/Backgrounds/Aurora/Aurora';
+import { colors } from '../../constants/colors';
 
 const CARD_RADIUS = 30;
 const CARD_PADDING = 6;
 const INNER_RADIUS = `${CARD_RADIUS - CARD_PADDING}px`;
+
+const ACTION_BTN_STYLE = {
+  size: 'xs',
+  variant: 'ghost',
+  color: colors.accent,
+  rounded: 'full',
+  position: 'absolute',
+  bg: colors.bgAction,
+  top: 2,
+  right: 2,
+  transition: 'opacity 0.15s ease',
+  _focus: { opacity: 1, pointerEvents: 'auto' },
+  _hover: { bg: colors.bgHover },
+};
+
+const PILL_BTN_STYLE = {
+  px: 4,
+  h: 10,
+  borderRadius: 'full',
+  cursor: 'pointer',
+  border: `1px solid ${colors.borderPrimary}`,
+  transition: 'background 0.3s',
+  color: '#fff',
+  fontWeight: 500,
+  bg: colors.bgBody,
+  _hover: { background: colors.bgElevated },
+};
 
 const slug = str => (str || '').replace(/\s+/g, '-').toLowerCase();
 const fromPascal = str =>
@@ -185,9 +213,9 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
         position="relative"
         w="100%"
         h="110px"
-        border="1px solid #170D27"
+        border={`1px solid ${colors.bgElevated}`}
         overflow="hidden"
-        bg="#060010"
+        bg={colors.bgBody}
         mb={6}
         cursor="pointer"
         alignItems="center"
@@ -205,10 +233,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
           alignSelf={{ base: 'flex-start', md: 'center' }}
           pt={{ base: 4, md: 0 }}
         >
-          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#FFFFFF" letterSpacing={'-.5px'}>
+          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#fff" letterSpacing={'-.5px'}>
             React Bits Pro is live!
           </Text>
-          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
+          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color={colors.accent} letterSpacing={'-.5px'}>
             Explore unique components, UI blocks, and templates to supercharge your work.
           </Text>
         </Flex>
@@ -250,7 +278,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
           opacity={controlsDisabled ? 0.6 : 1}
         >
           <InputGroup
-            startElement={<Icon as={FiSearch} color={controlsDisabled ? '#392e4e' : '#B19EEF'} fontSize="16px" />}
+            startElement={<Icon as={FiSearch} color={controlsDisabled ? colors.borderSecondary : colors.accent} fontSize="16px" />}
             w={{ base: '100%', md: '180px' }}
           >
             <Input
@@ -259,8 +287,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               placeholder="Search..."
               h={10}
               borderRadius="full"
-              bg="#060010"
-              border="1px solid #271E37"
+              bg={colors.bgBody}
+              border={`1px solid ${colors.borderPrimary}`}
               color="#fff"
               disabled={controlsDisabled}
               tabIndex={controlsDisabled ? -1 : 0}
@@ -274,10 +302,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                 }
               }}
               pointerEvents={controlsDisabled ? 'none' : 'auto'}
-              _focus={{ bg: '#060010', borderColor: 'transparent', boxShadow: 'none', outline: 'none' }}
-              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: '#392e4e' }}
-              _hover={{ bg: '#060010' }}
-              _placeholder={{ color: '#392e4e', fontWeight: 500 }}
+              _focus={{ bg: colors.bgBody, borderColor: 'transparent', boxShadow: 'none', outline: 'none' }}
+              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: colors.borderSecondary }}
+              _hover={{ bg: colors.bgBody }}
+              _placeholder={{ color: colors.borderSecondary, fontWeight: 500 }}
             />
           </InputGroup>
 
@@ -293,17 +321,17 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Select.Control>
               <Select.Trigger
                 fontSize="14px"
-                bg="#060010"
-                border="1px solid #271E37"
+                bg={colors.bgBody}
+                border={`1px solid ${colors.borderPrimary}`}
                 rounded="full"
                 h={10}
                 fontWeight={600}
                 cursor={controlsDisabled ? 'default' : 'pointer'}
                 transition="background 0.3s"
-                _hover={controlsDisabled ? undefined : { background: '#170D27' }}
+                _hover={controlsDisabled ? undefined : { background: colors.bgElevated }}
                 w="full"
               >
-                <Select.ValueText color={controlsDisabled ? '#392e4e' : '#fff'} pl={2}>
+                <Select.ValueText color={controlsDisabled ? colors.borderSecondary : '#fff'} pl={2}>
                   {selectedCategory}
                 </Select.ValueText>
                 <Select.IndicatorGroup>
@@ -314,8 +342,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Portal>
               <Select.Positioner>
                 <Select.Content
-                  bg="#060010"
-                  border="1px solid #271E37"
+                  bg={colors.bgBody}
+                  border={`1px solid ${colors.borderPrimary}`}
                   borderRadius="15px"
                   w={{ base: '100%', md: '180px' }}
                   px={2}
@@ -329,7 +357,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                       px={3}
                       py={2}
                       cursor="pointer"
-                      _highlighted={{ bg: '#271E37' }}
+                      _highlighted={{ bg: colors.bgHover }}
                     >
                       {cat}
                     </Select.Item>
@@ -352,19 +380,19 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               rounded="full"
               size="sm"
               variant="ghost"
-              color="#B19EEF"
+              color={colors.accent}
               onClick={clearFilters}
               h={10}
               w={10}
-              bg="#060010"
-              border="1px solid #271E37"
+              bg={colors.bgBody}
+              border={`1px solid ${colors.borderPrimary}`}
               opacity={0}
               style={{ transformOrigin: '50% 50%' }}
               pointerEvents={showClear ? 'auto' : 'none'}
               tabIndex={showClear ? 0 : -1}
-              _hover={{ bg: '#170D27' }}
+              _hover={{ bg: colors.bgElevated }}
               _focus={{ boxShadow: 'none', outline: 'none' }}
-              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: '#392e4e' }}
+              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: colors.borderSecondary }}
             >
               <Icon as={FiX} />
             </IconButton>
@@ -379,46 +407,25 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               <Text color="#fff" fontWeight={500} fontSize="24px" mb={1}>
                 {items.length > 0 ? 'No results...' : 'Nothing here yet...'}
               </Text>
-              <Text color="#a6a6a6" fontSize="16px" mb={8}>
+              <Text color={colors.textMuted} fontSize="16px" mb={8}>
                 {items.length > 0 ? 'Try adjusting your filters' : 'Tap the heart on any component to save it'}
               </Text>
 
               <Flex gap={2} justify="center" wrap="wrap">
                 {items.length > 0 ? (
-                  <Box
-                    as="button"
-                    onClick={clearFilters}
-                    px={4}
-                    h={10}
-                    borderRadius="full"
-                    cursor="pointer"
-                    border="1px solid #271E37"
-                    transition="background 0.3s"
-                    color="#fff"
-                    fontWeight={500}
-                    bg="#060010"
-                    _hover={{ background: '#170D27' }}
-                  >
+                  <Box as="button" onClick={clearFilters} {...PILL_BTN_STYLE}>
                     Clear Filters
                   </Box>
                 ) : (
                   <Box
                     as={RouterLink}
                     to="/get-started/index"
-                    px={6}
-                    h={10}
-                    borderRadius="full"
-                    cursor="pointer"
-                    border="1px solid #271E37"
-                    transition="background 0.3s"
-                    color="#fff"
                     lineHeight={0}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    fontWeight={500}
-                    bg="#060010"
-                    _hover={{ background: '#170D27' }}
+                    px={6}
+                    {...PILL_BTN_STYLE}
                   >
                     Browse Components
                   </Box>
@@ -464,8 +471,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                               data-item-key={item.key}
                               display="block"
                               role="group"
-                              bg="#170D27"
-                              border="1px solid #271E37"
+                              bg={colors.bgElevated}
+                              border={`1px solid ${colors.borderPrimary}`}
                               borderRadius={`${CARD_RADIUS}px`}
                               p={`${CARD_PADDING}px`}
                               textDecoration="none"
@@ -478,26 +485,16 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                 <Text color="#fff" fontSize="16px" fontWeight={500} lineHeight="1.4">
                                   {item.title}
                                 </Text>
-                                <Text color="#B19EEF" fontWeight={400} fontSize="12px">
+                                <Text color={colors.accent} fontWeight={400} fontSize="12px">
                                   {item.categoryLabel}
                                 </Text>
 
                                 {hasDeleteButton ? (
                                   <IconButton
                                     aria-label="Remove from favorites"
-                                    size="xs"
-                                    variant="ghost"
-                                    color="#B19EEF"
-                                    rounded="full"
-                                    position="absolute"
-                                    bg="#1E1430"
-                                    top={2}
-                                    right={2}
+                                    {...ACTION_BTN_STYLE}
                                     opacity={hoveredKey === item.key ? 1 : 0}
                                     pointerEvents={hoveredKey === item.key ? 'auto' : 'none'}
-                                    transition="opacity 0.15s ease"
-                                    _focus={{ opacity: 1, pointerEvents: 'auto' }}
-                                    _hover={{ bg: '#271E37' }}
                                     onClick={e => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -524,19 +521,9 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                 {!hasDeleteButton && hasFavoriteButton ? (
                                   <IconButton
                                     aria-label={isSaved ? 'Remove from favorites' : 'Add to favorites'}
-                                    size="xs"
-                                    variant="ghost"
-                                    color="#B19EEF"
-                                    rounded="full"
-                                    position="absolute"
-                                    bg="#1E1430"
-                                    top={2}
-                                    right={2}
+                                    {...ACTION_BTN_STYLE}
                                     opacity={hoveredKey === item.key ? 1 : 0}
                                     pointerEvents={hoveredKey === item.key ? 'auto' : 'none'}
-                                    transition="opacity 0.15s ease"
-                                    _focus={{ opacity: 1, pointerEvents: 'auto' }}
-                                    _hover={{ bg: '#271E37' }}
                                     onClick={e => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -545,7 +532,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                       toast?.[saved ? 'success' : 'error']?.(
                                         <>
                                           {saved ? 'Added' : 'Removed'}{' '}
-                                          <span style={{ color: '#B19EEF', fontWeight: 700 }}>
+                                          <span style={{ color: colors.accent, fontWeight: 700 }}>
                                             &lt;{item.title} /&gt;
                                           </span>{' '}
                                           {saved ? 'to favorites' : 'from favorites'}

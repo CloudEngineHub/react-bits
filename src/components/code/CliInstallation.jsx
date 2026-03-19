@@ -7,11 +7,8 @@ import {
   Flex,
   Button,
   Icon,
-  Select,
   Box,
-  Portal,
   Tooltip,
-  createListCollection
 } from '@chakra-ui/react';
 import { TbCopy, TbCopyCheckFilled } from 'react-icons/tb';
 import { useActiveRoute } from '../../hooks/useActiveRoute';
@@ -19,11 +16,16 @@ import { useOptions } from '../context/OptionsContext/useOptions';
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { generateCliCommands } from '../../utils/cli';
 import { useInstallation } from '../../hooks/useInstallation';
+import { colors } from '../../constants/colors';
+import IconSelect from './IconSelect';
 
 import jsrepoIcon from '../../assets/icons/jsrepo-outline.svg';
 import shadcnIcon from '../../assets/icons/shadcn-outline.svg';
 
 const PKG_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'];
+const CLI_TOOLS = ['shadcn', 'jsrepo'];
+const CLI_ICON_MAP = { jsrepo: jsrepoIcon, shadcn: shadcnIcon };
+const CLI_LABEL_MAP = { shadcn: 'shadcn', jsrepo: 'jsrepo' };
 
 const CliInstallation = ({ deps }) => {
   const { category, subcategory } = useActiveRoute();
@@ -51,9 +53,7 @@ const CliInstallation = ({ deps }) => {
     }
   }, [hasManual, mode, setMode]);
 
-  const cliTools = useMemo(() => createListCollection({ items: ['shadcn', 'jsrepo'] }), []);
-  const cliIconMap = { jsrepo: jsrepoIcon, shadcn: shadcnIcon };
-  const cliLabelMap = { shadcn: 'shadcn', jsrepo: 'jsrepo' };
+
 
   const [copied, setCopied] = useState(false);
   const codeRef = useRef(null);
@@ -187,20 +187,16 @@ const CliInstallation = ({ deps }) => {
       right=".6em"
       borderRadius="12px"
       fontWeight={500}
-      backgroundColor={copied ? '#5227FF' : '#060010'}
-      border="1px solid #392e4e"
+      bg={copied ? colors.primary : colors.bgBody}
+      border={`1px solid ${colors.borderSecondary}`}
       color={copied ? 'black' : 'white'}
-      _hover={{ backgroundColor: copied ? '#5227FF' : '#170D27' }}
-      _active={{ backgroundColor: '#5227FF' }}
+      _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
+      _active={{ bg: colors.primary }}
       transition="background-color 0.3s ease"
       onClick={handleCopy}
       aria-label="Copy installation command"
     >
-      {copied ? (
-        <Icon as={TbCopyCheckFilled} color="#fff" boxSize={4} />
-      ) : (
-        <Icon as={TbCopy} color="#fff" boxSize={4} />
-      )}
+      <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
     </Button>
   );
 
@@ -306,8 +302,8 @@ const CliInstallation = ({ deps }) => {
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
                   <Tooltip.Content
-                    bg="#170d27"
-                    border="1px solid #392e4e"
+                    bg={colors.bgElevated}
+                    border={`1px solid ${colors.borderSecondary}`}
                     color="#c9c9c9"
                     fontSize="12px"
                     px={2}
@@ -324,68 +320,15 @@ const CliInstallation = ({ deps }) => {
           </HStack>
           {mode === 'cli' && (
             <Box ml="auto">
-              <Select.Root
-                collection={cliTools}
-                value={[cliLib]}
-                onValueChange={({ value }) => setCliLib(value[0])}
-                size="sm"
-                closeOnSelect={true}
-              >
-                <Select.HiddenSelect />
-                <Select.Control>
-                  <Select.Trigger
-                    cursor="pointer"
-                    fontSize="14px"
-                    h={10}
-                    w="125px"
-                    bg="#060010"
-                    border="1px solid #392e4e"
-                    rounded="15px"
-                    px={3}
-                    display="flex"
-                    alignItems="center"
-                    gap={2}
-                  >
-                    <Select.ValueText display="flex" alignItems="center" gap={2}>
-                      <img src={cliIconMap[cliLib]} alt={cliLib} style={{ width: '16px', height: '16px' }} />
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: '#c9c9c9' }}>{cliLabelMap[cliLib]}</span>
-                    </Select.ValueText>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Trigger>
-                </Select.Control>
-                <Portal>
-                  <Select.Positioner>
-                    <Select.Content bg="#060010" border="1px solid #392e4e" borderRadius="15px" w="125px" px={2} py={2}>
-                      {cliTools.items.map(tool => (
-                        <Select.Item
-                          key={tool}
-                          item={tool}
-                          fontSize="14px"
-                          borderRadius="8px"
-                          cursor="pointer"
-                          py={1.5}
-                          display="flex"
-                          alignItems="center"
-                          gap={2}
-                          _highlighted={{ bg: '#271E37' }}
-                        >
-                          <Box display="flex" alignItems="center" gap={2}>
-                            <img src={cliIconMap[tool]} alt={tool} style={{ width: '20px', height: '20px' }} />
-                            <Text fontSize="14px" fontWeight={600} color="#c9c9c9">
-                              {cliLabelMap[tool]}
-                            </Text>
-                          </Box>
-                          <Select.ItemIndicator display="flex" alignItems="center" ml="auto" mr={1}>
-                            <Box boxSize={2} bg="#B19EEF" borderRadius="full" />
-                          </Select.ItemIndicator>
-                        </Select.Item>
-                      ))}
-                    </Select.Content>
-                  </Select.Positioner>
-                </Portal>
-              </Select.Root>
+              <IconSelect
+                collection={CLI_TOOLS}
+                value={cliLib}
+                onChange={setCliLib}
+                iconMap={CLI_ICON_MAP}
+                labelMap={CLI_LABEL_MAP}
+                width="125px"
+                closeOnSelect
+              />
             </Box>
           )}
         </Flex>

@@ -2,11 +2,7 @@ import { useEffect } from 'react';
 import DocsButtonBar from './DocsButtonBar';
 
 const Introduction = () => {
-  const scrollToTop = () => window.scrollTo(0, 0);
-
-  useEffect(() => {
-    scrollToTop();
-  }, []);
+  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <section className="docs-section">

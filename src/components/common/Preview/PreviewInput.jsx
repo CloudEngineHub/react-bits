@@ -1,4 +1,5 @@
 import { Flex, Text, Input, Field } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
 const PreviewInput = ({
   title = '',
@@ -9,9 +10,7 @@ const PreviewInput = ({
   isDisabled = false,
   onChange
 }) => {
-  const handleChange = e => {
-    onChange?.(e.target.value);
-  };
+  const handleChange = e => onChange?.(e.target.value);
 
   return (
     <Flex gap="4" align="center" mt="4">
@@ -19,8 +18,8 @@ const PreviewInput = ({
       <Field.Root width="auto">
         <Input
           borderRadius="10px"
-          bg="#060010"
-          border="1px solid #392e4e"
+          bg={colors.bgBody}
+          border={`1px solid ${colors.borderSecondary}`}
           h={9}
           w={`${width}px`}
           maxLength={maxLength}

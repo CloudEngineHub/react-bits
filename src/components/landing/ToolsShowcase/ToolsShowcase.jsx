@@ -1,28 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Palette, Shapes, ImageIcon, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { TOOLS } from '../../../constants/Tools';
 import './ToolsShowcase.css';
-
-const TOOLS = [
-  {
-    id: 'background-studio',
-    label: 'Background Studio',
-    icon: Palette,
-    description: 'Explore animated backgrounds. Customize effects, colors, and speed. Export as video, image, or code.'
-  },
-  {
-    id: 'shape-magic',
-    label: 'Shape Magic',
-    icon: Shapes,
-    description: 'Create inner rounded corners between shapes of different sizes. Export as code or SVG.'
-  },
-  {
-    id: 'texture-lab',
-    label: 'Texture Lab',
-    icon: ImageIcon,
-    description: 'Apply effects to your images. Add noise, dithering, halftone, ASCII art, and more.'
-  }
-];
 
 const ToolCard = ({ tool, index }) => {
   const cardRef = useRef(null);

@@ -1,5 +1,6 @@
 import { Box, Text, Flex, Icon } from '@chakra-ui/react';
 import { LuArrowRight, LuRocket } from 'react-icons/lu';
+import { colors } from '../../constants/colors';
 
 const ProCard = () => {
   return (
@@ -8,12 +9,12 @@ const ProCard = () => {
         <Flex direction="column" gap={3} p="1.25em">
           <Flex align="center" gap={2}>
             <Text fontWeight={700} fontSize="20px" color="#fff" letterSpacing="-.5px" lineHeight={0}>
-              <Icon opacity={0.35} as={LuRocket} mr="8px" boxSize={6} color="#988BC7" />
+              <Icon opacity={0.35} as={LuRocket} mr="8px" boxSize={6} color={colors.accentMuted} />
               Get React Bits Pro
             </Text>
           </Flex>
 
-          <Text fontSize="12px" color="#988BC7" letterSpacing="-.25px" lineHeight="1.5">
+          <Text fontSize="12px" color={colors.accentMuted} letterSpacing="-.25px" lineHeight="1.5">
             85+ components, 100+ blocks & 5 templates to ship memorable products faster.
           </Text>
 

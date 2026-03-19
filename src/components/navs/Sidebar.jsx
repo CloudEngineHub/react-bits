@@ -1,7 +1,10 @@
 import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
-import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon, Palette, Shapes, ImageIcon } from 'lucide-react';
+import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon } from 'lucide-react';
+
+import { TOOLS } from '../../constants/Tools';
+import { colors } from '../../constants/colors';
 
 import { useSearch } from '../context/SearchContext/useSearch';
 import { useTransition } from '../../hooks/useTransition';
@@ -13,13 +16,12 @@ import Logo from '../../assets/logos/react-bits-logo.svg';
 import SponsorsCard from '../common/SponsorsCard';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
-const HOVER_TIMEOUT_DELAY = 150;
 const SCROLL_OFFSET = 100;
 
 const ICON_BUTTON_STYLES = {
   rounded: '10px',
   border: '1px solid #ffffff1c',
-  bg: '#060010'
+  bg: colors.bgBody
 };
 
 const ARROW_ICON_PROPS = { boxSize: 4, transform: 'rotate(-45deg)' };
@@ -108,7 +110,7 @@ const HoverLine = ({ position, isVisible }) => (
 );
 
 const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
-  <Box display={{ md: 'none' }} position="fixed" top="50px" left={0} zIndex="overlay" w="100%" bg="#060010" p="1em">
+  <Box display={{ md: 'none' }} position="fixed" top="50px" left={0} zIndex="overlay" w="100%" bg={colors.bgBody} p="1em">
     <Flex align="center" justify="space-between" gap="1em">
       <Link to="/">
         <Image src={Logo} h="22px" alt="React Bits logo" />
@@ -132,12 +134,6 @@ const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
 );
 
 // ─── Tools Configuration ─────────────────────────────────────────────────────
-const TOOLS = [
-  { id: 'background-studio', label: 'Background Studio', icon: Palette, path: '/tools/background-studio' },
-  { id: 'shape-magic', label: 'Shape Magic', icon: Shapes, path: '/tools/shape-magic' },
-  { id: 'texture-lab', label: 'Texture Lab', icon: ImageIcon, path: '/tools/texture-lab' }
-];
-
 const ToolsLinks = ({ onClose }) => (
   <>
     <Separator my={4} />
@@ -156,10 +152,10 @@ const ToolsLinks = ({ onClose }) => (
           }}
         >
           <Flex alignItems="center" gap="8px">
-            <Icon as={tool.icon} boxSize={4} color="#B19EEF" />
+            <Icon as={tool.icon} boxSize={4} color={colors.accent} />
             <span>{tool.label}</span>
             {tool.comingSoon && (
-              <Text as="span" fontSize="10px" color="#988BC7" fontWeight={600}>
+              <Text as="span" fontSize="10px" color={colors.accentMuted} fontWeight={600}>
                 SOON
               </Text>
             )}
@@ -207,7 +203,7 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
         "&[data-state='open']": { transform: 'translateX(0)' }
       }}
     >
-      <Drawer.Content bg="#060010" h="100%">
+      <Drawer.Content bg={colors.bgBody} h="100%">
         <Drawer.Header h="72px" py={2} borderBottom="1px solid #ffffff1c" className="sidebar-logo">
           <Flex align="center" justify="space-between" w="100%">
             <Link to="/">
@@ -257,7 +253,7 @@ const SponsorsDrawer = ({ isOpen, onClose }) => (
         "&[data-state='open']": { transform: 'translateX(0)' }
       }}
     >
-      <Drawer.Content bg="#060010">
+      <Drawer.Content bg={colors.bgBody}>
         <Drawer.Body p={0}>
           <Box position="relative" p="1em" pt="3.5em">
             <IconButton
@@ -335,7 +331,7 @@ const Category = memo(
               {sub}
               {isNew && <span className="new-tag">New</span>}
               {isUpdated && <span className="updated-tag">Updated</span>}
-              {isFavorited && <Icon as={HeartIcon} color="#B19EEF" boxSize={3} style={{ marginLeft: 6 }} />}
+              {isFavorited && <Icon as={HeartIcon} color={colors.accent} boxSize={3} style={{ marginLeft: 6 }} />}
             </Link>
           ))}
         </Stack>
@@ -544,7 +540,7 @@ const Sidebar = () => {
                     <Text className="category-name" mb={2} mt={4}>
                       Tools
                     </Text>
-                    <Stack spacing={0.5} pl={4} borderLeft="1px solid #392e4e" position="relative">
+                    <Stack spacing={0.5} pl={4} borderLeft={`1px solid ${colors.borderSecondary}`} position="relative">
                       {TOOLS.map(tool => (
                         <Link
                           key={tool.id}
@@ -553,7 +549,7 @@ const Sidebar = () => {
                           onClick={scrollToTop}
                         >
                           <Flex alignItems="center" gap="6px">
-                            <Icon as={tool.icon} boxSize={3.5} color="#B19EEF" />
+                            <Icon as={tool.icon} boxSize={3.5} color={colors.accent} />
                             <span>{tool.label}</span>
                           </Flex>
                         </Link>

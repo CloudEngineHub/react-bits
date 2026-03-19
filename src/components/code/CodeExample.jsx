@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { getLanguage } from '../../utils/utils';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
 import { formatPropValue } from '../../utils/codeGeneration';
+import { colors } from '../../constants/colors';
 import CliInstallation from './CliInstallation';
 import CodeHighlighter from './CodeHighlighter';
 import CodeOptions, { CSS, Tailwind, TSCSS, TSTailwind } from './CodeOptions';
@@ -119,7 +120,7 @@ const CodeExample = ({ codeObject, componentName }) => {
       {dynamicUsage && (
         <div>
           <h2 className="demo-title">
-            Usage {hasChanges && <span style={{ color: '#B19EEF', fontSize: '12px' }}>(with your settings)</span>}
+            Usage {hasChanges && <span style={{ color: colors.accent, fontSize: '12px' }}>(with your settings)</span>}
           </h2>
           <CodeHighlighter snippetId="usage" language="jsx" codeString={dynamicUsage} />
         </div>

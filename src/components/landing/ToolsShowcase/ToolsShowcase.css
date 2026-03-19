@@ -37,7 +37,7 @@
   letter-spacing: -2px;
   color: #fff;
   margin-bottom: 0.2rem;
-  background: linear-gradient(135deg, #fff 0%, #8660fa 20%, #a855f7 40%, #8400ff 60%, #a855f7 80%, #fff 100%);
+  background: var(--gradient-title);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -45,16 +45,6 @@
   text-align: center;
   animation: gradientShift 4s ease-in-out infinite;
   display: inline-block;
-}
-
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 .tools-showcase-subtitle {
@@ -92,7 +82,7 @@
 
 .tool-showcase-card {
   position: relative;
-  background: #060010;
+  background: var(--bg-body);
   border: 1px solid rgba(169, 148, 184, 0.2);
   border-radius: 16px;
   padding: 1.5rem;
@@ -126,7 +116,7 @@
 
 .tool-showcase-card:hover {
   box-shadow: 0 4px 40px -15px rgba(46, 24, 78, 0.4);
-  background: #0d0716;
+  background: var(--bg-card);
 }
 
 .tool-showcase-card:hover::before {

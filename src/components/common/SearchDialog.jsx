@@ -4,10 +4,10 @@ import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile } from 'react-ico
 import { AiOutlineEnter } from 'react-icons/ai';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { CATEGORIES } from '../../../constants/Categories';
-import { colors } from '../../../constants/colors';
-import { fuzzyMatch } from '../../../utils/fuzzy';
-import { useSearch } from '../../context/SearchContext/useSearch';
+import { CATEGORIES } from '../../constants/Categories';
+import { colors } from '../../constants/colors';
+import { fuzzyMatch } from '../../utils/fuzzy';
+import { useSearch } from '../context/SearchContext/useSearch';
 
 function searchComponents(query) {
   if (!query || query.trim() === '') return [];

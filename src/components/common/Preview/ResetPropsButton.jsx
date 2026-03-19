@@ -1,5 +1,6 @@
 import { RotateCcw } from 'lucide-react';
 import { Tooltip, Box, Icon } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
 /**
  * Reset button to restore demo props to default values.
@@ -19,15 +20,15 @@ const ResetPropsButton = ({ onReset, hasChanges }) => {
           alignItems="center"
           justifyContent="center"
           gap={2}
-          bg="#170D27"
-          border="1px solid #271E37"
+          bg={colors.bgElevated}
+          border={`1px solid ${colors.borderPrimary}`}
           borderRadius="10px"
           px={3}
           h={8}
           cursor="pointer"
           color="#fff"
           fontSize="xs"
-          _hover={{ bg: '#271E37' }}
+          _hover={{ bg: colors.bgHover }}
           transition="all 0.2s"
         >
           <Icon as={RotateCcw} boxSize={3.5} />
@@ -36,9 +37,9 @@ const ResetPropsButton = ({ onReset, hasChanges }) => {
       </Tooltip.Trigger>
       <Tooltip.Positioner>
         <Tooltip.Content
-          bg="#060010"
-          border="1px solid #271e37"
-          color="#B19EEF"
+          bg={colors.bgBody}
+          border={`1px solid ${colors.borderPrimary}`}
+          color={colors.accent}
           fontSize="12px"
           fontWeight="500"
           lineHeight="0"

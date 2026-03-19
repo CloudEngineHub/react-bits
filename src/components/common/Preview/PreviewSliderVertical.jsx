@@ -1,4 +1,5 @@
 import { Box, Flex, Slider, Text } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
 const PreviewSliderVertical = ({
   title = '',
@@ -16,7 +17,7 @@ const PreviewSliderVertical = ({
   return (
     <Box my={4}>
       <Flex justify="space-between" align="center" mb={2}>
-        <Text fontSize="12px" color="#988BC7">
+        <Text fontSize="12px" color={colors.accentMuted}>
           {title}
         </Text>
         <Text fontSize="12px" color="#fff" fontFamily="mono">
@@ -34,8 +35,8 @@ const PreviewSliderVertical = ({
         disabled={isDisabled}
       >
         <Slider.Control>
-          <Slider.Track bg="#271E37" h="6px" borderRadius="3px">
-            <Slider.Range bg="#5227FF" />
+          <Slider.Track bg={colors.bgHover} h="6px" borderRadius="3px">
+            <Slider.Range bg={colors.primary} />
           </Slider.Track>
           <Slider.Thumb index={0} boxSize={4} bg="#fff" borderRadius="full" />
         </Slider.Control>

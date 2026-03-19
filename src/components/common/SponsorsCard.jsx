@@ -1,5 +1,6 @@
 import { Box, Text, Flex, Icon } from '@chakra-ui/react';
 import { FiExternalLink } from 'react-icons/fi';
+import { colors } from '../../constants/colors';
 
 import SponsorsCircle from './SponsorsCircle';
 
@@ -12,7 +13,7 @@ const SponsorsCard = () => {
             Our Sponsors
           </Text>
         </Flex>
-        <Text fontSize="14px" color="#988BC7" letterSpacing="-.25px" lineHeight="1.5">
+        <Text fontSize="14px" color={colors.accentMuted} letterSpacing="-.25px" lineHeight="1.5">
           Help us maintain and grow React Bits, keeping it free for devs worldwide.
         </Text>
       </Box>
@@ -26,10 +27,10 @@ const SponsorsCard = () => {
             <Icon as={FiExternalLink} boxSize={3.5} />
           </button>
         </a>
-        <Text fontSize="12px" color="#988BC7" textAlign="center" mt={2} letterSpacing="-.25px">
+        <Text fontSize="12px" color={colors.accentMuted} textAlign="center" mt={2} letterSpacing="-.25px">
           Get your brand in front of 500k+ devs monthly
         </Text>
-        <Text fontSize="10px" color="#988BC7" textAlign="center" mt={2} letterSpacing="-.25px">
+        <Text fontSize="10px" color={colors.accentMuted} textAlign="center" mt={2} letterSpacing="-.25px">
           Limited Spots. Secure yours.
         </Text>
       </Box>

@@ -40,7 +40,7 @@
   letter-spacing: -2px;
   color: #fff;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #fff 0%, #8660fa 20%, #a855f7 40%, #8400ff 60%, #a855f7 80%, #fff 100%);
+  background: var(--gradient-title);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -61,17 +61,6 @@
   margin: 0;
 }
 
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
 .showcase-wrapper .fade-grid {
   width: 100%;
 }
@@ -86,9 +75,9 @@
 }
 
 .showcase-wrapper .grid-container .grid-item {
-  background: #060010;
-  border: 1px solid #271e37;
-  border-radius: 24px;
+  background: var(--bg-body);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
   padding: 6px;
   transition: all 0.25s ease;
   position: relative;
@@ -100,7 +89,7 @@
 
 .showcase-wrapper .grid-container .grid-item:hover {
   filter: saturate(150%);
-  border-color: #392e4e;
+  border-color: var(--border-secondary);
 }
 
 .showcase-wrapper .grid-container .grid-item .showcase-img-wrapper {
@@ -132,13 +121,12 @@
 .showcase-wrapper .grid-container .grid-item .showcase-info .author {
   font-weight: 500;
   font-size: 1rem;
-  color: #fff;
-  line-height: 1.4;
+  color: var(--text-primary);
 }
 
 .showcase-wrapper .grid-container .grid-item .showcase-info .using {
   font-size: 13px;
-  color: #b19eef;
+  color: var(--color-accent);
   font-weight: 400;
 }
 

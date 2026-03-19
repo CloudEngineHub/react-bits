@@ -6,6 +6,7 @@ import { ActiveRouteProvider } from './components/context/ActiveRouteContext/Act
 import { forceChakraDarkTheme } from './utils/utils';
 
 import AnnouncementBar from './components/landing/AnnouncementBar/AnnouncementBar';
+import { PRO_ANNOUNCEMENT } from './constants/Site';
 import AnnouncementModal from './components/common/AnnouncementModal/AnnouncementModal';
 import DisplayHeader from './components/landing/DisplayHeader/DisplayHeader';
 import SidebarLayout from './components/layout/SidebarLayout';
@@ -37,8 +38,7 @@ function AppContent() {
       {!isSidebarPage && !isToolsPage && !isSponsorsPage && (
         <>
           <AnnouncementBar
-            message="Get React Bits Pro - 85+ components, 100+ UI blocks, 5 full templates - click here!"
-            link="https://pro.reactbits.dev"
+            {...PRO_ANNOUNCEMENT}
             backgroundColor={location.pathname === '/' ? undefined : '#5227FF'}
             noBorder={location.pathname !== '/'}
             className="landing-bar"
