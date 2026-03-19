@@ -2,7 +2,7 @@ import { Box, Text, Flex, Icon } from '@chakra-ui/react';
 import { Eye, Sparkles, Star, Component } from 'lucide-react';
 import { useEffect } from 'react';
 import Header from '../components/navs/Header';
-import AnnouncementBar from '../components/landing/AnnouncementBar/AnnouncementBar';
+import AnnouncementBar from '../components/common/AnnouncementBar/AnnouncementBar';
 import { PRO_ANNOUNCEMENT } from '../constants/Site';
 import { colors } from '../constants/colors';
 import Sponsors from '../components/landing/Sponsors/Sponsors';

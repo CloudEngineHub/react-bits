@@ -3,7 +3,7 @@ import { ChevronDown, Info } from 'lucide-react';
 import { useRef, useEffect, useState, Suspense, lazy } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/navs/Header';
-import AnnouncementBar from '../components/landing/AnnouncementBar/AnnouncementBar';
+import AnnouncementBar from '../components/common/AnnouncementBar/AnnouncementBar';
 import { PRO_ANNOUNCEMENT } from '../constants/Site';
 import ToolsShowcase from '../components/landing/ToolsShowcase/ToolsShowcase';
 import { TOOLS as BASE_TOOLS } from '../constants/Tools';
