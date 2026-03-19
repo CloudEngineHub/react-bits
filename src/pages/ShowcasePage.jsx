@@ -3,51 +3,13 @@ import { Box, Text } from '@chakra-ui/react';
 
 import FadeContent from '../content/Animations/FadeContent/FadeContent';
 import Footer from '../components/landing/Footer/Footer';
+import { SHOWCASE_ITEMS } from '../constants/Showcase';
 
 import '../css/showcase.css';
-import Aurora from '@/content/Backgrounds/Aurora/Aurora';
+import Aurora from '../content/Backgrounds/Aurora/Aurora';
 
 const ShowcasePage = () => {
   useEffect(() => window.scrollTo(0, 0), []);
-
-  const showcaseItems = [
-    {
-      name: 'Oscar',
-      url: 'https://oscarhernandez.vercel.app',
-      using: '<LetterGlitch />',
-      image: '/assets/showcase/showcase-oscar.webp'
-    },
-    {
-      name: 'Izadoesdev',
-      url: 'https://app.databuddy.cc/login',
-      using: '<Iridescence />',
-      image: '/assets/showcase/showcase-izadoesdev.webp'
-    },
-    {
-      name: 'Dominik Koch',
-      url: 'https://app.usenotra.com/login',
-      using: '<PixelBlast />',
-      image: '/assets/showcase/showcase-dominik.webp'
-    },
-    {
-      name: 'Afaq',
-      url: 'https://www.evolvion.io/',
-      using: '<SpotlightCard />',
-      image: '/assets/showcase/showcase-afaq.webp'
-    },
-    {
-      name: 'Deepraj',
-      url: 'https://www.architech-dev.tech/',
-      using: '<CardSwap />',
-      image: '/assets/showcase/showcase-deepraj.webp'
-    },
-    {
-      name: 'Devraj',
-      url: 'https://devrajchatribin.com/about',
-      using: '<CountUp />',
-      image: '/assets/showcase/showcase-devraj.webp'
-    }
-  ];
 
   return (
     <>
@@ -87,7 +49,7 @@ const ShowcasePage = () => {
 
         <FadeContent blur duration={1000} threshold={0} className="fade-grid">
           <div className="grid-container">
-            {showcaseItems.map(item => (
+            {SHOWCASE_ITEMS.map(item => (
               <Box as="a" href={item.url} rel="noreferrer" target="_blank" className="grid-item" key={item.url}>
                 <div className="showcase-img-wrapper">
                   <img

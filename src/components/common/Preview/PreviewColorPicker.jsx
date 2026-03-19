@@ -1,9 +1,8 @@
 import { Flex, Text, Input } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
 const PreviewColorPicker = ({ title = '', color = '#ffffff', setColor }) => {
-  const handleChange = e => {
-    setColor?.(e.target.value);
-  };
+  const handleChange = e => setColor?.(e.target.value);
 
   return (
     <Flex gap="4" align="center" mt="4">
@@ -16,7 +15,7 @@ const PreviewColorPicker = ({ title = '', color = '#ffffff', setColor }) => {
           w="40px"
           h="36px"
           p="0"
-          border="1px solid #392e4e"
+          border={`1px solid ${colors.borderSecondary}`}
           borderRadius="8px"
           cursor="pointer"
           bg="transparent"
@@ -28,8 +27,8 @@ const PreviewColorPicker = ({ title = '', color = '#ffffff', setColor }) => {
           onChange={handleChange}
           w="90px"
           h="36px"
-          bg="#060010"
-          border="1px solid #392e4e"
+          bg={colors.bgBody}
+          border={`1px solid ${colors.borderSecondary}`}
           borderRadius="10px"
           fontSize="13px"
           fontFamily="mono"

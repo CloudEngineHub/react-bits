@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import ContributionSection from './GitHub/ContributionSection';
+import ContributionSection from './ContributionSection';
 import TabsFooter from './TabsFooter';
 
 import { Tabs, Icon, Flex, Tooltip, Box } from '@chakra-ui/react';
@@ -10,18 +10,19 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
+import { colors } from '../../constants/colors';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
-  border: '1px solid #392e4e',
+  border: `1px solid ${colors.borderSecondary}`,
   borderRadius: '15px',
   fontSize: '14px',
   h: 10,
   px: 4,
   color: '#ffffff',
   justifyContent: 'center',
-  _hover: { bg: '#271E37' },
-  _selected: { bg: '#170D27', color: '#B19EEF' }
+  _hover: { bg: colors.bgHover },
+  _selected: { bg: colors.bgElevated, color: colors.accent }
 };
 
 const TabsLayout = ({ children, className }) => {
@@ -57,7 +58,7 @@ const TabsLayout = ({ children, className }) => {
     const nameEl = (
       <span>
         {' '}
-        <span style={{ color: '#B19EEF', fontWeight: 700 }}>&lt;{componentName} /&gt;</span>
+        <span style={{ color: colors.accent, fontWeight: 700 }}>&lt;{componentName} /&gt;</span>
       </span>
     );
 
@@ -129,9 +130,9 @@ const TabsLayout = ({ children, className }) => {
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
                   <Tooltip.Content
-                    bg="#060010"
-                    border="1px solid #271e37"
-                    color="#B19EEF"
+                    bg={colors.bgBody}
+                    border={`1px solid ${colors.borderPrimary}`}
+                    color={colors.accent}
                     fontSize="12px"
                     fontWeight="500"
                     lineHeight="0"

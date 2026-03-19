@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Flex, Text, Select, Field, Portal, createListCollection } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
 const PreviewSelect = ({
   title = '',
@@ -22,9 +23,7 @@ const PreviewSelect = ({
 
   const collection = useMemo(() => createListCollection({ items: values }), [values]);
 
-  const handleChange = ({ value: next }) => {
-    onChange?.(next[0]);
-  };
+  const handleChange = ({ value: next }) => onChange?.(next[0]);
 
   return (
     <Flex gap="4" align="center" mt="4">
@@ -45,8 +44,8 @@ const PreviewSelect = ({
               fontSize="14px"
               h={8}
               w={`${width}px`}
-              bg="#060010"
-              border="1px solid #392e4e"
+              bg={colors.bgBody}
+              border={`1px solid ${colors.borderSecondary}`}
               borderRadius="10px"
             >
               <Select.ValueText fontSize="14px">{labelMap[value]}</Select.ValueText>
@@ -58,7 +57,11 @@ const PreviewSelect = ({
 
           <Portal>
             <Select.Positioner>
-              <Select.Content bg="#060010" border="1px solid #392e4e" borderRadius="10px">
+              <Select.Content
+                bg={colors.bgBody}
+                border={`1px solid ${colors.borderSecondary}`}
+                borderRadius="10px"
+              >
                 {collection.items.map(val => (
                   <Select.Item
                     key={val}
@@ -66,7 +69,7 @@ const PreviewSelect = ({
                     fontSize="14px"
                     borderRadius="10px"
                     cursor="pointer"
-                    _highlighted={{ bg: '#271E37' }}
+                    _highlighted={{ bg: colors.bgHover }}
                   >
                     <Select.ItemText>{labelMap[val]}</Select.ItemText>
                     <Select.ItemIndicator />

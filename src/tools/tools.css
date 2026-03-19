@@ -52,7 +52,7 @@
   justify-content: space-between;
   width: 100%;
   padding: 14px 14px;
-  background: linear-gradient(135deg, #170d27 0%, #1a0f2e 100%);
+  background: linear-gradient(135deg, var(--bg-elevated) 0%, #1a0f2e 100%);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -72,11 +72,11 @@
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  background: #271e37;
+  background: var(--bg-hover);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background var(--transition-fast);
 }
 
 .info-tooltip-trigger:hover {
-  background: #392e4e;
+  background: var(--border-secondary);
 }

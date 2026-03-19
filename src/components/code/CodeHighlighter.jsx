@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-
+import { colors } from '../../constants/colors';
 import codeTheme from '../../utils/codeTheme';
 
 const routeExpansionState = {};
@@ -16,6 +16,14 @@ const hashSnippet = str => {
     if (i > 500) break;
   }
   return hash.toString(36);
+};
+
+const COPY_BTN_STYLE = {
+  borderRadius: '12px',
+  fontWeight: 500,
+  border: `1px solid ${colors.borderSecondary}`,
+  transition: 'background-color 0.3s ease',
+  h: 10,
 };
 
 const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLines = 25, snippetId }) => {
@@ -47,9 +55,9 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
       <Box
         position="relative"
         overflow="hidden"
-        maxHeight={shouldCollapse && !expanded ? 'calc(1.2em * ' + maxLines + ')' : 'none'}
+        maxHeight={shouldCollapse && !expanded ? `calc(1.2em * ${maxLines})` : 'none'}
       >
-        {codeString && (
+        {codeString ? (
           <SyntaxHighlighter
             language={language}
             style={codeTheme}
@@ -58,10 +66,8 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
           >
             {codeString}
           </SyntaxHighlighter>
-        )}
-
-        {!codeString && (
-          <Flex alignItems="center" gap={2} my={2} color="#a1a1aa">
+        ) : (
+          <Flex alignItems="center" gap={2} my={2} color={colors.textMuted}>
             <Text>Sorry, this combination is not supported</Text>
             <Icon as={TbMoodSad} />
           </Flex>
@@ -74,23 +80,21 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
             left={0}
             right={0}
             height="60%"
-            background="linear-gradient(to bottom, transparent, #060010)"
+            background={`linear-gradient(to bottom, transparent, ${colors.bgBody})`}
           />
         )}
 
         {shouldCollapse && (
           <Button
+            {...COPY_BTN_STYLE}
             position="absolute"
             bottom="0.9em"
             right="0.8em"
             rounded="10px"
-            h={10}
-            fontWeight={500}
-            backgroundColor="#060010"
-            border="1px solid #392e4e"
+            bg={colors.bgBody}
             color="white"
-            _hover={{ backgroundColor: '#170D27' }}
-            _active={{ backgroundColor: '#170D27' }}
+            _hover={{ bg: colors.bgElevated }}
+            _active={{ bg: colors.bgElevated }}
             zIndex={2}
             onClick={() => setExpanded(prev => !prev)}
           >
@@ -101,25 +105,17 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
 
       {codeString && (
         <Button
+          {...COPY_BTN_STYLE}
           position="absolute"
           top=".65em"
-          h={10}
           right=".6em"
-          borderRadius="12px"
-          fontWeight={500}
-          backgroundColor={copied ? '#5227FF' : '#060010'}
-          border="1px solid #392e4e"
+          bg={copied ? colors.primary : colors.bgBody}
           color={copied ? 'black' : 'white'}
-          _hover={{ backgroundColor: copied ? '#5227FF' : '#170D27' }}
-          _active={{ backgroundColor: '#5227FF' }}
-          transition="background-color 0.3s ease"
+          _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
+          _active={{ bg: colors.primary }}
           onClick={handleCopy}
         >
-          {copied ? (
-            <Icon as={TbCopyCheckFilled} color="#fff" boxSize={4} />
-          ) : (
-            <Icon as={TbCopy} color="#fff" boxSize={4} />
-          )}
+          <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
         </Button>
       )}
     </Box>

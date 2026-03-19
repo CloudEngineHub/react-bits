@@ -23,7 +23,7 @@
   letter-spacing: -2px;
   color: #fff;
   margin-bottom: 0.2rem;
-  background: linear-gradient(135deg, #fff 0%, #8660fa 20%, #a855f7 40%, #8400ff 60%, #a855f7 80%, #fff 100%);
+  background: var(--gradient-title);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -32,16 +32,6 @@
   animation: gradientShift 4s ease-in-out infinite;
   display: inline-block;
   white-space: nowrap;
-}
-
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 .sponsors-subtitle {
@@ -231,7 +221,7 @@
 }
 
 .sponsor-card--placeholder:hover {
-  border-color: #b19eef;
+  border-color: var(--color-accent);
   background: rgba(82, 39, 255, 0.05);
 }
 
@@ -244,13 +234,13 @@
 
 .sponsor-placeholder-text {
   font-size: 13px;
-  color: #b19eef;
+  color: var(--color-accent);
   font-weight: 400;
 }
 
 .sponsor-placeholder-mini {
   font-size: 18px;
-  color: #b19eef;
+  color: var(--color-accent);
   font-weight: 300;
 }
 
@@ -264,7 +254,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 28px;
-  background: #5227ff;
+  background: var(--color-primary);
   color: #fff;
   font-size: 15px;
   font-weight: 500;

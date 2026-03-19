@@ -2,7 +2,7 @@ import { useEffect, lazy, Suspense } from 'react';
 import FeatureCards from '../components/landing/FeatureCards/FeatureCards';
 import Sponsors from '../components/landing/Sponsors/Sponsors';
 import StartBuilding from '../components/landing/StartBuilding/StartBuilding';
-import Announcement from '../components/common/Misc/Announcement';
+import Announcement from '../components/common/Announcement';
 import Footer from '../components/landing/Footer/Footer';
 import Hero from '../components/landing/Hero/Hero';
 import heroImage from '../assets/common/hero.webp';

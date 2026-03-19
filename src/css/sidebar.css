@@ -1,6 +1,6 @@
 .sidebar,
 .sidebar-mobile {
-  background-color: #060010 !important;
+  background-color: var(--bg-body) !important;
 }
 
 .sidebar::before {
@@ -11,7 +11,7 @@
   width: 100%;
   height: 200px;
   pointer-events: none;
-  background: linear-gradient(to top, #060010, transparent);
+  background: linear-gradient(to top, var(--bg-body), transparent);
   z-index: 4;
   transition: opacity 0.3s ease;
 }
@@ -47,12 +47,12 @@
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: #060010;
-  border-radius: 50px;
+  background: var(--bg-body);
+  border-radius: var(--radius-full);
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: #271e37;
+  background: var(--border-primary);
 }
 
 .sidebar-logo {
@@ -69,26 +69,26 @@
 .sidebar-item {
   position: relative;
   font-size: 0.85rem;
-  color: #c6c6c6;
+  color: var(--text-link);
   padding: 0.15em 0;
   display: flex;
   align-items: center;
   transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+    color var(--transition-base),
+    transform var(--transition-base);
 }
 
 .sidebar-item:hover {
-  color: #fff;
+  color: var(--text-primary);
   transform: translateX(2px);
 }
 
 .active-sidebar-item {
   width: fit-content;
   padding: 0.15em 0.15em 0.15em 0;
-  color: #fff;
+  color: var(--text-primary);
   position: relative;
-  transition: color 0.3s ease;
+  transition: color var(--transition-slow);
 }
 
 .active-sidebar-item:hover {
@@ -108,20 +108,20 @@
 }
 
 .sidebar-item .new-tag {
-  color: #fff;
-  border: 1px solid #5227ff;
+  color: var(--text-primary);
+  border: 1px solid var(--color-primary);
   background-color: rgba(82, 39, 255, 0.3);
 }
 
 .sidebar-item .updated-tag {
-  color: #fff;
+  color: var(--text-primary);
   border: 1px solid #ffffff77;
   background-color: #ffffff26;
 }
 
 .github-button {
   border: 1px solid transparent;
-  transition: 0.3s ease;
+  transition: var(--transition-slow);
 }
 
 .github-button img {
@@ -130,8 +130,8 @@
 
 .github-button:hover {
   border-color: #ffffff1c;
-  background-color: #060010 !important;
-  color: #fff;
+  background-color: var(--bg-body) !important;
+  color: var(--text-primary);
 }
 
 .github-button:hover img {
@@ -143,19 +143,18 @@
   font-size: 12px;
   padding: 0 0 0 1rem;
   height: 40px;
-  background: #5227ff;
+  background: var(--color-primary);
   background-size: 200% 200%;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  color: #fff;
   border: none;
-  border-radius: 50px;
+  color: var(--text-primary);
+  border-radius: var(--radius-full);
   cursor: pointer;
 
   display: flex;
   align-items: center;
   white-space: nowrap;
   justify-content: space-between;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .cta-button-docs:hover {
@@ -168,7 +167,7 @@
 }
 
 .cta-button-docs span {
-  background-color: #060010;
+  background-color: var(--bg-body);
   margin-left: 1em;
   margin-right: calc(1em - 6px);
   padding-top: 0.1em;

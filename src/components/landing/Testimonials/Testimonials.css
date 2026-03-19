@@ -40,7 +40,7 @@
   letter-spacing: -2px;
   color: #fff;
   margin-bottom: 0.2rem;
-  background: linear-gradient(135deg, #fff 0%, #8660fa 20%, #a855f7 40%, #8400ff 60%, #a855f7 80%, #fff 100%);
+  background: var(--gradient-title);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -57,16 +57,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: inherit;
-}
-
-@keyframes gradientShift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 .testimonials-subtitle {
@@ -108,12 +98,12 @@
 
 .testimonials-marquee-container::before {
   left: 0;
-  background: linear-gradient(to right, #060010, transparent);
+  background: linear-gradient(to right, var(--bg-body), transparent);
 }
 
 .testimonials-marquee-container::after {
   right: 0;
-  background: linear-gradient(to left, #060010, transparent);
+  background: linear-gradient(to left, var(--bg-body), transparent);
 }
 
 /* ===========================================

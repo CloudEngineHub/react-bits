@@ -8,11 +8,7 @@ import cursor from '../assets/icons/cursor.svg';
 const McpServer = () => {
   const [selectedMethod, setSelectedMethod] = useState('claude');
 
-  const scrollToTop = () => window.scrollTo(0, 0);
-
-  useEffect(() => {
-    scrollToTop();
-  }, []);
+  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <section className="docs-section">

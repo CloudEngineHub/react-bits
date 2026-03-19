@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@chakra-ui/react';
-import BackToTopButton from '../components/common/Misc/BackToTopButton';
+import BackToTopButton from '../components/common/BackToTopButton';
 import { getSavedComponents } from '../utils/favorites';
 import { componentMetadata } from '../constants/Information';
 import ComponentList from '../components/common/ComponentList';

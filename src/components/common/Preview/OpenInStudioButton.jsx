@@ -1,6 +1,7 @@
 import { Button, Icon } from '@chakra-ui/react';
 import { Palette } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { colors } from '../../../constants/colors';
 
 const OpenInStudioButton = ({ backgroundId, currentProps = {}, defaultProps = {} }) => {
   const navigate = useNavigate();
@@ -32,12 +33,12 @@ const OpenInStudioButton = ({ backgroundId, currentProps = {}, defaultProps = {}
       mt={3.5}
       variant="outline"
       color="#ffffff"
-      bg="#5227FF"
+      bg={colors.primary}
       fontWeight={500}
       borderRadius="50px"
       fontSize="14px"
       onClick={handleClick}
-      _hover={{ color: '#fff', bg: '#5227FFaa' }}
+      _hover={{ color: '#fff', bg: `${colors.primary}aa` }}
     >
       <Icon as={Palette} boxSize={4} /> Open in BG Studio
     </Button>

@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
 import { TbBug, TbBulb } from 'react-icons/tb';
 import { useParams } from 'react-router-dom';
-import { colors } from '../../../constants/colors';
+import { colors } from '../../constants/colors';
 
 const ISSUE_BASE = 'https://github.com/DavidHDev/react-bits/issues/new';
 

@@ -8,11 +8,7 @@ import codeoptions from '../assets/common/code-options.webp';
 const Installation = () => {
   const [selectedMethod, setSelectedMethod] = useState('manual');
 
-  const scrollToTop = () => window.scrollTo(0, 0);
-
-  useEffect(() => {
-    scrollToTop();
-  }, []);
+  useEffect(() => window.scrollTo(0, 0), []);
 
   return (
     <section className="docs-section">

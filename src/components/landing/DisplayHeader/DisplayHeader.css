@@ -11,7 +11,7 @@
   padding: 0 4em;
   height: 160px;
   margin: 0 auto;
-  background: linear-gradient(to bottom, #060010, transparent);
+  background: linear-gradient(to bottom, var(--bg-body), transparent);
 }
 
 .header-container {
@@ -116,7 +116,7 @@
   font-weight: 500;
   padding: 0 0 0 1.4rem;
   height: calc(60px - 2px);
-  background: #5227ff;
+  background: var(--color-primary);
   background-size: 200% 200%;
   /* backdrop-filter removed for performance */
   color: #fff;
@@ -133,7 +133,7 @@
 }
 
 .cta-button span {
-  background-color: #060010;
+  background-color: var(--bg-body);
   margin-left: 1em;
   margin-right: calc(1em - 10px);
   padding-top: 0.1em;

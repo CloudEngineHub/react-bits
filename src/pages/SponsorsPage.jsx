@@ -3,6 +3,8 @@ import { Eye, Sparkles, Star, Component } from 'lucide-react';
 import { useEffect } from 'react';
 import Header from '../components/navs/Header';
 import AnnouncementBar from '../components/landing/AnnouncementBar/AnnouncementBar';
+import { PRO_ANNOUNCEMENT } from '../constants/Site';
+import { colors } from '../constants/colors';
 import Sponsors from '../components/landing/Sponsors/Sponsors';
 import Footer from '../components/landing/Footer/Footer';
 import Aurora from '../content/Backgrounds/Aurora/Aurora';
@@ -41,7 +43,7 @@ const SponsorsPage = () => {
   }, []);
 
   return (
-    <Box minH="100vh" bg="#060010" display="flex" flexDirection="column" position="relative" overflow="hidden">
+    <Box minH="100vh" bg={colors.bgBody} display="flex" flexDirection="column" position="relative" overflow="hidden">
       {/* Animated Background */}
       <Box
         position="fixed"
@@ -81,12 +83,7 @@ const SponsorsPage = () => {
         zIndex={0}
       />
 
-      <AnnouncementBar
-        message="Get React Bits Pro - 85+ components, 100+ UI blocks, 5 full templates - click here!"
-        link="https://pro.reactbits.dev"
-        backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
-        noBorder={true}
-      />
+      <AnnouncementBar {...PRO_ANNOUNCEMENT} />
       <Header />
 
       <Box pt={{ base: '140px', md: '240px' }} flex={1} position="relative" zIndex={1}>
@@ -102,8 +99,8 @@ const SponsorsPage = () => {
               py={2}
               borderRadius="full"
             >
-              <Icon as={Sparkles} boxSize={4} color="#B19EEF" />
-              <Text fontSize="sm" color="#B19EEF" fontWeight={500}>
+              <Icon as={Sparkles} boxSize={4} color={colors.accent} />
+              <Text fontSize="sm" color={colors.accent} fontWeight={500}>
                 Support Open Source
               </Text>
             </Flex>

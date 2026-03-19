@@ -1,114 +1,74 @@
 import { Table, Box, Text } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 
-const CodeCell = ({ content = '' }) => {
-  return (
-    <Box
-      fontFamily="monospace"
-      fontSize="10px"
-      py="0.2em"
-      px="0.6em"
-      ml={2}
-      borderRadius="5px"
-      width="fit-content"
-      fontWeight={500}
-      color="#e9e9e9"
-      backgroundColor="#271E37"
-    >
-      {content}
-    </Box>
-  );
+const HEADER_CELL_STYLE = {
+  letterSpacing: '-.5px',
+  borderRight: `1px solid ${colors.borderSecondary}`,
+  textTransform: 'capitalize',
+  fontSize: 'l',
+  p: 4,
+  color: 'white',
 };
 
-const PropTable = ({ data }) => {
-  return (
-    <Box mt={12}>
-      <h2 className="demo-title-extra">Props</h2>
-      <Box overflowX="auto" mt={6}>
-        <Table.Root variant="line" size="sm" className="props-table">
-          <Table.Header borderBottom="1px solid #392e4e">
-            <Table.Row backgroundColor="#170D27" borderRadius="20px">
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Property
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Type
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Default
-              </Table.ColumnHeader>
-              <Table.ColumnHeader letterSpacing="-.5px" textTransform={'capitalize'} fontSize={'l'} p={4} color="white">
-                Description
-              </Table.ColumnHeader>
+const BODY_CELL_STYLE = {
+  borderColor: colors.bgHover,
+  p: 2,
+  color: 'white',
+  borderRight: `1px solid ${colors.borderSecondary}`,
+  bg: colors.bgBody,
+};
+
+const CodeCell = ({ content = '' }) => (
+  <Box
+    fontFamily="monospace"
+    fontSize="10px"
+    py="0.2em"
+    px="0.6em"
+    ml={2}
+    borderRadius="5px"
+    width="fit-content"
+    fontWeight={500}
+    color="#e9e9e9"
+    bg={colors.bgHover}
+  >
+    {content}
+  </Box>
+);
+
+const PropTable = ({ data }) => (
+  <Box mt={12}>
+    <h2 className="demo-title-extra">Props</h2>
+    <Box overflowX="auto" mt={6}>
+      <Table.Root variant="line" size="sm" className="props-table">
+        <Table.Header borderBottom={`1px solid ${colors.borderSecondary}`}>
+          <Table.Row bg={colors.bgElevated} borderRadius="20px">
+            <Table.ColumnHeader {...HEADER_CELL_STYLE}>Property</Table.ColumnHeader>
+            <Table.ColumnHeader {...HEADER_CELL_STYLE}>Type</Table.ColumnHeader>
+            <Table.ColumnHeader {...HEADER_CELL_STYLE}>Default</Table.ColumnHeader>
+            <Table.ColumnHeader {...HEADER_CELL_STYLE} borderRight="none">Description</Table.ColumnHeader>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {data.map((prop, index) => (
+            <Table.Row key={index} borderBottom={index === data.length - 1 ? 'none' : `1px solid ${colors.borderSecondary}`}>
+              <Table.Cell {...BODY_CELL_STYLE} width={0}>
+                <CodeCell content={prop.name} />
+              </Table.Cell>
+              <Table.Cell {...BODY_CELL_STYLE} p={4} whiteSpace="nowrap" width="120px" fontSize="12px">
+                <Text fontFamily="monospace" fontWeight={500}>{prop.type}</Text>
+              </Table.Cell>
+              <Table.Cell {...BODY_CELL_STYLE} whiteSpace="nowrap">
+                <CodeCell content={prop.default?.length ? prop.default : '—'} />
+              </Table.Cell>
+              <Table.Cell borderColor={colors.bgHover} p={4} color="white" bg={colors.bgBody} fontSize="12px" borderRight="none">
+                <Text maxW={300}>{prop.description}</Text>
+              </Table.Cell>
             </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {data.map((prop, index) => (
-              <Table.Row key={index} borderBottom={index === data.length - 1 ? 'none' : '1px solid #392e4e'}>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={2}
-                  color="white"
-                  width={0}
-                  borderRight="1px solid #392e4e"
-                  bg={'#060010'}
-                >
-                  <CodeCell rightJustified content={prop.name} />
-                </Table.Cell>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={4}
-                  color="white"
-                  whiteSpace="nowrap"
-                  fontSize="12px"
-                  width={'120px'}
-                  borderRight="1px solid #392e4e"
-                  bg={'#060010'}
-                >
-                  <Text fontFamily="monospace" fontWeight={500}>
-                    {prop.type}
-                  </Text>
-                </Table.Cell>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={2}
-                  color="white"
-                  borderRight="1px solid #392e4e"
-                  whiteSpace="nowrap"
-                  bg={'#060010'}
-                >
-                  <CodeCell content={prop.default && prop.default.length ? prop.default : '—'} />
-                </Table.Cell>
-                <Table.Cell borderColor="#271E37" p={4} color="white" bg={'#060010'} fontSize="12px">
-                  <Text maxW={300}>{prop.description}</Text>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Box>
+          ))}
+        </Table.Body>
+      </Table.Root>
     </Box>
-  );
-};
+  </Box>
+);
 
 export default PropTable;

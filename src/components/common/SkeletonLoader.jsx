@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { colors } from '../../../constants/colors';
-import '../../../css/skeleton.css';
+import { colors } from '../../constants/colors';
+import '../../css/skeleton.css';
 
 const Bar = ({ h = '24px', mb = 4, maxW, mt, ...rest }) => (
   <Box
