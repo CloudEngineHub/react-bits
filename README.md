@@ -103,19 +103,11 @@ React Bits is proudly supported by these amazing sponsors:
   </picture>
 </a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://shadcraft.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
+<a href="https://shadcncraft.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcraft.svg">
-    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcraft-lightmode.png">
-    <img src="public/assets/sponsors/shadcraft.svg" alt="Shadcraft" style="height: 40px;">
-  </picture>
-</a>
-&nbsp;&nbsp;&nbsp;
-<a href="https://shadcnspace.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcnspace.svg">
-    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcnspace-lightmode.svg">
-    <img src="public/assets/sponsors/shadcnspace.svg" alt="shadcnspace" style="height: 40px;">
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcncraft.svg">
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcncraft-lightmode.svg">
+    <img src="public/assets/sponsors/shadcncraft.svg" alt="Shadcncraft" style="height: 40px;">
   </picture>
 </a>
 
