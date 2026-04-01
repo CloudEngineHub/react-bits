@@ -43,6 +43,7 @@ export default function DecryptedText({
   const containerRef = useRef(null);
   const orderRef = useRef([]);
   const pointerRef = useRef(0);
+  const intervalRef = useRef(null);
 
   const availableChars = useMemo(() => {
     return useOriginalCharsOnly
@@ -147,7 +148,6 @@ export default function DecryptedText({
   useEffect(() => {
     if (!isAnimating) return;
 
-    let interval;
     let currentIteration = 0;
 
     const getNextIndex = revealedSet => {
@@ -176,7 +176,7 @@ export default function DecryptedText({
       }
     };
 
-    interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setRevealedIndices(prevRevealed => {
         if (sequential) {
           // Forward
@@ -188,7 +188,7 @@ export default function DecryptedText({
               setDisplayText(shuffleText(text, newRevealed));
               return newRevealed;
             } else {
-              clearInterval(interval);
+              clearInterval(intervalRef.current);
               setIsAnimating(false);
               setIsDecrypted(true);
               return prevRevealed;
@@ -202,13 +202,13 @@ export default function DecryptedText({
               newRevealed.delete(idxToRemove);
               setDisplayText(shuffleText(text, newRevealed));
               if (newRevealed.size === 0) {
-                clearInterval(interval);
+                clearInterval(intervalRef.current);
                 setIsAnimating(false);
                 setIsDecrypted(false);
               }
               return newRevealed;
             } else {
-              clearInterval(interval);
+              clearInterval(intervalRef.current);
               setIsAnimating(false);
               setIsDecrypted(false);
               return prevRevealed;
@@ -220,7 +220,7 @@ export default function DecryptedText({
             setDisplayText(shuffleText(text, prevRevealed));
             currentIteration++;
             if (currentIteration >= maxIterations) {
-              clearInterval(interval);
+              clearInterval(intervalRef.current);
               setIsAnimating(false);
               setDisplayText(text);
               setIsDecrypted(true);
@@ -239,7 +239,7 @@ export default function DecryptedText({
             setDisplayText(shuffleText(text, nextSet));
             currentIteration++;
             if (nextSet.size === 0 || currentIteration >= maxIterations) {
-              clearInterval(interval);
+              clearInterval(intervalRef.current);
               setIsAnimating(false);
               setIsDecrypted(false);
               // ensure final scrambled state
@@ -253,7 +253,7 @@ export default function DecryptedText({
       });
     }, speed);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalRef.current);
   }, [
     isAnimating,
     text,
@@ -293,16 +293,15 @@ export default function DecryptedText({
   const triggerHoverDecrypt = useCallback(() => {
     if (isAnimating) return;
 
-    // Reset animation state cleanly
     setRevealedIndices(new Set());
     setIsDecrypted(false);
     setDisplayText(text);
-
     setDirection('forward');
     setIsAnimating(true);
   }, [isAnimating, text]);
 
   const resetToPlainText = useCallback(() => {
+    clearInterval(intervalRef.current);
     setIsAnimating(false);
     setRevealedIndices(new Set());
     setDisplayText(text);
