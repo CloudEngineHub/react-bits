@@ -14,7 +14,14 @@ export const diamondSponsors = [
   }
 ];
 
-export const platinumSponsors = [];
+export const platinumSponsors = [
+  {
+    id: 1,
+    name: 'Tailark',
+    imageUrl: '/assets/sponsors/tailark.svg',
+    url: 'https://pro.tailark.com'
+  },
+];
 
 export const silverSponsors = [
   {
