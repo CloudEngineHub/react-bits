@@ -1,16 +1,15 @@
 import { Box, Flex, Text, Icon, Portal } from '@chakra-ui/react';
 import { ChevronDown, Info } from 'lucide-react';
 import { useRef, useEffect, useState, Suspense, lazy } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Header from '../components/navs/Header';
-import AnnouncementBar from '../components/common/AnnouncementBar/AnnouncementBar';
-import { PRO_ANNOUNCEMENT } from '../constants/Site';
-import ToolsShowcase from '../components/landing/ToolsShowcase/ToolsShowcase';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import Navbar from '../components/landingnew/Navbar/Navbar';
+import DotField from '../components/landingnew/Hero/DotField';
 import { TOOLS as BASE_TOOLS } from '../constants/Tools';
 import { colors } from '../constants/colors';
 import '../tools/tools.css';
-import Footer from '../components/landing/Footer/Footer';
-import Aurora from '../content/Backgrounds/Aurora/Aurora';
+import '../css/tools-landing.css';
+import Footer from '../components/landingnew/Footer/Footer';
+import { FaArrowRight } from 'react-icons/fa6';
 
 const BackgroundStudio = lazy(() => import('../tools/background-studio/BackgroundStudio'));
 const ShapeMagic = lazy(() => import('../tools/shape-magic/ShapeMagic'));
@@ -261,30 +260,56 @@ export default function ToolsPage() {
 
   if (!toolId) {
     return (
-      <Box minH="100vh" bg={colors.bgBody} display="flex" flexDirection="column">
-        <AnnouncementBar {...PRO_ANNOUNCEMENT} />
-        <Header />
-        <Box pt={{ base: '100px', md: '120px' }} flex={1} position="relative" zIndex={1}>
-          <ToolsShowcase />
-        </Box>
-        <Box position="relative" zIndex={1}>
-          <Footer />
-        </Box>
+      <>
+        <Navbar showDocs />
+        <div className="tools-dotfield">
+          <DotField sparkle waveAmplitude={5} dotRadius={2} />
+        </div>
+        <section className="tools-landing">
+          <title>React Bits - Tools</title>
 
-        <Box
-          position="fixed"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          zIndex={0}
-          opacity={0.5}
-          transform={'rotate(180deg)'}
-          pointerEvents="none"
-        >
-          <Aurora colorStops={['#3A0CA3', '#7209B7', '#4C1D95']} amplitude={0.8} blend={0.5} />
-        </Box>
-      </Box>
+          <div className="tools-landing-header">
+            <div className="tools-landing-header-left">
+              <h1 className="tools-landing-title">Creative Tools</h1>
+              <p className="tools-landing-subtitle">
+                Free utilities to boost your creative workflow and help you get the most out of React Bits in your projects.
+              </p>
+            </div>
+          </div>
+
+          <div className="tools-landing-grid">
+            {TOOLS.map(tool => {
+              const IconComp = tool.icon;
+              return (
+                <Link to={`/tools/${tool.id}`} className="tools-landing-card" key={tool.id}>
+                  <div className="tools-landing-card-banner">
+                    <div className="tools-landing-card-banner-icon">
+                      <IconComp size={32} />
+                    </div>
+                  </div>
+                  <div className="tools-landing-card-body">
+                    <div className="tools-landing-card-top">
+                      <div className="tools-landing-card-title-row">
+                        <h3 className="tools-landing-card-title">{tool.label}</h3>
+                        {!tool.component && (
+                          <span className="tools-landing-card-tag soon">Coming Soon</span>
+                        )}
+                      </div>
+                      <p className="tools-landing-card-desc">{tool.description}</p>
+                    </div>
+                    <div className="tools-landing-card-cta">
+                      <span>Open</span>
+                      <FaArrowRight size={11} />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        <Footer />
+      </>
     );
   }
 
@@ -295,13 +320,12 @@ export default function ToolsPage() {
   const selectedTool = TOOLS.find(t => t.id === toolId)?.id || 'background-studio';
 
   return (
-    <Box h="100vh" bg="#060010" overflow="hidden">
-      <AnnouncementBar {...PRO_ANNOUNCEMENT} />
-      <Header />
+    <Box h="100vh" bg="#120F17" overflow="hidden">
+      <Navbar showDocs />
 
       <Box
         px={{ base: 3, md: 6 }}
-        pt={{ base: '120px', md: '160px' }}
+        pt={{ base: '80px', md: '80px' }}
         pb={{ base: 3, md: 6 }}
         h="100vh"
         overflow="hidden"

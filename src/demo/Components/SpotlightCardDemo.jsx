@@ -1,21 +1,25 @@
 import { useMemo } from 'react';
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import { VscSparkleFilled } from 'react-icons/vsc';
-import { FaLock } from 'react-icons/fa6';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import CodeExample from '../../components/code/CodeExample';
+import Customize from '../../components/common/Preview/Customize';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PropTable from '../../components/common/Preview/PropTable';
 
 import SpotlightCard from '../../content/Components/SpotlightCard/SpotlightCard';
 import { spotlightCard } from '../../constants/code/Components/spotlightCardCode';
 
-const DEFAULT_PROPS = {};
+const DEFAULT_PROPS = {
+  spotlightColor: '#ffffff40'
+};
 
 const SpotlightCardDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { spotlightColor } = props;
 
   const propData = useMemo(
     () => [
@@ -40,7 +44,7 @@ const SpotlightCardDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" py={10}>
-            <SpotlightCard className="custom-spotlight-card">
+            <SpotlightCard className="custom-spotlight-card" spotlightColor={spotlightColor}>
               <Flex h={'100%'} direction="column" alignItems="flex-start" justifyContent="center">
                 <Icon mb={3} boxSize={12} as={VscSparkleFilled} />
                 <Text fontWeight={600} fontSize={'1.4rem'} letterSpacing={'-.5px'}>
@@ -53,20 +57,9 @@ const SpotlightCardDemo = () => {
             </SpotlightCard>
           </Box>
 
-          <h2 className="demo-title-extra">Custom Color</h2>
-          <Box position="relative" className="demo-container" py={10}>
-            <SpotlightCard className="custom-spotlight-card" spotlightColor="purple">
-              <Flex h={'100%'} direction="column" alignItems="flex-start" justifyContent="center">
-                <Icon mb={3} boxSize={8} as={FaLock} />
-                <Text fontWeight={600} fontSize={'1.4rem'} letterSpacing={'-.5px'}>
-                  Enhanced Security
-                </Text>
-                <Text color="#a1a1aa" fontSize={'14px'} mt={1} mb={8}>
-                  Our state of the art software offers peace of mind through strict security measures.
-                </Text>
-              </Flex>
-            </SpotlightCard>
-          </Box>
+          <Customize>
+            <PreviewColorPickerCustom title="Spotlight Color" color={spotlightColor} setColor={v => updateProp('spotlightColor', v)} />
+          </Customize>
 
           <PropTable data={propData} />
         </PreviewTab>

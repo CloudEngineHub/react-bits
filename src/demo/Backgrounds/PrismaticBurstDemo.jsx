@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import PrismaticBurst from '../../content/Backgrounds/PrismaticBurst/PrismaticBurst';
@@ -25,9 +26,9 @@ const DEFAULT_PROPS = {
   distort: 0,
   hoverDampness: 0.25,
   rayCount: 0,
-  color0: '',
-  color1: '',
-  color2: ''
+  color0: '#A855F7',
+  color1: '#7C3AED',
+  color2: '#6366F1'
 };
 
 const PrismaticBurstDemo = () => {
@@ -105,7 +106,7 @@ const PrismaticBurstDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <PrismaticBurst
               animationType={animationType}
               intensity={intensity}
@@ -143,44 +144,9 @@ const PrismaticBurstDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" gap={4} mb={2}>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 1
-                </Text>
-                <Input
-                  type="color"
-                  value={color0}
-                  onChange={e => updateProp('color0', e.target.value)}
-                  width="50px"
-                  p={0}
-                />
-              </Flex>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 2
-                </Text>
-                <Input
-                  type="color"
-                  value={color1}
-                  onChange={e => updateProp('color1', e.target.value)}
-                  width="50px"
-                  p={0}
-                />
-              </Flex>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 3
-                </Text>
-                <Input
-                  type="color"
-                  value={color2}
-                  onChange={e => updateProp('color2', e.target.value)}
-                  width="50px"
-                  p={0}
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color0} onChange={val => updateProp('color0', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 3" color={color2} onChange={val => updateProp('color2', val)} />
 
             <PreviewSelect
               title="Animation Type"

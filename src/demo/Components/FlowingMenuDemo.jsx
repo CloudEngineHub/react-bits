@@ -3,6 +3,9 @@ import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLay
 import { Box } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -15,14 +18,15 @@ import { flowingMenu } from '../../constants/code/Components/flowingMenuCode';
 const DEFAULT_PROPS = {
   speed: 15,
   textColor: '#ffffff',
-  bgColor: '#060010',
+  bgColor: '#120F17',
   marqueeBgColor: '#ffffff',
-  marqueeTextColor: '#060010',
+  marqueeTextColor: '#120F17',
   borderColor: '#ffffff'
 };
 
 const FlowingMenuDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { speed, textColor, bgColor, marqueeBgColor, marqueeTextColor, borderColor } = props;
 
   const propData = useMemo(
     () => [
@@ -47,7 +51,7 @@ const FlowingMenuDemo = () => {
       {
         name: 'bgColor',
         type: 'string',
-        default: '#060010',
+        default: '#120F17',
         description: 'Background color of the menu container.'
       },
       {
@@ -59,7 +63,7 @@ const FlowingMenuDemo = () => {
       {
         name: 'marqueeTextColor',
         type: 'string',
-        default: '#060010',
+        default: '#120F17',
         description: 'Text color inside the marquee.'
       },
       {
@@ -83,17 +87,26 @@ const FlowingMenuDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" px={0} pt="100px" pb="100px">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" px={0} pt="100px" pb="100px">
             <FlowingMenu
               items={demoItems}
-              speed={props.speed}
-              textColor={props.textColor}
-              bgColor={props.bgColor}
-              marqueeBgColor={props.marqueeBgColor}
-              marqueeTextColor={props.marqueeTextColor}
-              borderColor={props.borderColor}
+              speed={speed}
+              textColor={textColor}
+              bgColor={bgColor}
+              marqueeBgColor={marqueeBgColor}
+              marqueeTextColor={marqueeTextColor}
+              borderColor={borderColor}
             />
           </Box>
+
+          <Customize>
+            <PreviewSlider title="Speed" min={1} max={60} step={1} value={speed} onChange={v => updateProp('speed', v)} />
+            <PreviewColorPickerCustom title="Text Color" color={textColor} setColor={v => updateProp('textColor', v)} />
+            <PreviewColorPickerCustom title="Background Color" color={bgColor} setColor={v => updateProp('bgColor', v)} />
+            <PreviewColorPickerCustom title="Marquee BG Color" color={marqueeBgColor} setColor={v => updateProp('marqueeBgColor', v)} />
+            <PreviewColorPickerCustom title="Marquee Text Color" color={marqueeTextColor} setColor={v => updateProp('marqueeTextColor', v)} />
+            <PreviewColorPickerCustom title="Border Color" color={borderColor} setColor={v => updateProp('borderColor', v)} />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['gsap']} />

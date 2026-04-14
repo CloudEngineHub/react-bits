@@ -84,7 +84,7 @@ const DarkVeilDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             <DarkVeil
               key={key}
               hueShift={hueShift}

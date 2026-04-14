@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -14,6 +14,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 
 import { splitText } from '../../constants/code/TextAnimations/splitTextCode';
 import SplitText from '../../content/TextAnimations/SplitText/SplitText';
@@ -122,41 +123,33 @@ const SplitTextDemo = () => {
           </Box>
 
           <Customize>
-            <Flex gap={2} wrap="wrap" align="center">
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={10}
-                onClick={() => {
-                  updateProp('splitType', splitType === 'chars' ? 'words' : splitType === 'words' ? 'lines' : 'chars');
-                  forceRerender();
-                }}
-              >
-                Split Type: <Text color={'#a1a1aa'}>&nbsp;{splitType}</Text>
-              </Button>
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={10}
-                onClick={() => {
-                  updateProp(
-                    'ease',
-                    ease === 'power3.out' ? 'bounce.out' : ease === 'bounce.out' ? 'elastic.out(1, 0.3)' : 'power3.out'
-                  );
-                  forceRerender();
-                }}
-              >
-                Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
-              </Button>
-            </Flex>
+            <PreviewSelect
+              title="Split Type"
+              options={[
+                { value: 'chars', label: 'Chars' },
+                { value: 'words', label: 'Words' },
+                { value: 'lines', label: 'Lines' }
+              ]}
+              value={splitType}
+              onChange={val => {
+                updateProp('splitType', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              title="Ease"
+              options={[
+                { value: 'power3.out', label: 'power3.out' },
+                { value: 'bounce.out', label: 'bounce.out' },
+                { value: 'elastic.out(1, 0.3)', label: 'elastic.out' }
+              ]}
+              value={ease}
+              onChange={val => {
+                updateProp('ease', val);
+                forceRerender();
+              }}
+            />
 
             <PreviewSlider
               title="Stagger Delay (ms)"

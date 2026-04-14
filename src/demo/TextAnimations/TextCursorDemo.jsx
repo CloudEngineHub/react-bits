@@ -89,7 +89,7 @@ const TextCursorDemo = () => {
               fontSize="4rem"
               fontWeight={900}
               userSelect="none"
-              color="#271E37"
+              color="#2F293A"
             >
               Hover Around!
             </Text>

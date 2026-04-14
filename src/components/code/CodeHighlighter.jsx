@@ -19,7 +19,7 @@ const hashSnippet = str => {
 };
 
 const COPY_BTN_STYLE = {
-  borderRadius: '12px',
+  borderRadius: '10px',
   fontWeight: 500,
   border: `1px solid ${colors.borderSecondary}`,
   transition: 'background-color 0.3s ease',

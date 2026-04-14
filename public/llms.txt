@@ -134,6 +134,7 @@ Notes:
 - [Color Bends](https://www.reactbits.dev/backgrounds/color-bends): Vibrant color bends with smooth flowing animation. CLI: `ColorBends`.
 - [Dark Veil](https://www.reactbits.dev/backgrounds/dark-veil): Subtle dark background with a smooth animation and postprocessing. CLI: `DarkVeil`.
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
+- [Dot Field](https://www.reactbits.dev/backgrounds/dot-field): Interactive dot grid with cursor bulge, glow, sparkle, and wave effects. CLI: `DotField`.
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.
 - [Evil Eye](https://www.reactbits.dev/backgrounds/evil-eye): Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow. CLI: `EvilEye`.
 - [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): Terminal CRT scanline squares effect with flicker + noise. CLI: `FaultyTerminal`.
@@ -158,6 +159,7 @@ Notes:
 - [Pixel Blast](https://www.reactbits.dev/backgrounds/pixel-blast): Exploding pixel particle bursts with optional liquid postprocessing. CLI: `PixelBlast`.
 - [Pixel Snow](https://www.reactbits.dev/backgrounds/pixel-snow): Falling pixelated snow effect with customizable density and speed. CLI: `PixelSnow`.
 - [Plasma](https://www.reactbits.dev/backgrounds/plasma): Organic plasma gradients swirl + morph with smooth turbulence. CLI: `Plasma`.
+- [Plasma Wave](https://www.reactbits.dev/backgrounds/plasma-wave): Raymarched plasma waves with dual-wave interference and OGL. CLI: `PlasmaWave`.
 - [Prism](https://www.reactbits.dev/backgrounds/prism): Rotating prism with configurable intensity, size, and colors. CLI: `Prism`.
 - [Prismatic Burst](https://www.reactbits.dev/backgrounds/prismatic-burst): Burst of light rays with controllable color, distortion, amount. CLI: `PrismaticBurst`.
 - [Radar](https://www.reactbits.dev/backgrounds/radar): Radar sweep effect with concentric rings, radial spokes, and a rotating beam. CLI: `Radar`.

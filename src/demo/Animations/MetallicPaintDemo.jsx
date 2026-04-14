@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
-import PreviewColorPicker from '../../components/common/Preview/PreviewColorPicker';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import logo from '../../assets/logos/react-bits-logo-small-black.svg';
 import CodeExample from '../../components/code/CodeExample';
@@ -231,241 +231,216 @@ const MetallicPaintDemo = () => {
           </Box>
 
           <Customize>
-            <Flex wrap="wrap" gap={4}>
-              <Box flex="1" minW={{ base: '100%', md: '200px', lg: '180px' }}>
-                <PreviewColorPicker
-                  title="Tint Color"
-                  color={tintColor}
-                  setColor={val => {
-                    updateProp('tintColor', val);
-                    forceRerender();
-                  }}
-                />
+            <PreviewColorPickerCustom
+              title="Tint Color"
+              color={tintColor}
+              setColor={val => {
+                updateProp('tintColor', val);
+                forceRerender();
+              }}
+            />
+            <PreviewColorPickerCustom
+              title="Dark Color"
+              color={darkColor}
+              setColor={val => {
+                updateProp('darkColor', val);
+                forceRerender();
+              }}
+            />
+            <PreviewColorPickerCustom
+              title="Light Color"
+              color={lightColor}
+              setColor={val => {
+                updateProp('lightColor', val);
+                forceRerender();
+              }}
+            />
 
-                <PreviewColorPicker
-                  title="Dark Color"
-                  color={darkColor}
-                  setColor={val => {
-                    updateProp('darkColor', val);
-                    forceRerender();
-                  }}
-                />
+            <PreviewSlider
+              title="Seed"
+              min={0}
+              max={200}
+              step={0.01}
+              value={seed}
+              onChange={val => {
+                updateProp('seed', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Scale"
+              min={0.5}
+              max={5}
+              step={0.1}
+              value={scale}
+              onChange={val => {
+                updateProp('scale', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Refraction"
+              min={0}
+              max={0.1}
+              step={0.001}
+              value={refraction}
+              onChange={val => {
+                updateProp('refraction', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Blur"
+              min={0}
+              max={0.1}
+              step={0.001}
+              value={blur}
+              onChange={val => {
+                updateProp('blur', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Speed"
+              min={0}
+              max={1}
+              step={0.01}
+              value={speed}
+              onChange={val => {
+                updateProp('speed', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Brightness"
+              min={0.5}
+              max={2}
+              step={0.05}
+              value={brightness}
+              onChange={val => {
+                updateProp('brightness', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Contrast"
+              min={0.5}
+              max={2}
+              step={0.05}
+              value={contrast}
+              onChange={val => {
+                updateProp('contrast', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Angle"
+              min={-180}
+              max={180}
+              step={1}
+              value={angle}
+              onChange={val => {
+                updateProp('angle', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Fresnel"
+              min={0}
+              max={3}
+              step={0.1}
+              value={fresnel}
+              onChange={val => {
+                updateProp('fresnel', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Pattern Sharpness"
+              min={0.1}
+              max={2}
+              step={0.1}
+              value={patternSharpness}
+              onChange={val => {
+                updateProp('patternSharpness', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Wave Amplitude"
+              min={0}
+              max={3}
+              step={0.1}
+              value={waveAmplitude}
+              onChange={val => {
+                updateProp('waveAmplitude', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Liquid"
+              min={0}
+              max={1}
+              step={0.01}
+              value={liquid}
+              onChange={val => {
+                updateProp('liquid', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Noise Scale"
+              min={0.1}
+              max={3}
+              step={0.1}
+              value={noiseScale}
+              onChange={val => {
+                updateProp('noiseScale', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Chromatic Spread"
+              min={0}
+              max={3}
+              step={0.1}
+              value={chromaticSpread}
+              onChange={val => {
+                updateProp('chromaticSpread', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Distortion"
+              min={0}
+              max={1}
+              step={0.05}
+              value={distortion}
+              onChange={val => {
+                updateProp('distortion', val);
+                forceRerender();
+              }}
+            />
+            <PreviewSlider
+              title="Contour"
+              min={0}
+              max={1}
+              step={0.05}
+              value={contour}
+              onChange={val => {
+                updateProp('contour', val);
+                forceRerender();
+              }}
+            />
 
-                <PreviewColorPicker
-                  title="Light Color"
-                  color={lightColor}
-                  setColor={val => {
-                    updateProp('lightColor', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Seed"
-                  min={0}
-                  max={200}
-                  step={0.01}
-                  value={seed}
-                  onChange={val => {
-                    updateProp('seed', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Scale"
-                  min={0.5}
-                  max={5}
-                  step={0.1}
-                  value={scale}
-                  onChange={val => {
-                    updateProp('scale', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Refraction"
-                  min={0}
-                  max={0.1}
-                  step={0.001}
-                  value={refraction}
-                  onChange={val => {
-                    updateProp('refraction', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Blur"
-                  min={0}
-                  max={0.1}
-                  step={0.001}
-                  value={blur}
-                  onChange={val => {
-                    updateProp('blur', val);
-                    forceRerender();
-                  }}
-                />
-              </Box>
-
-              <Box flex="1" minW={{ base: '100%', md: '200px', lg: '180px' }}>
-                <PreviewSlider
-                  title="Speed"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={speed}
-                  onChange={val => {
-                    updateProp('speed', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Brightness"
-                  min={0.5}
-                  max={2}
-                  step={0.05}
-                  value={brightness}
-                  onChange={val => {
-                    updateProp('brightness', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Contrast"
-                  min={0.5}
-                  max={2}
-                  step={0.05}
-                  value={contrast}
-                  onChange={val => {
-                    updateProp('contrast', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Angle"
-                  min={-180}
-                  max={180}
-                  step={1}
-                  value={angle}
-                  onChange={val => {
-                    updateProp('angle', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Fresnel"
-                  min={0}
-                  max={3}
-                  step={0.1}
-                  value={fresnel}
-                  onChange={val => {
-                    updateProp('fresnel', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Pattern Sharpness"
-                  min={0.1}
-                  max={2}
-                  step={0.1}
-                  value={patternSharpness}
-                  onChange={val => {
-                    updateProp('patternSharpness', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Wave Amplitude"
-                  min={0}
-                  max={3}
-                  step={0.1}
-                  value={waveAmplitude}
-                  onChange={val => {
-                    updateProp('waveAmplitude', val);
-                    forceRerender();
-                  }}
-                />
-              </Box>
-
-              <Box flex="1" minW={{ base: '100%', md: '200px', lg: '180px' }}>
-                <PreviewSlider
-                  title="Liquid"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={liquid}
-                  onChange={val => {
-                    updateProp('liquid', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Noise Scale"
-                  min={0.1}
-                  max={3}
-                  step={0.1}
-                  value={noiseScale}
-                  onChange={val => {
-                    updateProp('noiseScale', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Chromatic Spread"
-                  min={0}
-                  max={3}
-                  step={0.1}
-                  value={chromaticSpread}
-                  onChange={val => {
-                    updateProp('chromaticSpread', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Distortion"
-                  min={0}
-                  max={1}
-                  step={0.05}
-                  value={distortion}
-                  onChange={val => {
-                    updateProp('distortion', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSlider
-                  title="Contour"
-                  min={0}
-                  max={1}
-                  step={0.05}
-                  value={contour}
-                  onChange={val => {
-                    updateProp('contour', val);
-                    forceRerender();
-                  }}
-                />
-
-                <PreviewSwitch
-                  title="Mouse Animation"
-                  isChecked={mouseAnimation}
-                  onChange={val => {
-                    updateProp('mouseAnimation', val);
-                    forceRerender();
-                  }}
-                />
-              </Box>
-            </Flex>
+            <PreviewSwitch
+              title="Mouse Animation"
+              isChecked={mouseAnimation}
+              onChange={val => {
+                updateProp('mouseAnimation', val);
+                forceRerender();
+              }}
+            />
           </Customize>
 
           <PropTable data={propData} />

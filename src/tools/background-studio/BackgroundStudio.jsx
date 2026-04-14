@@ -7,10 +7,10 @@ import { BACKGROUNDS, getBackgroundById, getDefaultProps } from './backgrounds';
 import { hyperspeedPresets } from '../../content/Backgrounds/Hyperspeed/HyperSpeedPresets';
 
 const LoadingFallback = () => (
-  <Flex w="100%" h="100%" align="center" justify="center" bg="#060010">
+  <Flex w="100%" h="100%" align="center" justify="center" bg="var(--bg-body)">
     <Flex direction="column" align="center" gap={3}>
       <Spinner size="lg" color="#5227FF" />
-      <Text color="#988BC7" fontSize="14px">
+      <Text color="var(--text-muted)" fontSize="14px">
         Loading background...
       </Text>
     </Flex>
@@ -18,12 +18,12 @@ const LoadingFallback = () => (
 );
 
 const ErrorFallback = ({ error }) => (
-  <Flex w="100%" h="100%" align="center" justify="center" bg="#060010">
+  <Flex w="100%" h="100%" align="center" justify="center" bg="var(--bg-body)">
     <Flex direction="column" align="center" gap={2}>
       <Text color="#ff6b6b" fontSize="16px" fontWeight={600}>
         Failed to load background
       </Text>
-      <Text color="#988BC7" fontSize="13px">
+      <Text color="var(--text-muted)" fontSize="13px">
         {error?.message || 'Unknown error'}
       </Text>
     </Flex>
@@ -135,7 +135,7 @@ export default function BackgroundStudio({ toolSelector }) {
   const [renderKey, setRenderKey] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingProgress, setRecordingProgress] = useState(0);
-  const [canvasBg, setCanvasBg] = useState('#060010');
+  const [canvasBg, setCanvasBg] = useState('#120F17');
   const debounceTimer = useRef(null);
   const previewRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -458,7 +458,7 @@ export default function BackgroundStudio({ toolSelector }) {
         margin="0 auto"
         borderRadius={{ base: '12px', lg: '16px' }}
         overflow="hidden"
-        border="1px solid #271E37"
+        border="1px solid var(--border-primary)"
         bg={canvasBg}
         minH={{ base: '300px', lg: 'auto' }}
       >
@@ -471,12 +471,12 @@ export default function BackgroundStudio({ toolSelector }) {
           top={4}
           left={4}
           bg="rgba(13, 7, 22, 0.9)"
-          border="1px solid #271E37"
+          border="1px solid var(--border-primary)"
           borderRadius="8px"
           px={3}
           py={1.5}
         >
-          <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+          <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
             {background.label}
           </Text>
         </Box>
@@ -487,7 +487,7 @@ export default function BackgroundStudio({ toolSelector }) {
             align="center"
             gap={2}
             bg="rgba(13, 7, 22, 0.9)"
-            border="1px solid #271E37"
+            border="1px solid var(--border-primary)"
             px={3}
             py={2}
             borderRadius="8px"
@@ -496,8 +496,8 @@ export default function BackgroundStudio({ toolSelector }) {
             _hover={{ bg: 'rgba(39, 30, 55, 0.9)' }}
             transition="background 0.2s"
           >
-            <Icon as={Download} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={Download} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               Image
             </Text>
           </Flex>
@@ -507,7 +507,7 @@ export default function BackgroundStudio({ toolSelector }) {
             align="center"
             gap={2}
             bg={isRecording ? 'rgba(255, 59, 48, 0.2)' : 'rgba(13, 7, 22, 0.9)'}
-            border={isRecording ? '1px solid #ff3b30' : '1px solid #271E37'}
+            border={isRecording ? '1px solid #ff3b30' : '1px solid var(--border-primary)'}
             px={3}
             py={2}
             borderRadius="8px"
@@ -529,8 +529,8 @@ export default function BackgroundStudio({ toolSelector }) {
                 transition="width 0.1s linear"
               />
             )}
-            <Icon as={Video} boxSize={3.5} color={isRecording ? '#ff3b30' : '#988BC7'} position="relative" />
-            <Text fontSize="12px" color={isRecording ? '#ff3b30' : '#988BC7'} fontWeight={500} position="relative">
+            <Icon as={Video} boxSize={3.5} color={isRecording ? '#ff3b30' : 'var(--text-muted)'} position="relative" />
+            <Text fontSize="12px" color={isRecording ? '#ff3b30' : 'var(--text-muted)'} fontWeight={500} position="relative">
               {isRecording ? `${Math.ceil((100 - recordingProgress) / 10)}s` : '10s Video'}
             </Text>
           </Flex>
@@ -582,8 +582,8 @@ export default function BackgroundStudio({ toolSelector }) {
             bottom={0}
             left={0}
             right={0}
-            bg="#0D0716"
-            borderTop="1px solid #271E37"
+            bg="var(--bg-card)"
+            borderTop="1px solid var(--border-primary)"
             borderTopRadius="24px"
             transform={mobileControlsOpen ? 'translateY(0)' : 'translateY(100%)'}
             transition="transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
@@ -594,11 +594,11 @@ export default function BackgroundStudio({ toolSelector }) {
             flexDirection="column"
           >
             <Flex justify="center" pt={3} pb={2} cursor="pointer" onClick={() => setMobileControlsOpen(false)}>
-              <Box w="40px" h="4px" bg="#392e4e" borderRadius="2px" />
+              <Box w="40px" h="4px" bg="var(--border-primary)" borderRadius="2px" />
             </Flex>
 
-            <Flex align="center" justify="space-between" px={4} pb={3} borderBottom="1px solid #271E37">
-              <Text fontSize="16px" fontWeight={700} color="#fff">
+            <Flex align="center" justify="space-between" px={4} pb={3} borderBottom="1px solid var(--border-primary)">
+              <Text fontSize="16px" fontWeight={700} color="var(--text-primary)">
                 Controls
               </Text>
               <Flex
@@ -608,12 +608,12 @@ export default function BackgroundStudio({ toolSelector }) {
                 w={8}
                 h={8}
                 borderRadius="8px"
-                bg="#170D27"
+                bg="var(--bg-elevated)"
                 cursor="pointer"
                 onClick={() => setMobileControlsOpen(false)}
-                _hover={{ bg: '#271E37' }}
+                _hover={{ bg: 'var(--bg-card)' }}
               >
-                <Icon as={ChevronUp} boxSize={5} color="#988BC7" />
+                <Icon as={ChevronUp} boxSize={5} color="var(--text-muted)" />
               </Flex>
             </Flex>
 

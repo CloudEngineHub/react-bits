@@ -26,7 +26,7 @@ function LaserFlowBoxExample() {
         height: '800px', 
         position: 'relative', 
         overflow: 'hidden',
-        backgroundColor: '#060010'
+        backgroundColor: '#120F17'
       }}
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
@@ -59,7 +59,7 @@ function LaserFlowBoxExample() {
         transform: 'translateX(-50%)',
         width: '86%',
         height: '60%',
-        backgroundColor: '#060010',
+        backgroundColor: '#120F17',
         borderRadius: '20px',
         border: '2px solid #FF79C6',
         display: 'flex',

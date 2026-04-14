@@ -1,193 +1,163 @@
-.showcase-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  max-width: 1200px;
-  margin: 0 auto;
+/* ─── Showcase page ────────────────────────────────────────────────────────── */
+.showcase-dotfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.showcase-page {
   position: relative;
-  overflow-x: hidden;
-  padding: 300px 2em 0;
+  z-index: 1;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 180px 2em 4em;
+  min-height: 100vh;
 }
 
+/* ─── Header ───────────────────────────────────────────────────────────────── */
 .showcase-header {
-  text-align: center;
-  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 3em;
+}
+
+.showcase-header-left {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-bottom: 8rem;
-}
-
-.showcase-header .landing-button {
-  margin-top: 2rem;
-  padding: 0.7rem 0.7rem 0.7rem 1.8rem;
-  font-size: 0.95rem;
-  gap: 1.2rem;
-}
-
-.showcase-header .button-arrow-circle {
-  display: flex;
-  width: 32px;
-  height: 32px;
+  gap: 12px;
 }
 
 .showcase-title {
-  user-select: none;
-  font-size: 3.6rem;
-  font-weight: 600;
-  letter-spacing: -2px;
+  font-family: 'Geist Pixel Line', sans-serif;
+  font-size: clamp(36px, 5vw, 100px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: #fff;
-  margin-bottom: 1rem;
-  background: var(--gradient-title);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 4s ease-in-out infinite;
-  display: inline-block;
+  margin: 0;
   line-height: 1.1;
 }
 
 .showcase-subtitle {
-  user-select: none;
-  font-size: 1.2rem;
-  text-align: center;
+  font-family: 'Geist', sans-serif;
+  font-size: 16px;
+  max-width: 32ch;
   font-weight: 400;
-  line-height: 1.5;
-  color: #ffffffb7;
-  max-width: 40ch;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
 }
 
-.showcase-wrapper .fade-grid {
-  width: 100%;
+.showcase-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  height: 42px;
+  padding: 0 24px;
+  width: fit-content;
+  flex-shrink: 0;
+  margin-top: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 15, 23, 0.45);
+  backdrop-filter: blur(32px) saturate(1.3);
+  -webkit-backdrop-filter: blur(32px) saturate(1.3);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  text-decoration: none;
 }
 
-.showcase-wrapper .grid-container {
-  position: relative;
-  margin: 0 auto 6em;
+.showcase-submit-btn:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(18, 15, 23, 0.55);
+}
+
+/* ─── Grid ─────────────────────────────────────────────────────────────────── */
+.showcase-grid {
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
-.showcase-wrapper .grid-container .grid-item {
-  background: var(--bg-body);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-xl);
-  padding: 6px;
-  transition: all 0.25s ease;
-  position: relative;
+/* ─── Card (matches ComponentList) ─────────────────────────────────────────── */
+.showcase-card {
   display: flex;
   flex-direction: column;
+  background: var(--bg-elevated, #1a1625);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 6px;
   text-decoration: none;
   overflow: hidden;
+  transition: border-color 0.2s ease;
 }
 
-.showcase-wrapper .grid-container .grid-item:hover {
-  filter: saturate(150%);
-  border-color: var(--border-secondary);
+.showcase-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
 }
 
-.showcase-wrapper .grid-container .grid-item .showcase-img-wrapper {
+.showcase-card-media {
+  position: relative;
   overflow: hidden;
-  border: 1px solid #1b1425;
-  border-radius: 18px;
+  border-radius: 10px;
 }
 
-.showcase-wrapper .grid-container .grid-item .showcase-img {
+.showcase-card-img {
+  display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: top center;
-  border-radius: 18px;
+  border-radius: 10px;
   transition: transform 0.4s ease;
 }
 
-.showcase-wrapper .grid-container .grid-item:hover .showcase-img {
-  transform: scale(1.05);
+.showcase-card:hover .showcase-card-img {
+  transform: scale(1.03);
 }
 
-.showcase-wrapper .grid-container .grid-item .showcase-info {
+.showcase-card-info {
   display: flex;
   flex-direction: column;
-  padding: 16px 12px 12px;
+  padding: 12px 8px 8px;
   gap: 2px;
 }
 
-.showcase-wrapper .grid-container .grid-item .showcase-info .author {
+.showcase-card-name {
+  font-size: 14px;
   font-weight: 500;
-  font-size: 1rem;
-  color: var(--text-primary);
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
 }
 
-.showcase-wrapper .grid-container .grid-item .showcase-info .using {
-  font-size: 13px;
-  color: var(--color-accent);
+.showcase-card-using {
+  font-size: 12px;
   font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
 }
 
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .showcase-wrapper {
-    padding: 200px 1.5em 0;
-  }
-
-  .showcase-wrapper .grid-container {
+  .showcase-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .showcase-title {
-    font-size: 2.5rem;
-  }
-
-  .showcase-subtitle {
-    font-size: 1rem;
   }
 }
 
 @media (max-width: 640px) {
-  .showcase-wrapper {
-    padding: 200px 1em 0;
+  .showcase-page {
+    padding: 100px 1em 3em;
   }
 
-  .showcase-wrapper .grid-container {
+  .showcase-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .showcase-title {
-    font-size: 2rem;
-  }
-
-  .showcase-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .showcase-header .landing-button {
-    padding: 0.6rem 0.6rem 0.6rem 1.4rem;
-    font-size: 0.9rem;
-  }
-
-  .showcase-header .button-arrow-circle {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-@media (max-width: 480px) {
-  .showcase-wrapper .grid-container .grid-item .showcase-info {
-    padding: 12px 10px 10px;
-  }
-
-  .showcase-wrapper .grid-container .grid-item .showcase-info .author {
-    font-size: 0.95rem;
-  }
-
-  .showcase-wrapper .grid-container .grid-item .showcase-info .using {
-    font-size: 12px;
   }
 }

@@ -1,13 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Dialog, Input, InputGroup, Box, Text, Icon } from '@chakra-ui/react';
 import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile } from 'react-icons/fi';
 import { AiOutlineEnter } from 'react-icons/ai';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../constants/Categories';
-import { colors } from '../../constants/colors';
 import { fuzzyMatch } from '../../utils/fuzzy';
 import { useSearch } from '../context/SearchContext/useSearch';
+import './SearchDialog.css';
 
 function searchComponents(query) {
   if (!query || query.trim() === '') return [];
@@ -59,6 +58,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [keyboardNav, setKeyboardNav] = useState(false);
   const resultsRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const { toggleSearch } = useSearch();
 
@@ -144,144 +144,107 @@ const SearchDialog = ({ isOpen, onClose }) => {
       if (e.key === '/') {
         e.preventDefault();
         toggleSearch();
+      } else if (e.key === 'Escape') {
+        onClose();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [toggleSearch]);
+  }, [toggleSearch, onClose]);
 
   useEffect(() => {
-    if (isOpen) return;
-    setInputValue('');
-    setSearchValue('');
-    setSelectedIndex(-1);
-    setTopGradientOpacity(0);
-    setBottomGradientOpacity(1);
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50);
+    } else {
+      setInputValue('');
+      setSearchValue('');
+      setSelectedIndex(-1);
+      setTopGradientOpacity(0);
+      setBottomGradientOpacity(1);
+    }
   }, [isOpen]);
 
+  if (!isOpen) return null;
+
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
-      <Dialog.Backdrop bg="rgba(0,0,0,0.9)" />
-      <Dialog.Positioner placement="top">
-        <Dialog.Content bg={colors.bgBody} border={`1px solid ${colors.borderPrimary}`} rounded="xl" mx={4} w="full" maxW="600px">
-          <Dialog.Body padding="1em 1em .2em 1em">
-            <InputGroup startElement={<Icon as={FiSearch} color={colors.accent} fontSize="18px" />} mb={2}>
-              <Input
-                autoFocus
-                value={inputValue}
-                onChange={e => setInputValue(e.target.value)}
-                placeholder="Search components, categories, or keywords..."
-                variant="filled"
-                pb="4px"
-                bg={colors.bgBody}
-                fontSize="16px"
-                borderRadius="md"
-                color="white"
-                _focus={{ bg: colors.bgBody, borderColor: 'transparent' }}
-                _hover={{ bg: colors.bgBody }}
-                _placeholder={{ color: colors.borderPrimary }}
-              />
-            </InputGroup>
+    <div className="search-backdrop" onClick={onClose}>
+      <div className="search-dialog" onClick={e => e.stopPropagation()}>
+        <div className="search-input-row">
+          <FiSearch className="search-input-icon" size={16} />
+          <input
+            ref={inputRef}
+            className="search-input"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            placeholder="Search components, categories, or keywords..."
+          />
+          <kbd className="search-kbd" onClick={onClose}>esc</kbd>
+        </div>
 
-            <AnimatePresence>
-              {searchValue && (
-                <motion.div
-                  key="results"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ overflow: 'hidden' }}
+        <AnimatePresence>
+          {searchValue && (
+            <motion.div
+              key="results"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="search-results-wrapper">
+                <div
+                  ref={resultsRef}
+                  className="search-results"
+                  onScroll={handleScroll}
                 >
-                  <Box mt={0} borderTop={`1px solid ${colors.borderPrimary}`} position="relative">
-                    <Box
-                      ref={resultsRef}
-                      maxH={400}
-                      className="results-container"
-                      overflowY="auto"
-                      onScroll={handleScroll}
-                    >
-                      {results.length > 0 ? (
-                        results.map((r, i) => {
-                          const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
-                          const selected = i === selectedIndex;
-                          return (
-                            <AnimatedResult
-                              key={`${r.categoryName}-${r.componentName}-${i}`}
-                              delay={0.05}
-                              dataIndex={i}
-                              onMouseEnter={() => setSelectedIndex(i)}
-                              onClick={() => handleSelect(r)}
-                            >
-                              <Box
-                                mt={i === 0 ? 4 : 2}
-                                mr=".6em"
-                                mb={2}
-                                p="1em"
-                                bg={selected ? colors.bgHover : colors.bgElevated}
-                                rounded="xl"
-                                display="flex"
-                                alignItems="center"
-                              >
-                                <Box mr="16px">
-                                  <IconComp size={24} color={colors.accent} />
-                                </Box>
-                                <Box flex="1">
-                                  <Text fontWeight="bold" fontSize="16px" color="white">
-                                    {r.componentName}
-                                  </Text>
-                                  <Text fontSize="sm" color={colors.accent}>
-                                    in {r.categoryName}
-                                  </Text>
-                                </Box>
-                                <Box>
-                                  <AiOutlineEnter size={20} color={colors.accent} />
-                                </Box>
-                              </Box>
-                            </AnimatedResult>
-                          );
-                        })
-                      ) : (
-                        <Text textAlign="center" mt={2} color={colors.accent} p="1em">
-                          No results found for <span style={{ fontWeight: 900 }}>{searchValue}</span>
-                        </Text>
-                      )}
-                    </Box>
+                  {results.length > 0 ? (
+                    results.map((r, i) => {
+                      const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
+                      const selected = i === selectedIndex;
+                      return (
+                        <AnimatedResult
+                          key={`${r.categoryName}-${r.componentName}-${i}`}
+                          delay={0.05}
+                          dataIndex={i}
+                          onMouseEnter={() => setSelectedIndex(i)}
+                          onClick={() => handleSelect(r)}
+                        >
+                          <div className={`search-result-item${selected ? ' selected' : ''}`}>
+                            <div className="search-result-icon">
+                              <IconComp size={20} />
+                            </div>
+                            <div className="search-result-text">
+                              <span className="search-result-name">{r.componentName}</span>
+                              <span className="search-result-category">in {r.categoryName}</span>
+                            </div>
+                            <div className="search-result-enter">
+                              <AiOutlineEnter size={16} />
+                            </div>
+                          </div>
+                        </AnimatedResult>
+                      );
+                    })
+                  ) : (
+                    <p className="search-no-results">
+                      No results found for <strong>{searchValue}</strong>
+                    </p>
+                  )}
+                </div>
 
-                    <Box
-                      position="absolute"
-                      top={0}
-                      left={0}
-                      right={0}
-                      h="50px"
-                      bg={`linear-gradient(to bottom, ${colors.bgBody}, transparent)`}
-                      pointerEvents="none"
-                      style={{
-                        transition: 'opacity 0.3s',
-                        opacity: topGradientOpacity
-                      }}
-                    />
-                    <Box
-                      position="absolute"
-                      bottom={0}
-                      left={0}
-                      right={0}
-                      h="100px"
-                      bg={`linear-gradient(to top, ${colors.bgBody}, transparent)`}
-                      pointerEvents="none"
-                      style={{
-                        transition: 'opacity 0.3s',
-                        opacity: bottomGradientOpacity
-                      }}
-                    />
-                  </Box>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </Dialog.Body>
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </Dialog.Root>
+                <div
+                  className="search-gradient search-gradient-top"
+                  style={{ opacity: topGradientOpacity }}
+                />
+                <div
+                  className="search-gradient search-gradient-bottom"
+                  style={{ opacity: bottomGradientOpacity }}
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 };
 

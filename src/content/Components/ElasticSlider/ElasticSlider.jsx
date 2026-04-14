@@ -126,6 +126,8 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
           onPointerMove={handlePointerMove}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onLostPointerCapture={handlePointerUp}
         >
           <motion.div
             style={{

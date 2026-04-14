@@ -1,41 +1,35 @@
-import { Flex, Text, Input } from '@chakra-ui/react';
-import { colors } from '../../../constants/colors';
+import '../../../css/preview-slider.css';
 
 const PreviewColorPicker = ({ title = '', color = '#ffffff', setColor }) => {
-  const handleChange = e => setColor?.(e.target.value);
+  const handleColorChange = (e) => setColor?.(e.target.value);
+  const handleTextChange = (e) => {
+    const val = e.target.value;
+    if (val.length <= 7) setColor?.(val);
+  };
 
   return (
-    <Flex gap="4" align="center" mt="4">
-      <Text fontSize="14px">{title}</Text>
-      <Flex align="center" gap="2">
-        <Input
-          type="color"
-          value={color}
-          onChange={handleChange}
-          w="40px"
-          h="36px"
-          p="0"
-          border={`1px solid ${colors.borderSecondary}`}
-          borderRadius="8px"
-          cursor="pointer"
-          bg="transparent"
-          _hover={{ borderColor: '#5a4b7a' }}
-        />
-        <Input
-          type="text"
-          value={color}
-          onChange={handleChange}
-          w="90px"
-          h="36px"
-          bg={colors.bgBody}
-          border={`1px solid ${colors.borderSecondary}`}
-          borderRadius="10px"
-          fontSize="13px"
-          fontFamily="mono"
-          textTransform="lowercase"
-        />
-      </Flex>
-    </Flex>
+    <div className="scrubber">
+      <div className="scrubber-track scrubber-track--color">
+        <span className="scrubber-label">{title}</span>
+        <div className="scrubber-color-controls">
+          <input
+            className="scrubber-color-swatch"
+            type="color"
+            value={color}
+            onChange={handleColorChange}
+            aria-label={`${title} color`}
+          />
+          <input
+            className="scrubber-color-text"
+            type="text"
+            value={color}
+            onChange={handleTextChange}
+            maxLength={7}
+            aria-label={`${title} hex value`}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

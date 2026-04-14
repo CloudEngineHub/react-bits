@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import RefreshButton from '../../components/common/Preview/RefreshButton';
@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import Customize from '../../components/common/Preview/Customize';
 
 import FadeContent from '../../content/Animations/FadeContent/FadeContent';
@@ -132,9 +133,9 @@ const FadeDemo = () => {
                 color="#fff"
                 h={100}
                 borderRadius="25px"
-                border="1px solid #392e4e"
+                border="1px solid #2F293A"
                 w={200}
-                bg={'#060010'}
+                bg={'#120F17'}
               >
                 Fade
               </Flex>
@@ -143,48 +144,33 @@ const FadeDemo = () => {
           </Box>
 
           <Customize>
-            <Flex gap={2} wrap="wrap">
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp(
-                    'ease',
-                    ease === 'power2.out' ? 'bounce.out' : ease === 'bounce.out' ? 'elastic.out(1, 0.3)' : 'power2.out'
-                  );
-                  forceRerender();
-                }}
-              >
-                Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
-              </Button>
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp(
-                    'disappearEase',
-                    disappearEase === 'power2.in'
-                      ? 'bounce.in'
-                      : disappearEase === 'bounce.in'
-                        ? 'elastic.in(1, 0.3)'
-                        : 'power2.in'
-                  );
-                  forceRerender();
-                }}
-              >
-                Disappear Ease: <Text color={'#a1a1aa'}>&nbsp;{disappearEase}</Text>
-              </Button>
-            </Flex>
+            <PreviewSelect
+              title="Ease"
+              options={[
+                { value: 'power2.out', label: 'power2.out' },
+                { value: 'bounce.out', label: 'bounce.out' },
+                { value: 'elastic.out(1, 0.3)', label: 'elastic.out' }
+              ]}
+              value={ease}
+              onChange={val => {
+                updateProp('ease', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              title="Disappear Ease"
+              options={[
+                { value: 'power2.in', label: 'power2.in' },
+                { value: 'bounce.in', label: 'bounce.in' },
+                { value: 'elastic.in(1, 0.3)', label: 'elastic.in' }
+              ]}
+              value={disappearEase}
+              onChange={val => {
+                updateProp('disappearEase', val);
+                forceRerender();
+              }}
+            />
 
             <PreviewSwitch
               title="Enable Blur"

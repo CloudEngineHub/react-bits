@@ -1,40 +1,88 @@
-import { Box, Text, Flex, Icon } from '@chakra-ui/react';
 import { FiExternalLink } from 'react-icons/fi';
-import { colors } from '../../constants/colors';
+import {
+  diamondSponsors,
+  platinumSponsors,
+  silverSponsors,
+  hasDiamondSponsors,
+  hasPlatinumSponsors,
+  hasSilverSponsors
+} from '../../constants/Sponsors';
 
-import SponsorsCircle from './SponsorsCircle';
+const buildSponsorUrl = (url, tier) => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    u.searchParams.set('utm_source', 'reactbits');
+    u.searchParams.set('utm_medium', 'sponsor');
+    u.searchParams.set('utm_campaign', tier);
+    u.searchParams.set('ref', 'reactbits');
+    return u.toString();
+  } catch {
+    return `${url}${url.includes('?') ? '&' : '?'}utm_source=reactbits&utm_medium=sponsor&utm_campaign=${tier}&ref=reactbits`;
+  }
+};
+
+const SponsorLogo = ({ sponsor, tier, className }) => {
+  const content = (
+    <div className={`sc-sponsor ${className || ''}`}>
+      <img src={sponsor.imageUrl} alt={sponsor.name} loading="eager" />
+    </div>
+  );
+
+  if (!sponsor.url) return content;
+
+  return (
+    <a href={buildSponsorUrl(sponsor.url, tier)} target="_blank" rel="noopener noreferrer" className="sc-sponsor-link">
+      {content}
+    </a>
+  );
+};
 
 const SponsorsCard = () => {
   return (
-    <Box className="right-card sponsors-card">
-      <Box p="1.25em 1.25em 0.75em">
-        <Flex align="center" gap={2} mb={2}>
-          <Text fontWeight={700} fontSize="16px" color="#fff" letterSpacing="-.5px">
-            Our Sponsors
-          </Text>
-        </Flex>
-        <Text fontSize="14px" color={colors.accentMuted} letterSpacing="-.25px" lineHeight="1.5">
-          Help us maintain and grow React Bits, keeping it free for devs worldwide.
-        </Text>
-      </Box>
-
-      <SponsorsCircle />
-
-      <Box px="1.25em" pb="1.25em" pt="0.5em">
-        <a href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry" className="sponsor-cta-link">
-          <button className="sponsor-button">
-            <span>Become a Sponsor</span>
-            <Icon as={FiExternalLink} boxSize={3.5} />
-          </button>
+    <div className="right-card sc-card">
+      <div className="sc-header">
+        <span className="sc-title">Sponsors</span>
+        <a href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry" className="sc-become-link">
+          Become a sponsor <FiExternalLink size={10} />
         </a>
-        <Text fontSize="12px" color={colors.accentMuted} textAlign="center" mt={2} letterSpacing="-.25px">
-          Get your brand in front of 500k+ devs monthly
-        </Text>
-        <Text fontSize="10px" color={colors.accentMuted} textAlign="center" mt={2} letterSpacing="-.25px">
-          Limited Spots. Secure yours.
-        </Text>
-      </Box>
-    </Box>
+      </div>
+
+      {hasDiamondSponsors && (
+        <div className="sc-tier">
+          <span className="sc-tier-label">Diamond</span>
+          <div className="sc-tier-grid sc-tier-diamond">
+            {diamondSponsors.map(s => (
+              <SponsorLogo key={s.id} sponsor={s} tier="diamond" className="sc-sponsor-diamond" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hasPlatinumSponsors && (
+        <div className="sc-tier">
+          <span className="sc-tier-label">Platinum</span>
+          <div className="sc-tier-grid sc-tier-platinum">
+            {platinumSponsors.map(s => (
+              <SponsorLogo key={s.id} sponsor={s} tier="platinum" className="sc-sponsor-platinum" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hasSilverSponsors && (
+        <div className="sc-tier">
+          <span className="sc-tier-label">Silver</span>
+          <div className="sc-tier-grid sc-tier-silver">
+            {silverSponsors.map(s => (
+              <SponsorLogo key={s.id} sponsor={s} tier="silver" className="sc-sponsor-silver" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <p className="sc-reach">500k+ devs monthly &middot; Limited spots</p>
+    </div>
   );
 };
 

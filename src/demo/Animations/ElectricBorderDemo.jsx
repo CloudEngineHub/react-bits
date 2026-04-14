@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import useComponentProps from '../../hooks/useComponentProps';
@@ -11,6 +11,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import { electricBorder } from '../../constants/code/Animations/electricBorderCode';
 import ElectricBorder from '../../content/Animations/ElectricBorder/ElectricBorder';
@@ -24,7 +25,7 @@ const DEFAULT_PROPS = {
     borderRadius: 16
   },
   buttonProps: {
-    color: '#B19EEF',
+    color: '#B497CF',
     speed: 1,
     chaos: 0.12,
     borderRadius: 999
@@ -109,7 +110,7 @@ const ElectricBorderDemo = () => {
     >
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             {example === 'card' ? (
               <ElectricBorder
                 color={cardProps.color}
@@ -171,19 +172,7 @@ const ElectricBorderDemo = () => {
               onChange={v => updateProp('example', v)}
             />
 
-            <Flex alignItems="center" mb={4} mt={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input
-                type="color"
-                value={activeProps.color}
-                onChange={e => updateActiveProps({ color: e.target.value })}
-                width="50px"
-                padding="0"
-                height="28px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={activeProps.color} onChange={val => updateActiveProps({ color: val })} />
 
             <PreviewSlider
               title="Speed"

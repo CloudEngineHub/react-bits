@@ -88,6 +88,8 @@ const McpServer = () => {
         language.
       </p>
 
+      <hr className="docs-separator" />
+
       <h3 className="docs-category-title">Quick Start</h3>
 
       <p className="docs-paragraph">
@@ -107,6 +109,8 @@ const McpServer = () => {
       <MethodSelector methods={CLIENTS} selected={selectedClient} onSelect={setSelectedClient} />
 
       <ClientInstructions client={selectedClient} />
+
+      <hr className="docs-separator" />
 
       <h3 className="docs-category-title">Learn more</h3>
 

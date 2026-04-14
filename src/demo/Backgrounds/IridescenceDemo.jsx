@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -13,10 +13,21 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 import Iridescence from '../../content/Backgrounds/Iridescence/Iridescence';
 import { iridescence } from '../../constants/code/Backgrounds/iridescenceCode';
+
+function rgbArrayToHex([r, g, b]) {
+  const toHex = n => Math.round(n * 255).toString(16).padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function hexToRgbArray(hex) {
+  const h = hex.replace('#', '');
+  return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];
+}
 
 const DEFAULT_PROPS = {
   color: [0.5, 0.6, 0.8],
@@ -64,7 +75,7 @@ const IridescenceDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Iridescence key={key} speed={speed} color={color} mouseReact={mouseReact} />
 
             {/* For Demo Purposes Only */}
@@ -80,58 +91,11 @@ const IridescenceDemo = () => {
           </Flex>
 
           <Customize className="preview-options">
-            <Text fontSize="sm">Colors</Text>
-            <Flex gap={4} wrap="wrap">
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={color[0]}
-                  title="Red"
-                  onChange={val => {
-                    const newColor = [...color];
-                    newColor[0] = val;
-                    updateProp('color', newColor);
-                  }}
-                />
-              </Flex>
-
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={color[1]}
-                  title="Green"
-                  onChange={val => {
-                    const newColor = [...color];
-                    newColor[1] = val;
-                    updateProp('color', newColor);
-                  }}
-                />
-              </Flex>
-
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={color[2]}
-                  title="Blue"
-                  onChange={val => {
-                    const newColor = [...color];
-                    newColor[2] = val;
-                    updateProp('color', newColor);
-                  }}
-                  minWidth="60px"
-                  maxWidth="60px"
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Color"
+              color={rgbArrayToHex(color)}
+              onChange={hex => updateProp('color', hexToRgbArray(hex))}
+            />
 
             <PreviewSlider
               min={0}

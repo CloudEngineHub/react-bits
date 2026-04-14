@@ -4,19 +4,32 @@ import { LayoutGroup, motion } from 'motion/react';
 import { Box } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
-
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
+import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import RotatingText from '../../content/TextAnimations/RotatingText/RotatingText';
 import { rotatingText } from '../../constants/code/TextAnimations/rotatingTextCode';
 
-const DEFAULT_PROPS = {};
+const DEFAULT_PROPS = {
+  rotationInterval: 2000,
+  staggerDuration: 0.025,
+  staggerFrom: 'last',
+  splitBy: 'characters',
+  auto: true,
+  loop: true
+};
 
 const RotatingTextDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { rotationInterval, staggerDuration, staggerFrom, splitBy, auto, loop } = props;
+  const [key, forceRerender] = useForceRerender();
 
   const propData = useMemo(
     () => [
@@ -144,21 +157,75 @@ const RotatingTextDemo = () => {
                     Creative{' '}
                   </motion.span>
                   <RotatingText
+                    key={key}
                     texts={words}
                     mainClassName="rotating-text-main"
-                    staggerFrom={'last'}
+                    staggerFrom={staggerFrom}
                     initial={{ y: '100%' }}
                     animate={{ y: 0 }}
                     exit={{ y: '-120%' }}
-                    staggerDuration={0.025}
+                    staggerDuration={staggerDuration}
                     splitLevelClassName="rotating-text-split"
+                    splitBy={splitBy}
                     transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-                    rotationInterval={2000}
+                    rotationInterval={rotationInterval}
+                    auto={auto}
+                    loop={loop}
                   />
                 </motion.p>
               </LayoutGroup>
             </div>
           </Box>
+
+          <Customize>
+            <PreviewSlider
+              title="Rotation Interval (ms)"
+              min={500}
+              max={5000}
+              step={100}
+              value={rotationInterval}
+              onChange={v => { updateProp('rotationInterval', v); forceRerender(); }}
+            />
+            <PreviewSlider
+              title="Stagger Duration"
+              min={0}
+              max={0.1}
+              step={0.005}
+              value={staggerDuration}
+              onChange={v => { updateProp('staggerDuration', v); forceRerender(); }}
+            />
+            <PreviewSelect
+              title="Stagger From"
+              value={staggerFrom}
+              options={[
+                { value: 'first', label: 'First' },
+                { value: 'last', label: 'Last' },
+                { value: 'center', label: 'Center' },
+                { value: 'random', label: 'Random' }
+              ]}
+              onChange={v => { updateProp('staggerFrom', v); forceRerender(); }}
+            />
+            <PreviewSelect
+              title="Split By"
+              value={splitBy}
+              options={[
+                { value: 'characters', label: 'Characters' },
+                { value: 'words', label: 'Words' },
+                { value: 'lines', label: 'Lines' }
+              ]}
+              onChange={v => { updateProp('splitBy', v); forceRerender(); }}
+            />
+            <PreviewSwitch
+              title="Auto"
+              isChecked={auto}
+              onChange={v => { updateProp('auto', v); forceRerender(); }}
+            />
+            <PreviewSwitch
+              title="Loop"
+              isChecked={loop}
+              onChange={v => { updateProp('loop', v); forceRerender(); }}
+            />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['motion']} />

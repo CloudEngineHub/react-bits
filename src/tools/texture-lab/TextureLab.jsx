@@ -718,8 +718,8 @@ export default function TextureLab({ toolSelector }) {
         position="relative"
         borderRadius={{ base: '12px', lg: '16px' }}
         overflow="hidden"
-        border="1px solid #271E37"
-        bg="#060010"
+        border="1px solid var(--border-primary)"
+        bg="var(--bg-body)"
         maxWidth="1920px"
         margin="0 auto"
         width="100%"
@@ -749,13 +749,13 @@ export default function TextureLab({ toolSelector }) {
           right={4}
           align="center"
           gap={2}
-          bg="#5227FF"
+          bg="var(--color-primary)"
           px={4}
           py={2.5}
           borderRadius="12px"
           cursor="pointer"
           onClick={() => setMobileControlsOpen(true)}
-          boxShadow="0 4px 20px rgba(82, 39, 255, 0.4)"
+          boxShadow="0 4px 20px rgba(168, 85, 247, 0.4)"
           _active={{ transform: 'scale(0.95)' }}
           transition="transform 0.1s"
           zIndex={10}
@@ -788,8 +788,8 @@ export default function TextureLab({ toolSelector }) {
             bottom={0}
             left={0}
             right={0}
-            bg="#0D0716"
-            borderTop="1px solid #271E37"
+            bg="var(--bg-card)"
+            borderTop="1px solid var(--border-primary)"
             borderTopRadius="24px"
             transform={mobileControlsOpen ? 'translateY(0)' : 'translateY(100%)'}
             transition="transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
@@ -800,10 +800,10 @@ export default function TextureLab({ toolSelector }) {
             flexDirection="column"
           >
             <Flex justify="center" pt={3} pb={2} cursor="pointer" onClick={() => setMobileControlsOpen(false)}>
-              <Box w="40px" h="4px" bg="#392e4e" borderRadius="2px" />
+              <Box w="40px" h="4px" bg="var(--border-primary)" borderRadius="2px" />
             </Flex>
 
-            <Flex align="center" justify="space-between" px={4} pb={3} borderBottom="1px solid #271E37">
+            <Flex align="center" justify="space-between" px={4} pb={3} borderBottom="1px solid var(--border-primary)">
               <Text fontSize="16px" fontWeight={700} color="#fff">
                 Controls
               </Text>
@@ -814,12 +814,12 @@ export default function TextureLab({ toolSelector }) {
                 w={8}
                 h={8}
                 borderRadius="8px"
-                bg="#170D27"
+                bg="var(--bg-elevated)"
                 cursor="pointer"
                 onClick={() => setMobileControlsOpen(false)}
-                _hover={{ bg: '#271E37' }}
+                _hover={{ bg: 'var(--bg-elevated)' }}
               >
-                <Icon as={ChevronUp} boxSize={5} color="#988BC7" />
+                <Icon as={ChevronUp} boxSize={5} color="var(--text-muted)" />
               </Flex>
             </Flex>
 

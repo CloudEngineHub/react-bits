@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -12,6 +12,7 @@ import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 import LineWaves from '../../content/Backgrounds/LineWaves/LineWaves';
@@ -130,7 +131,7 @@ const LineWavesDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <LineWaves
               speed={speed}
               innerLineCount={innerLineCount}
@@ -173,35 +174,9 @@ const LineWavesDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Colors</Text>
-              <Input
-                type="color"
-                value={color1}
-                onChange={e => {
-                  updateProp('color1', e.target.value);
-                }}
-                width="50px"
-              />
-
-              <Input
-                type="color"
-                value={color2}
-                onChange={e => {
-                  updateProp('color2', e.target.value);
-                }}
-                width="50px"
-              />
-
-              <Input
-                type="color"
-                value={color3}
-                onChange={e => {
-                  updateProp('color3', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color2} onChange={val => updateProp('color2', val)} />
+            <PreviewColorPickerCustom title="Color 3" color={color3} onChange={val => updateProp('color3', val)} />
 
             <PreviewSlider
               min={0.1}

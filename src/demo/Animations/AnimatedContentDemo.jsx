@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import RefreshButton from '../../components/common/Preview/RefreshButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -169,9 +170,9 @@ const AnimatedContentDemo = () => {
                 color="#fff"
                 h={100}
                 borderRadius="25px"
-                border="1px solid #392e4e"
+                border="1px solid #2F293A"
                 w={200}
-                bg={'#060010'}
+                bg={'#120F17'}
               >
                 Animate Me
               </Flex>
@@ -179,63 +180,46 @@ const AnimatedContentDemo = () => {
           </Box>
 
           <Customize>
-            <Flex gap={2} wrap="wrap">
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp('direction', direction === 'vertical' ? 'horizontal' : 'vertical');
-                  forceRerender();
-                }}
-              >
-                Direction: <Text color={'#a1a1aa'}>&nbsp;{String(direction)}</Text>
-              </Button>
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp(
-                    'ease',
-                    ease === 'power3.out' ? 'bounce.out' : ease === 'bounce.out' ? 'elastic.out(1, 0.3)' : 'power3.out'
-                  );
-                  forceRerender();
-                }}
-              >
-                Ease: <Text color={'#a1a1aa'}>&nbsp;{ease}</Text>
-              </Button>
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp(
-                    'disappearEase',
-                    disappearEase === 'power3.in'
-                      ? 'bounce.in'
-                      : disappearEase === 'bounce.in'
-                        ? 'elastic.in(1, 0.3)'
-                        : 'power3.in'
-                  );
-                  forceRerender();
-                }}
-              >
-                Disappear Ease: <Text color={'#a1a1aa'}>&nbsp;{disappearEase}</Text>
-              </Button>
-            </Flex>
+            <PreviewSelect
+              title="Direction"
+              options={[
+                { value: 'vertical', label: 'Vertical' },
+                { value: 'horizontal', label: 'Horizontal' }
+              ]}
+              value={direction}
+              onChange={val => {
+                updateProp('direction', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              title="Ease"
+              options={[
+                { value: 'power3.out', label: 'power3.out' },
+                { value: 'bounce.out', label: 'bounce.out' },
+                { value: 'elastic.out(1, 0.3)', label: 'elastic.out' }
+              ]}
+              value={ease}
+              onChange={val => {
+                updateProp('ease', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              title="Disappear Ease"
+              options={[
+                { value: 'power3.in', label: 'power3.in' },
+                { value: 'bounce.in', label: 'bounce.in' },
+                { value: 'elastic.in(1, 0.3)', label: 'elastic.in' }
+              ]}
+              value={disappearEase}
+              onChange={val => {
+                updateProp('disappearEase', val);
+                forceRerender();
+              }}
+            />
 
             <PreviewSwitch
               title="Reverse Direction"

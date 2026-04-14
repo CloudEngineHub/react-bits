@@ -6,17 +6,23 @@ import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import CodeExample from '../../components/code/CodeExample';
-
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 
 import { chromaGrid } from '../../constants/code/Components/chromaGridCode';
 import ChromaGrid from '../../content/Components/ChromaGrid/ChromaGrid';
 
-const DEFAULT_PROPS = {};
+const DEFAULT_PROPS = {
+  radius: 300,
+  damping: 0.45,
+  fadeOut: 0.6
+};
 
 const ChromaGridDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { radius, damping, fadeOut } = props;
 
   const propData = useMemo(
     () => [
@@ -65,8 +71,14 @@ const ChromaGridDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h="auto" overflow="hidden" p={0} py={6}>
-            <ChromaGrid />
+            <ChromaGrid radius={radius} damping={damping} fadeOut={fadeOut} />
           </Box>
+
+          <Customize>
+            <PreviewSlider title="Radius" min={50} max={800} step={25} value={radius} onChange={v => updateProp('radius', v)} />
+            <PreviewSlider title="Damping" min={0.1} max={2} step={0.05} value={damping} onChange={v => updateProp('damping', v)} />
+            <PreviewSlider title="Fade Out" min={0.1} max={2} step={0.05} value={fadeOut} onChange={v => updateProp('fadeOut', v)} />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['gsap']} />

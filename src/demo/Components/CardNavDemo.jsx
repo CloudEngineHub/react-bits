@@ -99,7 +99,7 @@ const CardNavDemo = () => {
   const items = [
     {
       label: 'About',
-      bgColor: '#0D0716',
+      bgColor: '#1B1722',
       textColor: '#fff',
       links: [
         { label: 'Company', ariaLabel: 'About Company' },
@@ -108,7 +108,7 @@ const CardNavDemo = () => {
     },
     {
       label: 'Projects',
-      bgColor: '#170D27',
+      bgColor: '#2F293A',
       textColor: '#fff',
       links: [
         { label: 'Featured', ariaLabel: 'Featured Projects' },
@@ -117,7 +117,7 @@ const CardNavDemo = () => {
     },
     {
       label: 'Contact',
-      bgColor: '#271E37',
+      bgColor: '#2F293A',
       textColor: '#fff',
       links: [
         { label: 'Email', ariaLabel: 'Email us' },
@@ -139,11 +139,11 @@ const CardNavDemo = () => {
     },
     dark: {
       logo: logoDark,
-      baseColor: '#060010',
+      baseColor: '#120F17',
       menuColor: '#fff',
       buttonBgColor: '#5227FF',
       buttonTextColor: '#fff',
-      backgroundColor: '#060010',
+      backgroundColor: '#120F17',
       items
     },
     color: {
@@ -152,7 +152,7 @@ const CardNavDemo = () => {
       menuColor: '#fff',
       buttonBgColor: '#fff',
       buttonTextColor: '#5227FF',
-      backgroundColor: '#060010',
+      backgroundColor: '#120F17',
       items
     }
   };

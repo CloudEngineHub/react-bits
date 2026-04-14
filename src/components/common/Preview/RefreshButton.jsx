@@ -13,7 +13,7 @@ const RefreshButton = ({ onClick }) => (
     border={`1px solid ${colors.borderSecondary}`}
     zIndex={2}
     color="white"
-    rounded="xl"
+    rounded="10px"
     right={3}
     size="md"
     top={3}

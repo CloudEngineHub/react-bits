@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
-import { Box, Icon } from '@chakra-ui/react';
-import { FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
+import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import CodeExample from '../../components/code/CodeExample';
@@ -18,11 +20,11 @@ const DEFAULT_PROPS = {
   startingValue: 0,
   maxValue: 100,
   isStepped: false,
-  stepSize: 1
+  stepSize: 10
 };
 
 const ElasticSliderDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { defaultValue, startingValue, maxValue, isStepped, stepSize } = props;
 
   const propData = useMemo(
@@ -85,7 +87,7 @@ const ElasticSliderDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <h2 className="demo-title-extra">Default</h2>
-          <Box position="relative" className="demo-container" minH={200}>
+          <Box position="relative" className="demo-container" minH={500}>
             <ElasticSlider
               defaultValue={defaultValue}
               startingValue={startingValue}
@@ -95,21 +97,13 @@ const ElasticSliderDemo = () => {
             />
           </Box>
 
-          <h2 className="demo-title-extra">Steps</h2>
-          <Box position="relative" className="demo-container" minH={200}>
-            <ElasticSlider isStepped stepSize={10} />
-          </Box>
-
-          <h2 className="demo-title-extra">Custom Values & Icons</h2>
-          <Box position="relative" className="demo-container" minH={200}>
-            <ElasticSlider
-              leftIcon={<Icon as={FaMinusCircle} />}
-              rightIcon={<Icon as={FaPlusCircle} />}
-              startingValue={500}
-              defaultValue={750}
-              maxValue={1000}
-            />
-          </Box>
+          <Customize>
+            <PreviewSlider title="Default Value" min={0} max={1000} step={10} value={defaultValue} onChange={v => updateProp('defaultValue', v)} />
+            <PreviewSlider title="Starting Value" min={0} max={500} step={10} value={startingValue} onChange={v => updateProp('startingValue', v)} />
+            <PreviewSlider title="Max Value" min={10} max={1000} step={10} value={maxValue} onChange={v => updateProp('maxValue', v)} />
+            <PreviewSwitch title="Stepped" isChecked={isStepped} onChange={v => updateProp('isStepped', v)} />
+            <PreviewSlider title="Step Size" min={1} max={50} step={1} value={stepSize} onChange={v => updateProp('stepSize', v)} />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['motion']} />

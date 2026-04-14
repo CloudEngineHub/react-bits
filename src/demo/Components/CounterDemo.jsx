@@ -142,12 +142,12 @@ const CounterDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={400} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             {digitPlaceHolders ? (
               <Counter
                 value={parseFloat(value.toFixed(1))}
                 places={[100, 10, 1, '.', 0.1]}
-                gradientFrom="#060010"
+                gradientFrom="#120F17"
                 fontSize={fontSize}
                 padding={5}
                 gap={gap}
@@ -159,7 +159,7 @@ const CounterDemo = () => {
             ) : (
               <Counter
                 value={value}
-                gradientFrom="#060010"
+                gradientFrom="#120F17"
                 fontSize={fontSize}
                 padding={5}
                 gap={gap}
@@ -172,10 +172,10 @@ const CounterDemo = () => {
 
             <Flex gap={4} bottom="1em" direction={'row'} justify={'center'} mt={4} position="absolute">
               <Button
-                bg="#170D27"
+                bg="#2F293A"
                 borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
+                border="1px solid #2F293A"
+                _hover={{ bg: '#2F293A' }}
                 color="#fff"
                 h={10}
                 w={16}
@@ -184,10 +184,10 @@ const CounterDemo = () => {
                 - 0.4
               </Button>
               <Button
-                bg="#170D27"
+                bg="#2F293A"
                 borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
+                border="1px solid #2F293A"
+                _hover={{ bg: '#2F293A' }}
                 color="#fff"
                 h={10}
                 w={10}
@@ -196,10 +196,10 @@ const CounterDemo = () => {
                 -
               </Button>
               <Button
-                bg="#170D27"
+                bg="#2F293A"
                 borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
+                border="1px solid #2F293A"
+                _hover={{ bg: '#2F293A' }}
                 color="#fff"
                 h={10}
                 w={10}
@@ -208,10 +208,10 @@ const CounterDemo = () => {
                 +
               </Button>
               <Button
-                bg="#170D27"
+                bg="#2F293A"
                 borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
+                border="1px solid #2F293A"
+                _hover={{ bg: '#2F293A' }}
                 color="#fff"
                 h={10}
                 w={16}

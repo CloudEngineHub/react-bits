@@ -28,6 +28,11 @@
   pointer-events: none;
 }
 
+.landing-wrapper.no-side-fades::before,
+.landing-wrapper.no-side-fades::after {
+  display: none;
+}
+
 .landing-content {
   position: relative;
   display: flex;

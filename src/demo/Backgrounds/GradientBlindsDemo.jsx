@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import useComponentProps from '../../hooks/useComponentProps';
@@ -12,6 +12,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -156,7 +157,7 @@ const GradientBlindsDemo = () => {
     <ComponentPropsProvider hasChanges={hasChanges} resetProps={resetProps}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <GradientBlinds
               gradientColors={gradientColors}
               angle={angle}
@@ -204,16 +205,8 @@ const GradientBlindsDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4} gap={4} wrap="wrap">
-              <Flex alignItems="center" mb={2} gap={2}>
-                <Text fontSize="sm">Color 1</Text>
-                <Input type="color" value={color1} width="50px" onChange={e => updateProp('color1', e.target.value)} />
-              </Flex>
-              <Flex alignItems="center" mb={2} gap={2}>
-                <Text fontSize="sm">Color 2</Text>
-                <Input type="color" value={color2} width="50px" onChange={e => updateProp('color2', e.target.value)} />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color2} onChange={val => updateProp('color2', val)} />
 
             <PreviewSelect
               title="Light Direction"

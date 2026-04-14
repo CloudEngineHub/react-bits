@@ -92,7 +92,7 @@ const useScrolledToBottom = ref => {
 const ActiveLine = ({ position, isVisible }) => (
   <Box
     {...LINE_STYLES}
-    bg="#fff"
+    bg={colors.accent}
     zIndex={2}
     transform={isVisible && position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
     opacity={isVisible ? 1 : 0}
@@ -102,7 +102,7 @@ const ActiveLine = ({ position, isVisible }) => (
 const HoverLine = ({ position, isVisible }) => (
   <Box
     {...LINE_STYLES}
-    bg="#ffffff66"
+    bg={colors.accentMuted}
     zIndex={1}
     transform={position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
     opacity={isVisible ? 1 : 0}
@@ -110,7 +110,7 @@ const HoverLine = ({ position, isVisible }) => (
 );
 
 const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
-  <Box display={{ md: 'none' }} position="fixed" top="50px" left={0} zIndex="overlay" w="100%" bg={colors.bgBody} p="1em">
+  <Box display={{ md: 'none' }} position="fixed" top="60px" left={0} zIndex="overlay" w="100%" bg={colors.bgBody} p="1em">
     <Flex align="center" justify="space-between" gap="1em">
       <Link to="/">
         <Image src={Logo} h="22px" alt="React Bits logo" />
@@ -314,7 +314,7 @@ const Category = memo(
         <Text className="category-name" mb={2} mt={isFirstCategory ? 0 : 4}>
           {category.name}
         </Text>
-        <Stack spacing={0.5} pl={4} borderLeft="1px solid #392e4e" position="relative">
+        <Stack spacing={0.5} pl={4} borderLeft="1px solid #2F293A" position="relative">
           {items.map(({ sub, path, isActive, isNew, isUpdated, isFavorited }) => (
             <Link
               key={path}
@@ -446,7 +446,7 @@ const Sidebar = () => {
 
   const onItemLeave = useCallback(() => {
     clearTimeout(hoverDelayTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHoverLineVisible(false), HOVER_TIMEOUT_DELAY);
+    hoverTimeoutRef.current = setTimeout(() => setIsHoverLineVisible(false), 100);
   }, []);
 
   // Effects
@@ -482,12 +482,6 @@ const Sidebar = () => {
 
   return (
     <>
-      <MobileHeader
-        onSearchClick={handleSearchClick}
-        onSponsorsClick={() => setSponsorsOpen(true)}
-        onMenuClick={() => setDrawerOpen(p => !p)}
-      />
-
       <MainDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
@@ -504,7 +498,7 @@ const Sidebar = () => {
         as="nav"
         ref={sidebarContainerRef}
         position="fixed"
-        top="2em"
+        top="0"
         left="2em"
         h="100vh"
         w={{ base: 0, md: 'fit-content' }}

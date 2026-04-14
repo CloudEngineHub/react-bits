@@ -18,7 +18,7 @@ export const TSTailwind = ({ children }) => <>{children}</>;
 const LANG_ITEMS = ['JS', 'TS'];
 const STYLE_ITEMS = ['CSS', 'TW'];
 const ICON_MAP = { JS: jsIcon, TS: tsIcon, CSS: cssIcon, TW: twIcon };
-const COLOR_MAP = { JS: '#F7DF1E', TS: '#3178C6', CSS: '#B19EEF', TW: '#38BDF8' };
+const COLOR_MAP = { JS: '#F7DF1E', TS: '#3178C6', CSS: '#B497CF', TW: '#38BDF8' };
 const LABEL_MAP = { JS: 'JavaScript', TS: 'TypeScript', CSS: 'CSS', TW: 'Tailwind' };
 
 const UNSUPPORTED = (

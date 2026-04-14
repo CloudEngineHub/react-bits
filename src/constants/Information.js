@@ -800,6 +800,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/dither',
     tags: []
   },
+  'Backgrounds/DotField': {
+    videoUrl: '',
+    description: 'Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.',
+    category: 'Backgrounds',
+    name: 'DotField',
+    docsUrl: 'https://reactbits.dev/backgrounds/dot-field',
+    tags: []
+  },
   'Backgrounds/DotGrid': {
     videoUrl: '/assets/video/dotgrid.webm',
     description: 'Animated dot grid with cursor interactions.',
@@ -974,6 +982,14 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'Plasma',
     docsUrl: 'https://reactbits.dev/backgrounds/plasma',
+    tags: []
+  },
+  'Backgrounds/PlasmaWave': {
+    videoUrl: '',
+    description: 'Raymarched plasma waves with dual-wave interference and OGL.',
+    category: 'Backgrounds',
+    name: 'PlasmaWave',
+    docsUrl: 'https://reactbits.dev/backgrounds/plasma-wave',
     tags: []
   },
   'Backgrounds/Prism': {

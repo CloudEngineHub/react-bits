@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -12,6 +12,7 @@ import TextPressure from '../../content/TextAnimations/TextPressure/TextPressure
 import { textPressure } from '../../constants/code/TextAnimations/textPressureCode';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewInput from '../../components/common/Preview/PreviewInput';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -127,7 +128,7 @@ const TextPressureDemo = () => {
           <Box
             position="relative"
             className="demo-container"
-            bg="#060010"
+            bg="#120F17"
             minH={400}
             maxH={450}
             overflow="hidden"
@@ -152,33 +153,23 @@ const TextPressureDemo = () => {
           </Box>
 
           <Customize>
-            <Flex alignItems="center" gap={4} flexWrap="wrap" mt={6}>
-              <Flex gap={4} align="center">
-                <Text fontSize="sm">Text Color</Text>
-                <input
-                  type="color"
-                  value={textColor}
-                  width="60px"
-                  onChange={e => {
-                    updateProp('textColor', e.target.value);
-                    forceRerender();
-                  }}
-                />
-              </Flex>
+            <PreviewColorPickerCustom
+              title="Text Color"
+              color={textColor}
+              onChange={val => {
+                updateProp('textColor', val);
+                forceRerender();
+              }}
+            />
 
-              <Flex gap={4} align="center">
-                <Text fontSize="sm">Stroke Color</Text>
-                <input
-                  type="color"
-                  value={strokeColor}
-                  width="60px"
-                  onChange={e => {
-                    updateProp('strokeColor', e.target.value);
-                    forceRerender();
-                  }}
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Stroke Color"
+              color={strokeColor}
+              onChange={val => {
+                updateProp('strokeColor', val);
+                forceRerender();
+              }}
+            />
 
             <PreviewInput
               title="Text"
@@ -189,8 +180,7 @@ const TextPressureDemo = () => {
               onChange={val => updateProp('text', val)}
             />
 
-            <Flex gap={4} flexWrap="wrap">
-              <PreviewSwitch
+            <PreviewSwitch
                 title="Flex"
                 isChecked={flex}
                 onChange={checked => {
@@ -238,7 +228,6 @@ const TextPressureDemo = () => {
                   forceRerender();
                 }}
               />
-            </Flex>
           </Customize>
 
           <PropTable data={propData} />

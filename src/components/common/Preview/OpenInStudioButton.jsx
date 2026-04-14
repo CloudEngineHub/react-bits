@@ -35,7 +35,7 @@ const OpenInStudioButton = ({ backgroundId, currentProps = {}, defaultProps = {}
       color="#ffffff"
       bg={colors.primary}
       fontWeight={500}
-      borderRadius="50px"
+      borderRadius="10px"
       fontSize="14px"
       onClick={handleClick}
       _hover={{ color: '#fff', bg: `${colors.primary}aa` }}

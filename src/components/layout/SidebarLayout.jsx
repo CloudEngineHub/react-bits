@@ -1,8 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import Announcement from '../../components/common/Announcement';
-import AnnouncementBar from '../common/AnnouncementBar/AnnouncementBar';
-import { PRO_ANNOUNCEMENT } from '../../constants/Site';
-import Header from '../../components/navs/Header';
+import Navbar from '../landingnew/Navbar/Navbar';
 import Sidebar from '../../components/navs/Sidebar';
 import ProCard from '../common/ProCard';
 import SponsorsCard from '../common/SponsorsCard';
@@ -10,9 +7,7 @@ import SponsorsCard from '../common/SponsorsCard';
 export default function SidebarLayout({ children }) {
   return (
     <main className="app-container">
-      <AnnouncementBar {...PRO_ANNOUNCEMENT} />
-      <Announcement />
-      <Header />
+      <Navbar showDocs />
       <section className="category-wrapper">
         <Sidebar />
 

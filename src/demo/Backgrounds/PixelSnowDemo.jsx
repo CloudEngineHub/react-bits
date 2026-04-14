@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import useComponentProps from '../../hooks/useComponentProps';
@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -149,7 +150,7 @@ const PixelSnowDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <PixelSnow
               color={color}
               flakeSize={flakeSize}
@@ -211,19 +212,7 @@ const PixelSnowDemo = () => {
               width={120}
             />
 
-            <Flex alignItems="center" mb={4} mt={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
 
             <PreviewSlider
               title="Pixel Resolution"

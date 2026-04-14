@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -11,6 +11,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import Dependencies from '../../components/code/Dependencies';
 import logo from '../../assets/logos/reactbits-gh-black.svg';
 
@@ -142,29 +143,8 @@ const BubbleMenuDemo = () => {
               onChange={value => updateProp('animationEase', value)}
             />
 
-            <Flex alignItems="center" mb={4} mt={4} gap={2}>
-              <Text fontSize="sm">Menu BG</Text>
-              <Input
-                type="color"
-                value={menuBg}
-                onChange={e => updateProp('menuBg', e.target.value)}
-                width="50px"
-                p={0}
-                h="32px"
-              />
-            </Flex>
-
-            <Flex alignItems="center" mb={4} gap={2}>
-              <Text fontSize="sm">Content Color</Text>
-              <Input
-                type="color"
-                value={menuContentColor}
-                onChange={e => updateProp('menuContentColor', e.target.value)}
-                width="50px"
-                p={0}
-                h="32px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Menu BG" color={menuBg} onChange={val => updateProp('menuBg', val)} />
+            <PreviewColorPickerCustom title="Content Color" color={menuContentColor} onChange={val => updateProp('menuContentColor', val)} />
 
             <PreviewSlider
               title="Anim Duration"

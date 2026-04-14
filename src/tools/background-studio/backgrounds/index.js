@@ -486,6 +486,28 @@ export const BACKGROUNDS = [
     ]
   },
   {
+    id: 'plasma-wave',
+    label: 'Plasma Wave',
+    component: () => import('../../../content/Backgrounds/PlasmaWave/PlasmaWave.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/plasma-wave"',
+    props: [
+      {
+        name: 'colors',
+        type: 'colorArray',
+        default: ['#A855F7', '#06B6D4'],
+        label: 'Colors',
+        minItems: 2,
+        maxItems: 2
+      },
+      { name: 'speed1', type: 'number', default: 0.05, min: 0, max: 0.2, step: 0.005, label: 'Speed 1' },
+      { name: 'speed2', type: 'number', default: 0.05, min: 0, max: 0.2, step: 0.005, label: 'Speed 2' },
+      { name: 'dir2', type: 'number', default: 1.0, min: -1, max: 1, step: 0.1, label: 'Direction 2' },
+      { name: 'focalLength', type: 'number', default: 0.8, min: 0.1, max: 2, step: 0.05, label: 'Focal Length' },
+      { name: 'bend1', type: 'number', default: 1, min: 0, max: 3, step: 0.1, label: 'Bend 1' },
+      { name: 'bend2', type: 'number', default: 0.5, min: 0, max: 3, step: 0.1, label: 'Bend 2' }
+    ]
+  },
+  {
     id: 'prism',
     label: 'Prism',
     component: () => import('../../../content/Backgrounds/Prism/Prism.jsx'),
@@ -553,7 +575,7 @@ export const BACKGROUNDS = [
     props: [
       { name: 'color1', type: 'color', default: '#FF9FFC', label: 'Color 1' },
       { name: 'color2', type: 'color', default: '#5227FF', label: 'Color 2' },
-      { name: 'color3', type: 'color', default: '#B19EEF', label: 'Color 3' },
+      { name: 'color3', type: 'color', default: '#B497CF', label: 'Color 3' },
       { name: 'timeSpeed', type: 'number', default: 0.25, min: 0, max: 5, step: 0.05, label: 'Time Speed' },
       { name: 'colorBalance', type: 'number', default: 0.0, min: -1, max: 1, step: 0.01, label: 'Color Balance' },
       { name: 'warpStrength', type: 'number', default: 1.0, min: 0, max: 4, step: 0.05, label: 'Warp Strength' },
@@ -617,7 +639,7 @@ export const BACKGROUNDS = [
         label: 'Variant'
       },
       { name: 'pixelSize', type: 'number', default: 3, min: 1, max: 10, step: 1, label: 'Pixel Size' },
-      { name: 'color', type: 'color', default: '#B19EEF', label: 'Color' },
+      { name: 'color', type: 'color', default: '#B497CF', label: 'Color' },
       { name: 'patternScale', type: 'number', default: 2, min: 0.5, max: 5, step: 0.5, label: 'Pattern Scale' },
       { name: 'patternDensity', type: 'number', default: 1, min: 0.1, max: 2, step: 0.1, label: 'Pattern Density' },
       { name: 'enableRipples', type: 'boolean', default: true, label: 'Enable Ripples' },
@@ -658,7 +680,7 @@ export const BACKGROUNDS = [
       {
         name: 'colors',
         type: 'colorArray',
-        default: ['#5227FF', '#FF9FFC', '#B19EEF'],
+        default: ['#5227FF', '#FF9FFC', '#B497CF'],
         label: 'Colors',
         minItems: 2,
         maxItems: 5
@@ -676,7 +698,7 @@ export const BACKGROUNDS = [
     component: () => import('../../../content/Backgrounds/ColorBends/ColorBends.jsx'),
     installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/color-bends"',
     props: [
-      { name: 'rotation', type: 'number', default: 45, min: 0, max: 360, step: 5, label: 'Rotation' },
+      { name: 'rotation', type: 'number', default: 90, min: 0, max: 360, step: 5, label: 'Rotation' },
       { name: 'speed', type: 'number', default: 0.2, min: 0, max: 1, step: 0.05, label: 'Speed' },
       {
         name: 'colors',
@@ -693,7 +715,10 @@ export const BACKGROUNDS = [
       { name: 'warpStrength', type: 'number', default: 1, min: 0, max: 3, step: 0.1, label: 'Warp Strength' },
       { name: 'mouseInfluence', type: 'number', default: 1, min: 0, max: 3, step: 0.1, label: 'Mouse Influence' },
       { name: 'parallax', type: 'number', default: 0.5, min: 0, max: 2, step: 0.1, label: 'Parallax' },
-      { name: 'noise', type: 'number', default: 0.1, min: 0, max: 0.5, step: 0.05, label: 'Noise' }
+      { name: 'noise', type: 'number', default: 0.15, min: 0, max: 0.5, step: 0.05, label: 'Noise' },
+      { name: 'iterations', type: 'number', default: 1, min: 1, max: 5, step: 1, label: 'Iterations' },
+      { name: 'intensity', type: 'number', default: 1.5, min: 0.1, max: 2, step: 0.1, label: 'Intensity' },
+      { name: 'bandWidth', type: 'number', default: 6, min: 1, max: 20, step: 0.5, label: 'Band Width' }
     ]
   },
   {
@@ -704,7 +729,7 @@ export const BACKGROUNDS = [
     props: [
       { name: 'sensitivity', type: 'number', default: 0.55, min: 0, max: 1, step: 0.05, label: 'Sensitivity' },
       { name: 'lineThickness', type: 'number', default: 1, min: 0.5, max: 5, step: 0.5, label: 'Line Thickness' },
-      { name: 'linesColor', type: 'color', default: '#392e4e', label: 'Lines Color' },
+      { name: 'linesColor', type: 'color', default: '#2F293A', label: 'Lines Color' },
       { name: 'scanColor', type: 'color', default: '#FF9FFC', label: 'Scan Color' },
       { name: 'scanOpacity', type: 'number', default: 0.4, min: 0, max: 1, step: 0.05, label: 'Scan Opacity' },
       { name: 'gridScale', type: 'number', default: 0.1, min: 0.01, max: 0.5, step: 0.01, label: 'Grid Scale' },
@@ -954,7 +979,7 @@ export const BACKGROUNDS = [
       { name: 'bloomStrength', type: 'number', default: 0.1, min: 0, max: 1, step: 0.05, label: 'Bloom Strength' },
       { name: 'bloomRadius', type: 'number', default: 1.0, min: 0, max: 3, step: 0.1, label: 'Bloom Radius' },
       { name: 'brightness', type: 'number', default: 2, min: 0.1, max: 5, step: 0.1, label: 'Brightness' },
-      { name: 'color', type: 'color', default: '#B19EEF', label: 'Color' },
+      { name: 'color', type: 'color', default: '#B497CF', label: 'Color' },
       { name: 'edgeIntensity', type: 'number', default: 0, min: 0, max: 1, step: 0.1, label: 'Edge Intensity' }
     ]
   },
@@ -1117,6 +1142,26 @@ export const BACKGROUNDS = [
       { name: 'SPLAT_RADIUS', type: 'number', default: 0.2, min: 0.05, max: 1, step: 0.05, label: 'Splat Radius' },
       { name: 'SPLAT_FORCE', type: 'number', default: 6000, min: 1000, max: 20000, step: 500, label: 'Splat Force' },
       { name: 'COLOR_UPDATE_SPEED', type: 'number', default: 10, min: 1, max: 50, step: 1, label: 'Color Update Speed' }
+    ]
+  },
+  {
+    id: 'dot-field',
+    label: 'Dot Field',
+    component: () => import('../../../content/Backgrounds/DotField/DotField.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/dot-field"',
+    props: [
+      { name: 'dotRadius', type: 'number', default: 1.5, min: 0.5, max: 5, step: 0.5, label: 'Dot Radius' },
+      { name: 'dotSpacing', type: 'number', default: 14, min: 5, max: 30, step: 1, label: 'Dot Spacing' },
+      { name: 'cursorRadius', type: 'number', default: 500, min: 100, max: 1000, step: 50, label: 'Cursor Radius' },
+      { name: 'cursorForce', type: 'number', default: 0.1, min: 0, max: 1, step: 0.01, label: 'Cursor Force' },
+      { name: 'bulgeOnly', type: 'boolean', default: true, label: 'Bulge Only' },
+      { name: 'bulgeStrength', type: 'number', default: 67, min: 0, max: 150, step: 1, label: 'Bulge Strength' },
+      { name: 'glowRadius', type: 'number', default: 160, min: 50, max: 400, step: 10, label: 'Glow Radius' },
+      { name: 'sparkle', type: 'boolean', default: false, label: 'Sparkle' },
+      { name: 'waveAmplitude', type: 'number', default: 0, min: 0, max: 20, step: 1, label: 'Wave Amplitude' },
+      { name: 'gradientFrom', type: 'color', default: 'rgba(168, 85, 247, 0.35)', label: 'Gradient From' },
+      { name: 'gradientTo', type: 'color', default: 'rgba(180, 151, 207, 0.25)', label: 'Gradient To' },
+      { name: 'glowColor', type: 'color', default: '#120F17', label: 'Glow Color' }
     ]
   }
 ];

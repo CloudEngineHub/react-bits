@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -9,6 +9,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -21,7 +22,7 @@ import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButt
 const DEFAULT_PROPS = {
   color0: '#5227FF',
   color1: '#FF9FFC',
-  color2: '#B19EEF',
+  color2: '#B497CF',
   mouseForce: 20,
   cursorSize: 100,
   resolution: 0.5,
@@ -61,7 +62,7 @@ const LiquidEtherDemo = () => {
       {
         name: 'colors',
         type: 'string[]',
-        default: `["#5227FF", "#FF9FFC", "#B19EEF"]`,
+        default: `["#5227FF", "#FF9FFC", "#B497CF"]`,
         description: 'Array of hex color stops used to build the velocity-to-color palette.'
       },
       {
@@ -180,7 +181,7 @@ const LiquidEtherDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <LiquidEther
               key={key}
               colors={userColors}
@@ -220,7 +221,7 @@ const LiquidEtherDemo = () => {
                 cursorSize: 100,
                 isViscous: false,
                 viscous: 30,
-                colors: ['#5227FF', '#FF9FFC', '#B19EEF'],
+                colors: ['#5227FF', '#FF9FFC', '#B497CF'],
                 autoDemo: true,
                 autoSpeed: 0.5,
                 autoIntensity: 2.2,
@@ -230,32 +231,9 @@ const LiquidEtherDemo = () => {
             />
           </Flex>
           <Customize className="preview-options">
-            <Flex alignItems="center" gap={4} mb={2} wrap="wrap">
-              <Text fontSize="sm" mt={2} mb={1}>
-                Colors
-              </Text>
-              <Input
-                type="color"
-                value={color0}
-                onChange={e => updateProp('color0', e.target.value)}
-                width="50px"
-                p={0}
-              />
-              <Input
-                type="color"
-                value={color1}
-                onChange={e => updateProp('color1', e.target.value)}
-                width="50px"
-                p={0}
-              />
-              <Input
-                type="color"
-                value={color2}
-                onChange={e => updateProp('color2', e.target.value)}
-                width="50px"
-                p={0}
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color0} onChange={val => updateProp('color0', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 3" color={color2} onChange={val => updateProp('color2', val)} />
 
             <PreviewSlider
               title="Mouse Force"

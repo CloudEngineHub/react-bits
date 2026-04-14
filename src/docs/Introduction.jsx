@@ -21,6 +21,8 @@ const Introduction = () => {
         creativity to your projects.
       </p>
 
+      <hr className="docs-separator" />
+
       <h3 className="docs-category-title">Mission</h3>
 
       <p className="docs-paragraph dim">
@@ -78,6 +80,8 @@ const Introduction = () => {
       <p className="docs-paragraph dim">
         P.S. The header has a neat dropdown to help you choose your preferred technologies.
       </p>
+
+      <hr className="docs-separator" />
 
       <h3 className="docs-category-title">Performance</h3>
 

@@ -1,145 +1,144 @@
-import { Box, Text, Flex, Icon } from '@chakra-ui/react';
-import { Eye, Sparkles, Star, Component } from 'lucide-react';
-import { useEffect } from 'react';
-import Header from '../components/navs/Header';
-import AnnouncementBar from '../components/common/AnnouncementBar/AnnouncementBar';
-import { PRO_ANNOUNCEMENT } from '../constants/Site';
-import { colors } from '../constants/colors';
-import Sponsors from '../components/landing/Sponsors/Sponsors';
-import Footer from '../components/landing/Footer/Footer';
-import Aurora from '../content/Backgrounds/Aurora/Aurora';
+import { Eye, Star, Component, Gem, Crown, Medal, ArrowRight } from 'lucide-react';
+import useScrollToTop from '../hooks/useScrollToTop';
+import Navbar from '../components/landingnew/Navbar/Navbar';
+import Footer from '../components/landingnew/Footer/Footer';
+import DotField from '../components/landingnew/Hero/DotField';
+import { diamondSponsors, platinumSponsors, silverSponsors } from '../constants/Sponsors';
+import { FaArrowRight } from 'react-icons/fa6';
 
-const StatCard = ({ icon, value, label }) => (
-  <Flex
-    direction="column"
-    align="center"
-    gap={2}
-    p={6}
-    bg="rgba(255,255,255,0.03)"
-    border="1px solid rgba(255,255,255,0.08)"
-    borderRadius="16px"
-    flex={1}
-    minW="200px"
-    transition="all 0.3s ease"
-    _hover={{
-      bg: 'rgba(255,255,255,0.05)',
-      borderColor: 'rgba(132, 0, 255, 0.3)',
-      transform: 'translateY(-2px)'
-    }}
-  >
-    <Icon as={icon} boxSize={6} color="#8400ff" />
-    <Text fontSize="2.5rem" fontWeight={700} color="white" letterSpacing="-1px">
-      {value}
-    </Text>
-    <Text fontSize="0.9rem" color="rgba(255,255,255,0.6)" textAlign="center">
-      {label}
-    </Text>
-  </Flex>
-);
+import '../css/sponsors-page.css';
+
+const buildSponsorUrl = (url, tier) => {
+  if (!url) return null;
+  try {
+    const sponsorUrl = new URL(url);
+    sponsorUrl.searchParams.set('utm_source', 'reactbits');
+    sponsorUrl.searchParams.set('utm_medium', 'sponsor');
+    sponsorUrl.searchParams.set('utm_campaign', tier);
+    sponsorUrl.searchParams.set('ref', 'reactbits');
+    return sponsorUrl.toString();
+  } catch {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}utm_source=reactbits&utm_medium=sponsor&utm_campaign=${tier}&ref=reactbits`;
+  }
+};
+
+const STATS = [
+  { icon: Eye, value: '500K+', label: 'Monthly Visitors' },
+  { icon: Star, value: '37K+', label: 'GitHub Stars' },
+  { icon: Component, value: '130+', label: 'Components' },
+];
+
+const TIERS = [
+  { key: 'diamond', label: 'Diamond', icon: Gem, sponsors: diamondSponsors },
+  { key: 'platinum', label: 'Platinum', icon: Crown, sponsors: platinumSponsors },
+  { key: 'silver', label: 'Silver', icon: Medal, sponsors: silverSponsors },
+].filter(tier => tier.sponsors.length > 0);
 
 const SponsorsPage = () => {
-  useEffect(() => {
-    document.title = 'React Bits - Sponsors';
-  }, []);
+  useScrollToTop();
 
   return (
-    <Box minH="100vh" bg={colors.bgBody} display="flex" flexDirection="column" position="relative" overflow="hidden">
-      {/* Animated Background */}
-      <Box
-        position="fixed"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        zIndex={0}
-        opacity={0.5}
-        transform={'rotate(180deg)'}
-        pointerEvents="none"
-      >
-        <Aurora colorStops={['#3A0CA3', '#7209B7', '#4C1D95']} amplitude={0.8} blend={0.5} />
-      </Box>
+    <>
+      <Navbar showDocs />
+      <div className="sponsors-dotfield">
+        <DotField sparkle waveAmplitude={5} dotRadius={2} />
+      </div>
+      <section className="sponsors-page">
+        <title>React Bits - Sponsors</title>
 
-      {/* Gradient Orbs */}
-      <Box
-        position="fixed"
-        top="-200px"
-        right="-200px"
-        width="600px"
-        height="600px"
-        borderRadius="50%"
-        background="radial-gradient(circle, rgba(132, 0, 255, 0.15) 0%, transparent 70%)"
-        pointerEvents="none"
-        zIndex={0}
-      />
-      <Box
-        position="fixed"
-        bottom="-300px"
-        left="-200px"
-        width="800px"
-        height="800px"
-        borderRadius="50%"
-        background="radial-gradient(circle, rgba(82, 39, 255, 0.1) 0%, transparent 70%)"
-        pointerEvents="none"
-        zIndex={0}
-      />
-
-      <AnnouncementBar {...PRO_ANNOUNCEMENT} />
-      <Header />
-
-      <Box pt={{ base: '140px', md: '240px' }} flex={1} position="relative" zIndex={1}>
-        {/* Hero Section */}
-        <Box textAlign="center" mb={12} px={4}>
-          <Flex justify="center" mb={4}>
-            <Flex
-              align="center"
-              gap={2}
-              bg="rgba(132, 0, 255, 0.1)"
-              border="1px solid rgba(132, 0, 255, 0.3)"
-              px={4}
-              py={2}
-              borderRadius="full"
-            >
-              <Icon as={Sparkles} boxSize={4} color={colors.accent} />
-              <Text fontSize="sm" color={colors.accent} fontWeight={500}>
-                Support Open Source
-              </Text>
-            </Flex>
-          </Flex>
-          <Text
-            fontSize={{ base: '2.5rem', md: '3.5rem' }}
-            fontWeight={700}
-            color="white"
-            letterSpacing="-2px"
-            lineHeight={'100%'}
-            mb={4}
-            mx="auto"
-            maxW="700px"
+        {/* ── Header ──────────────────────────────────────────────── */}
+        <div className="sponsors-page-header">
+          <div className="sponsors-page-header-left">
+            <h1 className="sponsors-page-title">Sponsors</h1>
+            <p className="sponsors-page-subtitle">
+              Your support keeps React Bits free and open-source for developers everywhere.
+            </p>
+          </div>
+          <a
+            href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
+            className="sponsors-page-cta"
           >
-            Power the fastest growing creative UI library
-          </Text>
-          <Text
-            fontSize={{ base: '1rem', md: '1.2rem' }}
-            color="rgba(255,255,255,0.6)"
-            maxW="600px"
-            mx="auto"
-            lineHeight={1.6}
+            Become a Sponsor <FaArrowRight size={12} />
+          </a>
+        </div>
+
+        {/* ── Tiers ───────────────────────────────────────────────── */}
+        {TIERS.map(tier => (
+          <div className="sponsors-tier-section" key={tier.key}>
+            <div className="sponsors-tier-header">
+              <span className={`sponsors-tier-badge sponsors-tier-badge--${tier.key}`}>
+                <tier.icon size={13} />
+                {tier.label}
+              </span>
+            </div>
+
+            {tier.sponsors.length > 0 ? (
+              <div className={`sponsors-tier-grid sponsors-tier-grid--${tier.key}`}>
+                {tier.sponsors.map(sponsor => {
+                  const href = buildSponsorUrl(sponsor.url, tier.key);
+                  return (
+                    <a
+                      key={sponsor.id}
+                      href={href}
+                      target="_blank"
+                      rel="noopener"
+                      className="sponsors-page-card"
+                    >
+                      <div className={`sponsors-card-banner sponsors-card-banner--${tier.key}`}>
+                        <img
+                          className="sponsors-card-logo"
+                          src={sponsor.imageUrl}
+                          alt={sponsor.name}
+                        />
+                      </div>
+                      <div className="sponsors-card-body">
+                        <span className="sponsors-card-name">{sponsor.name}</span>
+                        <span className="sponsors-card-arrow">
+                          <ArrowRight size={14} />
+                        </span>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="sponsors-tier-empty">Available — reach out to claim this spot</div>
+            )}
+          </div>
+        ))}
+
+        {/* ── Divider ──────────────────────────────────────────── */}
+        <hr className="sponsors-divider" />
+
+        <h2 className="sponsors-section-title">Power the fastest growing creative UI library</h2>
+
+        {/* ── Stats ───────────────────────────────────────────────── */}
+        <div className="sponsors-stats">
+          {STATS.map(s => (
+            <div className="sponsors-stat" key={s.label}>
+              <span className="sponsors-stat-icon"><s.icon size={22} /></span>
+              <span className="sponsors-stat-value">{s.value}</span>
+              <span className="sponsors-stat-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Bottom CTA ──────────────────────────────────────────── */}
+        <div className="sponsors-bottom-cta">
+          <p className="sponsors-bottom-cta-text">
+            Get your brand in front of <strong>500K+</strong> developers monthly
+          </p>
+          <a
+            href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
+            className="sponsors-bottom-cta-btn"
           >
-            Your sponsorship helps us maintain and grow React Bits, keeping it free and open-source for developers
-            worldwide.
-          </Text>
-        </Box>
-
-        {/* Stats Section */}
-        <Flex justify="center" gap={4} px={4} mb={16} flexWrap="wrap" maxW="900px" mx="auto">
-          <StatCard icon={Eye} value="500K+" label="Monthly Visitors" />
-          <StatCard icon={Star} value="35K+" label="GitHub Stars" />
-          <StatCard icon={Component} value="110+" label="Components" />
-        </Flex>
-
-        <Sponsors />
-      </Box>
+            Become a Sponsor <ArrowRight size={14} />
+          </a>
+        </div>
+      </section>
       <Footer />
-    </Box>
+    </>
   );
 };
 

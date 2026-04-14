@@ -8,14 +8,14 @@ const TRIGGER_STYLE = {
   h: 10,
   bg: colors.bgBody,
   border: `1px solid ${colors.borderSecondary}`,
-  rounded: '15px',
+  rounded: '10px',
   px: 3,
 };
 
 const CONTENT_STYLE = {
   bg: colors.bgBody,
   border: `1px solid ${colors.borderSecondary}`,
-  borderRadius: '15px',
+  borderRadius: '10px',
   px: 2,
   py: 2,
 };
@@ -83,7 +83,7 @@ const IconSelect = ({
                     {labelMap[item]}
                   </Text>
                 </Flex>
-                <Select.ItemIndicator display="flex" alignItems="center" ml="auto" mr={1}>
+                <Select.ItemIndicator display="flex" alignItems="center" ml="auto" mr={1} pl={3} opacity={0.5}>
                   {colorMap && <Box boxSize={2} bg={colorMap[item]} borderRadius="full" />}
                 </Select.ItemIndicator>
               </Select.Item>

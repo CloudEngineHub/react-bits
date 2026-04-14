@@ -17,19 +17,19 @@ const tabsRecipe = defineSlotRecipe({
   base: {
     trigger: {
       flex: '0 0 auto',
-      bg: '#060010',
+      bg: '#120F17',
       borderRadius: '10px',
       fontSize: '14px',
-      border: '1px solid #392e4e',
+      border: '1px solid #2F293A',
       h: 9,
       px: '1rem',
       transition: 'background-color .3s',
 
-      _hover: { bg: '#271E37' },
+      _hover: { bg: '#2F293A' },
 
       "&[data-state='active']": {
         color: '#fff',
-        bg: '#170D27'
+        bg: '#2F293A'
       }
     }
   }
@@ -39,9 +39,9 @@ export const toastStyles = {
   style: {
     fontSize: '12px',
     borderRadius: '0.75rem',
-    border: '1px solid #392e4e',
+    border: '1px solid #2F293A',
     color: '#fff',
-    backgroundColor: '#060010',
+    backgroundColor: '#120F17',
     textAlign: 'center'
   }
 };
@@ -56,8 +56,8 @@ export const customTheme = createSystem(defaultConfig, {
     global: {
       'html, body': {
         minHeight: '100vh',
-        fontFamily: '"Figtree", sans-serif',
-        backgroundColor: '#060010'
+        fontFamily: '"Geist", sans-serif',
+        backgroundColor: '#120F17'
       }
     }
   },
@@ -69,7 +69,7 @@ export const customTheme = createSystem(defaultConfig, {
       },
       variants: {
         solid: {
-          track: { bg: '#271E37' },
+          track: { bg: '#2F293A' },
           filledTrack: { bg: '#fff' }
         }
       },
@@ -78,9 +78,9 @@ export const customTheme = createSystem(defaultConfig, {
     Switch: {
       baseStyle: {
         track: {
-          bg: '#271E37',
+          bg: '#2F293A',
           _checked: { bg: '#5227FF' },
-          _focus: { boxShadow: '0 0 0 3px #271E37' },
+          _focus: { boxShadow: '0 0 0 3px #2F293A' },
           _active: { bg: '#5227FF' }
         },
         thumb: {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -7,6 +7,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import Waves from '../../content/Backgrounds/Waves/Waves';
 import { waves } from '../../constants/code/Backgrounds/wavesCode';
@@ -113,7 +114,7 @@ const WavesDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" h={600} className="demo-container" overflow="hidden" p={0}>
+          <Box position="relative" h={500} className="demo-container" overflow="hidden" p={0}>
             <Waves key={key} waveSpeedX={waveSpeedX} lineColor={lineColor} />
           </Box>
 
@@ -150,15 +151,7 @@ const WavesDemo = () => {
               onChange={val => updateProp('waveSpeedX', val)}
             />
 
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Waves Color</Text>
-              <Input
-                type="color"
-                value={lineColor}
-                onChange={e => updateProp('lineColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Waves Color" color={lineColor} onChange={val => updateProp('lineColor', val)} />
           </Customize>
 
           <PropTable data={propData} />

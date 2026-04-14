@@ -118,7 +118,7 @@ const StickerPeelDemo = () => {
             className="demo-container"
             h={400}
             overflow="hidden"
-            bg="linear-gradient(to bottom, #060010, #0D0716, #0D0716 , #060010)"
+            bg="linear-gradient(to bottom, #120F17, #1B1722, #1B1722 , #120F17)"
           >
             <StickerPeel
               imageSrc={logo}
@@ -140,7 +140,7 @@ const StickerPeelDemo = () => {
               transform="translateX(-50%)"
               fontSize="clamp(1.5rem, 4vw, 3rem)"
               fontWeight={900}
-              color="#271E37"
+              color="#2F293A"
             >
               Try dragging it!
             </Text>

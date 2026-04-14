@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -9,6 +9,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import Customize from '../../components/common/Preview/Customize';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -136,7 +137,7 @@ const ParticlesDemo = () => {
     >
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Particles
               key={key}
               particleColors={[colors]}
@@ -184,18 +185,7 @@ const ParticlesDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <Input
-                type="color"
-                value={colors}
-                onChange={e => {
-                  updateProp('colors', e.target.value);
-                  forceRerender();
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={colors} onChange={val => { updateProp('colors', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Count"

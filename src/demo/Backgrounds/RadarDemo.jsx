@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -12,6 +12,7 @@ import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import Radar from '../../content/Backgrounds/Radar/Radar';
 import { radar } from '../../constants/code/Backgrounds/radarCode';
@@ -144,7 +145,7 @@ const RadarDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <Radar
               speed={speed}
               scale={scale}
@@ -189,27 +190,8 @@ const RadarDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="50px"
-              />
-
-              <Text fontSize="sm">Background</Text>
-              <Input
-                type="color"
-                value={backgroundColor}
-                onChange={e => {
-                  updateProp('backgroundColor', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom title="Background" color={backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
 
             <PreviewSlider
               min={0.1}

@@ -137,6 +137,8 @@ const Installation = () => {
 
       <p className="docs-paragraph dim">Using components is very straightforward, anyone can do it.</p>
 
+      <hr className="docs-separator" />
+
       <h3 className="docs-category-title">Pick The Method</h3>
 
       <p className="docs-paragraph">
@@ -152,6 +154,8 @@ const Installation = () => {
 
       {selectedMethod === 'manual' ? <ManualSteps /> : <CliSteps />}
 
+      <hr className="docs-separator" />
+
       <h4 className="docs-category-subtitle">That&apos;s all!</h4>
 
       <p className="docs-paragraph">
@@ -160,7 +164,7 @@ const Installation = () => {
       </p>
 
       <DocsButtonBar
-        next={{ label: 'Mcp Server', route: '/get-started/mcp' }}
+        next={{ label: 'MCP Server', route: '/get-started/mcp' }}
         previous={{ label: 'Introduction', route: '/get-started/introduction' }}
       />
     </section>

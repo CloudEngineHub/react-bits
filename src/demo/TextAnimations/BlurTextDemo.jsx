@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import RefreshButton from '../../components/common/Preview/RefreshButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -13,6 +13,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 
 import BlurText from '../../content/TextAnimations/BlurText/BlurText';
 import { blurText } from '../../constants/code/TextAnimations/blurTextCode';
@@ -102,38 +103,31 @@ const BlurTextDemo = () => {
             />
           </Box>
           <Customize>
-            <Flex gap={4} wrap="wrap" align="center">
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp('animateBy', animateBy === 'words' ? 'letters' : 'words');
-                  forceRerender();
-                }}
-              >
-                Animate By: <Text color={'#a1a1aa'}>&nbsp;{animateBy}</Text>
-              </Button>
-              <Button
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={8}
-                onClick={() => {
-                  updateProp('direction', direction === 'top' ? 'bottom' : 'top');
-                  forceRerender();
-                }}
-              >
-                Direction: <Text color={'#a1a1aa'}>&nbsp;{direction}</Text>
-              </Button>
-            </Flex>
+            <PreviewSelect
+              title="Animate By"
+              options={[
+                { value: 'words', label: 'Words' },
+                { value: 'letters', label: 'Letters' }
+              ]}
+              value={animateBy}
+              onChange={val => {
+                updateProp('animateBy', val);
+                forceRerender();
+              }}
+            />
+
+            <PreviewSelect
+              title="Direction"
+              options={[
+                { value: 'top', label: 'Top' },
+                { value: 'bottom', label: 'Bottom' }
+              ]}
+              value={direction}
+              onChange={val => {
+                updateProp('direction', val);
+                forceRerender();
+              }}
+            />
 
             <PreviewSlider
               title="Delay"
@@ -146,7 +140,6 @@ const BlurTextDemo = () => {
                 updateProp('delay', val);
                 forceRerender();
               }}
-              width={200}
             />
           </Customize>
 

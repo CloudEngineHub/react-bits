@@ -134,6 +134,13 @@ export default function Canvas({
     };
   }, [handleMouseMove, handleMouseUp]);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [handleWheel]);
+
   const handleResetView = useCallback(() => {
     const media = mediaType === 'video' ? video : image;
     if (!media || !containerSize.width) return;
@@ -186,10 +193,9 @@ export default function Canvas({
       position="relative"
       w="100%"
       h="100%"
-      bg="#060010"
+      bg="var(--bg-body)"
       overflow="hidden"
       cursor={isPanning ? 'grabbing' : spaceHeld ? 'grab' : 'default'}
-      onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -202,13 +208,13 @@ export default function Canvas({
           left={0}
           right={0}
           bottom={0}
-          bg="rgba(82, 39, 255, 0.15)"
+          bg="rgba(168, 85, 247, 0.15)"
           zIndex={100}
           align="center"
           justify="center"
           pointerEvents="none"
         >
-          <Text fontSize="lg" fontWeight={600} color="#5227FF">
+          <Text fontSize="lg" fontWeight={600} color="#A855F7">
             Drop image or video here
           </Text>
         </Flex>
@@ -224,8 +230,8 @@ export default function Canvas({
         pointerEvents="none"
         style={{
           backgroundImage: `
-            linear-gradient(to right, #3d3654 1px, transparent 1px),
-            linear-gradient(to bottom, #3d3654 1px, transparent 1px)
+            linear-gradient(to right, var(--border-primary) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--border-primary) 1px, transparent 1px)
           `,
           backgroundSize: '20px 20px',
           backgroundPosition: '0 0, 0 0',
@@ -387,7 +393,7 @@ export default function Canvas({
               position="absolute"
               top={2}
               right={2}
-              bg="rgba(82, 39, 255, 0.8)"
+              bg="rgba(168, 85, 247, 0.8)"
               px={2}
               py={0.5}
               borderRadius="4px"
@@ -431,9 +437,9 @@ export default function Canvas({
           gap={1}
         >
           <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
-            <Icon as={Upload} boxSize={8} color="#392e4e" />
+            <Icon as={Upload} boxSize={8} color="var(--border-primary)" />
           </Box>
-          <Text fontSize="14px" color="#988BC7" textAlign="center">
+          <Text fontSize="14px" color="var(--text-muted)" textAlign="center">
             Upload an image/video
             <br />
             to get started
@@ -449,7 +455,7 @@ export default function Canvas({
         gap={1}
         bg="rgba(13, 7, 22, 0.9)"
         borderRadius="8px"
-        border="1px solid #271E37"
+        border="1px solid var(--border-primary)"
         p={1}
         align="center"
       >
@@ -463,16 +469,16 @@ export default function Canvas({
               h={7}
               borderRadius="4px"
               cursor={isExporting ? 'not-allowed' : 'pointer'}
-              bg="rgba(82, 39, 255, 0.2)"
+              bg="rgba(168, 85, 247, 0.2)"
               onClick={isExporting ? undefined : onPlayPause}
               transition="all 0.15s"
-              _hover={{ bg: isExporting ? 'rgba(82, 39, 255, 0.2)' : 'rgba(82, 39, 255, 0.4)' }}
+              _hover={{ bg: isExporting ? 'rgba(168, 85, 247, 0.2)' : 'rgba(168, 85, 247, 0.4)' }}
               opacity={isExporting ? 0.5 : 1}
             >
-              <Icon as={isPlaying ? Pause : Play} boxSize={4} color="#B19EEF" />
+              <Icon as={isPlaying ? Pause : Play} boxSize={4} color="var(--color-accent)" />
             </Flex>
             <Flex align="center" gap={2} px={2} minW="180px" opacity={isExporting ? 0.5 : 1}>
-              <Text fontSize="10px" color="#988BC7" fontFamily="mono" minW="32px">
+              <Text fontSize="10px" color="var(--text-muted)" fontFamily="mono" minW="32px">
                 {formatTime(currentTime)}
               </Text>
               <Slider.Root
@@ -485,8 +491,8 @@ export default function Canvas({
                 disabled={isExporting}
               >
                 <Slider.Control css={{ cursor: isExporting ? 'not-allowed' : 'pointer' }}>
-                  <Slider.Track bg="#271E37" h="4px" borderRadius="2px">
-                    <Slider.Range bg="#5227FF" />
+                  <Slider.Track bg="var(--bg-elevated)" h="4px" borderRadius="2px">
+                    <Slider.Range bg="var(--color-primary)" />
                   </Slider.Track>
                   <Slider.Thumb
                     index={0}
@@ -497,25 +503,25 @@ export default function Canvas({
                   />
                 </Slider.Control>
               </Slider.Root>
-              <Text fontSize="10px" color="#988BC7" fontFamily="mono" minW="32px">
+              <Text fontSize="10px" color="var(--text-muted)" fontFamily="mono" minW="32px">
                 {formatTime(duration)}
               </Text>
             </Flex>
-            <Box w="1px" h={5} bg="#271E37" mx={1} />
+            <Box w="1px" h={5} bg="var(--border-primary)" mx={1} />
           </>
         )}
         <ControlButton icon={ZoomOut} onClick={() => setZoom(z => Math.max(z * 0.8, 0.1))} />
         <Flex align="center" justify="center" px={2} minW="50px">
-          <Text fontSize="11px" color="#988BC7" fontFamily="mono">
+          <Text fontSize="11px" color="var(--text-muted)" fontFamily="mono">
             {Math.round(zoom * 100)}%
           </Text>
         </Flex>
         <ControlButton icon={ZoomIn} onClick={() => setZoom(z => Math.min(z * 1.2, 10))} />
-        <Box w="1px" h={5} bg="#271E37" mx={1} />
+        <Box w="1px" h={5} bg="var(--border-primary)" mx={1} />
         <ControlButton icon={Maximize} onClick={handleResetView} />
         {mediaType !== 'video' && (
           <>
-            <Box w="1px" h={5} bg="#271E37" mx={1} />
+            <Box w="1px" h={5} bg="var(--border-primary)" mx={1} />
             <ControlButton icon={Eye} isActive={viewMode === 'preview'} onClick={() => onViewModeChange('preview')} />
             <ControlButton
               icon={SplitSquareHorizontal}
@@ -526,7 +532,7 @@ export default function Canvas({
         )}
       </Flex>
 
-      <Text position="absolute" bottom={4} right={4} fontSize="10px" color="#392e4e">
+      <Text position="absolute" bottom={4} right={4} fontSize="10px" color="var(--border-primary)">
         Scroll to zoom • Space + Drag to pan
       </Text>
     </Box>
@@ -542,11 +548,11 @@ const ControlButton = ({ icon: IconComponent, onClick, isActive }) => (
     h={7}
     borderRadius="4px"
     cursor="pointer"
-    bg={isActive ? 'rgba(82, 39, 255, 0.2)' : 'transparent'}
+    bg={isActive ? 'rgba(168, 85, 247, 0.2)' : 'transparent'}
     onClick={onClick}
     transition="all 0.15s"
-    _hover={{ bg: isActive ? 'rgba(82, 39, 255, 0.3)' : 'rgba(255,255,255,0.1)' }}
+    _hover={{ bg: isActive ? 'rgba(168, 85, 247, 0.3)' : 'rgba(255,255,255,0.1)' }}
   >
-    <Icon as={IconComponent} boxSize={4} color={isActive ? '#B19EEF' : '#988BC7'} />
+    <Icon as={IconComponent} boxSize={4} color={isActive ? 'var(--color-accent)' : 'var(--text-muted)'} />
   </Flex>
 );

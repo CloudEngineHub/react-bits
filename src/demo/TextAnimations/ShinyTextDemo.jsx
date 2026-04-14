@@ -7,7 +7,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
-import PreviewColorPicker from '../../components/common/Preview/PreviewColorPicker';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import Customize from '../../components/common/Preview/Customize';
 
@@ -130,6 +130,13 @@ const ShinyTextDemo = () => {
           </Box>
 
           <Customize>
+            <PreviewColorPickerCustom title="Text Color" color={color} setColor={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom
+              title="Shine Color"
+              color={shineColor}
+              setColor={val => updateProp('shineColor', val)}
+            />
+
             <PreviewSlider
               title="Speed"
               min={0.5}
@@ -158,13 +165,6 @@ const ShinyTextDemo = () => {
               value={spread}
               valueUnit="°"
               onChange={val => updateProp('spread', val)}
-            />
-
-            <PreviewColorPicker title="Text Color" color={color} setColor={val => updateProp('color', val)} />
-            <PreviewColorPicker
-              title="Shine Color"
-              color={shineColor}
-              setColor={val => updateProp('shineColor', val)}
             />
 
             <PreviewSelect

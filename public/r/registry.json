@@ -6602,6 +6602,70 @@
 			]
 		},
 		{
+			"name": "DotField-JS-CSS",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.jsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-JS-TW",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.jsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-TS-CSS",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.tsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-TS-TW",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.tsx"
+				}
+			]
+		},
+		{
 			"name": "DotGrid-JS-CSS",
 			"title": "DotGrid",
 			"description": "Animated dot grid with cursor interactions.",
@@ -8190,6 +8254,78 @@
 				{
 					"type": "registry:component",
 					"path": "Plasma/Plasma.tsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-JS-CSS",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.jsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-JS-TW",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.jsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-TS-CSS",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.tsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-TS-TW",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.tsx"
 				}
 			]
 		},

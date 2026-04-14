@@ -1,25 +1,23 @@
 import { useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import { TbBackground, TbMenu } from 'react-icons/tb';
+import { TbMenu } from 'react-icons/tb';
 
 import PreviewSwitch from './PreviewSwitch';
 import logo from '../../../assets/logos/react-bits-logo.svg';
 
 const BackgroundContent = ({
-  pillText = 'New Component',
-  pillIcon = <TbBackground />,
-  headline = 'Explore the depths of creativity',
-  mainCtaText = 'Get Started',
-  secondCtaText = 'Learn More'
+  headline = 'Build interfaces that feel alive'
 }) => {
   const [showContent, setShowContent] = useState(true);
 
   return (
     <Box userSelect="none">
+      {/* Toggle */}
       <Box
         position="absolute"
-        bottom={0}
-        right={6}
+        bottom={3}
+        right={3}
+        w="180px"
         zIndex={10}
         opacity={0.5}
         _hover={{ opacity: 1 }}
@@ -31,137 +29,140 @@ const BackgroundContent = ({
 
       {showContent && (
         <>
-          <Box position="absolute" top="2em" left={0} width="100%" height="60px" zIndex={0} pointerEvents="none">
+          {/* Nav */}
+          <Box position="absolute" top={0} left={0} w="100%" zIndex={2} pointerEvents="none">
             <Box
-              margin="0 auto"
-              width={{ base: '90%', md: '60%' }}
-              height="100%"
-              borderRadius="50px"
-              py={4}
-              px={6}
+              mx="auto"
+              mt={5}
+              w={{ base: '92%', md: '70%' }}
+              h="48px"
+              borderRadius="14px"
+              p="0px 8px 0px 14px"
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              bg="rgba(255, 255, 255, 0.05)"
-              backdropFilter="blur(10px)"
-              border="1px solid rgba(255, 255, 255, 0.1)"
-              sx={{
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
-              }}
+              bg="rgba(255, 255, 255, 0.03)"
+              border="1px solid rgba(255, 255, 255, 0.08)"
+              className="bg-content-glass"
             >
-              <img src={logo} alt="React Bits Logo" style={{ height: '24px', borderRadius: '50px' }} />
-
-              <Box display={{ base: 'flex', md: 'none' }} alignItems="center" color="white">
-                <TbMenu size={20} />
+              <Box display="flex" alignItems="center" gap={2}>
+                <img src={logo} alt="Logo" style={{ height: '20px', borderRadius: '50px' }} />
               </Box>
 
-              <Box display={{ base: 'none', md: 'flex' }} alignItems="center" gap={6} fontWeight={600}>
-                <Text color="white" fontSize="14px" display="flex" alignItems="center">
-                  Home
-                </Text>
-                <Text color="white" fontSize="14px" display="flex" alignItems="center">
-                  Docs
-                </Text>
+              <Box display={{ base: 'flex', md: 'none' }} alignItems="center" color="rgba(255,255,255,0.5)">
+                <TbMenu size={18} />
+              </Box>
+
+              <Box display={{ base: 'none', md: 'flex' }} alignItems="center" gap={5}>
+                {['Features', 'About'].map(item => (
+                  <Text key={item} color="rgba(255,255,255,0.4)" fontSize="13px" fontWeight={500}>{item}</Text>
+                ))}
+                <Box
+                  h="30px"
+                  px={4}
+                  borderRadius="8px"
+                  bg="white"
+                  color="black"
+                  fontSize="12px"
+                  fontWeight={600}
+                  display="flex"
+                  alignItems="center"
+                >
+                  Sign up
+                </Box>
               </Box>
             </Box>
           </Box>
 
+          {/* Hero */}
           <Box
             position="absolute"
-            top={0}
-            left={0}
+            inset={0}
             display="flex"
             alignItems="center"
             justifyContent="center"
             flexDirection="column"
-            width="100%"
-            height="100%"
             zIndex={1}
             pointerEvents="none"
+            px={6}
           >
+            {/* Tag */}
             <Box
-              color="#fff"
-              w="auto"
-              px={4}
-              h="34px"
               display="flex"
-              fontSize={{ base: '12px', md: '14px' }}
-              justifyContent="center"
               alignItems="center"
+              gap={2}
+              px="14px"
+              py="5px"
+              pl="5px"
               borderRadius="50px"
-              fontWeight="500"
-              bg="rgba(255, 255, 255, 0.05)"
-              backdropFilter="blur(10px)"
-              border="1px solid rgba(255, 255, 255, 0.1)"
-              sx={{
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
-              }}
+              border="1px solid rgba(255, 255, 255, 0.08)"
+              bg="rgba(18, 15, 23, 0.5)"
+              className="bg-content-glass"
             >
-              {pillIcon}
-              <Text ml={1}>{pillText}</Text>
+              <Box
+                px="10px"
+                py="3px"
+                borderRadius="50px"
+                bg="white"
+                fontSize="11px"
+                fontWeight={600}
+                color="black"
+                textTransform="uppercase"
+                letterSpacing="0.02em"
+              >
+                New
+              </Box>
+              <Text fontSize="12px" fontWeight={500} color="rgba(255,255,255,0.5)">
+                Just shipped v2.0
+              </Text>
             </Box>
+
+            {/* Headline */}
             <Text
-              textShadow="0 0 16px rgba(0, 0, 0, 0.5)"
-              mt={4}
+              mt={6}
               color="white"
-              fontSize="clamp(2rem, 4vw, 2.2rem)"
-              lineHeight="1.2"
+              fontSize="clamp(1.6rem, 4vw, 2.4rem)"
+              lineHeight={1.1}
               textAlign="center"
-              letterSpacing="-2px"
-              maxWidth="16ch"
-              fontWeight="bold"
+              letterSpacing="-0.03em"
+              fontWeight={600}
+              maxW="20ch"
+              textShadow="0 4px 24px rgba(0,0,0,0.5)"
             >
               {headline}
             </Text>
 
-            <Box display="flex" gap={4} mt={8} alignItems="center">
+            {/* Buttons */}
+            <Box display="flex" gap={3} mt={7} alignItems="center" pointerEvents="none">
               <Box
-                as="button"
-                px={{ base: 6, md: 8 }}
-                py={{ base: 2, md: 2 }}
+                as="span"
+                h="40px"
+                px={5}
                 bg="white"
                 color="black"
-                borderRadius="50px"
-                fontSize={{ base: '12px', md: '14px' }}
-                fontWeight="500"
-                border="none"
-                cursor="pointer"
-                _hover={{
-                  bg: 'gray.100',
-                  transform: 'translateY(-1px)'
-                }}
-                transition="all 0.2s ease"
+                borderRadius="10px"
+                fontSize="13px"
+                fontWeight={600}
+                display="flex"
+                alignItems="center"
               >
-                {mainCtaText}
+                Get started
               </Box>
               <Box
-                as="button"
-                px={{ base: 6, md: 8 }}
-                py={{ base: 2, md: 2 }}
-                borderRadius="50px"
-                fontSize={{ base: '12px', md: '14px' }}
-                fontWeight="500"
-                bg="rgba(255, 255, 255, 0.05)"
-                backdropFilter="blur(10px)"
-                border="1px solid rgba(255, 255, 255, 0.1)"
-                sx={{
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
-                }}
-                color="rgba(255, 255, 255, 0.5)"
-                cursor="pointer"
-                _hover={{
-                  bg: 'rgba(255, 255, 255, 0.1)',
-                  transform: 'translateY(-1px)'
-                }}
-                transition="all 0.2s ease"
+                as="span"
+                h="40px"
+                px={5}
+                borderRadius="10px"
+                fontSize="13px"
+                fontWeight={500}
+                color="rgba(255,255,255,0.6)"
+                border="1px solid rgba(255,255,255,0.08)"
+                bg="rgba(255,255,255,0.03)"
+                display="flex"
+                alignItems="center"
+                className="bg-content-glass"
               >
-                {secondCtaText}
+                Learn more
               </Box>
             </Box>
           </Box>

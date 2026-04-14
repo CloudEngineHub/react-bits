@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Flex, Input, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import Customize from '../../components/common/Preview/Customize';
@@ -8,6 +8,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -21,7 +22,7 @@ import { grainient } from '../../constants/code/Backgrounds/grainientCode';
 const DEFAULT_PROPS = {
   color1: '#FF9FFC',
   color2: '#5227FF',
-  color3: '#B19EEF',
+  color3: '#B497CF',
   timeSpeed: 0.25,
   colorBalance: 0.0,
   warpStrength: 1.0,
@@ -88,7 +89,7 @@ const GrainientDemo = () => {
       {
         name: 'color3',
         type: 'string',
-        default: "'#B19EEF'",
+        default: "'#B497CF'",
         description: 'Deep base color used in the gradient blend.'
       },
       {
@@ -219,7 +220,7 @@ const GrainientDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Grainient
               key={key}
               color1={color1}
@@ -278,7 +279,7 @@ const GrainientDemo = () => {
               defaultProps={{
                 color1: '#FF9FFC',
                 color2: '#5227FF',
-                color3: '#B19EEF',
+                color3: '#B497CF',
                 timeSpeed: 0.25,
                 colorBalance: 0.0,
                 warpStrength: 1.0,
@@ -303,216 +304,177 @@ const GrainientDemo = () => {
           </Flex>
 
           <Customize forceRerender={forceRerender}>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4} mb={4}>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 1
-                </Text>
-                <Input type="color" value={color1} onChange={e => updateProp('color1', e.target.value)} width="50px" />
-              </Flex>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 2
-                </Text>
-                <Input type="color" value={color2} onChange={e => updateProp('color2', e.target.value)} width="50px" />
-              </Flex>
-              <Flex alignItems="center">
-                <Text fontSize="sm" mr={2}>
-                  Color 3
-                </Text>
-                <Input type="color" value={color3} onChange={e => updateProp('color3', e.target.value)} width="50px" />
-              </Flex>
-            </SimpleGrid>
+            <PreviewColorPickerCustom title="Color 1" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color2} onChange={val => updateProp('color2', val)} />
+            <PreviewColorPickerCustom title="Color 3" color={color3} onChange={val => updateProp('color3', val)} />
 
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-              <Box>
-                <PreviewSlider
-                  title="Time Speed"
-                  min={0}
-                  max={5}
-                  step={0.05}
-                  value={timeSpeed}
-                  onChange={val => updateProp('timeSpeed', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Color Balance"
-                  min={-1}
-                  max={1}
-                  step={0.01}
-                  value={colorBalance}
-                  onChange={val => updateProp('colorBalance', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Warp Strength"
-                  min={0}
-                  max={4}
-                  step={0.05}
-                  value={warpStrength}
-                  onChange={val => updateProp('warpStrength', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Warp Frequency"
-                  min={0}
-                  max={12}
-                  step={0.1}
-                  value={warpFrequency}
-                  onChange={val => updateProp('warpFrequency', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Warp Speed"
-                  min={0}
-                  max={6}
-                  step={0.1}
-                  value={warpSpeed}
-                  onChange={val => updateProp('warpSpeed', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Warp Amplitude"
-                  min={5}
-                  max={80}
-                  step={1}
-                  value={warpAmplitude}
-                  onChange={val => updateProp('warpAmplitude', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Blend Angle"
-                  min={-180}
-                  max={180}
-                  step={1}
-                  value={blendAngle}
-                  onChange={val => updateProp('blendAngle', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Blend Softness"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={blendSoftness}
-                  onChange={val => updateProp('blendSoftness', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Rotation Amount"
-                  min={0}
-                  max={1440}
-                  step={10}
-                  value={rotationAmount}
-                  onChange={val => updateProp('rotationAmount', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Noise Scale"
-                  min={0}
-                  max={4}
-                  step={0.05}
-                  value={noiseScale}
-                  onChange={val => updateProp('noiseScale', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Grain Amount"
-                  min={0}
-                  max={0.4}
-                  step={0.01}
-                  value={grainAmount}
-                  onChange={val => updateProp('grainAmount', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Grain Scale"
-                  min={0.2}
-                  max={8}
-                  step={0.1}
-                  value={grainScale}
-                  onChange={val => updateProp('grainScale', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSwitch
-                  title="Grain Animated"
-                  isChecked={grainAnimated}
-                  onChange={val => updateProp('grainAnimated', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Contrast"
-                  min={0}
-                  max={2.5}
-                  step={0.05}
-                  value={contrast}
-                  onChange={val => updateProp('contrast', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Gamma"
-                  min={0.4}
-                  max={2.5}
-                  step={0.05}
-                  value={gamma}
-                  onChange={val => updateProp('gamma', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Saturation"
-                  min={0}
-                  max={2.5}
-                  step={0.05}
-                  value={saturation}
-                  onChange={val => updateProp('saturation', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Center Offset X"
-                  min={-1}
-                  max={1}
-                  step={0.01}
-                  value={centerX}
-                  onChange={val => updateProp('centerX', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Center Offset Y"
-                  min={-1}
-                  max={1}
-                  step={0.01}
-                  value={centerY}
-                  onChange={val => updateProp('centerY', val)}
-                />
-              </Box>
-              <Box>
-                <PreviewSlider
-                  title="Zoom"
-                  min={0.3}
-                  max={3}
-                  step={0.05}
-                  value={zoom}
-                  onChange={val => updateProp('zoom', val)}
-                />
-              </Box>
-            </SimpleGrid>
+            <PreviewSlider
+              title="Time Speed"
+              min={0}
+              max={5}
+              step={0.05}
+              value={timeSpeed}
+              onChange={val => updateProp('timeSpeed', val)}
+            />
+
+            <PreviewSlider
+              title="Color Balance"
+              min={-1}
+              max={1}
+              step={0.01}
+              value={colorBalance}
+              onChange={val => updateProp('colorBalance', val)}
+            />
+
+            <PreviewSlider
+              title="Warp Strength"
+              min={0}
+              max={4}
+              step={0.05}
+              value={warpStrength}
+              onChange={val => updateProp('warpStrength', val)}
+            />
+
+            <PreviewSlider
+              title="Warp Frequency"
+              min={0}
+              max={12}
+              step={0.1}
+              value={warpFrequency}
+              onChange={val => updateProp('warpFrequency', val)}
+            />
+
+            <PreviewSlider
+              title="Warp Speed"
+              min={0}
+              max={6}
+              step={0.1}
+              value={warpSpeed}
+              onChange={val => updateProp('warpSpeed', val)}
+            />
+
+            <PreviewSlider
+              title="Warp Amplitude"
+              min={5}
+              max={80}
+              step={1}
+              value={warpAmplitude}
+              onChange={val => updateProp('warpAmplitude', val)}
+            />
+
+            <PreviewSlider
+              title="Blend Angle"
+              min={-180}
+              max={180}
+              step={1}
+              value={blendAngle}
+              onChange={val => updateProp('blendAngle', val)}
+            />
+
+            <PreviewSlider
+              title="Blend Softness"
+              min={0}
+              max={1}
+              step={0.01}
+              value={blendSoftness}
+              onChange={val => updateProp('blendSoftness', val)}
+            />
+
+            <PreviewSlider
+              title="Rotation Amount"
+              min={0}
+              max={1440}
+              step={10}
+              value={rotationAmount}
+              onChange={val => updateProp('rotationAmount', val)}
+            />
+
+            <PreviewSlider
+              title="Noise Scale"
+              min={0}
+              max={4}
+              step={0.05}
+              value={noiseScale}
+              onChange={val => updateProp('noiseScale', val)}
+            />
+
+            <PreviewSlider
+              title="Grain Amount"
+              min={0}
+              max={0.4}
+              step={0.01}
+              value={grainAmount}
+              onChange={val => updateProp('grainAmount', val)}
+            />
+
+            <PreviewSlider
+              title="Grain Scale"
+              min={0.2}
+              max={8}
+              step={0.1}
+              value={grainScale}
+              onChange={val => updateProp('grainScale', val)}
+            />
+
+            <PreviewSwitch
+              title="Grain Animated"
+              isChecked={grainAnimated}
+              onChange={val => updateProp('grainAnimated', val)}
+            />
+
+            <PreviewSlider
+              title="Contrast"
+              min={0}
+              max={2.5}
+              step={0.05}
+              value={contrast}
+              onChange={val => updateProp('contrast', val)}
+            />
+
+            <PreviewSlider
+              title="Gamma"
+              min={0.4}
+              max={2.5}
+              step={0.05}
+              value={gamma}
+              onChange={val => updateProp('gamma', val)}
+            />
+
+            <PreviewSlider
+              title="Saturation"
+              min={0}
+              max={2.5}
+              step={0.05}
+              value={saturation}
+              onChange={val => updateProp('saturation', val)}
+            />
+
+            <PreviewSlider
+              title="Center Offset X"
+              min={-1}
+              max={1}
+              step={0.01}
+              value={centerX}
+              onChange={val => updateProp('centerX', val)}
+            />
+
+            <PreviewSlider
+              title="Center Offset Y"
+              min={-1}
+              max={1}
+              step={0.01}
+              value={centerY}
+              onChange={val => updateProp('centerY', val)}
+            />
+
+            <PreviewSlider
+              title="Zoom"
+              min={0.3}
+              max={3}
+              step={0.05}
+              value={zoom}
+              onChange={val => updateProp('zoom', val)}
+            />
           </Customize>
 
           <PropTable data={propData} />

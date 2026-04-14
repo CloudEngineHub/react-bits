@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, Flex } from '@chakra-ui/react';
-import { randomHex } from '../../utils/utils';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -10,6 +9,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -78,7 +78,7 @@ const LetterGlitchDemo = () => {
     <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <LetterGlitch
               key={key}
               glitchColors={colors}
@@ -113,21 +113,38 @@ const LetterGlitchDemo = () => {
           </Flex>
 
           <Customize>
-            <Button
-              fontSize="xs"
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              _hover={{ bg: '#271E37' }}
-              color="#fff"
-              h={8}
-              onClick={() => {
-                updateProp('colors', [randomHex(), randomHex(), randomHex()]);
+            <PreviewColorPickerCustom
+              title="Color 1"
+              color={colors[0]}
+              onChange={val => {
+                const newColors = [...colors];
+                newColors[0] = val;
+                updateProp('colors', newColors);
                 forceRerender();
               }}
-            >
-              Randomize Colors
-            </Button>
+            />
+
+            <PreviewColorPickerCustom
+              title="Color 2"
+              color={colors[1]}
+              onChange={val => {
+                const newColors = [...colors];
+                newColors[1] = val;
+                updateProp('colors', newColors);
+                forceRerender();
+              }}
+            />
+
+            <PreviewColorPickerCustom
+              title="Color 3"
+              color={colors[2]}
+              onChange={val => {
+                const newColors = [...colors];
+                newColors[2] = val;
+                updateProp('colors', newColors);
+                forceRerender();
+              }}
+            />
 
             <PreviewSlider
               min={0}

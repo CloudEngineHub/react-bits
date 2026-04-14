@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeExample from '../../components/code/CodeExample';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -64,17 +65,7 @@ const FolderDemo = () => {
           </Box>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                  forceRerender();
-                }}
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Size"

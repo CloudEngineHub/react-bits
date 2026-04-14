@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -8,6 +8,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -21,7 +22,7 @@ import DotGrid from '../../content/Backgrounds/DotGrid/DotGrid';
 const DEFAULT_PROPS = {
   dotSize: 5,
   gap: 15,
-  baseColor: '#271E37',
+  baseColor: '#2F293A',
   activeColor: '#5227FF',
   proximity: 120,
   shockRadius: 250,
@@ -124,7 +125,7 @@ const DotGridDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             <DotGrid
               key={key}
               dotSize={dotSize}
@@ -173,32 +174,8 @@ const DotGridDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Base Color
-              </Text>
-              <Input
-                type="color"
-                value={baseColor}
-                onChange={e => {
-                  updateProp('baseColor', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Active Color
-              </Text>
-              <Input
-                type="color"
-                value={activeColor}
-                onChange={e => {
-                  updateProp('activeColor', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Base Color" color={baseColor} onChange={val => updateProp('baseColor', val)} />
+            <PreviewColorPickerCustom title="Active Color" color={activeColor} onChange={val => updateProp('activeColor', val)} />
             <PreviewSlider
               title="Dot Size"
               min={2}

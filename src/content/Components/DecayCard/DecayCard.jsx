@@ -3,7 +3,17 @@ import { gsap } from 'gsap';
 
 import './DecayCard.css';
 
-const DecayCard = ({ width = 300, height = 400, image = 'https://picsum.photos/300/400?grayscale', children }) => {
+const DecayCard = ({
+  width = 300,
+  height = 400,
+  image = 'https://picsum.photos/300/400?grayscale',
+  baseFrequency = 0.015,
+  numOctaves = 5,
+  seed = 4,
+  maxDisplacement = 400,
+  movementBound = 50,
+  children
+}) => {
   const svgRef = useRef(null);
   const displacementMapRef = useRef(null);
   const cursor = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
@@ -42,12 +52,10 @@ const DecayCard = ({ width = 300, height = 400, image = 'https://picsum.photos/3
       let targetY = lerp(imgValues.imgTransforms.y, map(cursor.current.y, 0, winsize.current.height, -120, 120), 0.1);
       let targetRz = lerp(imgValues.imgTransforms.rz, map(cursor.current.x, 0, winsize.current.width, -10, 10), 0.1);
 
-      const bound = 50;
-
-      if (targetX > bound) targetX = bound + (targetX - bound) * 0.2;
-      if (targetX < -bound) targetX = -bound + (targetX + bound) * 0.2;
-      if (targetY > bound) targetY = bound + (targetY - bound) * 0.2;
-      if (targetY < -bound) targetY = -bound + (targetY + bound) * 0.2;
+      if (targetX > movementBound) targetX = movementBound + (targetX - movementBound) * 0.2;
+      if (targetX < -movementBound) targetX = -movementBound + (targetX + movementBound) * 0.2;
+      if (targetY > movementBound) targetY = movementBound + (targetY - movementBound) * 0.2;
+      if (targetY < -movementBound) targetY = -movementBound + (targetY + movementBound) * 0.2;
 
       imgValues.imgTransforms.x = targetX;
       imgValues.imgTransforms.y = targetY;
@@ -69,7 +77,7 @@ const DecayCard = ({ width = 300, height = 400, image = 'https://picsum.photos/3
       );
       imgValues.displacementScale = lerp(
         imgValues.displacementScale,
-        map(cursorTravelledDistance, 0, 200, 0, 400),
+        map(cursorTravelledDistance, 0, 200, 0, maxDisplacement),
         0.06
       );
 
@@ -79,16 +87,17 @@ const DecayCard = ({ width = 300, height = 400, image = 'https://picsum.photos/3
 
       cachedCursor.current = { ...cursor.current };
 
-      requestAnimationFrame(render);
+      rafId = requestAnimationFrame(render);
     };
 
-    render();
+    let rafId = requestAnimationFrame(render);
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [maxDisplacement, movementBound]);
 
   return (
     <div className="content" style={{ width: `${width}px`, height: `${height}px` }} ref={svgRef}>
@@ -96,9 +105,9 @@ const DecayCard = ({ width = 300, height = 400, image = 'https://picsum.photos/3
         <filter id="imgFilter">
           <feTurbulence
             type="turbulence"
-            baseFrequency="0.015"
-            numOctaves="5"
-            seed="4"
+            baseFrequency={baseFrequency}
+            numOctaves={numOctaves}
+            seed={seed}
             stitchTiles="stitch"
             x="0%"
             y="0%"

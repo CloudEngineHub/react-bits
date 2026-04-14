@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -28,18 +28,6 @@ const ProfileCardDemo = () => {
   const { showIcon, showUserInfo, enableMobileTilt, showBehindGlow, behindGlowColor, customInnerGradient } = props;
 
   const [key, forceRerender] = useForceRerender();
-
-  const generateRandomGradients = () => {
-    const randomHue1 = Math.floor(Math.random() * 360);
-    const randomHue3 = Math.floor(Math.random() * 360);
-
-    const newGlow = `hsla(${randomHue1}, 100%, 70%, 0.6)`;
-    const newInnerGradient = `linear-gradient(145deg,hsla(${randomHue1}, 40%, 45%, 0.55) 0%,hsla(${randomHue3}, 60%, 70%, 0.27) 100%)`;
-
-    updateProp('behindGlowColor', newGlow);
-    updateProp('customInnerGradient', newInnerGradient);
-    forceRerender();
-  };
 
   const propData = useMemo(
     () => [
@@ -200,19 +188,6 @@ const ProfileCardDemo = () => {
             />
           </Box>{' '}
           <Customize>
-            <Button
-              onClick={generateRandomGradients}
-              fontSize="xs"
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              _hover={{ bg: '#271E37' }}
-              color="#fff"
-              h={8}
-            >
-              Randomize Colors
-            </Button>
-
             <PreviewSwitch
               title="Behind Glow"
               isChecked={showBehindGlow}

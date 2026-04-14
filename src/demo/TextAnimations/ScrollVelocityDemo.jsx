@@ -16,12 +16,15 @@ import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
-  velocity: 100
+  velocity: 100,
+  numCopies: 6,
+  damping: 50,
+  stiffness: 400
 };
 
 const ScrollVelocityDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { velocity } = props;
+  const { velocity, numCopies, damping, stiffness } = props;
 
   const propData = useMemo(
     () => [
@@ -110,6 +113,9 @@ const ScrollVelocityDemo = () => {
               <ScrollVelocity
                 texts={['React Bits', 'Scroll Down']}
                 velocity={velocity}
+                numCopies={numCopies}
+                damping={damping}
+                stiffness={stiffness}
                 className="custom-scroll-text"
               />
             </Flex>
@@ -122,9 +128,31 @@ const ScrollVelocityDemo = () => {
               max={500}
               step={10}
               value={velocity}
-              onChange={val => {
-                updateProp('velocity', val);
-              }}
+              onChange={val => updateProp('velocity', val)}
+            />
+            <PreviewSlider
+              title="Num Copies"
+              min={2}
+              max={12}
+              step={1}
+              value={numCopies}
+              onChange={val => updateProp('numCopies', val)}
+            />
+            <PreviewSlider
+              title="Damping"
+              min={10}
+              max={100}
+              step={5}
+              value={damping}
+              onChange={val => updateProp('damping', val)}
+            />
+            <PreviewSlider
+              title="Stiffness"
+              min={100}
+              max={800}
+              step={50}
+              value={stiffness}
+              onChange={val => updateProp('stiffness', val)}
             />
           </Customize>
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, ButtonGroup, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -9,6 +9,8 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PropTable from '../../components/common/Preview/PropTable';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
@@ -17,7 +19,7 @@ import { shapeGrid } from '../../constants/code/Backgrounds/shapeGridCode';
 
 const DEFAULT_PROPS = {
   direction: 'diagonal',
-  borderColor: '#271E37',
+  borderColor: '#2F293A',
   hoverColor: '#222222',
   size: 40,
   speed: 0.5,
@@ -66,7 +68,7 @@ const ShapeGridDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" h={600} className="demo-container" overflow="hidden" p={0}>
+          <Box position="relative" h={500} className="demo-container" overflow="hidden" p={0}>
             <ShapeGrid
               squareSize={size}
               speed={speed}
@@ -106,109 +108,42 @@ const ShapeGridDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap="2em" alignItems="center" wrap="wrap">
-              <ButtonGroup isAttached size="sm">
-                <Text fontSize="sm" mr={2}>
-                  Shape
-                </Text>
-                <Button
-                  bg={shape === 'square' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${shape === 'square' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('shape', 'square')}
-                >
-                  Square
-                </Button>
-                <Button
-                  bg={shape === 'hexagon' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${shape === 'hexagon' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('shape', 'hexagon')}
-                >
-                  Hexagon
-                </Button>
-                <Button
-                  bg={shape === 'circle' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${shape === 'circle' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('shape', 'circle')}
-                >
-                  Circle
-                </Button>
-                <Button
-                  bg={shape === 'triangle' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${shape === 'triangle' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('shape', 'triangle')}
-                >
-                  Triangle
-                </Button>
-              </ButtonGroup>
+            <PreviewColorPickerCustom
+              title="Border Color"
+              color={borderColor}
+              onChange={val => updateProp('borderColor', val)}
+            />
 
-              <ButtonGroup isAttached size="sm">
-                <Text fontSize="sm" mr={2}>
-                  Direction
-                </Text>
-                <Button
-                  bg={direction === 'diagonal' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${direction === 'diagonal' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('direction', 'diagonal')}
-                >
-                  Diagonal
-                </Button>
-                <Button
-                  bg={direction === 'up' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${direction === 'up' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('direction', 'up')}
-                >
-                  Up
-                </Button>
-                <Button
-                  bg={direction === 'right' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${direction === 'right' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('direction', 'right')}
-                >
-                  Right
-                </Button>
-                <Button
-                  bg={direction === 'down' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${direction === 'down' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('direction', 'down')}
-                >
-                  Down
-                </Button>
-                <Button
-                  bg={direction === 'left' ? '#5227FF' : '#170D27'}
-                  _hover={{ backgroundColor: `${direction === 'left' ? '#5227FF' : '#170D27'}` }}
-                  color="white"
-                  fontSize="xs"
-                  h={8}
-                  onClick={() => updateProp('direction', 'left')}
-                >
-                  Left
-                </Button>
-              </ButtonGroup>
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Hover Color"
+              color={hoverColor}
+              onChange={val => updateProp('hoverColor', val)}
+            />
+
+            <PreviewSelect
+              title="Shape"
+              options={[
+                { value: 'square', label: 'Square' },
+                { value: 'hexagon', label: 'Hexagon' },
+                { value: 'circle', label: 'Circle' },
+                { value: 'triangle', label: 'Triangle' }
+              ]}
+              value={shape}
+              onChange={val => updateProp('shape', val)}
+            />
+
+            <PreviewSelect
+              title="Direction"
+              options={[
+                { value: 'diagonal', label: 'Diagonal' },
+                { value: 'up', label: 'Up' },
+                { value: 'right', label: 'Right' },
+                { value: 'down', label: 'Down' },
+                { value: 'left', label: 'Left' }
+              ]}
+              value={direction}
+              onChange={val => updateProp('direction', val)}
+            />
 
             <PreviewSlider
               min={10}
@@ -227,26 +162,6 @@ const ShapeGridDemo = () => {
               title="Animation Speed"
               onChange={val => updateProp('speed', val)}
             />
-
-            <Flex alignItems="center" mb={6}>
-              <Text mr={4}>Border Color</Text>
-              <Input
-                type="color"
-                value={borderColor}
-                onChange={e => updateProp('borderColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
-
-            <Flex alignItems="center" mb={6}>
-              <Text mr={4}>Hover Color</Text>
-              <Input
-                type="color"
-                value={hoverColor}
-                onChange={e => updateProp('hoverColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
 
             <PreviewSlider
               min={0}

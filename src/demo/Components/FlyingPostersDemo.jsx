@@ -87,7 +87,7 @@ const FlyingPostersDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <RefreshButton onClick={forceRerender} />
             <FlyingPosters
               key={key}
@@ -99,7 +99,7 @@ const FlyingPostersDemo = () => {
               cameraFov={cameraFov}
               cameraZ={cameraZ}
             />
-            <Text color="#271E37" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} position="absolute">
+            <Text color="#2F293A" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} position="absolute">
               Scroll.
             </Text>
           </Box>

@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
-import GradientText from '../../content/TextAnimations/GradientText/GradientText';
 import RefreshButton from '../../components/common/Preview/RefreshButton';
 import CodeExample from '../../components/code/CodeExample';
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewInput from '../../components/common/Preview/PreviewInput';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import useForceRerender from '../../hooks/useForceRerender';
@@ -16,16 +18,18 @@ import CountUp from '../../content/TextAnimations/CountUp/CountUp';
 import { countup } from '../../constants/code/TextAnimations/countUpCode';
 
 const DEFAULT_PROPS = {
-  startCounting: false
+  from: 0,
+  to: 100,
+  duration: 1,
+  delay: 0,
+  direction: 'up',
+  separator: ','
 };
 
 const CountUpDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { startCounting } = props;
-
-  const [keyDefault, forceRerenderDefault] = useForceRerender();
-  const [keyProgramatically, forceRerenderProgramatically] = useForceRerender();
-  const [keyGradient, forceRerenderGradient] = useForceRerender();
+  const { from, to, duration, delay, direction, separator } = props;
+  const [key, forceRerender] = useForceRerender();
 
   const propData = useMemo(
     () => [
@@ -100,77 +104,70 @@ const CountUpDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <h2 className="demo-title-extra">Default</h2>
           <Box position="relative" className="demo-container" minH={200}>
             <CountUp
-              key={keyDefault}
-              from={0}
-              to={100}
-              separator=","
-              direction="up"
-              duration={1}
+              key={key}
+              from={from}
+              to={to}
+              duration={duration}
+              delay={delay}
+              direction={direction}
+              separator={separator}
               className="count-up-text"
             />
-
-            <RefreshButton onClick={forceRerenderDefault} />
+            <RefreshButton onClick={forceRerender} />
           </Box>
 
-          <h2 className="demo-title-extra">Start Programatically</h2>
-          <Flex
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            position="relative"
-            className="demo-container"
-            minH={200}
-          >
-            <Button
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              color="#fff"
-              onClick={() => updateProp('startCounting', true)}
-            >
-              Count to 500!
-            </Button>
-
-            <CountUp
-              key={keyProgramatically}
-              from={100}
-              to={500}
-              startWhen={startCounting}
-              duration={5}
-              className="count-up-text"
+          <Customize>
+            <PreviewSlider
+              title="To"
+              min={0}
+              max={10000}
+              step={100}
+              value={to}
+              onChange={v => { updateProp('to', v); forceRerender(); }}
             />
-
-            {startCounting && <RefreshButton onClick={forceRerenderProgramatically} />}
-          </Flex>
-
-          <h2 className="demo-title-extra">With Gradient</h2>
-          <p className="demo-extra-info">
-            <Flex>
-              <span>
-                You can wrap the counter with other components such as&nbsp;
-                <Link style={{ display: 'inline', whiteSpace: 'nowrap' }} to="/text-animations/gradient-text/">
-                  &lt;GradientText /&gt;
-                </Link>
-              </span>
-            </Flex>
-          </p>
-          <Flex
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            position="relative"
-            className="demo-container"
-            minH={200}
-          >
-            <GradientText>
-              <CountUp key={keyGradient} from={0} to={100} separator="," duration={1} className="count-up-text" />
-            </GradientText>
-
-            <RefreshButton onClick={forceRerenderGradient} />
-          </Flex>
+            <PreviewSlider
+              title="From"
+              min={0}
+              max={1000}
+              step={10}
+              value={from}
+              onChange={v => { updateProp('from', v); forceRerender(); }}
+            />
+            <PreviewSlider
+              title="Duration"
+              min={0.5}
+              max={10}
+              step={0.5}
+              value={duration}
+              onChange={v => { updateProp('duration', v); forceRerender(); }}
+            />
+            <PreviewSlider
+              title="Delay"
+              min={0}
+              max={5}
+              step={0.5}
+              value={delay}
+              onChange={v => { updateProp('delay', v); forceRerender(); }}
+            />
+            <PreviewSelect
+              title="Direction"
+              value={direction}
+              options={[
+                { value: 'up', label: 'Up' },
+                { value: 'down', label: 'Down' }
+              ]}
+              onChange={v => { updateProp('direction', v); forceRerender(); }}
+            />
+            <PreviewInput
+              title="Separator"
+              value={separator}
+              placeholder=","
+              maxLength={1}
+              onChange={v => { updateProp('separator', v); forceRerender(); }}
+            />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['motion']} />

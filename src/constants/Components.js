@@ -127,6 +127,7 @@ const backgrounds = {
   'light-rays': () => import('../demo/Backgrounds/LightRaysDemo'),
   'faulty-terminal': () => import('../demo/Backgrounds/FaultyTerminalDemo'),
   'plasma': () => import('../demo/Backgrounds/PlasmaDemo'),
+  'plasma-wave': () => import('../demo/Backgrounds/PlasmaWaveDemo'),
   'prism': () => import('../demo/Backgrounds/PrismDemo'),
   'gradient-blinds': () => import('../demo/Backgrounds/GradientBlindsDemo'),
   'grainient': () => import('../demo/Backgrounds/GrainientDemo.jsx'),
@@ -141,7 +142,8 @@ const backgrounds = {
   'pixel-snow': () => import('../demo/Backgrounds/PixelSnowDemo.jsx'),
   'radar': () => import('../demo/Backgrounds/RadarDemo.jsx'),
   'soft-aurora': () => import('../demo/Backgrounds/SoftAuroraDemo.jsx'),
-  'evil-eye': () => import('../demo/Backgrounds/EvilEyeDemo.jsx')
+  'evil-eye': () => import('../demo/Backgrounds/EvilEyeDemo.jsx'),
+  'dot-field': () => import('../demo/Backgrounds/DotFieldDemo')
 };
 
 export const componentMap = {

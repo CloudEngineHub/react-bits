@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import EvilEye from '../../content/Backgrounds/EvilEye/EvilEye';
 import { evilEye } from '../../constants/code/Backgrounds/evilEyeCode';
@@ -25,7 +26,7 @@ const DEFAULT_PROPS = {
   noiseScale: 1.0,
   pupilFollow: 1.0,
   flameSpeed: 1.0,
-  backgroundColor: '#060010'
+  backgroundColor: '#120F17'
 };
 
 const EvilEyeDemo = () => {
@@ -106,7 +107,7 @@ const EvilEyeDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <EvilEye
               eyeColor={eyeColor}
               intensity={intensity}
@@ -141,27 +142,8 @@ const EvilEyeDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Eye Color</Text>
-              <Input
-                type="color"
-                value={eyeColor}
-                onChange={e => {
-                  updateProp('eyeColor', e.target.value);
-                }}
-                width="50px"
-              />
-
-              <Text fontSize="sm">Background</Text>
-              <Input
-                type="color"
-                value={backgroundColor}
-                onChange={e => {
-                  updateProp('backgroundColor', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Eye Color" color={eyeColor} onChange={val => updateProp('eyeColor', val)} />
+            <PreviewColorPickerCustom title="Background" color={backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
 
             <PreviewSlider
               min={0.5}

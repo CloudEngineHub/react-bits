@@ -1,17 +1,16 @@
-import { useMemo } from 'react';
-import { Flex, Text, Select, Field, Portal, createListCollection } from '@chakra-ui/react';
-import { colors } from '../../../constants/colors';
+import { useRef, useState, useEffect, useMemo } from 'react';
+import '../../../css/preview-slider.css';
 
 const PreviewSelect = ({
   title = '',
   options = [],
   value = '',
-  width = 100,
   isDisabled = false,
-  name = '',
   onChange
 }) => {
-  const values = useMemo(() => options.map(opt => opt.value), [options]);
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+
   const labelMap = useMemo(
     () =>
       options.reduce((map, opt) => {
@@ -21,66 +20,53 @@ const PreviewSelect = ({
     [options]
   );
 
-  const collection = useMemo(() => createListCollection({ items: values }), [values]);
-
-  const handleChange = ({ value: next }) => onChange?.(next[0]);
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('pointerdown', onClick);
+    return () => document.removeEventListener('pointerdown', onClick);
+  }, [open]);
 
   return (
-    <Flex gap="4" align="center" mt="4">
-      <Text fontSize="sm">{title}</Text>
+    <div className="scrubber" ref={wrapRef} style={{ position: 'relative' }}>
+      <button
+        type="button"
+        className="scrubber-track scrubber-track--select"
+        aria-label={title}
+        aria-disabled={isDisabled}
+        data-disabled={isDisabled}
+        tabIndex={isDisabled ? -1 : 0}
+        onClick={() => !isDisabled && setOpen((o) => !o)}
+      >
+        <span className="scrubber-label">{title}</span>
+        <span className="scrubber-select-right">
+          <span className="scrubber-value">{labelMap[value] || value}</span>
+          <svg className={`scrubber-caret${open ? ' scrubber-caret--open' : ''}`} width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
 
-      <Field.Root width="auto">
-        <Select.Root
-          collection={collection}
-          value={[value]}
-          onValueChange={handleChange}
-          size="sm"
-          disabled={isDisabled}
-        >
-          <Select.HiddenSelect name={name} />
-
-          <Select.Control>
-            <Select.Trigger
-              fontSize="14px"
-              h={8}
-              w={`${width}px`}
-              bg={colors.bgBody}
-              border={`1px solid ${colors.borderSecondary}`}
-              borderRadius="10px"
+      {open && (
+        <div className="scrubber-dropdown">
+          {options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              className={`scrubber-dropdown-item${opt.value === value ? ' scrubber-dropdown-item--active' : ''}`}
+              onClick={() => {
+                onChange?.(opt.value);
+                setOpen(false);
+              }}
             >
-              <Select.ValueText fontSize="14px">{labelMap[value]}</Select.ValueText>
-            </Select.Trigger>
-            <Select.IndicatorGroup>
-              <Select.Indicator fontSize="14px" />
-            </Select.IndicatorGroup>
-          </Select.Control>
-
-          <Portal>
-            <Select.Positioner>
-              <Select.Content
-                bg={colors.bgBody}
-                border={`1px solid ${colors.borderSecondary}`}
-                borderRadius="10px"
-              >
-                {collection.items.map(val => (
-                  <Select.Item
-                    key={val}
-                    item={val}
-                    fontSize="14px"
-                    borderRadius="10px"
-                    cursor="pointer"
-                    _highlighted={{ bg: colors.bgHover }}
-                  >
-                    <Select.ItemText>{labelMap[val]}</Select.ItemText>
-                    <Select.ItemIndicator />
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Positioner>
-          </Portal>
-        </Select.Root>
-      </Field.Root>
-    </Flex>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

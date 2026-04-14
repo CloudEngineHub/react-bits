@@ -79,7 +79,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
       key={`${item?.id ?? index}-${index}`}
       className={`relative shrink-0 flex flex-col ${
         round
-          ? 'items-center justify-center text-center bg-[#060010] border-0'
+          ? 'items-center justify-center text-center bg-[#120F17] border-0'
           : 'items-start justify-between bg-[#222] border border-[#222] rounded-[12px]'
       } overflow-hidden cursor-grab active:cursor-grabbing`}
       style={{
@@ -91,7 +91,7 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
       transition={transition}
     >
       <div className={`${round ? 'p-0 m-0' : 'mb-4 p-5'}`}>
-        <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]">
+        <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#120F17]">
           {item.icon}
         </span>
       </div>

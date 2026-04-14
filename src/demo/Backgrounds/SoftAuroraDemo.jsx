@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -12,6 +12,7 @@ import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 import SoftAurora from '../../content/Backgrounds/SoftAurora/SoftAurora';
@@ -67,7 +68,7 @@ const SoftAuroraDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <SoftAurora
               speed={speed} scale={scale} brightness={brightness}
               color1={color1} color2={color2}
@@ -95,12 +96,8 @@ const SoftAuroraDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color 1</Text>
-              <Input type="color" value={color1} onChange={e => updateProp('color1', e.target.value)} width="50px" />
-              <Text fontSize="sm">Color 2</Text>
-              <Input type="color" value={color2} onChange={e => updateProp('color2', e.target.value)} width="50px" />
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color1} onChange={val => updateProp('color1', val)} />
+            <PreviewColorPickerCustom title="Color 2" color={color2} onChange={val => updateProp('color2', val)} />
 
             <PreviewSlider min={0.1} max={5} step={0.1} title="Speed" value={speed} onChange={val => updateProp('speed', val)} />
             <PreviewSlider min={0.1} max={3} step={0.1} title="Scale" value={scale} onChange={val => updateProp('scale', val)} />

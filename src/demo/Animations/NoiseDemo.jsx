@@ -70,8 +70,8 @@ const NoiseDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" background="#060010" minH={400} overflow="hidden">
-            <Text color="#271E37" fontSize="6rem" fontWeight={900} textAlign={'center'}>
+          <Box position="relative" className="demo-container" background="#120F17" minH={400} overflow="hidden">
+            <Text color="#2F293A" fontSize="6rem" fontWeight={900} textAlign={'center'}>
               Ooh, edgy!
             </Text>
             <Noise

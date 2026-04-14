@@ -18,7 +18,7 @@ import { cubes } from '../../constants/code/Animations/cubesCode';
 import Cubes from '../../content/Animations/Cubes/Cubes';
 
 const DEFAULT_PROPS = {
-  borderStyle: '2px dashed #B19EEF',
+  borderStyle: '2px dashed #B497CF',
   gridSize: 8,
   maxAngle: 45,
   radius: 3,
@@ -32,7 +32,7 @@ const CubesDemo = () => {
 
   const borderOptions = [
     { value: '2px dotted #fff', label: 'Dotted White' },
-    { value: '2px dashed #B19EEF', label: 'Dashed Purple' },
+    { value: '2px dashed #B497CF', label: 'Dashed Purple' },
     { value: '3px solid #fff', label: 'Solid White' }
   ];
 
@@ -89,7 +89,7 @@ const CubesDemo = () => {
       {
         name: 'faceColor',
         type: 'string',
-        default: "'#060010'",
+        default: "'#120F17'",
         description: 'Background color for cube faces'
       },
       {

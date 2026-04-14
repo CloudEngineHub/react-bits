@@ -1,35 +1,34 @@
-import { Flex, Text, Input, Field } from '@chakra-ui/react';
-import { colors } from '../../../constants/colors';
+import '../../../css/preview-slider.css';
 
 const PreviewInput = ({
   title = '',
   value = '',
   placeholder = '',
-  width = 300,
   maxLength,
   isDisabled = false,
   onChange
 }) => {
-  const handleChange = e => onChange?.(e.target.value);
+  const handleChange = (e) => onChange?.(e.target.value);
 
   return (
-    <Flex gap="4" align="center" mt="4">
-      <Text fontSize="14px">{title}</Text>
-      <Field.Root width="auto">
-        <Input
-          borderRadius="10px"
-          bg={colors.bgBody}
-          border={`1px solid ${colors.borderSecondary}`}
-          h={9}
-          w={`${width}px`}
-          maxLength={maxLength}
+    <div className="scrubber">
+      <div
+        className="scrubber-track scrubber-track--input"
+        data-disabled={isDisabled}
+      >
+        <span className="scrubber-label">{title}</span>
+        <input
+          className="scrubber-input"
+          type="text"
           value={value}
           onChange={handleChange}
           placeholder={placeholder}
+          maxLength={maxLength}
           disabled={isDisabled}
+          aria-label={title}
         />
-      </Field.Root>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

@@ -1,21 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import ContributionSection from './ContributionSection';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import TabsFooter from './TabsFooter';
 
 import { Tabs, Icon, Flex, Tooltip, Box } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
-import { RiHeartFill, RiHeartLine, RiLightbulbLine } from 'react-icons/ri';
-import { RotateCcw } from 'lucide-react';
+import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
+import { RotateCcw, Clipboard, Check } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
+import { useOptions } from '../context/OptionsContext/useOptions';
 import { colors } from '../../constants/colors';
+import PropTable from './Preview/PropTable';
+import CodeExample, { injectPropsIntoCode } from '../code/CodeExample';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
   border: `1px solid ${colors.borderSecondary}`,
-  borderRadius: '15px',
+  borderRadius: '10px',
   fontSize: '14px',
   h: 10,
   px: 4,
@@ -25,9 +27,98 @@ const TAB_STYLE_PROPS = {
   _selected: { bg: colors.bgElevated, color: colors.accent }
 };
 
+/**
+ * Recursively searches React children for a component of the given type
+ * and returns its props. Returns null if not found.
+ */
+function findChildProps(children, targetType) {
+  let result = null;
+  React.Children.forEach(children, child => {
+    if (result || !child || !child.props) return;
+    if (child.type === targetType) {
+      result = child.props;
+      return;
+    }
+    if (child.props.children) {
+      result = findChildProps(child.props.children, targetType);
+    }
+  });
+  return result;
+}
+
+function getActiveCode(codeObject, lang, style) {
+  if (!codeObject) return { source: '', label: '', css: '' };
+
+  if (lang === 'TS' && style === 'TW' && codeObject.tsTailwind)
+    return { source: codeObject.tsTailwind, label: 'TypeScript + Tailwind', css: '' };
+  if (lang === 'TS' && codeObject.tsCode)
+    return { source: codeObject.tsCode, label: 'TypeScript + CSS', css: codeObject.css || '' };
+  if (style === 'TW' && codeObject.tailwind)
+    return { source: codeObject.tailwind, label: 'JavaScript + Tailwind', css: '' };
+
+  return { source: codeObject.code || '', label: 'JavaScript + CSS', css: codeObject.css || '' };
+}
+
+function buildPrompt(componentName, codeObject, propData, lang, style) {
+  const { source, label, css } = getActiveCode(codeObject, lang, style);
+  const usage = codeObject.usage || '';
+  const deps = codeObject.dependencies || '';
+
+  let prompt = `## Integrate the <${componentName} /> component from React Bits
+
+You are helping integrate an open-source React component into an existing application.
+
+### Component: ${componentName}
+### Variant: ${label}
+${deps ? `### Dependencies: ${deps}` : ''}
+
+---
+
+### Usage Example
+\`\`\`jsx
+${usage}
+\`\`\`
+`;
+
+  if (propData && propData.length > 0) {
+    prompt += `
+### Props
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+${propData.map(p => `| ${p.name} | ${p.type} | ${p.default || '—'} | ${p.description} |`).join('\n')}
+`;
+  }
+
+  prompt += `
+### Full Component Source
+\`\`\`${lang === 'TS' ? 'tsx' : 'jsx'}
+${source}
+\`\`\`
+`;
+
+  if (css) {
+    prompt += `
+### Component CSS
+\`\`\`css
+${css}
+\`\`\`
+`;
+  }
+
+  prompt += `
+### Integration Instructions
+1. Install any listed dependencies.
+2. Copy the component source into the appropriate directory in the project.
+${css ? '3. Import the CSS file alongside the component.\n' : ''}${css ? '4' : '3'}. Import and render the component using the usage example above as a starting point.
+${css ? '5' : '4'}. Adjust props as needed for the specific use case — refer to the props table for all available options.
+`;
+
+  return prompt;
+}
+
 const TabsLayout = ({ children, className }) => {
   const { category, subcategory } = useParams();
-  const { hasChanges, resetProps } = useComponentPropsContext();
+  const { hasChanges, resetProps, props: currentProps, defaultProps, demoOnlyProps, computedProps } = useComponentPropsContext();
 
   const { favoriteKey, componentName } = useMemo(() => {
     if (!category || !subcategory) return null;
@@ -76,6 +167,39 @@ const TabsLayout = ({ children, className }) => {
     if (child.type === CodeTab) contentMap.CodeTab = child;
   });
 
+  // Extract codeObject/componentName from CodeExample child and propData from PropTable child
+  const codeExampleProps = contentMap.CodeTab
+    ? findChildProps(contentMap.CodeTab.props.children, CodeExample)
+    : null;
+  const propTableProps = contentMap.PreviewTab
+    ? findChildProps(contentMap.PreviewTab.props.children, PropTable)
+    : null;
+
+  const { languagePreset, stylePreset } = useOptions();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyPrompt = useCallback(() => {
+    if (!codeExampleProps) return;
+    const { codeObject, componentName: compName } = codeExampleProps;
+    const mergedProps = { ...currentProps, ...computedProps };
+    const dynamicUsage = codeObject.usage && compName
+      ? injectPropsIntoCode(codeObject.usage, mergedProps, defaultProps || {}, compName, demoOnlyProps)
+      : codeObject.usage;
+    const promptCodeObject = { ...codeObject, usage: dynamicUsage };
+    const prompt = buildPrompt(
+      compName,
+      promptCodeObject,
+      propTableProps?.data || [],
+      languagePreset,
+      stylePreset
+    );
+    navigator.clipboard.writeText(prompt).then(() => {
+      setCopied(true);
+      toast.success('Prompt copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [codeExampleProps, propTableProps, languagePreset, stylePreset, currentProps, defaultProps, demoOnlyProps, computedProps]);
+
   return (
     <Tabs.Root w="100%" variant="plain" lazyMount defaultValue="preview" className={className}>
       <Tabs.List w="100%">
@@ -121,11 +245,11 @@ const TabsLayout = ({ children, className }) => {
                     gap={2}
                     {...TAB_STYLE_PROPS}
                     w={10}
-                    bg={isSaved ? 'linear-gradient(-135deg, rgba(124, 58, 237, 1), rgba(75, 58, 255, 0.6))' : undefined}
-                    _hover={isSaved ? { filter: 'brightness(0.9)' } : TAB_STYLE_PROPS._hover}
-                    border={isSaved ? 'none' : TAB_STYLE_PROPS.border}
+                    bg={isSaved ? 'rgba(168, 85, 247, 0.15)' : undefined}
+                    border={isSaved ? '1px solid rgba(168, 85, 247, 0.25)' : TAB_STYLE_PROPS.border}
+                    _hover={isSaved ? { bg: 'rgba(168, 85, 247, 0.2)' } : TAB_STYLE_PROPS._hover}
                   >
-                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} color="#fff" boxSize={4} />
+                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} color={isSaved ? '#c084fc' : '#fff'} boxSize={4} />
                   </Box>
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
@@ -139,7 +263,7 @@ const TabsLayout = ({ children, className }) => {
                     px={4}
                     whiteSpace="nowrap"
                     h={10}
-                    borderRadius="15px"
+                    borderRadius="10px"
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
@@ -152,9 +276,21 @@ const TabsLayout = ({ children, className }) => {
               </Tooltip.Root>
             )}
 
-            <Tabs.Trigger className="contribute-tab" value="contribute" {...TAB_STYLE_PROPS}>
-              <Icon as={RiLightbulbLine} /> Contribute
-            </Tabs.Trigger>
+            {codeExampleProps && (
+              <Box
+                as="button"
+                aria-label="Copy AI prompt"
+                onClick={handleCopyPrompt}
+                display="flex"
+                cursor="pointer"
+                alignItems="center"
+                gap={2}
+                {...TAB_STYLE_PROPS}
+              >
+                {copied ? <Check size={14} color={colors.accent} /> : <Clipboard size={14} color="#fff" />}
+                {copied ? 'Copied!' : 'Copy Prompt'}
+              </Box>
+            )}
           </Flex>
         </Flex>
       </Tabs.List>
@@ -164,10 +300,6 @@ const TabsLayout = ({ children, className }) => {
       </Tabs.Content>
       <Tabs.Content pt={0} value="code">
         {contentMap.CodeTab}
-      </Tabs.Content>
-
-      <Tabs.Content pt={0} value="contribute">
-        <ContributionSection />
       </Tabs.Content>
 
       <TabsFooter />

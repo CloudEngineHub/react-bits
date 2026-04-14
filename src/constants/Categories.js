@@ -1,5 +1,6 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Dot Field',
   'Evil Eye',
   'Border Glow',
   'Soft Aurora',
@@ -11,7 +12,7 @@ export const NEW = [
   'Orbit Images',
   'Magic Rings'
 ];
-export const UPDATED = ['Shiny Text', 'Fuzzy Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint'];
+export const UPDATED = ['Shiny Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint', 'Splash Cursor', 'Decay Card'];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
@@ -140,6 +141,7 @@ export const CATEGORIES = [
       'Soft Aurora',
       'Aurora',
       'Plasma',
+      'Plasma Wave',
       'Particles',
       'Gradient Blinds',
       'Grainient',
@@ -152,6 +154,7 @@ export const CATEGORIES = [
       'Dither',
       'Faulty Terminal',
       'Ripple Grid',
+      'Dot Field',
       'Dot Grid',
       'Threads',
       'Hyperspeed',

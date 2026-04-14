@@ -65,7 +65,7 @@ const HyperspeedDemo = () => {
             position="relative"
             className="demo-container"
             overflow="hidden"
-            h={600}
+            h={500}
             cursor="pointer"
             p={0}
             mb={4}

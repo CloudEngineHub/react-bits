@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Icon, Text, Button } from '@chakra-ui/react';
+import { Box, Icon, Text } from '@chakra-ui/react';
 import { FaCircle, FaCode, FaSliders } from 'react-icons/fa6';
 
 import useComponentProps from '../../hooks/useComponentProps';
@@ -12,6 +12,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import useForceRerender from '../../hooks/useForceRerender';
 
 import cs1 from '../../assets/demo/cs1.webp';
@@ -160,7 +161,7 @@ const CardSwapDemo = () => {
                 pauseOnHover={pauseOnHover}
               >
                 <Card customClass="one" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #0D0716, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaCircle} mr={2} />
                       Smooth
@@ -182,7 +183,7 @@ const CardSwapDemo = () => {
                   </Box>
                 </Card>
                 <Card customClass="two" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #0D0716, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaCode} mr={2} />
                       Reliable
@@ -204,7 +205,7 @@ const CardSwapDemo = () => {
                   </Box>
                 </Card>
                 <Card customClass="three" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #0D0716, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaSliders} mr={2} />
                       Customizable
@@ -287,21 +288,18 @@ const CardSwapDemo = () => {
               }}
             />
 
-            <Button
-              fontSize="xs"
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              _hover={{ bg: '#271E37' }}
-              color="#fff"
-              h={8}
-              onClick={() => {
-                updateProp('easing', easing === 'elastic' ? 'linear' : 'elastic');
+            <PreviewSelect
+              title="Easing"
+              options={[
+                { value: 'elastic', label: 'Elastic' },
+                { value: 'linear', label: 'Linear' }
+              ]}
+              value={easing}
+              onChange={val => {
+                updateProp('easing', val);
                 forceRerender();
               }}
-            >
-              Easing: <Text color={'#a1a1aa'}>&nbsp;{easing}</Text>
-            </Button>
+            />
           </Customize>
 
           <PropTable data={propData} />

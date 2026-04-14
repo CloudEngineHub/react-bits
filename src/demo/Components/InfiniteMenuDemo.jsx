@@ -13,6 +13,7 @@ import { infiniteMenu } from '../../constants/code/Components/infiniteMenuCode';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import Customize from '@/components/common/Preview/Customize';
 
 const DEFAULT_PROPS = {
   scale: 1.0
@@ -78,10 +79,10 @@ const InfiniteMenuDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             {isHidden && <Spinner size="lg" position="absolute" />}
             <Box
-              h={600}
+              h={500}
               overflow="hidden"
               w="100%"
               p={0}
@@ -93,14 +94,17 @@ const InfiniteMenuDemo = () => {
             </Box>
           </Box>
 
-          <PreviewSlider
-            title="Scale"
-            min={0.1}
-            max={3}
-            step={0.1}
-            value={scale}
-            onChange={val => updateProp('scale', val)}
-          />
+          <Customize>
+            <PreviewSlider
+              title="Scale"
+              min={0.1}
+              max={3}
+              step={0.1}
+              value={scale}
+              onChange={val => updateProp('scale', val)}
+            />
+          </Customize>
+
           <PropTable data={propData} />
           <Dependencies dependencyList={['gl-matrix']} />
         </PreviewTab>

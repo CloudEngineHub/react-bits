@@ -594,6 +594,9 @@ export class WebGLRenderer {
     // Scale cellSize proportionally to render resolution so export matches preview
     const scaledCellSize = params.cellSize * renderScale;
 
+    const charColor = this._hexToRgb(params.charColor || '#ffffff');
+    const bgColorRgb = this._hexToRgb(params.backgroundColor || '#000000');
+
     gl.uniform1i(program.uniforms.u_image, 0);
     gl.uniform1i(program.uniforms.u_charAtlas, 1);
     gl.uniform1f(program.uniforms.u_cellSize, scaledCellSize);
@@ -603,9 +606,13 @@ export class WebGLRenderer {
     gl.uniform2f(program.uniforms.u_resolution, width, height);
     gl.uniform1f(program.uniforms.u_brightness, params.brightness ?? 1.0);
     gl.uniform1f(program.uniforms.u_contrast, params.contrast ?? 1.0);
+    gl.uniform1f(program.uniforms.u_gamma, params.gamma ?? 1.0);
     gl.uniform1f(program.uniforms.u_charBrightness, params.charBrightness ?? 1.0);
-    gl.uniform1f(program.uniforms.u_backgroundBlend, params.backgroundBlend ?? 0.0);
+    gl.uniform3f(program.uniforms.u_charColor, charColor[0], charColor[1], charColor[2]);
+    gl.uniform3f(program.uniforms.u_backgroundColor, bgColorRgb[0], bgColorRgb[1], bgColorRgb[2]);
+    gl.uniform1f(program.uniforms.u_backgroundBlend, params.backgroundBlend ?? 1.0);
     gl.uniform1f(program.uniforms.u_edgeEnhance, params.edgeEnhance ?? 0.0);
+    gl.uniform1f(program.uniforms.u_cellGap, params.cellGap ?? 0.0);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }

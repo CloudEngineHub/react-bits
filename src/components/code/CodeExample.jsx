@@ -13,7 +13,7 @@ const SKIP_KEYS = new Set(['tailwind', 'css', 'tsTailwind', 'tsCode', 'dependenc
  * Injects current prop values into a usage code string.
  * Updates changed props in place, and adds new props that don't exist yet.
  */
-function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demoOnlyProps = []) {
+export function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demoOnlyProps = []) {
   if (!usageCode || !props || !componentName) return usageCode;
 
   const demoOnlySet = new Set(demoOnlyProps);

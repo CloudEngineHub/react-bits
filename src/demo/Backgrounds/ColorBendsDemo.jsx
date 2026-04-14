@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -11,13 +11,14 @@ import PropTable from '../../components/common/Preview/PropTable';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
 
 import { colorBends } from '@/constants/code/Backgrounds/colorBendsCode';
 import ColorBends from '@/content/Backgrounds/ColorBends/ColorBends';
 
 const DEFAULT_PROPS = {
-  rotation: 0,
+  rotation: 90,
   autoRotate: 0,
   speed: 0.2,
   scale: 1,
@@ -25,17 +26,20 @@ const DEFAULT_PROPS = {
   warpStrength: 1,
   mouseInfluence: 1,
   parallax: 0.5,
-  noise: 0.1,
-  color: ''
+  noise: 0.15,
+  iterations: 1,
+  intensity: 1.5,
+  bandWidth: 6,
+  color: '#A855F7'
 };
 
 const ColorBendsDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { rotation, autoRotate, speed, scale, frequency, warpStrength, mouseInfluence, parallax, noise, color } = props;
+  const { rotation, autoRotate, speed, scale, frequency, warpStrength, mouseInfluence, parallax, noise, iterations, intensity, bandWidth, color } = props;
 
   const propData = useMemo(
     () => [
-      { name: 'rotation', type: 'number', default: '45', description: 'Base rotation angle in degrees.' },
+      { name: 'rotation', type: 'number', default: '90', description: 'Base rotation angle in degrees.' },
       { name: 'autoRotate', type: 'number', default: '0', description: 'Automatic rotation speed in degrees/sec.' },
       { name: 'speed', type: 'number', default: '0.2', description: 'Animation time scale of the shader.' },
       {
@@ -70,7 +74,10 @@ const ColorBendsDemo = () => {
         default: '0.5',
         description: 'Parallax factor shifting content with pointer.'
       },
-      { name: 'noise', type: 'number', default: '0.1', description: 'Adds subtle grain. 0 disables noise.' },
+      { name: 'noise', type: 'number', default: '0.15', description: 'Adds subtle grain. 0 disables noise.' },
+      { name: 'iterations', type: 'number', default: '1', description: 'Number of extra warp passes (1-5). Higher values create more complex patterns.' },
+      { name: 'intensity', type: 'number', default: '1.5', description: 'Brightness multiplier for the final color output.' },
+      { name: 'bandWidth', type: 'number', default: '6', description: 'Controls the width/falloff of each color band.' },
       { name: 'className', type: 'string', default: "''", description: 'Additional CSS classes for the container.' },
       { name: 'style', type: 'React.CSSProperties', default: '{}', description: 'Inline styles for the container.' }
     ],
@@ -81,7 +88,7 @@ const ColorBendsDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <ColorBends
               rotation={rotation}
               autoRotate={autoRotate}
@@ -92,6 +99,9 @@ const ColorBendsDemo = () => {
               mouseInfluence={mouseInfluence}
               parallax={parallax}
               noise={noise}
+              iterations={iterations}
+              intensity={intensity}
+              bandWidth={bandWidth}
               colors={[color]}
             />
 
@@ -112,10 +122,13 @@ const ColorBendsDemo = () => {
                 warpStrength,
                 mouseInfluence,
                 parallax,
-                noise
+                noise,
+                iterations,
+                intensity,
+                bandWidth
               }}
               defaultProps={{
-                rotation: 45,
+                rotation: 90,
                 speed: 0.2,
                 colors: ['#5227FF', '#FF9FFC', '#7cff67'],
                 transparent: true,
@@ -125,18 +138,20 @@ const ColorBendsDemo = () => {
                 warpStrength: 1,
                 mouseInfluence: 1,
                 parallax: 0.5,
-                noise: 0.1
+                noise: 0.15,
+                iterations: 1,
+                intensity: 1.5,
+                bandWidth: 6
               }}
             />
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Single Color
-              </Text>
-              <Input type="color" value={color} onChange={e => updateProp('color', e.target.value)} width="50px" />
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Color"
+              color={color}
+              setColor={v => updateProp('color', v)}
+            />
             <PreviewSlider
               title="Rotation (deg)"
               min={-180}
@@ -179,9 +194,9 @@ const ColorBendsDemo = () => {
             />
             <PreviewSlider
               title="Warp Strength"
-              min={0}
+              min={0.9}
               max={1}
-              step={0.05}
+              step={0.005}
               value={warpStrength}
               onChange={v => updateProp('warpStrength', v)}
             />
@@ -208,6 +223,30 @@ const ColorBendsDemo = () => {
               step={0.01}
               value={noise}
               onChange={v => updateProp('noise', v)}
+            />
+            <PreviewSlider
+              title="Iterations"
+              min={1}
+              max={5}
+              step={1}
+              value={iterations}
+              onChange={v => updateProp('iterations', v)}
+            />
+            <PreviewSlider
+              title="Intensity"
+              min={0.1}
+              max={2}
+              step={0.1}
+              value={intensity}
+              onChange={v => updateProp('intensity', v)}
+            />
+            <PreviewSlider
+              title="Band Width"
+              min={1}
+              max={20}
+              step={0.5}
+              value={bandWidth}
+              onChange={v => updateProp('bandWidth', v)}
             />
           </Customize>
 
