@@ -37,7 +37,7 @@
   align-items: start;
   max-width: 1324px;
   margin: 0 auto;
-  padding: 280px 24px 80px;
+  padding: clamp(120px, 16vw, 240px) 24px 80px;
   overflow: hidden;
 }
 
@@ -482,7 +482,7 @@
 
 @media (max-width: 1024px) {
   .ln-hero-content {
-    padding: 180px 24px 60px;
+    padding: clamp(110px, 14vw, 160px) 24px 60px;
   }
 
   .ln-hero-right {
@@ -500,7 +500,7 @@
 
 @media (max-width: 640px) {
   .ln-hero-content {
-    padding: 140px 16px 48px;
+    padding: clamp(90px, 16vw, 120px) 16px 48px;
   }
 
   .ln-hero-headline {

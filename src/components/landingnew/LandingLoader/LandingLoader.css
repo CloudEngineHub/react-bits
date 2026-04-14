@@ -41,8 +41,13 @@
 }
 
 /* navbar fades in */
+.landing-wrapper > header {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .landing-wrapper.ln-loaded > header {
-  animation: ln-fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 1;
 }
 
 /* hero slides up */
