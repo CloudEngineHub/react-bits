@@ -141,7 +141,7 @@ const BallpitDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" minh={500} maxh={500} overflow="hidden">
+          <Box position="relative" className="demo-container" minH={500} maxH={500} overflow="hidden">
             <RefreshButton onClick={forceRerender} />
             <Ballpit
               className="ballpit-demo"
