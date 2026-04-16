@@ -36,13 +36,21 @@ export function injectPropsIntoCode(usageCode, props, defaultProps, componentNam
     const newPropLine =
       typeof propValue === 'boolean' && propValue === true ? propName : `${propName}=${formattedValue}`;
 
-    const simplePropRegex = new RegExp(`(^[ \\t]*)(${propName})(?:=(?:"[^"]*"|\\{[^{}\\n]*\\}))?[ \\t]*$`, 'gm');
+    const simplePropRegex = new RegExp(
+      `(^[ \\t]*)(${propName})(?:=(?:"[^"\\n]*"|'[^'\\n]*'|\\{[^{}\\n]*\\}|[^\\s/>]+))?[ \\t]*(\\r?\\n|$)`,
+      'gm'
+    );
 
     const hasSimpleMatch = simplePropRegex.test(result);
     simplePropRegex.lastIndex = 0;
 
     if (hasSimpleMatch) {
-      result = result.replace(simplePropRegex, `$1${newPropLine}`);
+      let seen = false;
+      result = result.replace(simplePropRegex, (_, indent, __, lineEnding) => {
+        if (seen) return '';
+        seen = true;
+        return `${indent}${newPropLine}${lineEnding}`;
+      });
       continue;
     }
 
