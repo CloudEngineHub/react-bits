@@ -185,6 +185,7 @@ const Grainient = ({
       const res = program.uniforms.iResolution.value;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
+      renderer.render({ scene: mesh });
     };
 
     const ro = new ResizeObserver(setSize);

@@ -212,6 +212,7 @@ const Grainient: React.FC<GrainientProps> = ({
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
+      renderer.render({ scene: mesh });
     };
 
     const ro = new ResizeObserver(setSize);
