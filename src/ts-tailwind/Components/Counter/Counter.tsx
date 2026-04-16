@@ -160,7 +160,8 @@ export default function Counter({
     paddingRight: horizontalPadding,
     lineHeight: 1,
     color: textColor,
-    fontWeight
+    fontWeight,
+    direction: "ltr"
   };
 
   const gradientContainerStyle: React.CSSProperties = {

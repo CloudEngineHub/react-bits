@@ -137,7 +137,8 @@ export default function Counter({
     paddingLeft: horizontalPadding,
     paddingRight: horizontalPadding,
     color: textColor,
-    fontWeight
+    fontWeight,
+    direction: "ltr"
   };
 
   const defaultTopGradientStyle: React.CSSProperties = {
