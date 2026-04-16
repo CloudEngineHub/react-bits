@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { FiArrowRight } from 'react-icons/fi';
 import { FaGithub } from 'react-icons/fa6';
 import './CTA.css';
@@ -8,7 +9,13 @@ const CTA = () => {
     <section className="ln-cta-section">
       <div className="ln-cta-glow" />
 
-      <div className="ln-cta-inner">
+      <motion.div
+        className="ln-cta-inner"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+      >
         <div className="ln-cta-card-wrapper">
           <div className="ln-cta-card-border" />
           <div className="ln-cta-card">
@@ -36,7 +43,7 @@ const CTA = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

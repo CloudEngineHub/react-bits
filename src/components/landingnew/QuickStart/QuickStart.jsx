@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { motion } from 'motion/react';
 import { FiCheck, FiCopy, FiChevronDown } from 'react-icons/fi';
 import './QuickStart.css';
 
@@ -29,11 +30,23 @@ const QuickStart = () => {
   return (
     <section className="ln-qs-section">
       <div className="ln-qs-inner">
-        <div className="ln-qs-header">
+        <motion.div
+          className="ln-qs-header"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <h2 className="ln-qs-title">Get started in seconds</h2>
-        </div>
+        </motion.div>
 
-        <div className="ln-qs-terminal-wrap">
+        <motion.div
+          className="ln-qs-terminal-wrap"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.07, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <div className="ln-qs-glow" />
           <div className="ln-qs-terminal">
           {/* tab bar with tool selector + runner dropdown */}
@@ -93,7 +106,7 @@ const QuickStart = () => {
           </div>
         </div>
           <p className="ln-qs-hint">Works with any React project. Components are copied into your codebase.</p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

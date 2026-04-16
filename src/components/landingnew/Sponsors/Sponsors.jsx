@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { ArrowRight, Gem, Crown, Medal } from 'lucide-react';
 import {
   diamondSponsors,
@@ -63,10 +64,22 @@ const SILVER_COLS = 5;
 const Sponsors = () => (
   <section className="ln-sp-section">
     <div className="ln-sp-inner">
-      <h2 className="ln-sp-title">Sponsors</h2>
+      <motion.h2
+        className="ln-sp-title"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+      >Sponsors</motion.h2>
 
       {hasDiamondSponsors && (
-        <div className="ln-sp-tier">
+        <motion.div
+          className="ln-sp-tier"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.07, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <div className="ln-sp-tier-header">
             <span className="ln-sp-tier-badge ln-sp-tier-badge--diamond">
               <Gem size={12} /> Diamond
@@ -77,11 +90,17 @@ const Sponsors = () => (
               <SponsorCard key={s.id} sponsor={s} tier="diamond" />
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
       {hasPlatinumSponsors && (
-        <div className="ln-sp-tier">
+        <motion.div
+          className="ln-sp-tier"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.14, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <div className="ln-sp-tier-header">
             <span className="ln-sp-tier-badge ln-sp-tier-badge--platinum">
               <Crown size={12} /> Platinum
@@ -95,11 +114,17 @@ const Sponsors = () => (
               <EmptySlot key={`empty-platinum-${i}`} tier="platinum" />
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
       {hasSilverSponsors && (
-        <div className="ln-sp-tier">
+        <motion.div
+          className="ln-sp-tier"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, delay: 0.21, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <div className="ln-sp-tier-header">
             <span className="ln-sp-tier-badge ln-sp-tier-badge--silver">
               <Medal size={12} /> Silver
@@ -113,10 +138,17 @@ const Sponsors = () => (
               <EmptySlot key={`empty-silver-${i}`} tier="silver" />
             ))}
           </div>
-        </div>
-      )}
+        </motion.div>
+      )
+      }
 
-      <div className="ln-sp-footer">
+      <motion.div
+        className="ln-sp-footer"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5, delay: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
+      >
         <Link to="/sponsors" className="ln-sp-footer-link">
           View all sponsors <ArrowRight size={12} />
         </Link>
@@ -126,7 +158,7 @@ const Sponsors = () => (
         >
           Become a sponsor <ArrowRight size={12} />
         </a>
-      </div>
+      </motion.div>
     </div>
   </section>
 );

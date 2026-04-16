@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { AiFillHeart } from 'react-icons/ai';
 import ReactBitsLogo from '../../../assets/logos/react-bits-logo.svg';
 import './Footer.css';
@@ -9,7 +10,13 @@ const Footer = () => (
 
     <div className="ln-footer-separator" />
 
-    <div className="ln-footer-inner">
+    <motion.div
+      className="ln-footer-inner"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+    >
       <div className="ln-footer-top">
         <div className="ln-footer-brand">
           <img src={ReactBitsLogo} alt="React Bits" className="ln-footer-logo" />
@@ -47,7 +54,7 @@ const Footer = () => (
         </p>
         <p className="ln-footer-copy">© {new Date().getFullYear()} React Bits</p>
       </div>
-    </div>
+    </motion.div>
   </footer>
 );
 
