@@ -141,6 +141,7 @@
   overflow-y: auto;
   z-index: 10;
   pointer-events: auto;
+  opacity: 0;
 }
 
 [data-position='left'] .staggered-menu-panel {
@@ -156,6 +157,7 @@
   width: clamp(260px, 38vw, 420px);
   pointer-events: none;
   z-index: 5;
+  opacity: 0;
 }
 
 [data-position='left'] .sm-prelayers {
@@ -170,6 +172,7 @@
   height: 100%;
   width: 100%;
   transform: translateX(0);
+  opacity: 0;
 }
 
 .sm-panel-inner {
