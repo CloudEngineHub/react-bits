@@ -1,10 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { FiCheck, FiCopy, FiChevronDown } from 'react-icons/fi';
+import { useInstallation } from '../../../hooks/useInstallation';
 import './QuickStart.css';
 
 const TOOLS = ['shadcn', 'jsrepo'];
 const RUNNERS = ['npx', 'pnpm dlx', 'bunx --bun', 'yarn dlx'];
+
+const PKG_TO_RUNNER = { npm: 'npx', pnpm: 'pnpm dlx', bun: 'bunx --bun', yarn: 'yarn dlx' };
+const RUNNER_TO_PKG = { npx: 'npm', 'pnpm dlx': 'pnpm', 'bunx --bun': 'bun', 'yarn dlx': 'yarn' };
 
 const COMMANDS = {
   shadcn: (runner) => `${runner} shadcn@latest add @react-bits/Aurora-TS-TW`,
@@ -12,13 +16,13 @@ const COMMANDS = {
 };
 
 const QuickStart = () => {
-  const [tool, setTool] = useState(0);
-  const [runner, setRunner] = useState(0);
+  const { cliTool, setCliTool, packageManager, setPackageManager } = useInstallation();
   const [copied, setCopied] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const timerRef = useRef(null);
 
-  const command = COMMANDS[TOOLS[tool]](RUNNERS[runner]);
+  const runner = PKG_TO_RUNNER[packageManager] ?? 'npx';
+  const command = COMMANDS[cliTool]?.(runner) ?? COMMANDS.shadcn(runner);
 
   const copy = useCallback(() => {
     navigator.clipboard.writeText(command);
@@ -52,11 +56,11 @@ const QuickStart = () => {
           {/* tab bar with tool selector + runner dropdown */}
           <div className="ln-qs-tab-bar">
             <div className="ln-qs-tabs">
-              {TOOLS.map((t, i) => (
+              {TOOLS.map((t) => (
                 <button
                   key={t}
-                  className={`ln-qs-tab${tool === i ? ' ln-qs-tab--active' : ''}`}
-                  onClick={() => setTool(i)}
+                  className={`ln-qs-tab${cliTool === t ? ' ln-qs-tab--active' : ''}`}
+                  onClick={() => setCliTool(t)}
                 >
                   {t}
                 </button>
@@ -69,18 +73,18 @@ const QuickStart = () => {
                   className="ln-qs-runner-trigger"
                   onClick={() => setDropOpen((v) => !v)}
                 >
-                  {RUNNERS[runner]}
+                  {runner}
                   <FiChevronDown
                     size={11}
                     className={`ln-qs-caret${dropOpen ? ' open' : ''}`}
                   />
                 </button>
                 <div className={`ln-qs-runner-menu${dropOpen ? ' open' : ''}`}>
-                  {RUNNERS.map((r, i) => (
+                  {RUNNERS.map((r) => (
                     <button
                       key={r}
-                      className={`ln-qs-runner-item${runner === i ? ' active' : ''}`}
-                      onClick={() => { setRunner(i); setDropOpen(false); }}
+                      className={`ln-qs-runner-item${runner === r ? ' active' : ''}`}
+                      onClick={() => { setPackageManager(RUNNER_TO_PKG[r]); setDropOpen(false); }}
                     >
                       {r}
                     </button>
