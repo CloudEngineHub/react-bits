@@ -102,7 +102,7 @@ const PixelTransitionDemo = () => {
               key={key}
               firstContent={
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
+                  src="https://i.kym-cdn.com/entries/icons/original/000/054/270/rigrig.jpg"
                   alt="Default"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
