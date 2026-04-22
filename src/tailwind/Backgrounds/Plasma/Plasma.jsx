@@ -92,24 +92,31 @@ export const Plasma = ({
 
   useEffect(() => {
     if (!containerRef.current) return;
+    const containerEl = containerRef.current;
 
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
 
     const directionMultiplier = direction === 'reverse' ? -1.0 : 1.0;
 
-    const renderer = new Renderer({
-      webgl: 2,
-      alpha: true,
-      antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
-    });
+    let renderer;
+    try {
+      renderer = new Renderer({
+        webgl: 2,
+        alpha: true,
+        antialias: false,
+        dpr: Math.min(window.devicePixelRatio || 1, 2)
+      });
+    } catch {
+      return;
+    }
     const gl = renderer.gl;
+    if (!gl) return;
     const canvas = gl.canvas;
     canvas.style.display = 'block';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
-    containerRef.current.appendChild(canvas);
+    containerEl.appendChild(canvas);
 
     const geometry = new Triangle(gl);
 
@@ -134,7 +141,7 @@ export const Plasma = ({
 
     const handleMouseMove = e => {
       if (!mouseInteractive) return;
-      const rect = containerRef.current.getBoundingClientRect();
+      const rect = containerEl.getBoundingClientRect();
       mousePos.current.x = e.clientX - rect.left;
       mousePos.current.y = e.clientY - rect.top;
       const mouseUniform = program.uniforms.uMouse.value;
@@ -143,11 +150,11 @@ export const Plasma = ({
     };
 
     if (mouseInteractive) {
-      containerRef.current.addEventListener('mousemove', handleMouseMove);
+      containerEl.addEventListener('mousemove', handleMouseMove);
     }
 
     const setSize = () => {
-      const rect = containerRef.current.getBoundingClientRect();
+      const rect = containerEl.getBoundingClientRect();
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       renderer.setSize(width, height);
@@ -157,12 +164,16 @@ export const Plasma = ({
     };
 
     const ro = new ResizeObserver(setSize);
-    ro.observe(containerRef.current);
+    ro.observe(containerEl);
     setSize();
 
     let raf = 0;
+    let contextLost = false;
+    let isVisible = true;
     const t0 = performance.now();
+
     const loop = t => {
+      if (contextLost || !isVisible) return;
       let timeValue = (t - t0) * 0.001;
       if (direction === 'pingpong') {
         const pingpongDuration = 10;
@@ -179,20 +190,46 @@ export const Plasma = ({
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
+
+    const handleContextLost = (e) => {
+      e.preventDefault();
+      contextLost = true;
+      cancelAnimationFrame(raf);
+    };
+    const handleContextRestored = () => {
+      contextLost = false;
+      if (isVisible) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+    canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+    const io = new IntersectionObserver(([entry]) => {
+      const wasVisible = isVisible;
+      isVisible = entry.isIntersecting;
+      if (isVisible && !wasVisible && !contextLost) {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(loop);
+      }
+    }, { threshold: 0 });
+    io.observe(containerEl);
+
     raf = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      if (mouseInteractive && containerRef.current) {
-        containerRef.current.removeEventListener('mousemove', handleMouseMove);
+      io.disconnect();
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+      if (mouseInteractive && containerEl) {
+        containerEl.removeEventListener('mousemove', handleMouseMove);
       }
       try {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        containerRef.current?.removeChild(canvas);
-      } catch {
-        console.warn('Canvas already removed from container');
-      }
+        containerEl?.removeChild(canvas);
+      } catch {}
     };
   }, [color, speed, direction, scale, opacity, mouseInteractive]);
 
