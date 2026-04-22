@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '../../common/SVGComponents';
 import { useStars } from '../../../hooks/useStars';
@@ -215,57 +216,56 @@ const Navbar = ({ showDocs }) => {
           </button>
         </div>
 
-        {menuOpen && (
+        {menuOpen && !showDocs && (
+          <div className="ln-navbar-mobile-menu">
+            {NAV_LINKS.map(({ label, to }) => (
+              <Link key={to} className="ln-navbar-mobile-link" to={to} onClick={() => setMenuOpen(false)}>
+                {label}
+              </Link>
+            ))}
+            <span className="ln-navbar-mobile-link">
+              Community <span className="ln-navbar-soon">Soon</span>
+            </span>
+          </div>
+        )}
+
+        {menuOpen && showDocs && createPortal(
           <>
-            {showDocs && <div className="ln-navbar-mobile-backdrop" onClick={() => setMenuOpen(false)} />}
-            <div className={`ln-navbar-mobile-menu${showDocs ? ' ln-navbar-mobile-menu-docs' : ''}`}>
-              {showDocs ? (
-                <>
-                  <div className="ln-navbar-mobile-scroll">
-                    {CATEGORIES.map((cat, i) => {
-                      const slug = str => str.replace(/\s+/g, '-').toLowerCase();
-                      return (
-                        <div className="ln-navbar-mobile-section" key={cat.name}>
-                          <span className="ln-navbar-mobile-label">{cat.name}</span>
-                          {cat.subcategories.map(sub => (
-                            <Link
-                              key={sub}
-                              className="ln-navbar-mobile-link"
-                              to={`/${slug(cat.name)}/${slug(sub)}`}
-                              onClick={() => setMenuOpen(false)}
-                            >
-                              {sub}
+            <div className="ln-navbar-mobile-backdrop" onClick={() => setMenuOpen(false)} />
+            <div className="ln-navbar-mobile-menu ln-navbar-mobile-menu-docs">
+              <div className="ln-navbar-mobile-scroll">
+                {CATEGORIES.map((cat, i) => {
+                  const slug = str => str.replace(/\s+/g, '-').toLowerCase();
+                  return (
+                    <div className="ln-navbar-mobile-section" key={cat.name}>
+                      <span className="ln-navbar-mobile-label">{cat.name}</span>
+                      {cat.subcategories.map(sub => (
+                        <Link
+                          key={sub}
+                          className="ln-navbar-mobile-link"
+                          to={`/${slug(cat.name)}/${slug(sub)}`}
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          {sub}
+                        </Link>
+                      ))}
+                      {i === 0 && (
+                        <>
+                          <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>Tools</span>
+                          {TOOLS.map(tool => (
+                            <Link key={tool.id} className="ln-navbar-mobile-link" to={tool.path} onClick={() => setMenuOpen(false)}>
+                              {tool.label}
                             </Link>
                           ))}
-                          {i === 0 && (
-                            <>
-                              <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>Tools</span>
-                              {TOOLS.map(tool => (
-                                <Link key={tool.id} className="ln-navbar-mobile-link" to={tool.path} onClick={() => setMenuOpen(false)}>
-                                  {tool.label}
-                                </Link>
-                              ))}
-                            </>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : (
-                <>
-                  {NAV_LINKS.map(({ label, to }) => (
-                    <Link key={to} className="ln-navbar-mobile-link" to={to} onClick={() => setMenuOpen(false)}>
-                      {label}
-                    </Link>
-                  ))}
-                  <span className="ln-navbar-mobile-link">
-                    Community <span className="ln-navbar-soon">Soon</span>
-                  </span>
-                </>
-              )}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </>
+          </>,
+          document.body
         )}
       </div>
     </header>
