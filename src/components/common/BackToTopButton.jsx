@@ -39,14 +39,14 @@ const BackToTopButton = () => {
       fontWeight={500}
       rounded="xl"
       py={4}
-      right="2em"
+      right={{ base: '12px', md: '2em' }}
       position="fixed"
       zIndex={98}
       boxShadow="10px 0 25px rgba(0, 0, 6, 1)"
       transition="0.3s ease"
       className="back-to-top"
       opacity={visible ? 1 : 0}
-      bottom={visible ? '2.5em' : '1em'}
+      bottom={visible ? { base: '6em', md: '2.5em' } : '1em'}
       cursor={visible ? 'pointer' : 'default'}
       onClick={() => visible && scrollToTop()}
     >

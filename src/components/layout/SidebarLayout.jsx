@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import Navbar from '../landingnew/Navbar/Navbar';
 import Sidebar from '../../components/navs/Sidebar';
 import ProCard from '../common/ProCard';
+import ProCardMobile from '../common/ProCardMobile';
 import SponsorsCard from '../common/SponsorsCard';
 
 export default function SidebarLayout({ children }) {
@@ -20,6 +21,7 @@ export default function SidebarLayout({ children }) {
           </Box>
         </aside>
       </section>
+      <ProCardMobile />
     </main>
   );
 }

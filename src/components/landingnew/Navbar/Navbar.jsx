@@ -226,6 +226,18 @@ const Navbar = ({ showDocs }) => {
             <span className="ln-navbar-mobile-link">
               Community <span className="ln-navbar-soon">Soon</span>
             </span>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ln-navbar-mobile-link"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <FaGithub size={14} /> GitHub
+              </span>
+              <span style={{ opacity: 0.6 }}>{formattedStars}</span>
+            </a>
           </div>
         )}
 

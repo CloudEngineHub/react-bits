@@ -242,6 +242,14 @@
   }
 
   .ln-navbar-pro {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+    border-width: 3px;
+    border-radius: 8px;
+  }
+
+  .ln-navbar-github {
     display: none;
   }
 }
@@ -428,6 +436,49 @@
 .ln-navbar-mobile-link:hover::after {
   opacity: 1;
   transform: translateX(0);
+}
+
+.ln-navbar-mobile-pro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background: linear-gradient(125deg, rgba(124, 58, 237, 0.35), rgba(168, 85, 247, 0.35), rgba(217, 70, 239, 0.3));
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.22);
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.ln-navbar-mobile-pro:active {
+  transform: scale(0.985);
+}
+
+.ln-navbar-mobile-pro-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #fff;
+  color: #7c3aed;
+  line-height: 1;
+}
+
+.ln-navbar-mobile-pro-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.ln-navbar-mobile-pro-arrow {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
 }
 
 @media (max-width: 768px) {

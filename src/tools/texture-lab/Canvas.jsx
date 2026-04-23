@@ -532,7 +532,14 @@ export default function Canvas({
         )}
       </Flex>
 
-      <Text position="absolute" bottom={4} right={4} fontSize="10px" color="var(--border-primary)">
+      <Text
+        position="absolute"
+        bottom={4}
+        right={4}
+        fontSize="10px"
+        color="var(--border-primary)"
+        display={{ base: 'none', lg: 'block' }}
+      >
         Scroll to zoom • Space + Drag to pan
       </Text>
     </Box>

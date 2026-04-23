@@ -745,7 +745,7 @@ export default function TextureLab({ toolSelector }) {
           as="button"
           display={{ base: 'flex', lg: 'none' }}
           position="absolute"
-          bottom={6}
+          bottom={20}
           right={4}
           align="center"
           gap={2}

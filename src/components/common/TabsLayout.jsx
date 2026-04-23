@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import TabsFooter from './TabsFooter';
 
-import { Tabs, Icon, Flex, Tooltip, Box } from '@chakra-ui/react';
+import { Tabs, Icon, Flex, Tooltip, Box, Menu, Portal } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
-import { RotateCcw, Clipboard, Check } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { RotateCcw, Clipboard, Check, MoreHorizontal, Palette } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
@@ -13,6 +13,7 @@ import { useOptions } from '../context/OptionsContext/useOptions';
 import { colors } from '../../constants/colors';
 import PropTable from './Preview/PropTable';
 import CodeExample, { injectPropsIntoCode } from '../code/CodeExample';
+import OpenInStudioButton, { buildStudioUrl } from './Preview/OpenInStudioButton';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
@@ -174,6 +175,16 @@ const TabsLayout = ({ children, className }) => {
   const propTableProps = contentMap.PreviewTab
     ? findChildProps(contentMap.PreviewTab.props.children, PropTable)
     : null;
+  const studioButtonProps = contentMap.PreviewTab
+    ? findChildProps(contentMap.PreviewTab.props.children, OpenInStudioButton)
+    : null;
+
+  const navigate = useNavigate();
+  const handleOpenStudio = useCallback(() => {
+    if (!studioButtonProps) return;
+    const { backgroundId, currentProps: sbCurrent = {}, defaultProps: sbDefault = {} } = studioButtonProps;
+    navigate(buildStudioUrl(backgroundId, sbCurrent, sbDefault));
+  }, [studioButtonProps, navigate]);
 
   const { languagePreset, stylePreset } = useOptions();
   const [copied, setCopied] = useState(false);
@@ -200,21 +211,31 @@ const TabsLayout = ({ children, className }) => {
     });
   }, [codeExampleProps, propTableProps, languagePreset, stylePreset, currentProps, defaultProps, demoOnlyProps, computedProps]);
 
+  const showFavorite = favoriteKey && category !== 'get-started';
+  const hasOverflowActions = hasChanges || showFavorite || Boolean(codeExampleProps) || Boolean(studioButtonProps);
+
   return (
     <Tabs.Root w="100%" variant="plain" lazyMount defaultValue="preview" className={className}>
       <Tabs.List w="100%">
-        <Flex gap={2} justifyContent="space-between" alignItems="flex-start" w="100%" wrap="wrap">
-          <Flex gap={2} wrap="wrap" minW="0" flex="1">
-            <Tabs.Trigger value="preview" {...TAB_STYLE_PROPS}>
+        <Flex gap={2} justifyContent="space-between" alignItems="center" w="100%" wrap="nowrap">
+          {/* Primary tabs */}
+          <Flex gap={2} wrap="nowrap" flex={{ base: '1 1 0', md: '0 0 auto' }} minW="0">
+            <Tabs.Trigger value="preview" {...TAB_STYLE_PROPS} flex={{ base: '1 1 0', md: '0 0 auto' }}>
               <Icon as={FiEye} /> Preview
             </Tabs.Trigger>
 
-            <Tabs.Trigger value="code" {...TAB_STYLE_PROPS}>
+            <Tabs.Trigger value="code" {...TAB_STYLE_PROPS} flex={{ base: '1 1 0', md: '0 0 auto' }}>
               <Icon as={FiCode} /> Code
             </Tabs.Trigger>
           </Flex>
 
-          <Flex alignItems="center" gap={2} flexShrink={0}>
+          {/* Desktop: full action buttons */}
+          <Flex
+            alignItems="center"
+            gap={2}
+            flexShrink={0}
+            display={{ base: 'none', md: 'flex' }}
+          >
             {hasChanges && (
               <Box
                 as="button"
@@ -231,7 +252,7 @@ const TabsLayout = ({ children, className }) => {
               </Box>
             )}
 
-            {favoriteKey && category !== 'get-started' && (
+            {showFavorite && (
               <Tooltip.Root openDelay={250} closeDelay={100} positioning={{ placement: 'left', gutter: 8 }}>
                 <Tooltip.Trigger asChild>
                   <Box
@@ -292,6 +313,147 @@ const TabsLayout = ({ children, className }) => {
               </Box>
             )}
           </Flex>
+
+          {/* Mobile: overflow menu */}
+          {hasOverflowActions && (
+            <Box display={{ base: 'flex', md: 'none' }} flexShrink={0}>
+              <Menu.Root
+                positioning={{
+                  placement: 'bottom-end',
+                  gutter: 12,
+                  offset: { mainAxis: 6, crossAxis: 0 },
+                  flip: false,
+                  overflowPadding: 0
+                }}
+              >
+                <Menu.Trigger asChild>
+                  <Box
+                    as="button"
+                    aria-label="More actions"
+                    display="flex"
+                    cursor="pointer"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                    {...TAB_STYLE_PROPS}
+                    w={10}
+                    px={0}
+                    position="relative"
+                  >
+                    <MoreHorizontal size={18} color="#fff" />
+                    {(hasChanges || isSaved) && (
+                      <Box
+                        position="absolute"
+                        top="6px"
+                        right="6px"
+                        w="6px"
+                        h="6px"
+                        borderRadius="full"
+                        bg={colors.accent}
+                      />
+                    )}
+                  </Box>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content
+                      bg={colors.bgBody}
+                      border={`1px solid ${colors.borderPrimary}`}
+                      borderRadius="10px"
+                      p={1}
+                      minW="180px"
+                      boxShadow="0 10px 30px rgba(0, 0, 0, 0.5)"
+                      zIndex={1500}
+                      transformOrigin="top right"
+                    >
+                      {hasChanges && (
+                        <Menu.Item
+                          value="reset"
+                          onSelect={resetProps}
+                          display="flex"
+                          alignItems="center"
+                          gap={3}
+                          px={3}
+                          py={2}
+                          fontSize="14px"
+                          color="#fff"
+                          borderRadius="8px"
+                          cursor="pointer"
+                          _hover={{ bg: colors.bgHover }}
+                        >
+                          <RotateCcw size={16} color="#fff" /> Reset to defaults
+                        </Menu.Item>
+                      )}
+                      {showFavorite && (
+                        <Menu.Item
+                          value="favorite"
+                          onSelect={toggleFavorite}
+                          display="flex"
+                          alignItems="center"
+                          gap={3}
+                          px={3}
+                          py={2}
+                          fontSize="14px"
+                          color="#fff"
+                          borderRadius="8px"
+                          cursor="pointer"
+                          _hover={{ bg: colors.bgHover }}
+                        >
+                          <Icon
+                            as={isSaved ? RiHeartFill : RiHeartLine}
+                            color={isSaved ? '#c084fc' : '#fff'}
+                            boxSize={4}
+                          />
+                          {isSaved ? 'Remove from favorites' : 'Add to favorites'}
+                        </Menu.Item>
+                      )}
+                      {codeExampleProps && (
+                        <Menu.Item
+                          value="copy-prompt"
+                          onSelect={handleCopyPrompt}
+                          display="flex"
+                          alignItems="center"
+                          gap={3}
+                          px={3}
+                          py={2}
+                          fontSize="14px"
+                          color="#fff"
+                          borderRadius="8px"
+                          cursor="pointer"
+                          _hover={{ bg: colors.bgHover }}
+                        >
+                          {copied ? (
+                            <Check size={16} color={colors.accent} />
+                          ) : (
+                            <Clipboard size={16} color="#fff" />
+                          )}
+                          {copied ? 'Copied!' : 'Copy AI prompt'}
+                        </Menu.Item>
+                      )}
+                      {studioButtonProps && (
+                        <Menu.Item
+                          value="open-studio"
+                          onSelect={handleOpenStudio}
+                          display="flex"
+                          alignItems="center"
+                          gap={3}
+                          px={3}
+                          py={2}
+                          fontSize="14px"
+                          color="#fff"
+                          borderRadius="8px"
+                          cursor="pointer"
+                          _hover={{ bg: colors.bgHover }}
+                        >
+                          <Palette size={16} color="#fff" /> Open in BG Studio
+                        </Menu.Item>
+                      )}
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+            </Box>
+          )}
         </Flex>
       </Tabs.List>
 
