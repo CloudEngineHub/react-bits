@@ -130,11 +130,11 @@ const ShinyTextDemo = () => {
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Text Color" color={color} setColor={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom title="Text Color" color={color} onChange={val => updateProp('color', val)} />
             <PreviewColorPickerCustom
               title="Shine Color"
               color={shineColor}
-              setColor={val => updateProp('shineColor', val)}
+              onChange={val => updateProp('shineColor', val)}
             />
 
             <PreviewSlider

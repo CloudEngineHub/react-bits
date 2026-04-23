@@ -101,11 +101,11 @@ const FlowingMenuDemo = () => {
 
           <Customize>
             <PreviewSlider title="Speed" min={1} max={60} step={1} value={speed} onChange={v => updateProp('speed', v)} />
-            <PreviewColorPickerCustom title="Text Color" color={textColor} setColor={v => updateProp('textColor', v)} />
-            <PreviewColorPickerCustom title="Background Color" color={bgColor} setColor={v => updateProp('bgColor', v)} />
-            <PreviewColorPickerCustom title="Marquee BG Color" color={marqueeBgColor} setColor={v => updateProp('marqueeBgColor', v)} />
-            <PreviewColorPickerCustom title="Marquee Text Color" color={marqueeTextColor} setColor={v => updateProp('marqueeTextColor', v)} />
-            <PreviewColorPickerCustom title="Border Color" color={borderColor} setColor={v => updateProp('borderColor', v)} />
+            <PreviewColorPickerCustom title="Text Color" color={textColor} onChange={v => updateProp('textColor', v)} />
+            <PreviewColorPickerCustom title="Background Color" color={bgColor} onChange={v => updateProp('bgColor', v)} />
+            <PreviewColorPickerCustom title="Marquee BG Color" color={marqueeBgColor} onChange={v => updateProp('marqueeBgColor', v)} />
+            <PreviewColorPickerCustom title="Marquee Text Color" color={marqueeTextColor} onChange={v => updateProp('marqueeTextColor', v)} />
+            <PreviewColorPickerCustom title="Border Color" color={borderColor} onChange={v => updateProp('borderColor', v)} />
           </Customize>
 
           <PropTable data={propData} />

@@ -150,7 +150,7 @@ const ColorBendsDemo = () => {
             <PreviewColorPickerCustom
               title="Color"
               color={color}
-              setColor={v => updateProp('color', v)}
+              onChange={v => updateProp('color', v)}
             />
             <PreviewSlider
               title="Rotation (deg)"
