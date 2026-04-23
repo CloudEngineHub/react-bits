@@ -58,7 +58,7 @@ const SpotlightCardDemo = () => {
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Spotlight Color" color={spotlightColor} setColor={v => updateProp('spotlightColor', v)} />
+            <PreviewColorPickerCustom title="Spotlight Color" color={spotlightColor} onChange={v => updateProp('spotlightColor', v)} />
           </Customize>
 
           <PropTable data={propData} />
