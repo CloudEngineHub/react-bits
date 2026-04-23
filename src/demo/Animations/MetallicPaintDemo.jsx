@@ -234,7 +234,7 @@ const MetallicPaintDemo = () => {
             <PreviewColorPickerCustom
               title="Tint Color"
               color={tintColor}
-              setColor={val => {
+              onChange={val => {
                 updateProp('tintColor', val);
                 forceRerender();
               }}
@@ -242,7 +242,7 @@ const MetallicPaintDemo = () => {
             <PreviewColorPickerCustom
               title="Dark Color"
               color={darkColor}
-              setColor={val => {
+              onChange={val => {
                 updateProp('darkColor', val);
                 forceRerender();
               }}
@@ -250,7 +250,7 @@ const MetallicPaintDemo = () => {
             <PreviewColorPickerCustom
               title="Light Color"
               color={lightColor}
-              setColor={val => {
+              onChange={val => {
                 updateProp('lightColor', val);
                 forceRerender();
               }}
