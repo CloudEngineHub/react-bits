@@ -143,9 +143,10 @@ Please read the [contribution guide](https://github.com/DavidHDev/react-bits/blo
 
 ## 🌐 Official Ports
 
-| Framework | Link                                  |
-| --------- | ------------------------------------- |
-| Vue.js    | [vue-bits.dev](https://vue-bits.dev/) |
+| Framework | Link                                      |
+| --------- | ----------------------------------------- |
+| Vue.js    | [vue-bits.dev](https://vue-bits.dev/)     |
+| Svelte    | [sveltebits.xyz](https://sveltebits.xyz/) |
 
 ## 📊 Stats
 

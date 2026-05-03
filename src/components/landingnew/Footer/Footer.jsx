@@ -41,6 +41,9 @@ const Footer = () => (
             <a href="https://vue-bits.dev/" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
               Vue Bits
             </a>
+            <a href="https://sveltebits.xyz/" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
+              Svelte Bits
+            </a>
           </div>
         </nav>
       </div>
