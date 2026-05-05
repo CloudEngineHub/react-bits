@@ -154,7 +154,7 @@ const GradientBlindsDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider hasChanges={hasChanges} resetProps={resetProps}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} hasChanges={hasChanges} resetProps={resetProps}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
