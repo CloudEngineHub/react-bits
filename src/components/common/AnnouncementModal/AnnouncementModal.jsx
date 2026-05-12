@@ -161,7 +161,7 @@ const AnnouncementModal = () => {
                 </h2>
 
                 <p id="announcement-modal-description" className="announcement-modal-description">
-                  The April update adds 57 new animated UI blocks to the Pro library, bringing the total to 158+ blocks!
+                  The May update adds 13 new components, bringing the total to 100+, plus 3 new templates &mdash; including a free portfolio template!
                 </p>
 
                 <p id="announcement-modal-description" className="announcement-modal-description">
