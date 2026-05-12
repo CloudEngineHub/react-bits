@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import { Box, Flex } from '@chakra-ui/react';
 
@@ -31,6 +31,11 @@ const SilkDemo = () => {
   const { speed, scale, color, noiseIntensity, rotation } = props;
 
   const [key, forceRerender] = useForceRerender();
+
+  const handleReset = useCallback(() => {
+    resetProps();
+    forceRerender();
+  }, [resetProps, forceRerender]);
 
   const propData = useMemo(
     () => [
@@ -69,7 +74,7 @@ const SilkDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider reset={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={handleReset} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>

@@ -13,7 +13,6 @@ import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
-import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -33,8 +32,6 @@ const DEFAULT_PROPS = {
 const PlasmaDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { color, speed, direction, scale, opacity, mouseInteractive } = props;
-  const [key, forceRerender] = useForceRerender();
-
   const propData = useMemo(
     () => [
       {
@@ -78,12 +75,11 @@ const PlasmaDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges} forceRerender={forceRerender}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Plasma
-              key={key}
               color={color}
               speed={speed}
               direction={direction}
