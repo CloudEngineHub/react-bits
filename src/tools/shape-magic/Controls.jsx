@@ -26,55 +26,15 @@ import {
   generateReactComponent,
   generateCSSClipPath
 } from './svgRenderers';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 const ColorInput = ({ label, value, onChange }) => (
-  <Flex align="center" gap={2}>
-    <Text fontSize="12px" color="#988BC7" minW="60px">
-      {label}
-    </Text>
-    <Flex
-      position="relative"
-      w="32px"
-      h="32px"
-      borderRadius="6px"
-      border="1px solid #271E37"
-      overflow="hidden"
-      bg={value}
-      flexShrink={0}
-    >
-      <Input
-        type="color"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        position="absolute"
-        top={0}
-        left={0}
-        w="100%"
-        h="100%"
-        opacity={0}
-        cursor="pointer"
-      />
-    </Flex>
-    <Input
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      size="sm"
-      bg="#170D27"
-      border="1px solid #271E37"
-      borderRadius="6px"
-      color="#fff"
-      fontSize="12px"
-      px={2}
-      h="32px"
-      fontFamily="mono"
-      _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
-    />
-  </Flex>
+  <PreviewColorPickerCustom title={label} color={value} onChange={onChange} />
 );
 
 const NumberInput = ({ label, value, onChange, min, max, step = 1 }) => (
   <Flex align="center" gap={2} flex={1} minW={0}>
-    <Text fontSize="12px" color="#988BC7" minW="24px" flexShrink={0}>
+    <Text fontSize="12px" color="var(--text-muted)" minW="24px" flexShrink={0}>
       {label}
     </Text>
     <Input
@@ -85,16 +45,16 @@ const NumberInput = ({ label, value, onChange, min, max, step = 1 }) => (
       max={max}
       step={step}
       size="sm"
-      bg="#170D27"
-      border="1px solid #271E37"
+      bg="var(--bg-elevated)"
+      border="1px solid var(--border-primary)"
       borderRadius="6px"
-      color="#fff"
+      color="var(--text-primary)"
       fontSize="12px"
       px={2}
       h="32px"
       flex={1}
       minW={0}
-      _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
+      _focus={{ borderColor: 'var(--color-primary)', boxShadow: 'none' }}
     />
   </Flex>
 );
@@ -109,18 +69,18 @@ const ToggleButton = ({ icon: IconComponent, label, isActive, onClick, disabled,
     px={2.5}
     py={1.5}
     flex={flex}
-    bg={isActive ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-    border={isActive ? '1px solid #5227FF' : '1px solid #271E37'}
-    borderRadius="6px"
+    bg={isActive ? 'rgba(168, 85, 247, 0.15)' : 'var(--bg-elevated)'}
+    border={isActive ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+    borderRadius="var(--radius-sm)"
     cursor={disabled ? 'not-allowed' : 'pointer'}
     opacity={disabled ? 0.5 : 1}
     onClick={disabled ? undefined : onClick}
     transition="all 0.15s"
-    _hover={{ borderColor: disabled ? '#271E37' : '#5227FF' }}
+    _hover={{ borderColor: disabled ? 'var(--border-primary)' : 'var(--color-primary)' }}
   >
-    <Icon as={IconComponent} boxSize={3.5} color={isActive ? '#5227FF' : '#988BC7'} />
+    <Icon as={IconComponent} boxSize={3.5} color={isActive ? 'var(--color-primary)' : 'var(--text-muted)'} />
     {label && (
-      <Text fontSize="11px" color={isActive ? '#5227FF' : '#988BC7'}>
+      <Text fontSize="11px" color={isActive ? 'var(--color-primary)' : 'var(--text-muted)'}>
         {label}
       </Text>
     )}
@@ -128,16 +88,16 @@ const ToggleButton = ({ icon: IconComponent, label, isActive, onClick, disabled,
 );
 
 const SectionHeader = ({ children }) => (
-  <Text fontSize="11px" color="#988BC7" fontWeight={600} mb={3} textTransform="uppercase" letterSpacing="0.5px">
+  <Text fontSize="11px" color="var(--text-muted)" fontWeight={600} mb={3} textTransform="uppercase" letterSpacing="0.5px">
     {children}
   </Text>
 );
 
 const StyledKbd = ({ children }) => (
   <Kbd
-    bg="#0D0716"
-    borderColor="#392e4e"
-    color="#B19EEF"
+    bg="var(--bg-card)"
+    borderColor="var(--border-primary)"
+    color="var(--color-accent)"
     fontSize="11px"
     fontWeight={500}
     px={1.5}
@@ -355,9 +315,9 @@ export default function Controls({
       </Box>
 
       <Box
-        bg="#170D27"
-        border="1px solid #271E37"
-        borderRadius="8px"
+        bg="var(--bg-elevated)"
+        border="1px solid var(--border-primary)"
+        borderRadius="var(--radius-sm)"
         mb={4}
         flexShrink={0}
         overflow="hidden"
@@ -367,15 +327,15 @@ export default function Controls({
       >
         <Flex align="center" justify="space-between" gap={1.5} p={3} cursor="pointer">
           <Flex align="center" gap={1.5}>
-            <Icon as={Keyboard} boxSize={3} color="#988BC7" />
-            <Text fontSize="10px" color="#988BC7" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
+            <Icon as={Keyboard} boxSize={3} color="var(--text-muted)" />
+            <Text fontSize="10px" color="var(--text-muted)" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
               Shortcuts
             </Text>
           </Flex>
           <Icon
             as={ChevronUp}
             boxSize={3}
-            color="#988BC7"
+            color="var(--text-muted)"
             transform={shortcutsHovered ? 'rotate(0deg)' : 'rotate(180deg)'}
             transition="transform 0.2s ease"
           />
@@ -390,7 +350,7 @@ export default function Controls({
         >
           <Flex direction="column" gap={1.5}>
             <Flex justify="space-between" align="center">
-              <Text fontSize="12px" color="#988BC7">
+              <Text fontSize="12px" color="var(--text-muted)">
                 Undo
               </Text>
               <Flex gap={1}>
@@ -399,7 +359,7 @@ export default function Controls({
               </Flex>
             </Flex>
             <Flex justify="space-between" align="center">
-              <Text fontSize="12px" color="#988BC7">
+              <Text fontSize="12px" color="var(--text-muted)">
                 Redo
               </Text>
               <Flex gap={1}>
@@ -409,7 +369,7 @@ export default function Controls({
               </Flex>
             </Flex>
             <Flex justify="space-between" align="center">
-              <Text fontSize="12px" color="#988BC7">
+              <Text fontSize="12px" color="var(--text-muted)">
                 Duplicate
               </Text>
               <Flex gap={1}>
@@ -418,13 +378,13 @@ export default function Controls({
               </Flex>
             </Flex>
             <Flex justify="space-between" align="center">
-              <Text fontSize="12px" color="#988BC7">
+              <Text fontSize="12px" color="var(--text-muted)">
                 Delete
               </Text>
               <StyledKbd>⌫</StyledKbd>
             </Flex>
             <Flex justify="space-between" align="center">
-              <Text fontSize="12px" color="#988BC7">
+              <Text fontSize="12px" color="var(--text-muted)">
                 Pan
               </Text>
               <Flex gap={1} align="center">
@@ -435,7 +395,7 @@ export default function Controls({
         </Box>
       </Box>
 
-      <Box pt={4} borderTop="1px solid #271E37" flexShrink={0}>
+      <Box pt={4} borderTop="1px solid var(--border-primary)" flexShrink={0}>
         <SectionHeader>Export</SectionHeader>
         <Flex direction="column" gap={2}>
           <Flex
@@ -443,17 +403,17 @@ export default function Controls({
             align="center"
             justify="center"
             gap={2}
-            bg={copyStatus === 'merged' ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-            border={copyStatus === 'merged' ? '1px solid #5227FF' : '1px solid #271E37'}
-            borderRadius="8px"
+            bg={copyStatus === 'merged' ? 'rgba(168, 85, 247, 0.15)' : 'var(--bg-elevated)'}
+            border={copyStatus === 'merged' ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+            borderRadius="var(--radius-sm)"
             py={2}
             cursor="pointer"
             onClick={handleCopyMerged}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: 'var(--color-primary)' }}
           >
-            <Icon as={Merge} boxSize={4} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={Merge} boxSize={4} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               {copyStatus === 'merged' ? 'Copied!' : 'Merge & Copy (Mask-Ready)'}
             </Text>
           </Flex>
@@ -464,17 +424,17 @@ export default function Controls({
               align="center"
               justify="center"
               gap={2}
-              bg={copyStatus === 'svg' ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-              border={copyStatus === 'svg' ? '1px solid #5227FF' : '1px solid #271E37'}
-              borderRadius="8px"
+              bg={copyStatus === 'svg' ? 'rgba(168, 85, 247, 0.15)' : 'var(--bg-elevated)'}
+              border={copyStatus === 'svg' ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+              borderRadius="var(--radius-sm)"
               py={2}
               cursor="pointer"
               onClick={handleCopySVG}
               transition="all 0.15s"
-              _hover={{ borderColor: '#5227FF' }}
+              _hover={{ borderColor: 'var(--color-primary)' }}
             >
-              <Icon as={Code2} boxSize={4} color="#988BC7" />
-              <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+              <Icon as={Code2} boxSize={4} color="var(--text-muted)" />
+              <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
                 {copyStatus === 'svg' ? 'Copied!' : 'Copy SVG'}
               </Text>
             </Flex>
@@ -484,17 +444,17 @@ export default function Controls({
               align="center"
               justify="center"
               gap={2}
-              bg={copyStatus === 'react' ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-              border={copyStatus === 'react' ? '1px solid #5227FF' : '1px solid #271E37'}
-              borderRadius="8px"
+              bg={copyStatus === 'react' ? 'rgba(168, 85, 247, 0.15)' : 'var(--bg-elevated)'}
+              border={copyStatus === 'react' ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+              borderRadius="var(--radius-sm)"
               py={2}
               cursor="pointer"
               onClick={handleCopyReact}
               transition="all 0.15s"
-              _hover={{ borderColor: '#5227FF' }}
+              _hover={{ borderColor: 'var(--color-primary)' }}
             >
-              <Icon as={Code2} boxSize={4} color="#988BC7" />
-              <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+              <Icon as={Code2} boxSize={4} color="var(--text-muted)" />
+              <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
                 {copyStatus === 'react' ? 'Copied!' : 'Copy React'}
               </Text>
             </Flex>
@@ -504,17 +464,17 @@ export default function Controls({
             align="center"
             justify="center"
             gap={2}
-            bg={copyStatus === 'css' ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-            border={copyStatus === 'css' ? '1px solid #5227FF' : '1px solid #271E37'}
-            borderRadius="8px"
+            bg={copyStatus === 'css' ? 'rgba(168, 85, 247, 0.15)' : 'var(--bg-elevated)'}
+            border={copyStatus === 'css' ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+            borderRadius="var(--radius-sm)"
             py={2}
             cursor="pointer"
             onClick={handleCopyCSS}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: 'var(--color-primary)' }}
           >
-            <Icon as={FileCode2} boxSize={4} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={FileCode2} boxSize={4} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               {copyStatus === 'css' ? 'Copied!' : 'Copy CSS clip-path'}
             </Text>
           </Flex>
@@ -525,16 +485,16 @@ export default function Controls({
               align="center"
               justify="center"
               gap={2}
-              bg="#5227FF"
-              borderRadius="8px"
+              bg="var(--color-primary)"
+              borderRadius="var(--radius-sm)"
               py={2.5}
               cursor="pointer"
               onClick={handleDownloadSVG}
               transition="all 0.15s"
-              _hover={{ bg: '#6b3fff' }}
+              _hover={{ bg: '#b96dfa' }}
             >
-              <Icon as={Download} boxSize={4} color="#fff" />
-              <Text fontSize="12px" color="#fff" fontWeight={600}>
+              <Icon as={Download} boxSize={4} color="var(--text-primary)" />
+              <Text fontSize="12px" color="var(--text-primary)" fontWeight={600}>
                 Download SVG
               </Text>
             </Flex>
@@ -544,16 +504,16 @@ export default function Controls({
               align="center"
               justify="center"
               gap={2}
-              bg="#5227FF"
-              borderRadius="8px"
+              bg="var(--color-primary)"
+              borderRadius="var(--radius-sm)"
               py={2.5}
               cursor="pointer"
               onClick={handleDownloadPNG}
               transition="all 0.15s"
-              _hover={{ bg: '#6b3fff' }}
+              _hover={{ bg: '#b96dfa' }}
             >
-              <Icon as={Image} boxSize={4} color="#fff" />
-              <Text fontSize="12px" color="#fff" fontWeight={600}>
+              <Icon as={Image} boxSize={4} color="var(--text-primary)" />
+              <Text fontSize="12px" color="var(--text-primary)" fontWeight={600}>
                 Download PNG
               </Text>
             </Flex>

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -7,6 +7,8 @@ import Dependencies from '../../components/code/Dependencies';
 
 import Customize from '../../components/common/Preview/Customize';
 import PropTable from '../../components/common/Preview/PropTable';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -104,34 +106,25 @@ const CrosshairDemo = () => {
           </Box>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4} mb={4}>
-              <Text fontSize="sm">Crosshair Color</Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="60px"
-                p={0}
-              />
-            </Flex>
-
-            <Button
-              fontSize="xs"
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              _hover={{ bg: '#271E37' }}
-              color="#fff"
-              h={8}
-              onClick={() => {
-                updateProp('targeted', !targeted);
+            <PreviewColorPickerCustom
+              title="Crosshair Color"
+              color={color}
+              onChange={val => {
+                updateProp('color', val);
               }}
-            >
-              Cursor Container{' '}
-              <Text color={targeted ? 'lightgreen' : 'coral'}>&nbsp;{targeted ? 'Viewport' : 'Targeted'}</Text>
-            </Button>
+            />
+
+            <PreviewSelect
+              title="Cursor Container"
+              options={[
+                { value: 'viewport', label: 'Viewport' },
+                { value: 'targeted', label: 'Targeted' }
+              ]}
+              value={targeted ? 'viewport' : 'targeted'}
+              onChange={val => {
+                updateProp('targeted', val === 'viewport');
+              }}
+            />
           </Customize>
 
           <PropTable data={propData} />

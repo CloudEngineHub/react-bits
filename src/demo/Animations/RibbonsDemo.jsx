@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
-import { FiMinus, FiPlus } from 'react-icons/fi';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -114,7 +113,7 @@ const RibbonsDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} p={0} overflow="hidden">
-            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#271E37">
+            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#2F293A">
               Hover Me.
             </Text>
             <Ribbons
@@ -143,41 +142,24 @@ const RibbonsDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Count</Text>
-              <IconButton
-                onClick={() => colors.length > 1 && updateProp('colors', colors.slice(0, -1))}
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={10}
-              >
-                <FiMinus />
-              </IconButton>
-              <Text>{colors.length}</Text>
-              <IconButton
-                fontSize="xs"
-                bg="#170D27"
-                borderRadius="10px"
-                border="1px solid #271E37"
-                _hover={{ bg: '#271E37' }}
-                color="#fff"
-                h={10}
-                onClick={() => {
-                  if (colors.length < 10) {
-                    const newColor = `#${Math.floor(Math.random() * 16777215)
-                      .toString(16)
-                      .padStart(6, '0')}`;
-                    updateProp('colors', [...colors, newColor]);
+            <PreviewSlider
+              title="Ribbon Count"
+              min={1}
+              max={10}
+              step={1}
+              value={colors.length}
+              onChange={val => {
+                if (val > colors.length) {
+                  const newColors = [...colors];
+                  while (newColors.length < val) {
+                    newColors.push(`#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`);
                   }
-                }}
-              >
-                <FiPlus />
-              </IconButton>
-            </Flex>
+                  updateProp('colors', newColors);
+                } else if (val < colors.length) {
+                  updateProp('colors', colors.slice(0, val));
+                }
+              }}
+            />
 
             <PreviewSlider
               title="Thickness"

@@ -62,7 +62,7 @@ const MagnetLines: React.FC<MagnetLinesProps> = ({
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
     };
-  }, []);
+  }, [rows, columns]);
 
   const total = rows * columns;
   const spans = Array.from({ length: total }, (_, i) => (

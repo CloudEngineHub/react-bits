@@ -1183,7 +1183,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
           }
         `}
           >
-            <p className="select-none relative text-[#060010] top-[2px] text-[26px]">&#x2197;</p>
+            <p className="select-none relative text-[#120F17] top-[2px] text-[26px]">&#x2197;</p>
           </div>
         </>
       )}

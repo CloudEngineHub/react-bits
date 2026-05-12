@@ -146,6 +146,8 @@ const Slider: React.FC<SliderProps> = ({
           onPointerMove={handlePointerMove}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onLostPointerCapture={handlePointerUp}
         >
           <motion.div
             style={{

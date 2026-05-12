@@ -528,9 +528,7 @@
 			"title": "GradualBlur",
 			"description": "Progressively un-blurs content based on scroll or trigger creating a cinematic reveal.",
 			"type": "registry:component",
-			"dependencies": [
-				"mathjs@^14.6.0"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -548,9 +546,7 @@
 			"title": "GradualBlur",
 			"description": "Progressively un-blurs content based on scroll or trigger creating a cinematic reveal.",
 			"type": "registry:component",
-			"dependencies": [
-				"mathjs@^14.6.0"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -564,9 +560,7 @@
 			"title": "GradualBlur",
 			"description": "Progressively un-blurs content based on scroll or trigger creating a cinematic reveal.",
 			"type": "registry:component",
-			"dependencies": [
-				"mathjs@^14.6.0"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -584,9 +578,7 @@
 			"title": "GradualBlur",
 			"description": "Progressively un-blurs content based on scroll or trigger creating a cinematic reveal.",
 			"type": "registry:component",
-			"dependencies": [
-				"mathjs@^14.6.0"
-			],
+			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
@@ -1191,8 +1183,8 @@
 			"description": "Pixelated cursor trail emitting fading squares with retro digital feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
+				"@react-three/fiber@^9.3.0",
 				"three@^0.167.1"
 			],
 			"registryDependencies": [],
@@ -1884,6 +1876,78 @@
 				{
 					"type": "registry:component",
 					"path": "OrbitImages/OrbitImages.tsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-JS-CSS",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.jsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-JS-TW",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.jsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-TS-CSS",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.tsx"
+				}
+			]
+		},
+		{
+			"name": "MagicRings-TS-TW",
+			"title": "MagicRings",
+			"description": "Interactive magic rings effect with customizable parameters.",
+			"type": "registry:component",
+			"dependencies": [
+				"three@^0.167.1"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "MagicRings/MagicRings.tsx"
 				}
 			]
 		},
@@ -5588,6 +5652,70 @@
 			]
 		},
 		{
+			"name": "BorderGlow-JS-CSS",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-JS-TW",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.jsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-TS-CSS",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.tsx"
+				}
+			]
+		},
+		{
+			"name": "BorderGlow-TS-TW",
+			"title": "BorderGlow",
+			"description": "Glowing mesh-gradient border that follows cursor direction and intensifies near edges.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "BorderGlow/BorderGlow.tsx"
+				}
+			]
+		},
+		{
 			"name": "Stack-JS-CSS",
 			"title": "Stack",
 			"description": "Layered stack with swipe animations, autoplay and smooth transitions.",
@@ -6129,8 +6257,8 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"gsap@^3.13.0"
+				"gsap@^3.13.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6146,8 +6274,8 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"gsap@^3.13.0"
+				"gsap@^3.13.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6462,6 +6590,70 @@
 				{
 					"type": "registry:component",
 					"path": "Dither/Dither.tsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-JS-CSS",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.jsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-JS-TW",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.jsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-TS-CSS",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.tsx"
+				}
+			]
+		},
+		{
+			"name": "DotField-TS-TW",
+			"title": "DotField",
+			"description": "Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.",
+			"type": "registry:component",
+			"dependencies": [],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "DotField/DotField.tsx"
 				}
 			]
 		},
@@ -6831,9 +7023,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6853,9 +7045,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6871,9 +7063,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6893,9 +7085,9 @@
 			"description": "Animated grid room 3D scan effect and cool interactions.",
 			"type": "registry:component",
 			"dependencies": [
+				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1",
-				"face-api.js@^0.22.2"
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7055,8 +7247,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7080,8 +7272,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7101,8 +7293,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7126,8 +7318,8 @@
 			"description": "Animated lines continuously moving to simulate hyperspace travel on click hold.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7406,6 +7598,294 @@
 			]
 		},
 		{
+			"name": "LineWaves-JS-CSS",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.jsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-JS-TW",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.jsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-TS-CSS",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.tsx"
+				}
+			]
+		},
+		{
+			"name": "LineWaves-TS-TW",
+			"title": "LineWaves",
+			"description": "Animated line wave pattern with colorful warped distortion.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "LineWaves/LineWaves.tsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-JS-CSS",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.jsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-JS-TW",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.jsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-TS-CSS",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.tsx"
+				}
+			]
+		},
+		{
+			"name": "EvilEye-TS-TW",
+			"title": "EvilEye",
+			"description": "Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "EvilEye/EvilEye.tsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-JS-CSS",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.jsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-JS-TW",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.jsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-TS-CSS",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.tsx"
+				}
+			]
+		},
+		{
+			"name": "Radar-TS-TW",
+			"title": "Radar",
+			"description": "Radar sweep effect with concentric rings, radial spokes, and a rotating beam.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Radar/Radar.tsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-JS-CSS",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.jsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-JS-TW",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.jsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-TS-CSS",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.tsx"
+				}
+			]
+		},
+		{
+			"name": "SoftAurora-TS-TW",
+			"title": "SoftAurora",
+			"description": "Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SoftAurora/SoftAurora.tsx"
+				}
+			]
+		},
+		{
 			"name": "LiquidChrome-JS-CSS",
 			"title": "LiquidChrome",
 			"description": "Liquid metallic chrome shader with flowing reflective surface.",
@@ -7627,8 +8107,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7648,8 +8128,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7665,8 +8145,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7686,8 +8166,8 @@
 			"description": "Exploding pixel particle bursts with optional liquid postprocessing.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
-				"postprocessing@^6.36.0"
+				"postprocessing@^6.36.0",
+				"three@^0.167.1"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7766,6 +8246,78 @@
 				{
 					"type": "registry:component",
 					"path": "Plasma/Plasma.tsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-JS-CSS",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.jsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-JS-TW",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.jsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-TS-CSS",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.tsx"
+				}
+			]
+		},
+		{
+			"name": "PlasmaWave-TS-TW",
+			"title": "PlasmaWave",
+			"description": "Raymarched plasma waves with dual-wave interference and OGL.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "PlasmaWave/PlasmaWave.tsx"
 				}
 			]
 		},
@@ -8054,66 +8606,66 @@
 			]
 		},
 		{
-			"name": "Squares-JS-CSS",
-			"title": "Squares",
-			"description": "Animated squares with scaling + direction customization.",
+			"name": "ShapeGrid-JS-CSS",
+			"title": "ShapeGrid",
+			"description": "Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.",
 			"type": "registry:component",
 			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.css"
+					"path": "ShapeGrid/ShapeGrid.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.jsx"
+					"path": "ShapeGrid/ShapeGrid.jsx"
 				}
 			]
 		},
 		{
-			"name": "Squares-JS-TW",
-			"title": "Squares",
-			"description": "Animated squares with scaling + direction customization.",
+			"name": "ShapeGrid-JS-TW",
+			"title": "ShapeGrid",
+			"description": "Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.",
 			"type": "registry:component",
 			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.jsx"
+					"path": "ShapeGrid/ShapeGrid.jsx"
 				}
 			]
 		},
 		{
-			"name": "Squares-TS-CSS",
-			"title": "Squares",
-			"description": "Animated squares with scaling + direction customization.",
+			"name": "ShapeGrid-TS-CSS",
+			"title": "ShapeGrid",
+			"description": "Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.",
 			"type": "registry:component",
 			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.css"
+					"path": "ShapeGrid/ShapeGrid.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.tsx"
+					"path": "ShapeGrid/ShapeGrid.tsx"
 				}
 			]
 		},
 		{
-			"name": "Squares-TS-TW",
-			"title": "Squares",
-			"description": "Animated squares with scaling + direction customization.",
+			"name": "ShapeGrid-TS-TW",
+			"title": "ShapeGrid",
+			"description": "Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.",
 			"type": "registry:component",
 			"dependencies": [],
 			"registryDependencies": [],
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Squares/Squares.tsx"
+					"path": "ShapeGrid/ShapeGrid.tsx"
 				}
 			]
 		},

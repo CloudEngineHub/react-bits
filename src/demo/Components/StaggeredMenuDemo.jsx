@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -8,6 +8,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -52,7 +53,7 @@ const StaggeredMenuDemo = () => {
       {
         name: 'colors',
         type: 'string[]',
-        default: '["#B19EEF", "#5227FF"]',
+        default: '["#B497CF", "#5227FF"]',
         description: 'Colors used for staggered underlay layers.'
       },
       {
@@ -169,36 +170,8 @@ const StaggeredMenuDemo = () => {
               ]}
               width={110}
             />
-            <Flex alignItems="center" my={4}>
-              <Text fontSize="sm" mr={2}>
-                Accent Color
-              </Text>
-              <Input
-                type="color"
-                value={accentColor}
-                onChange={e => updateProp('accentColor', e.target.value)}
-                width="50px"
-                p={0}
-                h="32px"
-                border="none"
-                bg="transparent"
-              />
-            </Flex>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Menu Button Color
-              </Text>
-              <Input
-                type="color"
-                value={menuButtonColor}
-                onChange={e => updateProp('menuButtonColor', e.target.value)}
-                width="50px"
-                p={0}
-                h="32px"
-                border="none"
-                bg="transparent"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Accent Color" color={accentColor} onChange={val => updateProp('accentColor', val)} />
+            <PreviewColorPickerCustom title="Menu Button Color" color={menuButtonColor} onChange={val => updateProp('menuButtonColor', val)} />
             <PreviewSwitch
               title="Display Socials"
               isChecked={displaySocials}

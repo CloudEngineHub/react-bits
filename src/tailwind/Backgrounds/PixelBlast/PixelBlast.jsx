@@ -1,6 +1,6 @@
+import { Effect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { EffectComposer, EffectPass, RenderPass, Effect } from 'postprocessing';
 
 const createTouchTexture = () => {
   const size = 64;
@@ -303,7 +303,7 @@ const MAX_CLICKS = 10;
 const PixelBlast = ({
   variant = 'square',
   pixelSize = 3,
-  color = '#B19EEF',
+  color = '#B497CF',
   className,
   style,
   antialias = true,
@@ -354,6 +354,7 @@ const PixelBlast = ({
         t.material.dispose();
         t.composer?.dispose();
         t.renderer.dispose();
+        t.renderer.forceContextLoss();
         if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
         threeRef.current = null;
       }
@@ -567,6 +568,7 @@ const PixelBlast = ({
       t.material.dispose();
       t.composer?.dispose();
       t.renderer.dispose();
+      t.renderer.forceContextLoss();
       if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
       threeRef.current = null;
     };

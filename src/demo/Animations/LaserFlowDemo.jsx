@@ -1,12 +1,13 @@
 import { useRef, useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Image, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex, Image } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -135,7 +136,7 @@ const LaserFlowDemo = () => {
             ref={containerRef}
             position="relative"
             className="demo-container"
-            h={600}
+            h={500}
             p={0}
             overflow="hidden"
             onMouseMove={e => {
@@ -187,7 +188,7 @@ const LaserFlowDemo = () => {
                   transform="translateX(-50%)"
                   width="86%"
                   height="60%"
-                  backgroundColor="#060010"
+                  backgroundColor="#120F17"
                   borderRadius="20px"
                   border={`2px solid ${color}`}
                   display="flex"
@@ -251,19 +252,7 @@ const LaserFlowDemo = () => {
               onChange={v => updateProp('selectedExample', v)}
               width={120}
             />
-            <Flex alignItems="center" mt={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
 
             <PreviewSlider
               title="Horizontal Sizing"

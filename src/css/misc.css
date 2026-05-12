@@ -15,7 +15,7 @@
 
 .rotating-text-main {
   padding: 0.125rem 0.5rem;
-  background-color: #5227ff;
+  background-color: var(--color-primary);
   color: #fff;
   overflow: hidden;
   display: flex;
@@ -77,8 +77,8 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  border-radius: 10px;
-  background-color: #5227ff;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
   color: white;
   padding: 16px;
   display: flex;
@@ -253,17 +253,17 @@
 }
 
 .results-container::-webkit-scrollbar-track {
-  background: #060010;
+  background: var(--bg-body);
 }
 
 .results-container::-webkit-scrollbar-thumb {
-  background: #271e37;
+  background: var(--border-primary);
   border-radius: 4px;
 }
 
 .results-container {
   scrollbar-width: thin;
-  scrollbar-color: #271e37 #060010;
+  scrollbar-color: var(--border-primary) var(--bg-body);
 }
 
 .eb-demo-card {
@@ -355,7 +355,7 @@
   font-size: 16px;
   line-height: 0;
   letter-spacing: -0.5px;
-  color: #b19eef;
+  color: var(--color-accent);
   border: none;
   border-radius: 999px;
   padding: 8px 12px;
@@ -372,4 +372,115 @@
   box-shadow: 0 8px 16px rgba(177, 158, 239, 0.1);
   transition: 0.3s ease;
   filter: saturate(1.5);
+}
+
+/* MagicRings demo card */
+.mr-demo-card {
+  width: 340px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  font-family: inherit;
+}
+
+.mr-demo-card-visual {
+  position: relative;
+  background-color: #1a1425;
+  border: 1px solid var(--border-primary);
+  margin: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 220px;
+}
+
+.mr-demo-card-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.85;
+  stroke: var(--color-accent);
+}
+
+.mr-demo-card-body {
+  padding: 10px 20px 20px;
+}
+
+.mr-demo-card-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #e9f8ff;
+  margin: 0;
+}
+
+.mr-demo-card-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+.mr-demo-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.mr-demo-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mr-demo-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.mr-demo-card-cta {
+  flex: 1;
+  padding: 12px 0;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 4px 16px rgba(82, 39, 255, 0.25);
+}
+
+.mr-demo-card-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(82, 39, 255, 0.35);
+}
+
+.mr-demo-card-heart {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 200ms ease;
+}
+
+.mr-demo-card-heart:hover {
+  border-color: var(--color-accent);
+}
+
+/* Background content glass effect */
+.bg-content-glass {
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }

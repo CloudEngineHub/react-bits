@@ -1,6 +1,6 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
-import { Flex, Text, Input } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
 
@@ -8,6 +8,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -101,7 +102,7 @@ const PixelTransitionDemo = () => {
               key={key}
               firstContent={
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
+                  src="https://i.kym-cdn.com/entries/icons/original/000/054/270/rigrig.jpg"
                   alt="Default"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
@@ -158,19 +159,7 @@ const PixelTransitionDemo = () => {
               width={200}
             />
 
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Pixel Color</Text>
-              <Input
-                type="color"
-                value={pixelColor}
-                onChange={e => {
-                  updateProp('pixelColor', e.target.value);
-                  forceRerender();
-                }}
-                width="60px"
-                p={0}
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Pixel Color" color={pixelColor} onChange={val => { updateProp('pixelColor', val); forceRerender(); }} />
             <PreviewSwitch title="Once" isChecked={once} onChange={checked => updateProp('once', checked)} />
           </Customize>
 

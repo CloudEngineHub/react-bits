@@ -11,7 +11,7 @@ export const ghostCursor = {
 <div style={{ height: 600, position: 'relative' }}>
   <GhostCursor
     // Visuals
-    color="#B19EEF"
+    color="#B497CF"
     brightness={1}
     edgeIntensity={0}
 

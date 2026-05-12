@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -14,6 +14,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -30,7 +31,7 @@ const DEFAULT_PROPS = {
   liquid: false,
   speed: 0.5,
   edgeFade: 0.25,
-  color: '#B19EEF'
+  color: '#B497CF'
 };
 
 const PixelBlastDemo = () => {
@@ -66,7 +67,7 @@ const PixelBlastDemo = () => {
       {
         name: 'color',
         type: 'string',
-        default: "'#B19EEF'",
+        default: "'#B497CF'",
         description: 'Pixel color.'
       },
       {
@@ -167,7 +168,7 @@ const PixelBlastDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <PixelBlast
               key={key}
               variant={variant}
@@ -202,7 +203,7 @@ const PixelBlastDemo = () => {
               defaultProps={{
                 variant: 'square',
                 pixelSize: 3,
-                color: '#B19EEF',
+                color: '#B497CF',
                 patternScale: 2,
                 patternDensity: 1,
                 enableRipples: true,
@@ -217,12 +218,7 @@ const PixelBlastDemo = () => {
           </Flex>
 
           <Customize onRerender={forceRerender}>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input type="color" value={color} onChange={e => updateProp('color', e.target.value)} w="50px" p={0} />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
 
             <PreviewSelect
               title="Variant"

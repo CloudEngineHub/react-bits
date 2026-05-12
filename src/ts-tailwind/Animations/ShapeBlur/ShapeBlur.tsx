@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = /* glsl */ `
@@ -147,11 +147,13 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
   circleEdge = 0.5
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
+    let active = true;
     let animationFrameId: number;
     let time = 0,
       lastTime = 0;
@@ -169,6 +171,7 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setClearColor(0x000000, 0);
+    if (!mount) return;
     mount.appendChild(renderer.domElement);
 
     const geo = new THREE.PlaneGeometry(1, 1);
@@ -188,6 +191,7 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
       defines: { VAR: variation },
       transparent: true
     });
+    materialRef.current = material;
 
     const quad = new THREE.Mesh(geo, material);
     scene.add(quad);
@@ -202,11 +206,10 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     document.addEventListener('pointermove', onPointerMove);
 
     const resize = () => {
-      if (!mountRef.current) return;
-      const container = mountRef.current;
-      w = container.clientWidth;
-      h = container.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (!active) return;
+      w = mount.clientWidth;
+      h = mount.clientHeight;
+      const dpr = Math.min(window.devicePixelRatio, 2);
 
       renderer.setSize(w, h);
       renderer.setPixelRatio(dpr);
@@ -225,14 +228,17 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     resize();
     window.addEventListener('resize', resize);
 
-    const ro = new ResizeObserver(() => resize());
-    ro.observe(mountRef.current as Element);
+    const ro = new ResizeObserver(() => {
+      if (!active) return;
+      resize();
+    });
+    ro.observe(mount);
 
     const update = () => {
+      if (!active) return;
       time = performance.now() * 0.001;
       const dt = time - lastTime;
       lastTime = time;
-
       vMouseDamp.x = THREE.MathUtils.damp(vMouseDamp.x, vMouse.x, 8, dt);
       vMouseDamp.y = THREE.MathUtils.damp(vMouseDamp.y, vMouse.y, 8, dt);
 
@@ -242,17 +248,22 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
     update();
 
     return () => {
+      active = false;
+
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
       ro.disconnect();
       document.removeEventListener('mousemove', onPointerMove);
       document.removeEventListener('pointermove', onPointerMove);
-      mount.removeChild(renderer.domElement);
+      if (mount.contains(renderer.domElement)) {
+        mount.removeChild(renderer.domElement);
+      }
       renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 
-  return <div ref={mountRef} className={`w-full h-full ${className}`} />;
+  return <div className={`w-full h-full ${className}`} ref={mountRef} />;
 };
 
 export default ShapeBlur;

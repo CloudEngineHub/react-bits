@@ -46,7 +46,7 @@ export default function MagnetLines({
     return () => {
       window.removeEventListener('pointermove', onPointerMove);
     };
-  }, []);
+  }, [rows, columns]);
 
   const total = rows * columns;
   const spans = Array.from({ length: total }, (_, i) => (

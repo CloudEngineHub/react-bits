@@ -53,7 +53,7 @@ interface LiquidEtherWebGL {
   dispose: () => void;
 }
 
-const defaultColors = ['#5227FF', '#FF9FFC', '#B19EEF'];
+const defaultColors = ['#5227FF', '#FF9FFC', '#B497CF'];
 
 export default function LiquidEther({
   mouseForce = 20,
@@ -1078,6 +1078,7 @@ export default function LiquidEther({
             const canvas = Common.renderer.domElement;
             if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
             Common.renderer.dispose();
+            Common.renderer.forceContextLoss();
           }
         } catch {
           /* noop */

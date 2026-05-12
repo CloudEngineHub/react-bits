@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
@@ -8,6 +8,8 @@ import Dependencies from '../../components/code/Dependencies';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PropTable from '../../components/common/Preview/PropTable';
 
 import useComponentProps from '../../hooks/useComponentProps';
@@ -143,66 +145,33 @@ const BlobCursorDemo = () => {
           </Box>
 
           <Customize>
-            <Button
-              mb={2}
-              fontSize="xs"
-              bg="#170D27"
-              borderRadius="10px"
-              border="1px solid #271E37"
-              _hover={{ bg: '#271E37' }}
-              color="#fff"
-              h={8}
-              onClick={() => updateProp('blobType', blobType === 'circle' ? 'square' : 'circle')}
-            >
-              Blob Type: <Text color={'#a1a1aa'}>&nbsp;{blobType}</Text>
-            </Button>
-            <Flex direction="column" mt={2}>
-              <Flex alignItems="center" fontSize="xs" h={8}>
-                Fill Color:&nbsp;&nbsp;
-                <input
-                  type="color"
-                  value={fillColor}
-                  style={{
-                    height: '22px',
-                    outline: 'none',
-                    border: '1px solid #999',
-                    width: '50px',
-                    background: 'transparent'
-                  }}
-                  onChange={e => updateProp('fillColor', e.target.value)}
-                />
-              </Flex>
-              <Flex alignItems="center" fontSize="xs" h={8}>
-                Inner Color:&nbsp;&nbsp;
-                <input
-                  type="color"
-                  value={innerColor}
-                  style={{
-                    height: '22px',
-                    outline: 'none',
-                    border: '1px solid #999',
-                    width: '50px',
-                    background: 'transparent'
-                  }}
-                  onChange={e => updateProp('innerColor', e.target.value)}
-                />
-              </Flex>
-              <Flex alignItems="center" fontSize="xs" h={8}>
-                Shadow Color:&nbsp;&nbsp;
-                <input
-                  type="color"
-                  value={shadowColor}
-                  style={{
-                    height: '22px',
-                    outline: 'none',
-                    border: '1px solid #999',
-                    width: '50px',
-                    background: 'transparent'
-                  }}
-                  onChange={e => updateProp('shadowColor', e.target.value)}
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Fill Color"
+              color={fillColor}
+              onChange={val => updateProp('fillColor', val)}
+            />
+
+            <PreviewColorPickerCustom
+              title="Inner Color"
+              color={innerColor}
+              onChange={val => updateProp('innerColor', val)}
+            />
+
+            <PreviewColorPickerCustom
+              title="Shadow Color"
+              color={shadowColor}
+              onChange={val => updateProp('shadowColor', val)}
+            />
+
+            <PreviewSelect
+              title="Blob Type"
+              options={[
+                { value: 'circle', label: 'Circle' },
+                { value: 'square', label: 'Square' }
+              ]}
+              value={blobType}
+              onChange={val => updateProp('blobType', val)}
+            />
 
             <PreviewSlider
               title="Trail Count"

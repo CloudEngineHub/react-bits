@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -9,6 +9,8 @@ import PropTable from '../../components/common/Preview/PropTable';
 import CodeExample from '../../components/code/CodeExample';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import Customize from '../../components/common/Preview/Customize';
 
 import VariableProximity from '../../content/TextAnimations/VariableProximity/VariableProximity';
 import { variableProximity } from '../../constants/code/TextAnimations/variableProximityCode';
@@ -82,10 +84,7 @@ const VariableProximityDemo = () => {
             />
           </Box>
 
-          <Box mt={6} className="preview-options">
-            <Text fontSize="xl" mb={2}>
-              Customize
-            </Text>
+          <Customize>
             <PreviewSlider
               title="Radius"
               min={50}
@@ -94,26 +93,19 @@ const VariableProximityDemo = () => {
               value={radius}
               valueUnit="px"
               onChange={val => updateProp('radius', val)}
-              width={200}
             />
 
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Falloff</Text>
-              {['linear', 'exponential', 'gaussian'].map(type => (
-                <Button
-                  key={type}
-                  size="sm"
-                  color="#ffffff"
-                  borderRadius="10px"
-                  border={type === falloff ? '1px solid #170D27' : '1px solid #271E37'}
-                  bg={type === falloff ? '#5227FF' : '#170D27'}
-                  onClick={() => updateProp('falloff', type)}
-                >
-                  {type}
-                </Button>
-              ))}
-            </Flex>
-          </Box>
+            <PreviewSelect
+              title="Falloff"
+              options={[
+                { value: 'linear', label: 'Linear' },
+                { value: 'exponential', label: 'Exponential' },
+                { value: 'gaussian', label: 'Gaussian' }
+              ]}
+              value={falloff}
+              onChange={val => updateProp('falloff', val)}
+            />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['motion']} />

@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Input, Switch, Slider, Select, Portal, createListCollection } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Input } from '@chakra-ui/react';
 import {
   Upload,
   Link,
@@ -49,8 +49,12 @@ import {
   Palette as PaletteIcon,
   Dices
 } from 'lucide-react';
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useRef, useMemo, memo } from 'react';
 import { toaster } from '../../components/setup/toaster';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import {
   EFFECT_TYPES,
   BLEND_MODES,
@@ -71,162 +75,10 @@ const SectionHeader = ({ children, collapsible, isOpen, onToggle }) => (
     onClick={collapsible ? onToggle : undefined}
     mb={3}
   >
-    <Text fontSize="11px" color="#988BC7" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
+    <Text fontSize="11px" color="var(--text-muted)" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
       {children}
     </Text>
-    {collapsible && <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="#988BC7" />}
-  </Flex>
-);
-
-const SliderInput = ({ label, value, onChange, min, max, step = 1, suffix = '' }) => (
-  <Flex direction="column" gap={2} w="100%">
-    <Flex justify="space-between" align="center">
-      <Text fontSize="12px" color="#988BC7">
-        {label}
-      </Text>
-      <Text fontSize="12px" color="#fff" fontFamily="mono">
-        {value.toFixed(step < 1 ? 2 : 0)}
-        {suffix}
-      </Text>
-    </Flex>
-    <Slider.Root value={[value]} onValueChange={({ value: v }) => onChange(v[0])} min={min} max={max} step={step}>
-      <Slider.Control>
-        <Slider.Track bg="#271E37" h="6px" borderRadius="3px">
-          <Slider.Range bg="#5227FF" />
-        </Slider.Track>
-        <Slider.Thumb index={0} boxSize={4} bg="#fff" borderRadius="full" />
-      </Slider.Control>
-    </Slider.Root>
-  </Flex>
-);
-
-const ToggleButton = ({ icon: IconComponent, label, isActive, onClick, disabled, flex }) => (
-  <Flex
-    as="button"
-    type="button"
-    align="center"
-    justify="center"
-    gap={1.5}
-    px={2.5}
-    py={1.5}
-    flex={flex}
-    bg={isActive ? 'rgba(82, 39, 255, 0.2)' : '#170D27'}
-    border={isActive ? '1px solid #5227FF' : '1px solid #271E37'}
-    borderRadius="6px"
-    cursor={disabled ? 'not-allowed' : 'pointer'}
-    opacity={disabled ? 0.5 : 1}
-    onClick={disabled ? undefined : onClick}
-    transition="all 0.15s"
-    _hover={{ borderColor: disabled ? '#271E37' : '#5227FF' }}
-  >
-    <Icon as={IconComponent} boxSize={3.5} color={isActive ? '#5227FF' : '#988BC7'} flexShrink={0} />
-    {label && (
-      <Text fontSize="11px" color={isActive ? '#5227FF' : '#988BC7'} whiteSpace="nowrap">
-        {label}
-      </Text>
-    )}
-  </Flex>
-);
-
-const SelectInput = ({ label, value, onChange, options }) => {
-  const collection = useMemo(
-    () =>
-      createListCollection({
-        items: options.map(o => o.value)
-      }),
-    [options]
-  );
-  const labelMap = useMemo(
-    () =>
-      options.reduce((m, o) => {
-        m[o.value] = o.label;
-        return m;
-      }, {}),
-    [options]
-  );
-
-  return (
-    <Flex direction="column" gap={2} w="100%">
-      <Text fontSize="12px" color="#988BC7">
-        {label}
-      </Text>
-      <Select.Root collection={collection} value={[value]} onValueChange={({ value: v }) => onChange(v[0])} size="sm">
-        <Select.Control>
-          <Select.Trigger
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="6px"
-            h="32px"
-            px={3}
-            _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
-          >
-            <Select.ValueText fontSize="12px" color="#fff">
-              {labelMap[value] || value}
-            </Select.ValueText>
-          </Select.Trigger>
-        </Select.Control>
-        <Portal>
-          <Select.Positioner>
-            <Select.Content bg="#170D27" border="1px solid #271E37" borderRadius="6px" zIndex={1500}>
-              {collection.items.map(val => (
-                <Select.Item
-                  key={val}
-                  item={val}
-                  fontSize="12px"
-                  color="#fff"
-                  cursor="pointer"
-                  px={3}
-                  py={1.5}
-                  _highlighted={{ bg: '#271E37' }}
-                >
-                  <Select.ItemText>{labelMap[val]}</Select.ItemText>
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select.Positioner>
-        </Portal>
-      </Select.Root>
-    </Flex>
-  );
-};
-
-const SwitchInput = ({ label, checked, onChange }) => (
-  <Flex align="center" justify="space-between" w="100%">
-    <Text fontSize="12px" color="#988BC7">
-      {label}
-    </Text>
-    <Switch.Root checked={checked} onCheckedChange={({ checked: c }) => onChange(c)} size="sm">
-      <Switch.HiddenInput />
-      <Switch.Control />
-    </Switch.Root>
-  </Flex>
-);
-
-const ColorInput = ({ label, value, onChange }) => (
-  <Flex align="center" justify="space-between" w="100%">
-    <Text fontSize="12px" color="#988BC7">
-      {label}
-    </Text>
-    <Flex align="center" gap={2} h="28px">
-      <Text fontSize="11px" color="#B19EEF" fontFamily="mono" textTransform="uppercase" lineHeight="28px">
-        {value}
-      </Text>
-      <Box position="relative" w="28px" h="28px">
-        <Box w="28px" h="28px" borderRadius="6px" bg={value} border="2px solid #271E37" />
-        <Input
-          type="color"
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          position="absolute"
-          top={0}
-          left={0}
-          w="100%"
-          h="100%"
-          opacity={0}
-          cursor="pointer"
-        />
-      </Box>
-    </Flex>
+    {collapsible && <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="var(--text-muted)" />}
   </Flex>
 );
 
@@ -296,31 +148,43 @@ const EFFECT_NAMES = {
   [EFFECT_TYPES.DOT_DITHER]: 'Dot Dither'
 };
 
+const ToggleButton = ({ icon: IconComponent, label, onClick, flex, disabled, title, ...rest }) => (
+  <Flex
+    as="button"
+    type="button"
+    align="center"
+    justify="center"
+    gap={1.5}
+    px={label ? 3 : 2}
+    py={2}
+    bg="var(--bg-elevated)"
+    border="1px solid var(--border-primary)"
+    borderRadius="var(--radius-sm)"
+    cursor={disabled ? 'not-allowed' : 'pointer'}
+    opacity={disabled ? 0.5 : 1}
+    onClick={disabled ? undefined : onClick}
+    transition="all 0.15s"
+    _hover={disabled ? {} : { bg: 'rgba(168, 85, 247, 0.1)', borderColor: 'var(--color-primary)' }}
+    flex={flex}
+    title={title}
+    {...rest}
+  >
+    <Icon as={IconComponent} boxSize={3.5} color="var(--text-muted)" />
+    {label && (
+      <Text fontSize="11px" color="var(--text-primary)" fontWeight={500}>
+        {label}
+      </Text>
+    )}
+  </Flex>
+);
+
 const NoiseParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Scale"
-      value={params.scale}
-      onChange={v => onChange({ ...params, scale: v })}
-      min={0.5}
-      max={4}
-      step={0.1}
-    />
-    <SwitchInput
-      label="Monochrome"
-      checked={params.monochrome}
-      onChange={v => onChange({ ...params, monochrome: v })}
-    />
-    <SelectInput
-      label="Blend Mode"
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Scale" value={params.scale} onChange={v => onChange({ ...params, scale: v })} min={0.5} max={4} step={0.1} />
+    <PreviewSwitch title="Monochrome" isChecked={params.monochrome} onChange={v => onChange({ ...params, monochrome: v })} />
+    <PreviewSelect
+      title="Blend Mode"
       value={params.blendMode}
       onChange={v => onChange({ ...params, blendMode: v })}
       options={[
@@ -330,13 +194,13 @@ const NoiseParams = ({ params, onChange }) => (
         { value: BLEND_MODES.SCREEN, label: 'Screen' }
       ]}
     />
-  </Flex>
+  </>
 );
 
 const DitherParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SelectInput
-      label="Method"
+  <>
+    <PreviewSelect
+      title="Method"
       value={params.method}
       onChange={v => onChange({ ...params, method: v })}
       options={[
@@ -345,64 +209,19 @@ const DitherParams = ({ params, onChange }) => (
         { value: DITHER_METHODS.BAYER_8X8, label: 'Bayer 8×8' }
       ]}
     />
-    <SliderInput
-      label="Color Levels"
-      value={params.levels}
-      onChange={v => onChange({ ...params, levels: v })}
-      min={2}
-      max={16}
-      step={1}
-    />
-    <SliderInput
-      label="Threshold"
-      value={params.threshold}
-      onChange={v => onChange({ ...params, threshold: v })}
-      min={0}
-      max={2}
-      step={0.05}
-    />
-    <SliderInput
-      label="Pattern Scale"
-      value={params.scale || 1}
-      onChange={v => onChange({ ...params, scale: v })}
-      min={0.5}
-      max={4}
-      step={0.1}
-      suffix="×"
-    />
-  </Flex>
+    <PreviewSlider title="Color Levels" value={params.levels} onChange={v => onChange({ ...params, levels: v })} min={2} max={16} step={1} />
+    <PreviewSlider title="Threshold" value={params.threshold} onChange={v => onChange({ ...params, threshold: v })} min={0} max={2} step={0.05} />
+    <PreviewSlider title="Pattern Scale" value={params.scale || 1} onChange={v => onChange({ ...params, scale: v })} min={0.5} max={4} step={0.1} valueUnit="×" />
+  </>
 );
 
 const HalftoneParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Grid Size"
-      value={params.gridSize}
-      onChange={v => onChange({ ...params, gridSize: v })}
-      min={3}
-      max={40}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Dot Scale"
-      value={params.dotScale}
-      onChange={v => onChange({ ...params, dotScale: v })}
-      min={0.2}
-      max={2.0}
-      step={0.05}
-    />
-    <SliderInput
-      label="Angle"
-      value={params.angle}
-      onChange={v => onChange({ ...params, angle: v })}
-      min={0}
-      max={90}
-      step={1}
-      suffix="°"
-    />
-    <SelectInput
-      label="Shape"
+  <>
+    <PreviewSlider title="Grid Size" value={params.gridSize} onChange={v => onChange({ ...params, gridSize: v })} min={3} max={40} step={1} valueUnit="px" />
+    <PreviewSlider title="Dot Scale" value={params.dotScale} onChange={v => onChange({ ...params, dotScale: v })} min={0.2} max={2.0} step={0.05} />
+    <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={0} max={90} step={1} valueUnit="°" />
+    <PreviewSelect
+      title="Shape"
       value={params.shape}
       onChange={v => onChange({ ...params, shape: v })}
       options={[
@@ -415,24 +234,10 @@ const HalftoneParams = ({ params, onChange }) => (
         { value: HALFTONE_SHAPES.RING, label: 'Ring' }
       ]}
     />
-    <SliderInput
-      label="Softness"
-      value={params.softness}
-      onChange={v => onChange({ ...params, softness: v })}
-      min={0}
-      max={1}
-      step={0.05}
-    />
-    <SliderInput
-      label="Contrast"
-      value={params.contrast}
-      onChange={v => onChange({ ...params, contrast: v })}
-      min={-1}
-      max={1}
-      step={0.05}
-    />
-    <SelectInput
-      label="Color Mode"
+    <PreviewSlider title="Softness" value={params.softness} onChange={v => onChange({ ...params, softness: v })} min={0} max={1} step={0.05} />
+    <PreviewSlider title="Contrast" value={params.contrast} onChange={v => onChange({ ...params, contrast: v })} min={-1} max={1} step={0.05} />
+    <PreviewSelect
+      title="Color Mode"
       value={params.colorMode}
       onChange={v => onChange({ ...params, colorMode: v })}
       options={[
@@ -444,30 +249,19 @@ const HalftoneParams = ({ params, onChange }) => (
     />
     {(params.colorMode === 'monochrome' || params.colorMode === 'duotone') && (
       <>
-        <ColorInput label="Dot Color" value={params.dotColor} onChange={v => onChange({ ...params, dotColor: v })} />
-        <ColorInput
-          label="Background"
-          value={params.backgroundColor}
-          onChange={v => onChange({ ...params, backgroundColor: v })}
-        />
+        <PreviewColorPickerCustom title="Dot Color" color={params.dotColor} onChange={v => onChange({ ...params, dotColor: v })} />
+        <PreviewColorPickerCustom title="Background" color={params.backgroundColor} onChange={v => onChange({ ...params, backgroundColor: v })} />
       </>
     )}
-    <SwitchInput label="Invert" checked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
-    <SliderInput
-      label="Mix Original"
-      value={params.mixOriginal}
-      onChange={v => onChange({ ...params, mixOriginal: v })}
-      min={0}
-      max={1}
-      step={0.05}
-    />
-  </Flex>
+    <PreviewSwitch title="Invert" isChecked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
+    <PreviewSlider title="Mix Original" value={params.mixOriginal} onChange={v => onChange({ ...params, mixOriginal: v })} min={0} max={1} step={0.05} />
+  </>
 );
 
 const ASCIIParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SelectInput
-      label="Character Set"
+  <>
+    <PreviewSelect
+      title="Character Set"
       value={params.charset}
       onChange={v => onChange({ ...params, charset: v })}
       options={[
@@ -477,62 +271,21 @@ const ASCIIParams = ({ params, onChange }) => (
         { value: ASCII_PRESETS.DETAILED, label: 'Detailed' }
       ]}
     />
-    <SliderInput
-      label="Cell Size"
-      value={params.cellSize}
-      onChange={v => onChange({ ...params, cellSize: v })}
-      min={4}
-      max={20}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Brightness"
-      value={params.brightness ?? 1.0}
-      onChange={v => onChange({ ...params, brightness: v })}
-      min={0.5}
-      max={2.0}
-      step={0.05}
-    />
-    <SliderInput
-      label="Contrast"
-      value={params.contrast ?? 1.0}
-      onChange={v => onChange({ ...params, contrast: v })}
-      min={0.5}
-      max={2.0}
-      step={0.05}
-    />
-    <SliderInput
-      label="Character Brightness"
-      value={params.charBrightness ?? 1.0}
-      onChange={v => onChange({ ...params, charBrightness: v })}
-      min={0.5}
-      max={3.0}
-      step={0.1}
-    />
-    <SliderInput
-      label="Background Blend"
-      value={params.backgroundBlend ?? 0.0}
-      onChange={v => onChange({ ...params, backgroundBlend: v })}
-      min={0}
-      max={1}
-      step={0.05}
-    />
-    <SliderInput
-      label="Edge Enhance"
-      value={params.edgeEnhance ?? 0.0}
-      onChange={v => onChange({ ...params, edgeEnhance: v })}
-      min={0}
-      max={1}
-      step={0.05}
-    />
-    <SwitchInput label="Color Output" checked={params.color} onChange={v => onChange({ ...params, color: v })} />
-    <SwitchInput
-      label="Invert Brightness"
-      checked={params.invert || false}
-      onChange={v => onChange({ ...params, invert: v })}
-    />
-  </Flex>
+    <PreviewSlider title="Cell Size" value={params.cellSize} onChange={v => onChange({ ...params, cellSize: v })} min={4} max={20} step={1} valueUnit="px" />
+    <PreviewSlider title="Brightness" value={params.brightness ?? 1.0} onChange={v => onChange({ ...params, brightness: v })} min={0.5} max={2.0} step={0.05} />
+    <PreviewSlider title="Contrast" value={params.contrast ?? 1.0} onChange={v => onChange({ ...params, contrast: v })} min={0.5} max={2.0} step={0.05} />
+    <PreviewSlider title="Gamma" value={params.gamma ?? 1.0} onChange={v => onChange({ ...params, gamma: v })} min={0.2} max={3.0} step={0.05} />
+    <PreviewSlider title="Character Brightness" value={params.charBrightness ?? 1.0} onChange={v => onChange({ ...params, charBrightness: v })} min={0.5} max={3.0} step={0.1} />
+    <PreviewSwitch title="Color Output" isChecked={params.color} onChange={v => onChange({ ...params, color: v })} />
+    {!params.color && (
+      <PreviewColorPickerCustom title="Character Color" color={params.charColor || '#ffffff'} onChange={v => onChange({ ...params, charColor: v })} />
+    )}
+    <PreviewColorPickerCustom title="Background Color" color={params.backgroundColor || '#000000'} onChange={v => onChange({ ...params, backgroundColor: v })} />
+    <PreviewSlider title="Background Blend" value={params.backgroundBlend ?? 1.0} onChange={v => onChange({ ...params, backgroundBlend: v })} min={0} max={1} step={0.05} />
+    <PreviewSlider title="Cell Gap" value={params.cellGap ?? 0.0} onChange={v => onChange({ ...params, cellGap: v })} min={0} max={0.5} step={0.01} />
+    <PreviewSlider title="Edge Enhance" value={params.edgeEnhance ?? 0.0} onChange={v => onChange({ ...params, edgeEnhance: v })} min={0} max={1} step={0.05} />
+    <PreviewSwitch title="Invert Brightness" isChecked={params.invert || false} onChange={v => onChange({ ...params, invert: v })} />
+  </>
 );
 
 const OverlayParams = ({ params, onChange }) => {
@@ -551,9 +304,9 @@ const OverlayParams = ({ params, onChange }) => {
   );
 
   return (
-    <Flex direction="column" gap={3}>
-      <SelectInput
-        label="Texture"
+    <>
+      <PreviewSelect
+        title="Texture"
         value={params.texture}
         onChange={v => onChange({ ...params, texture: v })}
         options={[
@@ -582,13 +335,13 @@ const OverlayParams = ({ params, onChange }) => {
             justify="center"
             gap={2}
             p={3}
-            bg={params.customTextureUrl ? 'transparent' : '#170D27'}
-            border="1px dashed #5227FF"
-            borderRadius="8px"
+            bg={params.customTextureUrl ? 'transparent' : 'var(--bg-elevated)'}
+            border="1px dashed var(--color-primary)"
+            borderRadius="var(--radius-sm)"
             cursor="pointer"
             onClick={() => fileInputRef.current?.click()}
             transition="all 0.15s"
-            _hover={{ bg: 'rgba(82, 39, 255, 0.1)' }}
+            _hover={{ bg: 'rgba(168, 85, 247, 0.1)' }}
             position="relative"
             overflow="hidden"
             minH="60px"
@@ -606,7 +359,7 @@ const OverlayParams = ({ params, onChange }) => {
                   objectFit="cover"
                   opacity={0.5}
                 />
-                <Text fontSize="11px" color="#5227FF" fontWeight={500} zIndex={1}>
+                <Text fontSize="11px" color="var(--color-primary)" fontWeight={500} zIndex={1}>
                   Click to change texture
                 </Text>
               </>
@@ -622,33 +375,11 @@ const OverlayParams = ({ params, onChange }) => {
         </>
       )}
 
-      <SliderInput
-        label="Intensity"
-        value={params.intensity}
-        onChange={v => onChange({ ...params, intensity: v })}
-        min={0}
-        max={1}
-        step={0.01}
-      />
-      <SliderInput
-        label="Scale"
-        value={params.scale}
-        onChange={v => onChange({ ...params, scale: v })}
-        min={0.25}
-        max={4}
-        step={0.05}
-      />
-      <SliderInput
-        label="Rotation"
-        value={params.rotation}
-        onChange={v => onChange({ ...params, rotation: v })}
-        min={0}
-        max={360}
-        step={1}
-        suffix="°"
-      />
-      <SelectInput
-        label="Blend Mode"
+      <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+      <PreviewSlider title="Scale" value={params.scale} onChange={v => onChange({ ...params, scale: v })} min={0.25} max={4} step={0.05} />
+      <PreviewSlider title="Rotation" value={params.rotation} onChange={v => onChange({ ...params, rotation: v })} min={0} max={360} step={1} valueUnit="°" />
+      <PreviewSelect
+        title="Blend Mode"
         value={params.blendMode}
         onChange={v => onChange({ ...params, blendMode: v })}
         options={[
@@ -658,131 +389,48 @@ const OverlayParams = ({ params, onChange }) => {
           { value: BLEND_MODES.SCREEN, label: 'Screen' }
         ]}
       />
-    </Flex>
+    </>
   );
 };
 
 const ChromaticParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={0.05}
-      step={0.001}
-    />
-    <SliderInput
-      label="Angle"
-      value={params.angle}
-      onChange={v => onChange({ ...params, angle: v })}
-      min={0}
-      max={360}
-      step={1}
-      suffix="°"
-    />
-    <SwitchInput label="Radial" checked={params.radial} onChange={v => onChange({ ...params, radial: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={0.05} step={0.001} />
+    <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={0} max={360} step={1} valueUnit="°" />
+    <PreviewSwitch title="Radial" isChecked={params.radial} onChange={v => onChange({ ...params, radial: v })} />
+  </>
 );
 
 const VignetteParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Size"
-      value={params.size}
-      onChange={v => onChange({ ...params, size: v })}
-      min={0.1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Softness"
-      value={params.softness}
-      onChange={v => onChange({ ...params, softness: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <ColorInput label="Color" value={params.color} onChange={v => onChange({ ...params, color: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Size" value={params.size} onChange={v => onChange({ ...params, size: v })} min={0.1} max={1} step={0.01} />
+    <PreviewSlider title="Softness" value={params.softness} onChange={v => onChange({ ...params, softness: v })} min={0} max={1} step={0.01} />
+    <PreviewColorPickerCustom title="Color" color={params.color} onChange={v => onChange({ ...params, color: v })} />
+  </>
 );
 
 const ScanlinesParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Spacing"
-      value={params.spacing}
-      onChange={v => onChange({ ...params, spacing: v })}
-      min={2}
-      max={20}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Thickness"
-      value={params.thickness}
-      onChange={v => onChange({ ...params, thickness: v })}
-      min={1}
-      max={10}
-      step={0.5}
-      suffix="px"
-    />
-    <SliderInput
-      label="Opacity"
-      value={params.opacity}
-      onChange={v => onChange({ ...params, opacity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Offset"
-      value={params.offset}
-      onChange={v => onChange({ ...params, offset: v })}
-      min={0}
-      max={20}
-      step={0.5}
-      suffix="px"
-    />
-    <SwitchInput
-      label="Horizontal"
-      checked={params.horizontal}
-      onChange={v => onChange({ ...params, horizontal: v })}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Spacing" value={params.spacing} onChange={v => onChange({ ...params, spacing: v })} min={2} max={20} step={1} valueUnit="px" />
+    <PreviewSlider title="Thickness" value={params.thickness} onChange={v => onChange({ ...params, thickness: v })} min={1} max={10} step={0.5} valueUnit="px" />
+    <PreviewSlider title="Opacity" value={params.opacity} onChange={v => onChange({ ...params, opacity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Offset" value={params.offset} onChange={v => onChange({ ...params, offset: v })} min={0} max={20} step={0.5} valueUnit="px" />
+    <PreviewSwitch title="Horizontal" isChecked={params.horizontal} onChange={v => onChange({ ...params, horizontal: v })} />
+  </>
 );
 
 const PixelateParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Pixel Size"
-      value={params.size}
-      onChange={v => onChange({ ...params, size: v })}
-      min={2}
-      max={64}
-      step={1}
-      suffix="px"
-    />
-    <SwitchInput
-      label="Maintain Aspect"
-      checked={params.maintainAspect}
-      onChange={v => onChange({ ...params, maintainAspect: v })}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Pixel Size" value={params.size} onChange={v => onChange({ ...params, size: v })} min={2} max={64} step={1} valueUnit="px" />
+    <PreviewSwitch title="Maintain Aspect" isChecked={params.maintainAspect} onChange={v => onChange({ ...params, maintainAspect: v })} />
+  </>
 );
 
 const BlurParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SelectInput
-      label="Type"
+  <>
+    <PreviewSelect
+      title="Type"
       value={params.type}
       onChange={v => onChange({ ...params, type: v })}
       options={[
@@ -791,32 +439,17 @@ const BlurParams = ({ params, onChange }) => (
         { value: 'motion', label: 'Motion' }
       ]}
     />
-    <SliderInput
-      label="Radius"
-      value={params.radius}
-      onChange={v => onChange({ ...params, radius: v })}
-      min={0}
-      max={10}
-      step={0.1}
-    />
+    <PreviewSlider title="Radius" value={params.radius} onChange={v => onChange({ ...params, radius: v })} min={0} max={7} step={0.1} />
     {params.type === 'motion' && (
-      <SliderInput
-        label="Angle"
-        value={params.angle}
-        onChange={v => onChange({ ...params, angle: v })}
-        min={0}
-        max={360}
-        step={1}
-        suffix="°"
-      />
+      <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={0} max={360} step={1} valueUnit="°" />
     )}
-  </Flex>
+  </>
 );
 
 const DistortionParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SelectInput
-      label="Type"
+  <>
+    <PreviewSelect
+      title="Type"
       value={params.type}
       onChange={v => onChange({ ...params, type: v })}
       options={[
@@ -825,440 +458,114 @@ const DistortionParams = ({ params, onChange }) => (
         { value: 'bulge', label: 'Bulge' }
       ]}
     />
-    <SliderInput
-      label="Amplitude"
-      value={params.amplitude}
-      onChange={v => onChange({ ...params, amplitude: v })}
-      min={0}
-      max={50}
-      step={1}
-    />
-    <SliderInput
-      label="Frequency"
-      value={params.frequency}
-      onChange={v => onChange({ ...params, frequency: v })}
-      min={1}
-      max={20}
-      step={0.5}
-    />
+    <PreviewSlider title="Amplitude" value={params.amplitude} onChange={v => onChange({ ...params, amplitude: v })} min={0} max={50} step={1} />
+    <PreviewSlider title="Frequency" value={params.frequency} onChange={v => onChange({ ...params, frequency: v })} min={1} max={20} step={0.5} />
     {(params.type === 'swirl' || params.type === 'bulge') && (
       <>
-        <SliderInput
-          label="Center X"
-          value={params.centerX}
-          onChange={v => onChange({ ...params, centerX: v })}
-          min={0}
-          max={1}
-          step={0.01}
-        />
-        <SliderInput
-          label="Center Y"
-          value={params.centerY}
-          onChange={v => onChange({ ...params, centerY: v })}
-          min={0}
-          max={1}
-          step={0.01}
-        />
+        <PreviewSlider title="Center X" value={params.centerX} onChange={v => onChange({ ...params, centerX: v })} min={0} max={1} step={0.01} />
+        <PreviewSlider title="Center Y" value={params.centerY} onChange={v => onChange({ ...params, centerY: v })} min={0} max={1} step={0.01} />
       </>
     )}
-  </Flex>
+  </>
 );
 
 const PosterizeParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Levels"
-      value={params.levels}
-      onChange={v => onChange({ ...params, levels: v })}
-      min={2}
-      max={16}
-      step={1}
-    />
-    <SwitchInput
-      label="Preserve Hue"
-      checked={params.preserveHue}
-      onChange={v => onChange({ ...params, preserveHue: v })}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Levels" value={params.levels} onChange={v => onChange({ ...params, levels: v })} min={2} max={16} step={1} />
+    <PreviewSwitch title="Preserve Hue" isChecked={params.preserveHue} onChange={v => onChange({ ...params, preserveHue: v })} />
+  </>
 );
 
 const EdgeParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Strength"
-      value={params.strength}
-      onChange={v => onChange({ ...params, strength: v })}
-      min={0}
-      max={3}
-      step={0.1}
-    />
-    <SliderInput
-      label="Threshold"
-      value={params.threshold}
-      onChange={v => onChange({ ...params, threshold: v })}
-      min={0}
-      max={0.5}
-      step={0.01}
-    />
-    <SwitchInput label="Invert" checked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
-    <SwitchInput label="Colorize" checked={params.colorize} onChange={v => onChange({ ...params, colorize: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Strength" value={params.strength} onChange={v => onChange({ ...params, strength: v })} min={0} max={3} step={0.1} />
+    <PreviewSlider title="Threshold" value={params.threshold} onChange={v => onChange({ ...params, threshold: v })} min={0} max={0.5} step={0.01} />
+    <PreviewSwitch title="Invert" isChecked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
+    <PreviewSwitch title="Colorize" isChecked={params.colorize} onChange={v => onChange({ ...params, colorize: v })} />
+  </>
 );
 
 const GrainParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={0.5}
-      step={0.01}
-    />
-    <SliderInput
-      label="Size"
-      value={params.size}
-      onChange={v => onChange({ ...params, size: v })}
-      min={0.5}
-      max={5}
-      step={0.1}
-    />
-    <SliderInput
-      label="Luminance Response"
-      value={params.luminanceResponse}
-      onChange={v => onChange({ ...params, luminanceResponse: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SwitchInput label="Colored" checked={params.colored} onChange={v => onChange({ ...params, colored: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={0.5} step={0.01} />
+    <PreviewSlider title="Size" value={params.size} onChange={v => onChange({ ...params, size: v })} min={0.5} max={5} step={0.1} />
+    <PreviewSlider title="Luminance Response" value={params.luminanceResponse} onChange={v => onChange({ ...params, luminanceResponse: v })} min={0} max={1} step={0.01} />
+    <PreviewSwitch title="Colored" isChecked={params.colored} onChange={v => onChange({ ...params, colored: v })} />
+  </>
 );
 
 const ColorGradeParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Brightness"
-      value={params.brightness}
-      onChange={v => onChange({ ...params, brightness: v })}
-      min={-0.5}
-      max={0.5}
-      step={0.01}
-    />
-    <SliderInput
-      label="Contrast"
-      value={params.contrast}
-      onChange={v => onChange({ ...params, contrast: v })}
-      min={-0.5}
-      max={0.5}
-      step={0.01}
-    />
-    <SliderInput
-      label="Saturation"
-      value={params.saturation}
-      onChange={v => onChange({ ...params, saturation: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Temperature"
-      value={params.temperature}
-      onChange={v => onChange({ ...params, temperature: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Tint"
-      value={params.tint}
-      onChange={v => onChange({ ...params, tint: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <ColorInput label="Shadows" value={params.shadows} onChange={v => onChange({ ...params, shadows: v })} />
-    <SliderInput
-      label="Shadow Influence"
-      value={params.shadowInfluence}
-      onChange={v => onChange({ ...params, shadowInfluence: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <ColorInput label="Highlights" value={params.highlights} onChange={v => onChange({ ...params, highlights: v })} />
-    <SliderInput
-      label="Highlight Influence"
-      value={params.highlightInfluence}
-      onChange={v => onChange({ ...params, highlightInfluence: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Brightness" value={params.brightness} onChange={v => onChange({ ...params, brightness: v })} min={-0.5} max={0.5} step={0.01} />
+    <PreviewSlider title="Contrast" value={params.contrast} onChange={v => onChange({ ...params, contrast: v })} min={-0.5} max={0.5} step={0.01} />
+    <PreviewSlider title="Saturation" value={params.saturation} onChange={v => onChange({ ...params, saturation: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Temperature" value={params.temperature} onChange={v => onChange({ ...params, temperature: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Tint" value={params.tint} onChange={v => onChange({ ...params, tint: v })} min={-1} max={1} step={0.01} />
+    <PreviewColorPickerCustom title="Shadows" color={params.shadows} onChange={v => onChange({ ...params, shadows: v })} />
+    <PreviewSlider title="Shadow Influence" value={params.shadowInfluence} onChange={v => onChange({ ...params, shadowInfluence: v })} min={0} max={1} step={0.01} />
+    <PreviewColorPickerCustom title="Highlights" color={params.highlights} onChange={v => onChange({ ...params, highlights: v })} />
+    <PreviewSlider title="Highlight Influence" value={params.highlightInfluence} onChange={v => onChange({ ...params, highlightInfluence: v })} min={0} max={1} step={0.01} />
+  </>
 );
 
 const GlitchParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Slice Count"
-      value={params.sliceCount}
-      onChange={v => onChange({ ...params, sliceCount: v })}
-      min={2}
-      max={50}
-      step={1}
-    />
-    <SliderInput
-      label="RGB Shift"
-      value={params.rgbShift}
-      onChange={v => onChange({ ...params, rgbShift: v })}
-      min={0}
-      max={0.1}
-      step={0.001}
-    />
-    <SliderInput
-      label="Angle"
-      value={params.angle}
-      onChange={v => onChange({ ...params, angle: v })}
-      min={0}
-      max={360}
-      step={1}
-      suffix="°"
-    />
-    <SliderInput
-      label="Block Size"
-      value={params.blockSize}
-      onChange={v => onChange({ ...params, blockSize: v })}
-      min={0.02}
-      max={0.3}
-      step={0.01}
-    />
-    <SwitchInput
-      label="Color Shift"
-      checked={params.colorShift}
-      onChange={v => onChange({ ...params, colorShift: v })}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Slice Count" value={params.sliceCount} onChange={v => onChange({ ...params, sliceCount: v })} min={2} max={50} step={1} />
+    <PreviewSlider title="RGB Shift" value={params.rgbShift} onChange={v => onChange({ ...params, rgbShift: v })} min={0} max={0.1} step={0.001} />
+    <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={0} max={360} step={1} valueUnit="°" />
+    <PreviewSlider title="Block Size" value={params.blockSize} onChange={v => onChange({ ...params, blockSize: v })} min={0.02} max={0.3} step={0.01} />
+    <PreviewSwitch title="Color Shift" isChecked={params.colorShift} onChange={v => onChange({ ...params, colorShift: v })} />
+  </>
 );
 
 const CRTParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Curvature"
-      value={params.curvature}
-      onChange={v => onChange({ ...params, curvature: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Scanline Intensity"
-      value={params.scanlineIntensity}
-      onChange={v => onChange({ ...params, scanlineIntensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Scanline Count"
-      value={params.scanlineCount}
-      onChange={v => onChange({ ...params, scanlineCount: v })}
-      min={100}
-      max={800}
-      step={10}
-    />
-    <SliderInput
-      label="Vignette"
-      value={params.vignetteIntensity}
-      onChange={v => onChange({ ...params, vignetteIntensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Brightness"
-      value={params.brightness}
-      onChange={v => onChange({ ...params, brightness: v })}
-      min={0.5}
-      max={1.5}
-      step={0.01}
-    />
-    <SliderInput
-      label="RGB Offset"
-      value={params.rgbOffset}
-      onChange={v => onChange({ ...params, rgbOffset: v })}
-      min={0}
-      max={0.01}
-      step={0.0005}
-    />
-    <SliderInput
-      label="Flicker"
-      value={params.flickerIntensity}
-      onChange={v => onChange({ ...params, flickerIntensity: v })}
-      min={0}
-      max={0.2}
-      step={0.01}
-    />
-    <SliderInput
-      label="Static Noise"
-      value={params.staticNoise}
-      onChange={v => onChange({ ...params, staticNoise: v })}
-      min={0}
-      max={0.2}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Curvature" value={params.curvature} onChange={v => onChange({ ...params, curvature: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Scanline Intensity" value={params.scanlineIntensity} onChange={v => onChange({ ...params, scanlineIntensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Scanline Count" value={params.scanlineCount} onChange={v => onChange({ ...params, scanlineCount: v })} min={100} max={800} step={10} />
+    <PreviewSlider title="Vignette" value={params.vignetteIntensity} onChange={v => onChange({ ...params, vignetteIntensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Brightness" value={params.brightness} onChange={v => onChange({ ...params, brightness: v })} min={0.5} max={1.5} step={0.01} />
+    <PreviewSlider title="RGB Offset" value={params.rgbOffset} onChange={v => onChange({ ...params, rgbOffset: v })} min={0} max={0.01} step={0.0005} />
+    <PreviewSlider title="Flicker" value={params.flickerIntensity} onChange={v => onChange({ ...params, flickerIntensity: v })} min={0} max={0.2} step={0.01} />
+    <PreviewSlider title="Static Noise" value={params.staticNoise} onChange={v => onChange({ ...params, staticNoise: v })} min={0} max={0.2} step={0.01} />
+  </>
 );
 
 const DuotoneParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <ColorInput
-      label="Shadow Color"
-      value={params.shadowColor}
-      onChange={v => onChange({ ...params, shadowColor: v })}
-    />
-    <ColorInput
-      label="Highlight Color"
-      value={params.highlightColor}
-      onChange={v => onChange({ ...params, highlightColor: v })}
-    />
-    <SliderInput
-      label="Contrast"
-      value={params.contrast}
-      onChange={v => onChange({ ...params, contrast: v })}
-      min={0.5}
-      max={2}
-      step={0.05}
-    />
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewColorPickerCustom title="Shadow Color" color={params.shadowColor} onChange={v => onChange({ ...params, shadowColor: v })} />
+    <PreviewColorPickerCustom title="Highlight Color" color={params.highlightColor} onChange={v => onChange({ ...params, highlightColor: v })} />
+    <PreviewSlider title="Contrast" value={params.contrast} onChange={v => onChange({ ...params, contrast: v })} min={0.5} max={2} step={0.05} />
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+  </>
 );
 
 const KuwaharaParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Radius"
-      value={params.radius}
-      onChange={v => onChange({ ...params, radius: v })}
-      min={1}
-      max={5}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Sharpness"
-      value={params.sharpness}
-      onChange={v => onChange({ ...params, sharpness: v })}
-      min={0}
-      max={1}
-      step={0.05}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Radius" value={params.radius} onChange={v => onChange({ ...params, radius: v })} min={1} max={5} step={1} valueUnit="px" />
+    <PreviewSlider title="Sharpness" value={params.sharpness} onChange={v => onChange({ ...params, sharpness: v })} min={0} max={1} step={0.05} />
+  </>
 );
 
 const BarrelParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Amount"
-      value={params.amount}
-      onChange={v => onChange({ ...params, amount: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Center X"
-      value={params.centerX}
-      onChange={v => onChange({ ...params, centerX: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Center Y"
-      value={params.centerY}
-      onChange={v => onChange({ ...params, centerY: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Zoom"
-      value={params.zoom}
-      onChange={v => onChange({ ...params, zoom: v })}
-      min={0.5}
-      max={2}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Amount" value={params.amount} onChange={v => onChange({ ...params, amount: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Center X" value={params.centerX} onChange={v => onChange({ ...params, centerX: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Center Y" value={params.centerY} onChange={v => onChange({ ...params, centerY: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Zoom" value={params.zoom} onChange={v => onChange({ ...params, zoom: v })} min={0.5} max={2} step={0.01} />
+  </>
 );
 
 const RippleParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Amplitude"
-      value={params.amplitude}
-      onChange={v => onChange({ ...params, amplitude: v })}
-      min={0}
-      max={0.1}
-      step={0.001}
-    />
-    <SliderInput
-      label="Wavelength"
-      value={params.wavelength}
-      onChange={v => onChange({ ...params, wavelength: v })}
-      min={10}
-      max={200}
-      step={5}
-    />
-    <SliderInput
-      label="Speed"
-      value={params.speed}
-      onChange={v => onChange({ ...params, speed: v })}
-      min={0}
-      max={5}
-      step={0.1}
-    />
-    <SliderInput
-      label="Center X"
-      value={params.centerX}
-      onChange={v => onChange({ ...params, centerX: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Center Y"
-      value={params.centerY}
-      onChange={v => onChange({ ...params, centerY: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Damping"
-      value={params.damping}
-      onChange={v => onChange({ ...params, damping: v })}
-      min={0}
-      max={2}
-      step={0.05}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Amplitude" value={params.amplitude} onChange={v => onChange({ ...params, amplitude: v })} min={0} max={0.1} step={0.001} />
+    <PreviewSlider title="Wavelength" value={params.wavelength} onChange={v => onChange({ ...params, wavelength: v })} min={10} max={200} step={5} />
+    <PreviewSlider title="Speed" value={params.speed} onChange={v => onChange({ ...params, speed: v })} min={0} max={5} step={0.1} />
+    <PreviewSlider title="Center X" value={params.centerX} onChange={v => onChange({ ...params, centerX: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Center Y" value={params.centerY} onChange={v => onChange({ ...params, centerY: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Damping" value={params.damping} onChange={v => onChange({ ...params, damping: v })} min={0} max={2} step={0.05} />
+  </>
 );
 
 const DisplacementParams = ({ params, onChange }) => {
@@ -1277,28 +584,10 @@ const DisplacementParams = ({ params, onChange }) => {
   );
 
   return (
-    <Flex direction="column" gap={3}>
-      <SliderInput
-        label="Scale X"
-        value={params.scaleX}
-        onChange={v => onChange({ ...params, scaleX: v })}
-        min={0}
-        max={0.2}
-        step={0.005}
-      />
-      <SliderInput
-        label="Scale Y"
-        value={params.scaleY}
-        onChange={v => onChange({ ...params, scaleY: v })}
-        min={0}
-        max={0.2}
-        step={0.005}
-      />
-      <SwitchInput
-        label="Use Red/Green Channels"
-        checked={params.useRedGreen}
-        onChange={v => onChange({ ...params, useRedGreen: v })}
-      />
+    <>
+      <PreviewSlider title="Scale X" value={params.scaleX} onChange={v => onChange({ ...params, scaleX: v })} min={0} max={0.2} step={0.005} />
+      <PreviewSlider title="Scale Y" value={params.scaleY} onChange={v => onChange({ ...params, scaleY: v })} min={0} max={0.2} step={0.005} />
+      <PreviewSwitch title="Use Red/Green Channels" isChecked={params.useRedGreen} onChange={v => onChange({ ...params, useRedGreen: v })} />
       <input
         type="file"
         ref={fileInputRef}
@@ -1314,13 +603,13 @@ const DisplacementParams = ({ params, onChange }) => {
         justify="center"
         gap={2}
         p={3}
-        bg={params.customMapUrl ? 'transparent' : '#170D27'}
-        border="1px dashed #5227FF"
-        borderRadius="8px"
+        bg={params.customMapUrl ? 'transparent' : 'var(--bg-elevated)'}
+        border="1px dashed var(--color-primary)"
+        borderRadius="var(--radius-sm)"
         cursor="pointer"
         onClick={() => fileInputRef.current?.click()}
         transition="all 0.15s"
-        _hover={{ bg: 'rgba(82, 39, 255, 0.1)' }}
+        _hover={{ bg: 'rgba(168, 85, 247, 0.1)' }}
         position="relative"
         overflow="hidden"
         minH="60px"
@@ -1339,64 +628,28 @@ const DisplacementParams = ({ params, onChange }) => {
             opacity={0.6}
           />
         ) : null}
-        <Text fontSize="11px" color="#988BC7" zIndex={1}>
+        <Text fontSize="11px" color="var(--text-muted)" zIndex={1}>
           {params.customMapUrl ? 'Click to change' : 'Upload Displacement Map'}
         </Text>
-        <Text fontSize="10px" color="#665c7e" zIndex={1}>
+        <Text fontSize="10px" color="var(--text-dimmed)" zIndex={1}>
           (Leave empty for procedural noise)
         </Text>
       </Flex>
-    </Flex>
+    </>
   );
 };
 
 const LightLeakParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <ColorInput label="Color 1" value={params.color1} onChange={v => onChange({ ...params, color1: v })} />
-    <ColorInput label="Color 2" value={params.color2} onChange={v => onChange({ ...params, color2: v })} />
-    <SliderInput
-      label="Position"
-      value={params.position}
-      onChange={v => onChange({ ...params, position: v })}
-      min={-1}
-      max={2}
-      step={0.01}
-    />
-    <SliderInput
-      label="Angle"
-      value={params.angle}
-      onChange={v => onChange({ ...params, angle: v })}
-      min={0}
-      max={360}
-      step={1}
-      suffix="°"
-    />
-    <SliderInput
-      label="Size"
-      value={params.size}
-      onChange={v => onChange({ ...params, size: v })}
-      min={0.1}
-      max={2}
-      step={0.05}
-    />
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Softness"
-      value={params.softness}
-      onChange={v => onChange({ ...params, softness: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SelectInput
-      label="Blend Mode"
+  <>
+    <PreviewColorPickerCustom title="Color 1" color={params.color1} onChange={v => onChange({ ...params, color1: v })} />
+    <PreviewColorPickerCustom title="Color 2" color={params.color2} onChange={v => onChange({ ...params, color2: v })} />
+    <PreviewSlider title="Position" value={params.position} onChange={v => onChange({ ...params, position: v })} min={-1} max={2} step={0.01} />
+    <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={0} max={360} step={1} valueUnit="°" />
+    <PreviewSlider title="Size" value={params.size} onChange={v => onChange({ ...params, size: v })} min={0.1} max={2} step={0.05} />
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Softness" value={params.softness} onChange={v => onChange({ ...params, softness: v })} min={0} max={1} step={0.01} />
+    <PreviewSelect
+      title="Blend Mode"
       value={params.blendMode}
       onChange={v => onChange({ ...params, blendMode: v })}
       options={[
@@ -1406,46 +659,17 @@ const LightLeakParams = ({ params, onChange }) => (
         { value: BLEND_MODES.MULTIPLY, label: 'Multiply' }
       ]}
     />
-  </Flex>
+  </>
 );
 
 const BloomParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Radius"
-      value={params.radius}
-      onChange={v => onChange({ ...params, radius: v })}
-      min={1}
-      max={15}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={3}
-      step={0.05}
-    />
-    <SliderInput
-      label="Threshold"
-      value={params.threshold}
-      onChange={v => onChange({ ...params, threshold: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Soft Threshold"
-      value={params.softThreshold}
-      onChange={v => onChange({ ...params, softThreshold: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SelectInput
-      label="Blend Mode"
+  <>
+    <PreviewSlider title="Radius" value={params.radius} onChange={v => onChange({ ...params, radius: v })} min={1} max={6} step={1} valueUnit="px" />
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={3} step={0.05} />
+    <PreviewSlider title="Threshold" value={params.threshold} onChange={v => onChange({ ...params, threshold: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Soft Threshold" value={params.softThreshold} onChange={v => onChange({ ...params, softThreshold: v })} min={0} max={1} step={0.01} />
+    <PreviewSelect
+      title="Blend Mode"
       value={params.blendMode}
       onChange={v => onChange({ ...params, blendMode: v })}
       options={[
@@ -1455,224 +679,98 @@ const BloomParams = ({ params, onChange }) => (
         { value: BLEND_MODES.MULTIPLY, label: 'Multiply' }
       ]}
     />
-  </Flex>
+  </>
 );
 
 const RadialBlurParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Intensity"
-      value={params.intensity}
-      onChange={v => onChange({ ...params, intensity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Center X"
-      value={params.centerX}
-      onChange={v => onChange({ ...params, centerX: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Center Y"
-      value={params.centerY}
-      onChange={v => onChange({ ...params, centerY: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Samples"
-      value={params.samples}
-      onChange={v => onChange({ ...params, samples: v })}
-      min={8}
-      max={64}
-      step={1}
-    />
-    <SwitchInput label="Zoom Blur" checked={params.zoom} onChange={v => onChange({ ...params, zoom: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Intensity" value={params.intensity} onChange={v => onChange({ ...params, intensity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Center X" value={params.centerX} onChange={v => onChange({ ...params, centerX: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Center Y" value={params.centerY} onChange={v => onChange({ ...params, centerY: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Samples" value={params.samples} onChange={v => onChange({ ...params, samples: v })} min={8} max={64} step={1} />
+    <PreviewSwitch title="Zoom Blur" isChecked={params.zoom} onChange={v => onChange({ ...params, zoom: v })} />
+  </>
 );
 
 const MosaicParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Cell Size"
-      value={params.cellSize}
-      onChange={v => onChange({ ...params, cellSize: v })}
-      min={5}
-      max={100}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Irregularity"
-      value={params.irregularity}
-      onChange={v => onChange({ ...params, irregularity: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Edge Thickness"
-      value={params.edgeThickness}
-      onChange={v => onChange({ ...params, edgeThickness: v })}
-      min={0}
-      max={0.1}
-      step={0.005}
-    />
-    <ColorInput label="Edge Color" value={params.edgeColor} onChange={v => onChange({ ...params, edgeColor: v })} />
-    <SliderInput
-      label="Color Variation"
-      value={params.colorVariation}
-      onChange={v => onChange({ ...params, colorVariation: v })}
-      min={0}
-      max={0.5}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Cell Size" value={params.cellSize} onChange={v => onChange({ ...params, cellSize: v })} min={5} max={100} step={1} valueUnit="px" />
+    <PreviewSlider title="Irregularity" value={params.irregularity} onChange={v => onChange({ ...params, irregularity: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Edge Thickness" value={params.edgeThickness} onChange={v => onChange({ ...params, edgeThickness: v })} min={0} max={0.1} step={0.005} />
+    <PreviewColorPickerCustom title="Edge Color" color={params.edgeColor} onChange={v => onChange({ ...params, edgeColor: v })} />
+    <PreviewSlider title="Color Variation" value={params.colorVariation} onChange={v => onChange({ ...params, colorVariation: v })} min={0} max={0.5} step={0.01} />
+  </>
 );
 
 const TiltShiftParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Focus Position"
-      value={params.focusPosition}
-      onChange={v => onChange({ ...params, focusPosition: v })}
-      min={0}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Focus Width"
-      value={params.focusWidth}
-      onChange={v => onChange({ ...params, focusWidth: v })}
-      min={0.05}
-      max={0.5}
-      step={0.01}
-    />
-    <SliderInput
-      label="Blur Radius"
-      value={params.blurRadius}
-      onChange={v => onChange({ ...params, blurRadius: v })}
-      min={1}
-      max={15}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Angle"
-      value={params.angle}
-      onChange={v => onChange({ ...params, angle: v })}
-      min={-90}
-      max={90}
-      step={1}
-      suffix="°"
-    />
-    <SliderInput
-      label="Gradient Smooth"
-      value={params.gradientSmooth}
-      onChange={v => onChange({ ...params, gradientSmooth: v })}
-      min={0.05}
-      max={0.5}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Focus Position" value={params.focusPosition} onChange={v => onChange({ ...params, focusPosition: v })} min={0} max={1} step={0.01} />
+    <PreviewSlider title="Focus Width" value={params.focusWidth} onChange={v => onChange({ ...params, focusWidth: v })} min={0.05} max={0.5} step={0.01} />
+    <PreviewSlider title="Blur Radius" value={params.blurRadius} onChange={v => onChange({ ...params, blurRadius: v })} min={1} max={8} step={1} valueUnit="px" />
+    <PreviewSlider title="Angle" value={params.angle} onChange={v => onChange({ ...params, angle: v })} min={-90} max={90} step={1} valueUnit="°" />
+    <PreviewSlider title="Gradient Smooth" value={params.gradientSmooth} onChange={v => onChange({ ...params, gradientSmooth: v })} min={0.05} max={0.5} step={0.01} />
+  </>
 );
 
 const ExposureParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Exposure"
-      value={params.exposure}
-      onChange={v => onChange({ ...params, exposure: v })}
-      min={-3}
-      max={3}
-      step={0.05}
-      suffix=" EV"
-    />
-    <SliderInput
-      label="Highlights"
-      value={params.highlights}
-      onChange={v => onChange({ ...params, highlights: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Shadows"
-      value={params.shadows}
-      onChange={v => onChange({ ...params, shadows: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Blacks"
-      value={params.blacks}
-      onChange={v => onChange({ ...params, blacks: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Whites"
-      value={params.whites}
-      onChange={v => onChange({ ...params, whites: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Exposure" value={params.exposure} onChange={v => onChange({ ...params, exposure: v })} min={-3} max={3} step={0.05} valueUnit=" EV" />
+    <PreviewSlider title="Highlights" value={params.highlights} onChange={v => onChange({ ...params, highlights: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Shadows" value={params.shadows} onChange={v => onChange({ ...params, shadows: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Blacks" value={params.blacks} onChange={v => onChange({ ...params, blacks: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Whites" value={params.whites} onChange={v => onChange({ ...params, whites: v })} min={-1} max={1} step={0.01} />
+  </>
 );
 
 const VibranceParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Vibrance"
-      value={params.vibrance}
-      onChange={v => onChange({ ...params, vibrance: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-    <SliderInput
-      label="Saturation"
-      value={params.saturation}
-      onChange={v => onChange({ ...params, saturation: v })}
-      min={-1}
-      max={1}
-      step={0.01}
-    />
-  </Flex>
+  <>
+    <PreviewSlider title="Vibrance" value={params.vibrance} onChange={v => onChange({ ...params, vibrance: v })} min={-1} max={1} step={0.01} />
+    <PreviewSlider title="Saturation" value={params.saturation} onChange={v => onChange({ ...params, saturation: v })} min={-1} max={1} step={0.01} />
+  </>
 );
 
 const DotDitherParams = ({ params, onChange }) => (
-  <Flex direction="column" gap={3}>
-    <SliderInput
-      label="Dot Size"
-      value={params.scale}
-      onChange={v => onChange({ ...params, scale: v })}
-      min={1}
-      max={8}
-      step={1}
-      suffix="px"
-    />
-    <SliderInput
-      label="Threshold"
-      value={params.threshold}
-      onChange={v => onChange({ ...params, threshold: v })}
-      min={0.1}
-      max={0.9}
-      step={0.05}
-    />
-    <SwitchInput label="Invert" checked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
-  </Flex>
+  <>
+    <PreviewSlider title="Dot Size" value={params.scale} onChange={v => onChange({ ...params, scale: v })} min={1} max={8} step={1} valueUnit="px" />
+    <PreviewSlider title="Threshold" value={params.threshold} onChange={v => onChange({ ...params, threshold: v })} min={0.1} max={0.9} step={0.05} />
+    <PreviewSwitch title="Invert" isChecked={params.invert} onChange={v => onChange({ ...params, invert: v })} />
+  </>
 );
 
-const EffectCard = ({
+const PARAMS_COMPONENTS = {
+  [EFFECT_TYPES.NOISE]: NoiseParams,
+  [EFFECT_TYPES.DITHER]: DitherParams,
+  [EFFECT_TYPES.HALFTONE]: HalftoneParams,
+  [EFFECT_TYPES.ASCII]: ASCIIParams,
+  [EFFECT_TYPES.OVERLAY]: OverlayParams,
+  [EFFECT_TYPES.CHROMATIC]: ChromaticParams,
+  [EFFECT_TYPES.VIGNETTE]: VignetteParams,
+  [EFFECT_TYPES.SCANLINES]: ScanlinesParams,
+  [EFFECT_TYPES.PIXELATE]: PixelateParams,
+  [EFFECT_TYPES.BLUR]: BlurParams,
+  [EFFECT_TYPES.DISTORTION]: DistortionParams,
+  [EFFECT_TYPES.POSTERIZE]: PosterizeParams,
+  [EFFECT_TYPES.EDGE]: EdgeParams,
+  [EFFECT_TYPES.GRAIN]: GrainParams,
+  [EFFECT_TYPES.COLOR_GRADE]: ColorGradeParams,
+  [EFFECT_TYPES.GLITCH]: GlitchParams,
+  [EFFECT_TYPES.CRT]: CRTParams,
+  [EFFECT_TYPES.DUOTONE]: DuotoneParams,
+  [EFFECT_TYPES.KUWAHARA]: KuwaharaParams,
+  [EFFECT_TYPES.BARREL]: BarrelParams,
+  [EFFECT_TYPES.RIPPLE]: RippleParams,
+  [EFFECT_TYPES.DISPLACEMENT]: DisplacementParams,
+  [EFFECT_TYPES.LIGHT_LEAK]: LightLeakParams,
+  [EFFECT_TYPES.BLOOM]: BloomParams,
+  [EFFECT_TYPES.RADIAL_BLUR]: RadialBlurParams,
+  [EFFECT_TYPES.MOSAIC]: MosaicParams,
+  [EFFECT_TYPES.TILT_SHIFT]: TiltShiftParams,
+  [EFFECT_TYPES.EXPOSURE]: ExposureParams,
+  [EFFECT_TYPES.VIBRANCE]: VibranceParams,
+  [EFFECT_TYPES.DOT_DITHER]: DotDitherParams
+};
+
+const EffectCard = memo(({
   effect,
   onUpdate,
   onDelete,
@@ -1686,45 +784,13 @@ const EffectCard = ({
   onExpandToggle
 }) => {
   const EffectIcon = EFFECT_ICONS[effect.type];
-
-  const ParamsComponent = {
-    [EFFECT_TYPES.NOISE]: NoiseParams,
-    [EFFECT_TYPES.DITHER]: DitherParams,
-    [EFFECT_TYPES.HALFTONE]: HalftoneParams,
-    [EFFECT_TYPES.ASCII]: ASCIIParams,
-    [EFFECT_TYPES.OVERLAY]: OverlayParams,
-    [EFFECT_TYPES.CHROMATIC]: ChromaticParams,
-    [EFFECT_TYPES.VIGNETTE]: VignetteParams,
-    [EFFECT_TYPES.SCANLINES]: ScanlinesParams,
-    [EFFECT_TYPES.PIXELATE]: PixelateParams,
-    [EFFECT_TYPES.BLUR]: BlurParams,
-    [EFFECT_TYPES.DISTORTION]: DistortionParams,
-    [EFFECT_TYPES.POSTERIZE]: PosterizeParams,
-    [EFFECT_TYPES.EDGE]: EdgeParams,
-    [EFFECT_TYPES.GRAIN]: GrainParams,
-    [EFFECT_TYPES.COLOR_GRADE]: ColorGradeParams,
-    [EFFECT_TYPES.GLITCH]: GlitchParams,
-    [EFFECT_TYPES.CRT]: CRTParams,
-    [EFFECT_TYPES.DUOTONE]: DuotoneParams,
-    [EFFECT_TYPES.KUWAHARA]: KuwaharaParams,
-    [EFFECT_TYPES.BARREL]: BarrelParams,
-    [EFFECT_TYPES.RIPPLE]: RippleParams,
-    [EFFECT_TYPES.DISPLACEMENT]: DisplacementParams,
-    [EFFECT_TYPES.LIGHT_LEAK]: LightLeakParams,
-    [EFFECT_TYPES.BLOOM]: BloomParams,
-    [EFFECT_TYPES.RADIAL_BLUR]: RadialBlurParams,
-    [EFFECT_TYPES.MOSAIC]: MosaicParams,
-    [EFFECT_TYPES.TILT_SHIFT]: TiltShiftParams,
-    [EFFECT_TYPES.EXPOSURE]: ExposureParams,
-    [EFFECT_TYPES.VIBRANCE]: VibranceParams,
-    [EFFECT_TYPES.DOT_DITHER]: DotDitherParams
-  }[effect.type];
+  const ParamsComponent = PARAMS_COMPONENTS[effect.type];
 
   return (
     <Box
-      bg="#170D27"
-      border={isDragging ? '1px solid #5227FF' : '1px solid #271E37'}
-      borderRadius="8px"
+      bg="var(--bg-elevated)"
+      border={isDragging ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
+      borderRadius="var(--radius-sm)"
       overflow="hidden"
       opacity={isDragging ? 0.5 : 1}
       transition="all 0.2s ease"
@@ -1737,7 +803,7 @@ const EffectCard = ({
         p={3}
         cursor="pointer"
         onClick={onExpandToggle}
-        _hover={{ bg: 'rgba(82, 39, 255, 0.05)' }}
+        _hover={{ bg: 'rgba(168, 85, 247, 0.05)' }}
       >
         <Flex align="center" gap={1}>
           <Flex
@@ -1754,10 +820,10 @@ const EffectCard = ({
             _hover={{ opacity: 1 }}
             _active={{ cursor: 'grabbing' }}
           >
-            <Icon as={GripVertical} boxSize={3} color="#988BC7" />
+            <Icon as={GripVertical} boxSize={3} color="var(--text-muted)" />
           </Flex>
-          <Icon as={EffectIcon} boxSize={3} color={effect.enabled ? '#5227FF' : '#988BC7'} />
-          <Text fontSize="12px" color={effect.enabled ? '#fff' : '#988BC7'} fontWeight={500}>
+          <Icon as={EffectIcon} boxSize={3} color={effect.enabled ? 'var(--color-primary)' : 'var(--text-muted)'} />
+          <Text fontSize="12px" color={effect.enabled ? 'var(--text-primary)' : 'var(--text-muted)'} fontWeight={500}>
             {EFFECT_NAMES[effect.type]}
           </Text>
         </Flex>
@@ -1777,7 +843,7 @@ const EffectCard = ({
             _hover={{ bg: 'rgba(255,255,255,0.1)' }}
             title={effect.enabled ? 'Disable effect' : 'Enable effect'}
           >
-            <Icon as={effect.enabled ? Eye : EyeOff} boxSize={3.5} color="#988BC7" />
+            <Icon as={effect.enabled ? Eye : EyeOff} boxSize={3.5} color="var(--text-muted)" />
           </Flex>
           <Flex
             as="button"
@@ -1794,7 +860,7 @@ const EffectCard = ({
             _hover={{ bg: 'rgba(255,255,255,0.1)' }}
             title="Duplicate effect"
           >
-            <Icon as={Copy} boxSize={3.5} color="#988BC7" />
+            <Icon as={Copy} boxSize={3.5} color="var(--text-muted)" />
           </Flex>
           <Flex
             as="button"
@@ -1811,7 +877,7 @@ const EffectCard = ({
             _hover={{ bg: 'rgba(255,100,100,0.1)' }}
             title="Delete effect"
           >
-            <Icon as={Trash2} boxSize={3.5} color="#988BC7" />
+            <Icon as={Trash2} boxSize={3.5} color="var(--text-muted)" />
           </Flex>
           <Flex
             as="button"
@@ -1828,19 +894,19 @@ const EffectCard = ({
             _hover={{ bg: 'rgba(255,255,255,0.1)' }}
             title={isExpanded ? 'Collapse' : 'Expand'}
           >
-            <Icon as={isExpanded ? ChevronUp : ChevronDown} boxSize={4} color="#988BC7" />
+            <Icon as={isExpanded ? ChevronUp : ChevronDown} boxSize={4} color="var(--text-muted)" />
           </Flex>
         </Flex>
       </Flex>
 
       {isExpanded && ParamsComponent && (
-        <Box p={3} borderTop="1px solid #271E37">
+        <Flex direction="column" gap={2} p={3} borderTop="1px solid var(--border-primary)">
           <ParamsComponent params={effect.params} onChange={params => onUpdate(effect.id, { params })} />
-        </Box>
+        </Flex>
       )}
     </Box>
   );
-};
+});
 
 const EFFECT_CATEGORIES = {
   texture: {
@@ -1902,7 +968,7 @@ const AddEffectPanel = ({ onAddEffect }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Box bg="#170D27" border="1px solid #271E37" borderRadius="8px" overflow="hidden" mb={3}>
+    <Box bg="var(--bg-elevated)" border="1px solid var(--border-primary)" borderRadius="var(--radius-sm)" overflow="hidden" mb={3}>
       <Flex
         as="button"
         type="button"
@@ -1912,25 +978,25 @@ const AddEffectPanel = ({ onAddEffect }) => {
         p={3}
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
-        _hover={{ bg: 'rgba(82, 39, 255, 0.1)' }}
+        _hover={{ bg: 'rgba(168, 85, 247, 0.1)' }}
         transition="all 0.15s"
       >
         <Flex align="center" gap={2}>
-          <Icon as={Plus} boxSize={4} color="#988BC7" />
-          <Text fontSize="12px" color="#fff" fontWeight={500}>
+          <Icon as={Plus} boxSize={4} color="var(--text-muted)" />
+          <Text fontSize="12px" color="var(--text-primary)" fontWeight={500}>
             Add Effect
           </Text>
         </Flex>
-        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="#988BC7" />
+        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="var(--text-muted)" />
       </Flex>
 
       {isOpen && (
-        <Flex direction="column" gap={3} p={3}>
+        <Flex direction="column" gap={3} p={3} borderTop="1px solid var(--border-primary)">
           {Object.entries(EFFECT_CATEGORIES).map(([catKey, category]) => (
             <Box key={catKey}>
               <Text
                 fontSize="10px"
-                color="#988BC7"
+                color="var(--text-muted)"
                 fontWeight={600}
                 textTransform="uppercase"
                 letterSpacing="0.5px"
@@ -1938,17 +1004,40 @@ const AddEffectPanel = ({ onAddEffect }) => {
               >
                 {category.label}
               </Text>
-              <Flex gap={2} flexWrap="wrap">
+              <Flex
+                gap={1.5}
+                flexWrap="wrap"
+                css={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '6px'
+                }}
+              >
                 {category.effects.map(type => (
-                  <ToggleButton
+                  <Flex
                     key={type}
-                    icon={EFFECT_ICONS[type]}
-                    label={EFFECT_NAMES[type]}
+                    as="button"
+                    type="button"
+                    align="center"
+                    gap={2}
+                    px={2.5}
+                    py={2}
+                    bg="var(--bg-body)"
+                    border="1px solid var(--border-primary)"
+                    borderRadius="var(--radius-sm)"
+                    cursor="pointer"
                     onClick={() => {
                       onAddEffect(type);
                       setIsOpen(false);
                     }}
-                  />
+                    transition="all 0.15s"
+                    _hover={{ borderColor: 'var(--color-primary)', bg: 'rgba(168, 85, 247, 0.08)' }}
+                  >
+                    <Icon as={EFFECT_ICONS[type]} boxSize={3.5} color="var(--text-muted)" flexShrink={0} />
+                    <Text fontSize="11px" color="var(--text-primary)" whiteSpace="nowrap" fontWeight={450}>
+                      {EFFECT_NAMES[type]}
+                    </Text>
+                  </Flex>
                 ))}
               </Flex>
             </Box>
@@ -1963,7 +1052,7 @@ const PresetsPanel = ({ onLoadPreset }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Box bg="#170D27" border="1px solid #271E37" borderRadius="8px" overflow="hidden" mb={4}>
+    <Box bg="var(--bg-elevated)" border="1px solid var(--border-primary)" borderRadius="var(--radius-sm)" overflow="hidden" mb={4}>
       <Flex
         as="button"
         type="button"
@@ -1973,30 +1062,52 @@ const PresetsPanel = ({ onLoadPreset }) => {
         p={3}
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
-        _hover={{ bg: 'rgba(82, 39, 255, 0.1)' }}
+        _hover={{ bg: 'rgba(168, 85, 247, 0.1)' }}
         transition="all 0.15s"
       >
         <Flex align="center" gap={2}>
-          <Icon as={Wand2} boxSize={4} color="#988BC7" />
-          <Text fontSize="12px" color="#fff" fontWeight={500}>
+          <Icon as={Wand2} boxSize={4} color="var(--text-muted)" />
+          <Text fontSize="12px" color="var(--text-primary)" fontWeight={500}>
             Presets
           </Text>
         </Flex>
-        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="#988BC7" />
+        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="var(--text-muted)" />
       </Flex>
 
       {isOpen && (
-        <Flex gap={2} p={3} flexWrap="wrap">
+        <Box
+          p={3}
+          borderTop="1px solid var(--border-primary)"
+          css={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '6px'
+          }}
+        >
           {Object.entries(PRESETS).map(([key, preset]) => (
-            <ToggleButton
+            <Flex
               key={key}
-              icon={Wand2}
-              label={preset.name}
+              as="button"
+              type="button"
+              align="center"
+              gap={2}
+              px={2.5}
+              py={2}
+              bg="var(--bg-body)"
+              border="1px solid var(--border-primary)"
+              borderRadius="var(--radius-sm)"
+              cursor="pointer"
               onClick={() => onLoadPreset(key)}
-              flex="1 1 calc(50% - 4px)"
-            />
+              transition="all 0.15s"
+              _hover={{ borderColor: 'var(--color-primary)', bg: 'rgba(168, 85, 247, 0.08)' }}
+            >
+              <Icon as={Wand2} boxSize={3.5} color="var(--text-muted)" flexShrink={0} />
+              <Text fontSize="11px" color="var(--text-primary)" whiteSpace="nowrap" fontWeight={450}>
+                {preset.name}
+              </Text>
+            </Flex>
           ))}
-        </Flex>
+        </Box>
       )}
     </Box>
   );
@@ -2017,7 +1128,7 @@ const ExportSettingsPanel = ({
   const isVideo = mediaType === 'video';
 
   return (
-    <Box bg="#170D27" border="1px solid #271E37" borderRadius="8px" overflow="hidden">
+    <Box bg="var(--bg-elevated)" border="1px solid var(--border-primary)" borderRadius="var(--radius-sm)" overflow="hidden">
       <Flex
         as="button"
         type="button"
@@ -2027,28 +1138,28 @@ const ExportSettingsPanel = ({
         p={3}
         cursor="pointer"
         onClick={() => setIsOpen(!isOpen)}
-        _hover={{ bg: 'rgba(82, 39, 255, 0.1)' }}
+        _hover={{ bg: 'rgba(168, 85, 247, 0.1)' }}
         transition="all 0.15s"
       >
         <Flex align="center" gap={2}>
-          <Icon as={Sliders} boxSize={4} color="#988BC7" />
-          <Text fontSize="12px" color="#fff" fontWeight={500}>
+          <Icon as={Sliders} boxSize={4} color="var(--text-muted)" />
+          <Text fontSize="12px" color="var(--text-primary)" fontWeight={500}>
             Export Settings
           </Text>
         </Flex>
-        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="#988BC7" />
+        <Icon as={isOpen ? ChevronUp : ChevronDown} boxSize={4} color="var(--text-muted)" />
       </Flex>
 
       {isOpen && (
         <Flex direction="column" gap={3} p={3}>
           {isVideo ? (
-            <Text fontSize="11px" color="#988BC7">
+            <Text fontSize="11px" color="var(--text-muted)">
               Videos export as WebM format.
             </Text>
           ) : (
             <>
-              <SelectInput
-                label="Format"
+              <PreviewSelect
+                title="Format"
                 value={exportFormat}
                 onChange={onExportFormatChange}
                 options={[
@@ -2058,8 +1169,8 @@ const ExportSettingsPanel = ({
               />
 
               {exportFormat === 'jpg' && (
-                <SliderInput
-                  label="Quality"
+                <PreviewSlider
+                  title="Quality"
                   value={exportQuality}
                   onChange={onExportQualityChange}
                   min={0.7}
@@ -2068,8 +1179,8 @@ const ExportSettingsPanel = ({
                 />
               )}
 
-              <SelectInput
-                label="Scale"
+              <PreviewSelect
+                title="Scale"
                 value={exportScale.toString()}
                 onChange={v => onExportScaleChange(parseInt(v))}
                 options={EXPORT_SCALES.map(s => ({
@@ -2080,8 +1191,8 @@ const ExportSettingsPanel = ({
             </>
           )}
 
-          <SelectInput
-            label="Preview Quality"
+          <PreviewSelect
+            title="Preview Quality"
             value={previewQuality}
             onChange={onPreviewQualityChange}
             options={[
@@ -2873,7 +1984,7 @@ export default function Controls({
               label="Sample"
               onClick={() =>
                 onMediaLoad(
-                  'https://images.unsplash.com/photo-1706097692944-9295f1889b63?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                  'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                   'url'
                 )
               }
@@ -2888,14 +1999,14 @@ export default function Controls({
               value={urlInput}
               onChange={e => setUrlInput(e.target.value)}
               size="sm"
-              bg="#170D27"
-              border="1px solid #271E37"
-              borderRadius="6px"
-              color="#fff"
+              bg="var(--bg-elevated)"
+              border="1px solid var(--border-primary)"
+              borderRadius="var(--radius-sm)"
+              color="var(--text-primary)"
               fontSize="12px"
               flex={1}
-              _placeholder={{ color: '#B19EEF' }}
-              _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
+              _placeholder={{ color: 'var(--color-accent)' }}
+              _focus={{ borderColor: 'var(--color-primary)', boxShadow: 'none' }}
               onKeyDown={e => e.key === 'Enter' && !isExporting && handleLoadUrl()}
               disabled={isExporting}
             />
@@ -2918,7 +2029,7 @@ export default function Controls({
         <PresetsPanel onLoadPreset={handleLoadPreset} />
 
         <Flex align="center" justify="space-between" mb={3}>
-          <Text fontSize="11px" color="#988BC7" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
+          <Text fontSize="11px" color="var(--text-muted)" fontWeight={600} textTransform="uppercase" letterSpacing="0.5px">
             Effects ({effects.length})
           </Text>
           <Flex gap={1}>
@@ -2948,8 +2059,8 @@ export default function Controls({
           ))}
 
           {effects.length === 0 && (
-            <Box p={4} bg="#170D27" border="1px dashed #271E37" borderRadius="8px" textAlign="center">
-              <Text fontSize="12px" color="#988BC7">
+            <Box p={4} bg="var(--bg-elevated)" border="1px dashed var(--border-primary)" borderRadius="var(--radius-sm)" textAlign="center">
+              <Text fontSize="12px" color="var(--text-muted)">
                 No effects added. Click &ldquo;Add Effect&rdquo; to get started.
               </Text>
             </Box>
@@ -2965,18 +2076,18 @@ export default function Controls({
             align="center"
             justify="center"
             gap={2}
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="8px"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
+            borderRadius="var(--radius-sm)"
             py={2}
             cursor={effects.length === 0 ? 'not-allowed' : 'pointer'}
             opacity={effects.length === 0 ? 0.5 : 1}
             onClick={effects.length === 0 ? undefined : handleExportPreset}
             transition="all 0.15s"
-            _hover={{ borderColor: effects.length === 0 ? '#271E37' : '#5227FF' }}
+            _hover={{ borderColor: effects.length === 0 ? 'var(--border-primary)' : 'var(--color-primary)' }}
           >
-            <Icon as={FileDown} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={FileDown} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               Save Preset
             </Text>
           </Flex>
@@ -2986,17 +2097,17 @@ export default function Controls({
             align="center"
             justify="center"
             gap={2}
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="8px"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
+            borderRadius="var(--radius-sm)"
             py={2}
             cursor="pointer"
             onClick={() => presetInputRef.current?.click()}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: 'var(--color-primary)' }}
           >
-            <Icon as={FileUp} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={FileUp} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               Load Preset
             </Text>
           </Flex>
@@ -3029,18 +2140,18 @@ export default function Controls({
               align="center"
               justify="center"
               gap={2}
-              bg="#170D27"
-              border="1px solid #271E37"
-              borderRadius="8px"
+              bg="var(--bg-elevated)"
+              border="1px solid var(--border-primary)"
+              borderRadius="var(--radius-sm)"
               py={2}
               cursor={corsError || !image ? 'not-allowed' : 'pointer'}
               opacity={corsError || !image ? 0.5 : 1}
               onClick={corsError || !image ? undefined : onCopyToClipboard}
               transition="all 0.15s"
-              _hover={{ borderColor: corsError || !image ? '#271E37' : '#5227FF' }}
+              _hover={{ borderColor: corsError || !image ? 'var(--border-primary)' : 'var(--color-primary)' }}
             >
-              <Icon as={Copy} boxSize={4} color="#988BC7" />
-              <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+              <Icon as={Copy} boxSize={4} color="var(--text-muted)" />
+              <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
                 Copy
               </Text>
             </Flex>
@@ -3051,18 +2162,18 @@ export default function Controls({
             align="center"
             justify="center"
             gap={2}
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="8px"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
+            borderRadius="var(--radius-sm)"
             py={2}
             cursor={isExporting ? 'not-allowed' : 'pointer'}
             opacity={isExporting ? 0.5 : 1}
             onClick={isExporting ? undefined : onReset}
             transition="all 0.15s"
-            _hover={{ borderColor: isExporting ? '#271E37' : '#5227FF' }}
+            _hover={{ borderColor: isExporting ? 'var(--border-primary)' : 'var(--color-primary)' }}
           >
-            <Icon as={RotateCcw} boxSize={4} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={RotateCcw} boxSize={4} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               Reset
             </Text>
           </Flex>
@@ -3072,15 +2183,15 @@ export default function Controls({
           as="button"
           align="center"
           justify="center"
-          bg="#5227FF"
-          borderRadius="8px"
+          bg="var(--color-primary)"
+          borderRadius="var(--radius-sm)"
           h="44px"
           w="100%"
           cursor={corsError || (!image && !video) || isExporting ? 'not-allowed' : 'pointer'}
           opacity={corsError || (!image && !video) ? 0.5 : 1}
           onClick={corsError || (!image && !video) || isExporting ? undefined : onExport}
           transition="all 0.15s"
-          _hover={{ bg: corsError || (!image && !video) || isExporting ? '#5227FF' : '#6B3FFF' }}
+          _hover={{ bg: corsError || (!image && !video) || isExporting ? 'var(--color-primary)' : '#b96dfa' }}
           overflow="hidden"
           position="relative"
         >

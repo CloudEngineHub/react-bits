@@ -73,7 +73,7 @@ const TargetCursorDemo = () => {
         <TabsLayout>
           <PreviewTab>
             <Box position="relative" className="demo-container" flexDirection="column" h={400} overflow="hidden">
-              <Text fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={900} mb={6} color="#271E37">
+              <Text fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={900} mb={6} color="#2F293A">
                 Hover Below.
               </Text>
 
@@ -81,8 +81,8 @@ const TargetCursorDemo = () => {
                 <GridItem>
                   <Text
                     borderRadius="15px"
-                    color="#B19EEF"
-                    border="1px dashed #B19EEF"
+                    color="#B497CF"
+                    border="1px dashed #B497CF"
                     fontWeight={900}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
@@ -96,8 +96,8 @@ const TargetCursorDemo = () => {
                 <GridItem>
                   <Text
                     borderRadius="15px"
-                    color="#B19EEF"
-                    border="1px dashed #B19EEF"
+                    color="#B497CF"
+                    border="1px dashed #B497CF"
                     fontWeight={900}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
@@ -111,8 +111,8 @@ const TargetCursorDemo = () => {
                 <GridItem>
                   <Text
                     borderRadius="15px"
-                    color="#B19EEF"
-                    border="1px dashed #B19EEF"
+                    color="#B497CF"
+                    border="1px dashed #B497CF"
                     fontWeight={900}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
@@ -127,8 +127,8 @@ const TargetCursorDemo = () => {
                   <Text
                     textAlign="center"
                     borderRadius="15px"
-                    color="#B19EEF"
-                    border="1px dashed #B19EEF"
+                    color="#B497CF"
+                    border="1px dashed #B497CF"
                     fontWeight={900}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"

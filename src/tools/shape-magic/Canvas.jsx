@@ -523,7 +523,7 @@ const Canvas = forwardRef(
             y={y}
             width={handleSize}
             height={handleSize}
-            fill="#5227FF"
+            fill="#A855F7"
             stroke="#fff"
             strokeWidth={1 / zoom}
             style={{ cursor: `${handle}-resize` }}
@@ -538,7 +538,7 @@ const Canvas = forwardRef(
         position="relative"
         w="100%"
         h="100%"
-        bg="#060010"
+        bg="var(--bg-body)"
         overflow="hidden"
         cursor={isPanning || spaceHeld ? 'grab' : 'default'}
         onMouseDown={handleMouseDown}
@@ -556,8 +556,8 @@ const Canvas = forwardRef(
           opacity={0.5}
           style={{
             backgroundImage: `
-            linear-gradient(#271E37 1px, transparent 1px),
-            linear-gradient(90deg, #271E37 1px, transparent 1px)
+            linear-gradient(var(--border-primary) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border-primary) 1px, transparent 1px)
           `,
             backgroundSize: `${gridSize * zoom}px ${gridSize * zoom}px`,
             backgroundPosition: `${pan.x}px ${pan.y}px`
@@ -590,7 +590,7 @@ const Canvas = forwardRef(
                       width={shape.w + 4 / zoom}
                       height={shape.h + 4 / zoom}
                       fill="none"
-                      stroke="#5227FF"
+                      stroke="#A855F7"
                       strokeWidth={2 / zoom}
                       strokeDasharray={`${4 / zoom} ${2 / zoom}`}
                     />
@@ -614,8 +614,8 @@ const Canvas = forwardRef(
                 y={marquee.y}
                 width={marquee.w}
                 height={marquee.h}
-                fill="rgba(82, 39, 255, 0.1)"
-                stroke="#5227FF"
+                fill="rgba(168, 85, 247, 0.1)"
+                stroke="#A855F7"
                 strokeWidth={1 / zoom}
                 strokeDasharray={`${4 / zoom} ${2 / zoom}`}
               />
@@ -628,18 +628,18 @@ const Canvas = forwardRef(
             as="button"
             align="center"
             gap={1.5}
-            bg={showBridgeDebug ? 'rgba(82, 39, 255, 0.2)' : 'rgba(13, 7, 22, 0.9)'}
-            border={showBridgeDebug ? '1px solid #5227FF' : '1px solid #271E37'}
+            bg={showBridgeDebug ? 'rgba(168, 85, 247, 0.15)' : 'rgba(13, 7, 22, 0.9)'}
+            border={showBridgeDebug ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
             borderRadius="6px"
             px={2.5}
             py={1.5}
             cursor="pointer"
             onClick={() => onShowBridgeDebugChange?.(!showBridgeDebug)}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: 'var(--color-primary)' }}
           >
-            <Icon as={showBridgeDebug ? Eye : EyeOff} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="11px" color="#988BC7" fontWeight={500}>
+            <Icon as={showBridgeDebug ? Eye : EyeOff} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="11px" color="var(--text-muted)" fontWeight={500}>
               Bridges
             </Text>
           </Flex>
@@ -648,17 +648,17 @@ const Canvas = forwardRef(
             align="center"
             gap={1.5}
             bg="rgba(13, 7, 22, 0.9)"
-            border="1px solid #271E37"
+            border="1px solid var(--border-primary)"
             borderRadius="6px"
             px={2.5}
             py={1.5}
             cursor="pointer"
             onClick={fitToView}
             transition="all 0.15s"
-            _hover={{ borderColor: '#5227FF' }}
+            _hover={{ borderColor: 'var(--color-primary)' }}
           >
-            <Icon as={Maximize2} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="11px" color="#988BC7" fontWeight={500}>
+            <Icon as={Maximize2} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="11px" color="var(--text-muted)" fontWeight={500}>
               Fit
             </Text>
           </Flex>
@@ -669,12 +669,12 @@ const Canvas = forwardRef(
           bottom={4}
           right={4}
           bg="rgba(13, 7, 22, 0.9)"
-          border="1px solid #271E37"
+          border="1px solid var(--border-primary)"
           borderRadius="6px"
           px={3}
           py={1}
           fontSize="12px"
-          color="#988BC7"
+          color="var(--text-muted)"
           fontWeight={500}
         >
           {Math.round(zoom * 100)}%

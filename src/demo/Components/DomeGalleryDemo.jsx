@@ -71,7 +71,7 @@ const DomeGalleryDemo = () => {
       {
         name: 'overlayBlurColor',
         type: 'string',
-        default: "'#060010'",
+        default: "'#120F17'",
         description: 'Color for the outer portion of the radial overlay blur'
       },
       {
@@ -142,7 +142,7 @@ const DomeGalleryDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <DomeGallery
               fit={fit}
               minRadius={minRadius}
@@ -153,7 +153,7 @@ const DomeGalleryDemo = () => {
             />
           </Box>
 
-          <Text display="flex" gap="0.4em" mt="1em" color="#B19EEF" alignItems="center">
+          <Text display="flex" gap="0.4em" mt="1em" color="#B497CF" alignItems="center">
             <FiInfo />
             Click images to expand
           </Text>

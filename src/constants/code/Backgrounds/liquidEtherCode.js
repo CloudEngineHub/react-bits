@@ -10,7 +10,7 @@ export const liquidEther = {
 
 <div style={{ width: '100%', height: 600, position: 'relative' }}>
   <LiquidEther
-    colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
+    colors={[ '#5227FF', '#FF9FFC', '#B497CF' ]}
     mouseForce={20}
     cursorSize={100}
     isViscous={false}

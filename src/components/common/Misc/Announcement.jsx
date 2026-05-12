@@ -1,91 +1,86 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { FiX, FiShare2 } from 'react-icons/fi';
+
+const ANNOUNCEMENT_MESSAGE = '';
+
+const STORAGE_KEYS = {
+  lastMessage: 'announcement-last-message',
+  userClosed: 'announcement-user-closed'
+};
+
+const checkIfMobile = () => window.innerWidth < 768 || 'ontouchstart' in window;
+
+const parseMessageWithLinks = (message) => {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = linkRegex.exec(message)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(message.substring(lastIndex, match.index));
+    }
+
+    const [, linkText, linkUrl] = match;
+    parts.push(
+      <a
+        key={match.index}
+        href={linkUrl}
+        className="announcement-link"
+        target={linkUrl.startsWith('http') ? '_blank' : '_self'}
+        rel={linkUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+      >
+        {linkText}
+      </a>
+    );
+
+    lastIndex = linkRegex.lastIndex;
+  }
+
+  if (lastIndex < message.length) {
+    parts.push(message.substring(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : message;
+};
 
 const Announcement = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  const announcementMessage = '';
-
-  const STORAGE_KEYS = {
-    lastMessage: 'announcement-last-message',
-    userClosed: 'announcement-user-closed'
-  };
-
-  const parseMessageWithLinks = useCallback(message => {
-    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = linkRegex.exec(message)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(message.substring(lastIndex, match.index));
-      }
-
-      const [, linkText, linkUrl] = match;
-      parts.push(
-        <a
-          key={match.index}
-          href={linkUrl}
-          className="announcement-link"
-          target={linkUrl.startsWith('http') ? '_blank' : '_self'}
-          rel={linkUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
-        >
-          {linkText}
-        </a>
-      );
-
-      lastIndex = linkRegex.lastIndex;
-    }
-
-    if (lastIndex < message.length) {
-      parts.push(message.substring(lastIndex));
-    }
-
-    return parts.length > 0 ? parts : message;
-  }, []);
-
-  const checkIfMobile = useCallback(() => {
-    return window.innerWidth < 768 || 'ontouchstart' in window;
-  }, []);
 
   useEffect(() => {
     const lastStoredMessage = localStorage.getItem(STORAGE_KEYS.lastMessage);
     const userClosed = localStorage.getItem(STORAGE_KEYS.userClosed) === 'true';
 
     const shouldShow =
-      lastStoredMessage !== announcementMessage ||
+      lastStoredMessage !== ANNOUNCEMENT_MESSAGE ||
       !lastStoredMessage ||
-      (lastStoredMessage === announcementMessage && !userClosed);
+      (lastStoredMessage === ANNOUNCEMENT_MESSAGE && !userClosed);
 
     if (shouldShow) {
       setIsVisible(true);
+      localStorage.setItem(STORAGE_KEYS.lastMessage, ANNOUNCEMENT_MESSAGE);
 
-      localStorage.setItem(STORAGE_KEYS.lastMessage, announcementMessage);
-
-      if (lastStoredMessage !== announcementMessage) {
+      if (lastStoredMessage !== ANNOUNCEMENT_MESSAGE) {
         localStorage.removeItem(STORAGE_KEYS.userClosed);
       }
     }
 
     setIsMobile(checkIfMobile());
-    // No resize listener - isMobile is only used for share functionality, not layout
-  }, [checkIfMobile, announcementMessage, STORAGE_KEYS.lastMessage, STORAGE_KEYS.userClosed]);
+  }, []);
 
   const closeAnnouncement = () => {
     setIsVisible(false);
     localStorage.setItem(STORAGE_KEYS.userClosed, 'true');
   };
 
-  const shareToX = useCallback(text => {
+  const shareToX = (text) => {
     const tweetText = encodeURIComponent(text);
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
-    window.open(twitterUrl, '_blank');
-  }, []);
+    window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+  };
 
-  const handleShare = useCallback(async () => {
-    const shareText = announcementMessage.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)');
+  const handleShare = async () => {
+    const shareText = ANNOUNCEMENT_MESSAGE.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)');
 
     if (isMobile) {
       if (navigator.share) {
@@ -112,12 +107,12 @@ const Announcement = () => {
         }
       }
     } else {
-      const twitterText = announcementMessage.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$2');
+      const twitterText = ANNOUNCEMENT_MESSAGE.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$2');
       shareToX(twitterText);
     }
-  }, [announcementMessage, isMobile, shareToX]);
+  };
 
-  if (!announcementMessage || announcementMessage.trim() === '') {
+  if (!ANNOUNCEMENT_MESSAGE || ANNOUNCEMENT_MESSAGE.trim() === '') {
     return null;
   }
 
@@ -125,7 +120,7 @@ const Announcement = () => {
 
   return (
     <div className="announcement-bar">
-      <div className="announcement-content">{parseMessageWithLinks(announcementMessage)}</div>
+      <div className="announcement-content">{parseMessageWithLinks(ANNOUNCEMENT_MESSAGE)}</div>
       <div className="announcement-actions">
         <button onClick={handleShare} className="announcement-share" aria-label={isMobile ? 'Share' : 'Share on X'}>
           <FiShare2 size={16} />

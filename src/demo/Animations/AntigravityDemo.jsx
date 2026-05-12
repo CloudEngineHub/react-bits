@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo, useEffect } from 'react';
 
 import Customize from '../../components/common/Preview/Customize';
@@ -9,6 +9,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '@/components/code/Dependencies';
 import CodeExample from '@/components/code/CodeExample';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -179,7 +180,7 @@ const AntigravityDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <Antigravity
               key={key}
               count={count}
@@ -225,19 +226,7 @@ const AntigravityDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
             <PreviewSelect
               title="Particle Shape"
               options={[

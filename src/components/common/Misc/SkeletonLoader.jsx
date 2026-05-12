@@ -1,93 +1,77 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { colors } from '../../../constants/colors';
 import '../../../css/skeleton.css';
 
-export const SkeletonLoader = () => {
-  return (
-    <Box className="skeleton-loader">
-      {/* Tabs */}
-      <Flex height="36px" borderRadius="md" mb={6} gap={2} maxWidth="300px">
-        <Box borderRadius="10px" maxWidth="92px" flex="1" height="100%" bg="#0D0716" className="skeleton-pulse" />
-        <Box borderRadius="10px" maxWidth="92px" flex="1" height="100%" bg="#0D0716" className="skeleton-pulse" />
-        <Box borderRadius="10px" maxWidth="80px" flex="1" height="100%" bg="#0D0716" className="skeleton-pulse" />
+const Bar = ({ h = '24px', mb = 4, maxW, mt, ...rest }) => (
+  <Box
+    height={h}
+    bg={colors.bgCard}
+    borderRadius="20px"
+    mb={mb}
+    mt={mt}
+    className="skeleton-pulse"
+    maxWidth={maxW}
+    {...rest}
+  />
+);
+
+const TabBar = ({ w }) => (
+  <Box borderRadius="10px" maxWidth={w} flex="1" height="100%" bg={colors.bgCard} className="skeleton-pulse" />
+);
+
+export const SkeletonLoader = () => (
+  <Box className="skeleton-loader">
+    <Flex height="36px" borderRadius="md" mb={6} gap={2} maxWidth="300px">
+      <TabBar w="92px" />
+      <TabBar w="92px" />
+      <TabBar w="80px" />
+    </Flex>
+
+    <Box className="skeleton-content">
+      <Bar h="500px" mb={3} />
+      <Bar maxW="200px" />
+      <Bar maxW="300px" />
+      <Bar maxW="230px" mb={12} />
+      <Bar maxW="100px" />
+      <Bar h="500px" mb={3} />
+    </Box>
+  </Box>
+);
+
+export const GetStartedLoader = () => (
+  <Box className="skeleton-loader">
+    <Box className="skeleton-content">
+      <Bar mt={6} maxW="600px" />
+      <Bar maxW="500px" />
+      <Bar maxW="550px" mb={12} />
+      <Bar maxW="500px" />
+      <Bar maxW="400px" />
+      <Bar h="60px" maxW="600px" />
+      <Bar maxW="450px" />
+      <Bar maxW="200px" mb={12} />
+
+      <Bar mt={6} maxW="350px" />
+      <Bar maxW="590px" />
+      <Bar maxW="520px" mb={12} />
+      <Bar h="100px" maxW="600px" mb={6} />
+
+      <Bar mt={6} maxW="600px" />
+      <Bar maxW="500px" />
+      <Bar maxW="550px" mb={12} />
+      <Bar maxW="500px" />
+      <Bar maxW="400px" />
+      <Bar h="60px" maxW="600px" />
+      <Bar maxW="450px" />
+      <Bar maxW="200px" mb={12} />
+
+      <Bar mt={6} maxW="350px" />
+      <Bar maxW="590px" />
+      <Bar maxW="520px" mb={12} />
+      <Bar h="100px" maxW="600px" mb={6} />
+
+      <Flex height="36px" borderRadius="md" justifyContent="space-between" mb={6} gap={2}>
+        <TabBar w="92px" />
       </Flex>
-
-      <Box className="skeleton-content">
-        <Box mb={8}>
-          <Box height="500px" bg="#0D0716" borderRadius="20px" mb={3} className="skeleton-pulse" />
-        </Box>
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="200px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="300px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="230px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="100px" />
-
-        <Box mb={8}>
-          <Box height="500px" bg="#0D0716" borderRadius="20px" mb={3} className="skeleton-pulse" />
-        </Box>
-      </Box>
     </Box>
-  );
-};
-
-export const GetStartedLoader = () => {
-  return (
-    <Box className="skeleton-loader">
-      <Box className="skeleton-content">
-        <Box mt={6} height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="600px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="500px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="550px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="500px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="400px" />
-
-        <Box height="60px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="600px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="450px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="200px" />
-
-        <Box mt={6} height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="350px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="590px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="520px" />
-
-        <Box height="100px" bg="#0D0716" borderRadius="20px" mb={6} className="skeleton-pulse" maxWidth="600px" />
-
-        <Box mt={6} height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="600px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="500px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="550px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="500px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="400px" />
-
-        <Box height="60px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="600px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="450px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="200px" />
-
-        <Box mt={6} height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="350px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={4} className="skeleton-pulse" maxWidth="590px" />
-
-        <Box height="24px" bg="#0D0716" borderRadius="20px" mb={12} className="skeleton-pulse" maxWidth="520px" />
-
-        <Box height="100px" bg="#0D0716" borderRadius="20px" mb={6} className="skeleton-pulse" maxWidth="600px" />
-
-        <Flex height="36px" borderRadius="md" justifyContent="space-between" mb={6} gap={2}>
-          <Box borderRadius="10px" maxWidth="92px" flex="1" height="100%" bg="#0D0716" className="skeleton-pulse" />
-        </Flex>
-      </Box>
-    </Box>
-  );
-};
+  </Box>
+);

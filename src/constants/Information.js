@@ -257,6 +257,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/orbit-images',
     tags: []
   },
+  'Animations/MagicRings': {
+    videoUrl: '/assets/video/magicrings.webm',
+    description: 'Interactive magic rings effect with customizable parameters.',
+    category: 'Animations',
+    name: 'MagicRings',
+    docsUrl: 'https://reactbits.dev/animations/magic-rings',
+    tags: []
+  },
 
   //! Text Animations -------------------------------------------------------------------------------------------------------------------------------
 
@@ -686,6 +694,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/spotlight-card',
     tags: []
   },
+  'Components/BorderGlow': {
+    videoUrl: '/assets/video/borderglow.webm',
+    description: 'Glowing mesh-gradient border that follows cursor direction and intensifies near edges.',
+    category: 'Components',
+    name: 'BorderGlow',
+    docsUrl: 'https://reactbits.dev/components/border-glow',
+    tags: []
+  },
   'Components/Stack': {
     videoUrl: '/assets/video/stack.webm',
     description: 'Layered stack with swipe animations, autoplay and smooth transitions.',
@@ -782,6 +798,14 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'Dither',
     docsUrl: 'https://reactbits.dev/backgrounds/dither',
+    tags: []
+  },
+  'Backgrounds/DotField': {
+    videoUrl: '',
+    description: 'Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.',
+    category: 'Backgrounds',
+    name: 'DotField',
+    docsUrl: 'https://reactbits.dev/backgrounds/dot-field',
     tags: []
   },
   'Backgrounds/DotGrid': {
@@ -888,6 +912,38 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/lightning',
     tags: []
   },
+  'Backgrounds/LineWaves': {
+    videoUrl: '/assets/video/linewaves.webm',
+    description: 'Animated line wave pattern with colorful warped distortion.',
+    category: 'Backgrounds',
+    name: 'LineWaves',
+    docsUrl: 'https://reactbits.dev/backgrounds/line-waves',
+    tags: []
+  },
+  'Backgrounds/EvilEye': {
+    videoUrl: '/assets/video/evileye.webm',
+    description: 'Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow.',
+    category: 'Backgrounds',
+    name: 'EvilEye',
+    docsUrl: 'https://reactbits.dev/backgrounds/evil-eye',
+    tags: []
+  },
+  'Backgrounds/Radar': {
+    videoUrl: '/assets/video/radar.webm',
+    description: 'Radar sweep effect with concentric rings, radial spokes, and a rotating beam.',
+    category: 'Backgrounds',
+    name: 'Radar',
+    docsUrl: 'https://reactbits.dev/backgrounds/radar',
+    tags: []
+  },
+  'Backgrounds/SoftAurora': {
+    videoUrl: '/assets/video/softaurora.webm',
+    description: 'Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes.',
+    category: 'Backgrounds',
+    name: 'SoftAurora',
+    docsUrl: 'https://reactbits.dev/backgrounds/soft-aurora',
+    tags: []
+  },
   'Backgrounds/LiquidChrome': {
     videoUrl: '/assets/video/liquidchrome.webm',
     description: 'Liquid metallic chrome shader with flowing reflective surface.',
@@ -928,6 +984,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/plasma',
     tags: []
   },
+  'Backgrounds/PlasmaWave': {
+    videoUrl: '',
+    description: 'Raymarched plasma waves with dual-wave interference and OGL.',
+    category: 'Backgrounds',
+    name: 'PlasmaWave',
+    docsUrl: 'https://reactbits.dev/backgrounds/plasma-wave',
+    tags: []
+  },
   'Backgrounds/Prism': {
     videoUrl: '/assets/video/prism.webm',
     description: 'Rotating prism with configurable intensity, size, and colors.',
@@ -960,12 +1024,12 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/silk',
     tags: []
   },
-  'Backgrounds/Squares': {
+  'Backgrounds/ShapeGrid': {
     videoUrl: '/assets/video/squares.webm',
-    description: 'Animated squares with scaling + direction customization.',
+    description: 'Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization.',
     category: 'Backgrounds',
-    name: 'Squares',
-    docsUrl: 'https://reactbits.dev/backgrounds/squares',
+    name: 'ShapeGrid',
+    docsUrl: 'https://reactbits.dev/backgrounds/shape-grid',
     tags: []
   },
   'Backgrounds/Threads': {

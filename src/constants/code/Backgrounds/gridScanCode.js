@@ -12,7 +12,7 @@ export const gridScan = {
   <GridScan
     sensitivity={0.55}
     lineThickness={1}
-    linesColor="#392e4e"
+    linesColor="#2F293A"
     gridScale={0.1}
     scanColor="#FF9FFC"
     scanOpacity={0.4}

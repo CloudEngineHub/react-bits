@@ -1,5 +1,5 @@
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import useForceRerender from '../../hooks/useForceRerender';
@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -157,7 +158,7 @@ const LightPillarDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <LightPillar
               key={key}
               topColor={topColor}
@@ -207,28 +208,8 @@ const LightPillarDemo = () => {
           </Flex>
 
           <Customize forceRerender={forceRerender}>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Top Color
-              </Text>
-              <Input
-                type="color"
-                value={topColor}
-                onChange={e => updateProp('topColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Bottom Color
-              </Text>
-              <Input
-                type="color"
-                value={bottomColor}
-                onChange={e => updateProp('bottomColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Top Color" color={topColor} onChange={val => updateProp('topColor', val)} />
+            <PreviewColorPickerCustom title="Bottom Color" color={bottomColor} onChange={val => updateProp('bottomColor', val)} />
             <PreviewSlider
               title="Intensity"
               min={0.1}

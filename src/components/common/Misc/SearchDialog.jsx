@@ -5,6 +5,7 @@ import { AiOutlineEnter } from 'react-icons/ai';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../../constants/Categories';
+import { colors } from '../../../constants/colors';
 import { fuzzyMatch } from '../../../utils/fuzzy';
 import { useSearch } from '../../context/SearchContext/useSearch';
 
@@ -162,9 +163,9 @@ const SearchDialog = ({ isOpen, onClose }) => {
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Backdrop bg="rgba(0,0,0,0.9)" />
       <Dialog.Positioner placement="top">
-        <Dialog.Content bg="#060010" border="1px solid #271E37" rounded="xl" mx={4} w="full" maxW="600px">
+        <Dialog.Content bg={colors.bgBody} border={`1px solid ${colors.borderPrimary}`} rounded="xl" mx={4} w="full" maxW="600px">
           <Dialog.Body padding="1em 1em .2em 1em">
-            <InputGroup startElement={<Icon as={FiSearch} color="#B19EEF" fontSize="18px" />} mb={2}>
+            <InputGroup startElement={<Icon as={FiSearch} color={colors.accent} fontSize="18px" />} mb={2}>
               <Input
                 autoFocus
                 value={inputValue}
@@ -172,13 +173,13 @@ const SearchDialog = ({ isOpen, onClose }) => {
                 placeholder="Search components, categories, or keywords..."
                 variant="filled"
                 pb="4px"
-                bg="#060010"
+                bg={colors.bgBody}
                 fontSize="16px"
                 borderRadius="md"
                 color="white"
-                _focus={{ bg: '#060010', borderColor: 'transparent' }}
-                _hover={{ bg: '#060010' }}
-                _placeholder={{ color: '#271E37' }}
+                _focus={{ bg: colors.bgBody, borderColor: 'transparent' }}
+                _hover={{ bg: colors.bgBody }}
+                _placeholder={{ color: colors.borderPrimary }}
               />
             </InputGroup>
 
@@ -192,7 +193,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
                   transition={{ duration: 0.3 }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <Box mt={0} borderTop="1px solid #271E37" position="relative">
+                  <Box mt={0} borderTop={`1px solid ${colors.borderPrimary}`} position="relative">
                     <Box
                       ref={resultsRef}
                       maxH={400}
@@ -217,31 +218,31 @@ const SearchDialog = ({ isOpen, onClose }) => {
                                 mr=".6em"
                                 mb={2}
                                 p="1em"
-                                bg={selected ? '#271E37' : '#170D27'}
+                                bg={selected ? colors.bgHover : colors.bgElevated}
                                 rounded="xl"
                                 display="flex"
                                 alignItems="center"
                               >
                                 <Box mr="16px">
-                                  <IconComp size={24} color="#B19EEF" />
+                                  <IconComp size={24} color={colors.accent} />
                                 </Box>
                                 <Box flex="1">
                                   <Text fontWeight="bold" fontSize="16px" color="white">
                                     {r.componentName}
                                   </Text>
-                                  <Text fontSize="sm" color="#B19EEF">
+                                  <Text fontSize="sm" color={colors.accent}>
                                     in {r.categoryName}
                                   </Text>
                                 </Box>
                                 <Box>
-                                  <AiOutlineEnter size={20} color="#B19EEF" />
+                                  <AiOutlineEnter size={20} color={colors.accent} />
                                 </Box>
                               </Box>
                             </AnimatedResult>
                           );
                         })
                       ) : (
-                        <Text textAlign="center" mt={2} color="#B19EEF" p="1em">
+                        <Text textAlign="center" mt={2} color={colors.accent} p="1em">
                           No results found for <span style={{ fontWeight: 900 }}>{searchValue}</span>
                         </Text>
                       )}
@@ -253,7 +254,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
                       left={0}
                       right={0}
                       h="50px"
-                      bg="linear-gradient(to bottom, #060010, transparent)"
+                      bg={`linear-gradient(to bottom, ${colors.bgBody}, transparent)`}
                       pointerEvents="none"
                       style={{
                         transition: 'opacity 0.3s',
@@ -266,7 +267,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
                       left={0}
                       right={0}
                       h="100px"
-                      bg="linear-gradient(to top, #060010, transparent)"
+                      bg={`linear-gradient(to top, ${colors.bgBody}, transparent)`}
                       pointerEvents="none"
                       style={{
                         transition: 'opacity 0.3s',

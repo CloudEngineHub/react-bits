@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState } from 'react';
-import SearchDialog from '../../common/Misc/SearchDialog';
+import SearchDialog from '../../common/SearchDialog';
 
 export const SearchContext = createContext();
 

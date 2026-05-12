@@ -9,7 +9,7 @@ const DemoFooter = () => {
         <AiFillHeart className="footer-heart" />
         by{' '}
         <a href="https://x.com/davidhdev" target="_blank" className="footer-creator-link cursor-target">
-          davidhdev
+          David Haz
         </a>
       </p>
     </FadeContent>

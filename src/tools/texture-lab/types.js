@@ -104,9 +104,13 @@ export const DEFAULT_ASCII_PARAMS = {
   invert: false,
   brightness: 1.0,
   contrast: 1.0,
+  gamma: 1.0,
   charBrightness: 1.0,
-  backgroundBlend: 0.0, // 0 = no background, 1 = full original image behind
-  edgeEnhance: 0.0 // Enhance edges for better definition
+  charColor: '#ffffff',
+  backgroundColor: '#000000',
+  backgroundBlend: 1.0,
+  edgeEnhance: 0.0,
+  cellGap: 0.0
 };
 
 export const DEFAULT_OVERLAY_PARAMS = {
@@ -119,9 +123,9 @@ export const DEFAULT_OVERLAY_PARAMS = {
 };
 
 export const DEFAULT_CHROMATIC_PARAMS = {
-  intensity: 0.005,
+  intensity: 0.008,
   angle: 0,
-  radial: false
+  radial: true
 };
 
 export const DEFAULT_VIGNETTE_PARAMS = {
@@ -145,14 +149,14 @@ export const DEFAULT_PIXELATE_PARAMS = {
 };
 
 export const DEFAULT_BLUR_PARAMS = {
-  radius: 2,
+  radius: 3,
   type: 'gaussian', // 'gaussian' | 'radial' | 'motion'
   angle: 0
 };
 
 export const DEFAULT_DISTORTION_PARAMS = {
   type: 'wave', // 'wave' | 'swirl' | 'bulge'
-  amplitude: 10,
+  amplitude: 5,
   frequency: 5,
   centerX: 0.5,
   centerY: 0.5
@@ -165,7 +169,7 @@ export const DEFAULT_POSTERIZE_PARAMS = {
 
 export const DEFAULT_EDGE_PARAMS = {
   strength: 1.0,
-  threshold: 0.1,
+  threshold: 0.05,
   invert: false,
   colorize: false
 };
@@ -211,8 +215,8 @@ export const DEFAULT_CRT_PARAMS = {
 };
 
 export const DEFAULT_DUOTONE_PARAMS = {
-  shadowColor: '#000033',
-  highlightColor: '#ffcc00',
+  shadowColor: '#1a0533',
+  highlightColor: '#f5c542',
   contrast: 1.0,
   intensity: 1.0
 };
@@ -250,16 +254,16 @@ export const DEFAULT_LIGHT_LEAK_PARAMS = {
   color2: '#f7931e',
   position: 0.3,
   angle: 45,
-  size: 0.5,
-  intensity: 0.5,
-  softness: 0.7,
+  size: 0.6,
+  intensity: 0.6,
+  softness: 0.8,
   blendMode: BLEND_MODES.SCREEN
 };
 
 export const DEFAULT_BLOOM_PARAMS = {
-  radius: 8,
+  radius: 6,
   intensity: 0.8,
-  threshold: 0.6,
+  threshold: 0.5,
   softThreshold: 0.5,
   blendMode: BLEND_MODES.SCREEN
 };
@@ -275,9 +279,9 @@ export const DEFAULT_RADIAL_BLUR_PARAMS = {
 export const DEFAULT_MOSAIC_PARAMS = {
   cellSize: 20,
   irregularity: 0.5,
-  edgeThickness: 0.02,
-  edgeColor: '#000000',
-  colorVariation: 0.1
+  edgeThickness: 0.04,
+  edgeColor: '#1a1a1a',
+  colorVariation: 0.05
 };
 
 export const DEFAULT_TILT_SHIFT_PARAMS = {
@@ -379,141 +383,51 @@ export const createEffect = type => {
 };
 
 export const PRESETS = {
-  'film-grain': {
-    name: '35mm Film',
+  'analog-film': {
+    name: 'Analog Film',
     effects: [
       {
         type: EFFECT_TYPES.EXPOSURE,
         enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.05, highlights: -0.1, shadows: 0.1, blacks: 0.05 }
+        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.05, highlights: -0.15, shadows: 0.15, blacks: 0.05 }
       },
       {
         type: EFFECT_TYPES.COLOR_GRADE,
         enabled: true,
-        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -0.1, temperature: 0.05 }
+        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -0.15, temperature: 0.08, contrast: -0.05 }
       },
-      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS, intensity: 0.12, size: 1.4 } },
+      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS, intensity: 0.14, size: 1.5 } },
       {
         type: EFFECT_TYPES.VIGNETTE,
         enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.25, size: 0.6, softness: 0.85 }
+        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.3, size: 0.55, softness: 0.9 }
       }
     ]
   },
-  'dither-poster': {
-    name: 'Dithered',
+  'film-noir': {
+    name: 'Film Noir',
     effects: [
-      {
-        type: EFFECT_TYPES.POSTERIZE,
-        enabled: true,
-        params: { ...DEFAULT_POSTERIZE_PARAMS, levels: 6 }
-      },
-      {
-        type: EFFECT_TYPES.DITHER,
-        enabled: true,
-        params: { ...DEFAULT_DITHER_PARAMS, method: DITHER_METHODS.BAYER_8X8, levels: 4, threshold: 0.7, scale: 1.0 }
-      },
       {
         type: EFFECT_TYPES.EXPOSURE,
         enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, contrast: 0.15 }
-      }
-    ]
-  },
-  newsprint: {
-    name: 'Newsprint',
-    effects: [
+        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: -0.1, highlights: -0.25, shadows: -0.2, blacks: -0.1, whites: 0.15 }
+      },
       {
         type: EFFECT_TYPES.COLOR_GRADE,
         enabled: true,
-        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -0.8, temperature: 0.1 }
+        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -1, contrast: 0.35 }
       },
+      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS, intensity: 0.1, size: 1.3 } },
       {
-        type: EFFECT_TYPES.HALFTONE,
+        type: EFFECT_TYPES.VIGNETTE,
         enabled: true,
-        params: {
-          ...DEFAULT_HALFTONE_PARAMS,
-          gridSize: 5,
-          colorMode: 'monochrome',
-          angle: 45,
-          contrast: 0.15,
-          softness: 0.3,
-          dotColor: '#1a1a1a',
-          backgroundColor: '#f0ece4'
-        }
-      },
-      {
-        type: EFFECT_TYPES.NOISE,
-        enabled: true,
-        params: { ...DEFAULT_NOISE_PARAMS, intensity: 0.06, monochrome: true, blendMode: BLEND_MODES.OVERLAY }
-      }
-    ]
-  },
-  'cmyk-print': {
-    name: 'CMYK Print',
-    effects: [
-      {
-        type: EFFECT_TYPES.HALFTONE,
-        enabled: true,
-        params: {
-          ...DEFAULT_HALFTONE_PARAMS,
-          gridSize: 4,
-          colorMode: 'cmyk',
-          angle: 15,
-          softness: 0.25,
-          dotScale: 0.95
-        }
-      },
-      {
-        type: EFFECT_TYPES.OVERLAY,
-        enabled: true,
-        params: { ...DEFAULT_OVERLAY_PARAMS, texture: OVERLAY_TEXTURES.PAPER, intensity: 0.1 }
-      }
-    ]
-  },
-  'retro-ascii': {
-    name: 'Retro ASCII',
-    effects: [
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.3, shadows: 0.4, blacks: 0.2 }
-      },
-      {
-        type: EFFECT_TYPES.ASCII,
-        enabled: true,
-        params: { ...DEFAULT_ASCII_PARAMS, cellSize: 12, color: true, invert: false, backgroundBlend: 0.7 }
-      },
-      {
-        type: EFFECT_TYPES.SCANLINES,
-        enabled: true,
-        params: { ...DEFAULT_SCANLINES_PARAMS, spacing: 3, thickness: 1, opacity: 0.1 }
-      },
-      {
-        type: EFFECT_TYPES.BLOOM,
-        enabled: true,
-        params: { ...DEFAULT_BLOOM_PARAMS, radius: 5, intensity: 0.25, threshold: 0.3, softThreshold: 0.5 }
-      }
-    ]
-  },
-  'monochrome-ascii': {
-    name: 'Mono ASCII',
-    effects: [
-      {
-        type: EFFECT_TYPES.ASCII,
-        enabled: true,
-        params: { ...DEFAULT_ASCII_PARAMS, cellSize: 6, color: false, charset: ASCII_PRESETS.BLOCKS, invert: false }
+        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.65, size: 0.4, softness: 0.85 }
       }
     ]
   },
   'lo-fi': {
     name: 'Lo-Fi',
     effects: [
-      {
-        type: EFFECT_TYPES.BARREL,
-        enabled: true,
-        params: { ...DEFAULT_BARREL_PARAMS, amount: 0.15, zoom: 1.05 }
-      },
       {
         type: EFFECT_TYPES.VIBRANCE,
         enabled: true,
@@ -532,7 +446,36 @@ export const PRESETS = {
       {
         type: EFFECT_TYPES.VIGNETTE,
         enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.5, size: 0.4, softness: 0.6 }
+        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.45, size: 0.4, softness: 0.65 }
+      }
+    ]
+  },
+  newsprint: {
+    name: 'Newsprint',
+    effects: [
+      {
+        type: EFFECT_TYPES.COLOR_GRADE,
+        enabled: true,
+        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -0.85, temperature: 0.08 }
+      },
+      {
+        type: EFFECT_TYPES.HALFTONE,
+        enabled: true,
+        params: {
+          ...DEFAULT_HALFTONE_PARAMS,
+          gridSize: 5,
+          colorMode: 'monochrome',
+          angle: 45,
+          contrast: 0.15,
+          softness: 0.3,
+          dotColor: '#1a1a1a',
+          backgroundColor: '#f0ece4'
+        }
+      },
+      {
+        type: EFFECT_TYPES.NOISE,
+        enabled: true,
+        params: { ...DEFAULT_NOISE_PARAMS, intensity: 0.05, monochrome: true, blendMode: BLEND_MODES.OVERLAY }
       }
     ]
   },
@@ -558,145 +501,44 @@ export const PRESETS = {
       }
     ]
   },
-  'old-photograph': {
-    name: 'Old Photo',
-    effects: [
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: -0.1, highlights: -0.2, shadows: -0.1, blacks: 0.1 }
-      },
-      {
-        type: EFFECT_TYPES.COLOR_GRADE,
-        enabled: true,
-        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -0.6, contrast: -0.15, temperature: 0.25 }
-      },
-      {
-        type: EFFECT_TYPES.LIGHT_LEAK,
-        enabled: true,
-        params: {
-          ...DEFAULT_LIGHT_LEAK_PARAMS,
-          color1: '#d4a574',
-          color2: '#f5e6d3',
-          position: 0.1,
-          angle: 120,
-          intensity: 0.25,
-          softness: 0.8
-        }
-      },
-      {
-        type: EFFECT_TYPES.VIGNETTE,
-        enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.75, size: 0.25, softness: 0.7 }
-      },
-      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS, intensity: 0.18, size: 1.8 } }
-    ]
-  },
-  'glitch-art': {
-    name: 'Glitch Art',
+  glitch: {
+    name: 'Glitch',
     effects: [
       {
         type: EFFECT_TYPES.GLITCH,
         enabled: true,
-        params: { ...DEFAULT_GLITCH_PARAMS, intensity: 0.4, sliceCount: 20, rgbShift: 0.02, colorShift: true }
+        params: { ...DEFAULT_GLITCH_PARAMS, intensity: 0.35, sliceCount: 18, rgbShift: 0.015, colorShift: true }
       },
       {
         type: EFFECT_TYPES.CHROMATIC,
         enabled: true,
-        params: { ...DEFAULT_CHROMATIC_PARAMS, intensity: 0.012, angle: 0 }
+        params: { ...DEFAULT_CHROMATIC_PARAMS, intensity: 0.01, angle: 0 }
       },
       {
         type: EFFECT_TYPES.SCANLINES,
         enabled: true,
-        params: { ...DEFAULT_SCANLINES_PARAMS, spacing: 6, thickness: 2, opacity: 0.15 }
+        params: { ...DEFAULT_SCANLINES_PARAMS, spacing: 5, thickness: 2, opacity: 0.12 }
       }
     ]
   },
-  'film-noir': {
-    name: 'Film Noir',
+  dreamy: {
+    name: 'Dreamy',
     effects: [
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: {
-          ...DEFAULT_EXPOSURE_PARAMS,
-          exposure: -0.1,
-          highlights: -0.3,
-          shadows: -0.2,
-          blacks: -0.15,
-          whites: 0.1
-        }
-      },
-      {
-        type: EFFECT_TYPES.COLOR_GRADE,
-        enabled: true,
-        params: { ...DEFAULT_COLOR_GRADE_PARAMS, saturation: -1, contrast: 0.4 }
-      },
-      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS } },
-      {
-        type: EFFECT_TYPES.VIGNETTE,
-        enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.7, size: 0.45, softness: 0.85 }
-      }
-    ]
-  },
-  '80s-neon': {
-    name: '80s Neon',
-    effects: [
-      {
-        type: EFFECT_TYPES.VIBRANCE,
-        enabled: true,
-        params: { ...DEFAULT_VIBRANCE_PARAMS, vibrance: 0.6, saturation: 0.3 }
-      },
       {
         type: EFFECT_TYPES.BLOOM,
         enabled: true,
-        params: { ...DEFAULT_BLOOM_PARAMS, radius: 10, intensity: 0.6, threshold: 0.5, softThreshold: 0.4 }
+        params: { ...DEFAULT_BLOOM_PARAMS, radius: 6, intensity: 1.2, threshold: 0.4, softThreshold: 0.6 }
       },
-      {
-        type: EFFECT_TYPES.CHROMATIC,
-        enabled: true,
-        params: { ...DEFAULT_CHROMATIC_PARAMS, intensity: 0.008, radial: true }
-      },
-      {
-        type: EFFECT_TYPES.SCANLINES,
-        enabled: true,
-        params: { ...DEFAULT_SCANLINES_PARAMS, spacing: 4, opacity: 0.12 }
-      }
-    ]
-  },
-  polaroid: {
-    name: 'Polaroid',
-    effects: [
       {
         type: EFFECT_TYPES.EXPOSURE,
         enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.1, highlights: -0.15, shadows: 0.2, blacks: 0.05 }
-      },
-      {
-        type: EFFECT_TYPES.COLOR_GRADE,
-        enabled: true,
-        params: { ...DEFAULT_COLOR_GRADE_PARAMS, temperature: 0.12, contrast: -0.08, saturation: -0.15 }
-      },
-      {
-        type: EFFECT_TYPES.LIGHT_LEAK,
-        enabled: true,
-        params: {
-          ...DEFAULT_LIGHT_LEAK_PARAMS,
-          color1: '#ffe4b5',
-          color2: '#ffefd5',
-          position: 0.85,
-          angle: 45,
-          intensity: 0.2,
-          softness: 0.9
-        }
+        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.15, highlights: 0.2, shadows: 0.1 }
       },
       {
         type: EFFECT_TYPES.VIGNETTE,
         enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.35, size: 0.55, softness: 0.95 }
-      },
-      { type: EFFECT_TYPES.GRAIN, enabled: true, params: { ...DEFAULT_GRAIN_PARAMS, intensity: 0.08, size: 1.5 } }
+        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.3, size: 0.5, softness: 0.9 }
+      }
     ]
   },
   risograph: {
@@ -732,8 +574,8 @@ export const PRESETS = {
   'pixel-art': {
     name: 'Pixel Art',
     effects: [
-      { type: EFFECT_TYPES.PIXELATE, enabled: true, params: { ...DEFAULT_PIXELATE_PARAMS, size: 10 } },
-      { type: EFFECT_TYPES.POSTERIZE, enabled: true, params: { ...DEFAULT_POSTERIZE_PARAMS, levels: 12 } },
+      { type: EFFECT_TYPES.PIXELATE, enabled: true, params: { ...DEFAULT_PIXELATE_PARAMS, size: 8 } },
+      { type: EFFECT_TYPES.POSTERIZE, enabled: true, params: { ...DEFAULT_POSTERIZE_PARAMS, levels: 10 } },
       {
         type: EFFECT_TYPES.VIBRANCE,
         enabled: true,
@@ -742,123 +584,12 @@ export const PRESETS = {
       {
         type: EFFECT_TYPES.EXPOSURE,
         enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, contrast: 0.1 }
+        params: { ...DEFAULT_EXPOSURE_PARAMS, contrast: 0.12 }
       }
     ]
   },
-  miniature: {
-    name: 'Miniature',
-    effects: [
-      {
-        type: EFFECT_TYPES.TILT_SHIFT,
-        enabled: true,
-        params: {
-          ...DEFAULT_TILT_SHIFT_PARAMS,
-          focusPosition: 0.5,
-          focusWidth: 0.15,
-          blurRadius: 10,
-          gradientSmooth: 0.25
-        }
-      },
-      {
-        type: EFFECT_TYPES.VIBRANCE,
-        enabled: true,
-        params: { ...DEFAULT_VIBRANCE_PARAMS, vibrance: 0.4, saturation: 0.2 }
-      },
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.2, highlights: -0.2, shadows: 0.3 }
-      }
-    ]
-  },
-  'stained-glass': {
-    name: 'Stained Glass',
-    effects: [
-      {
-        type: EFFECT_TYPES.MOSAIC,
-        enabled: true,
-        params: {
-          ...DEFAULT_MOSAIC_PARAMS,
-          cellSize: 25,
-          irregularity: 0.8,
-          edgeThickness: 0.025,
-          edgeColor: '#1a1a1a',
-          colorVariation: 0.05
-        }
-      },
-      {
-        type: EFFECT_TYPES.VIBRANCE,
-        enabled: true,
-        params: { ...DEFAULT_VIBRANCE_PARAMS, vibrance: 0.3, saturation: 0.15 }
-      }
-    ]
-  },
-  dreamy: {
-    name: 'Dreamy',
-    effects: [
-      {
-        type: EFFECT_TYPES.BLOOM,
-        enabled: true,
-        params: { ...DEFAULT_BLOOM_PARAMS, radius: 12, intensity: 1.2, threshold: 0.4, softThreshold: 0.6 }
-      },
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.15, highlights: 0.2, shadows: 0.1 }
-      },
-      {
-        type: EFFECT_TYPES.VIGNETTE,
-        enabled: true,
-        params: { ...DEFAULT_VIGNETTE_PARAMS, intensity: 0.3, size: 0.5, softness: 0.9 }
-      }
-    ]
-  },
-  'motion-zoom': {
-    name: 'Motion Zoom',
-    effects: [
-      {
-        type: EFFECT_TYPES.RADIAL_BLUR,
-        enabled: true,
-        params: { ...DEFAULT_RADIAL_BLUR_PARAMS, intensity: 0.2, centerX: 0.5, centerY: 0.5, samples: 48, zoom: true }
-      },
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, exposure: 0.1, contrast: 0.1 }
-      }
-    ]
-  },
-  'duotone-pop': {
-    name: 'Duotone Pop',
-    effects: [
-      {
-        type: EFFECT_TYPES.DUOTONE,
-        enabled: true,
-        params: {
-          ...DEFAULT_DUOTONE_PARAMS,
-          shadowColor: '#1a0a2e',
-          highlightColor: '#ff6b6b',
-          contrast: 1.1,
-          intensity: 1.0
-        }
-      },
-      {
-        type: EFFECT_TYPES.HALFTONE,
-        enabled: true,
-        params: {
-          ...DEFAULT_HALFTONE_PARAMS,
-          gridSize: 5,
-          colorMode: 'original',
-          shape: 'circle',
-          softness: 0.6,
-          mixOriginal: 0.3
-        }
-      }
-    ]
-  },
-  'oil-painting': {
-    name: 'Oil Painting',
+  'oil-paint': {
+    name: 'Oil Paint',
     effects: [
       {
         type: EFFECT_TYPES.KUWAHARA,
@@ -874,39 +605,6 @@ export const PRESETS = {
         type: EFFECT_TYPES.EXPOSURE,
         enabled: true,
         params: { ...DEFAULT_EXPOSURE_PARAMS, contrast: 0.15 }
-      }
-    ]
-  },
-  'comic-book': {
-    name: 'Comic Book',
-    effects: [
-      {
-        type: EFFECT_TYPES.POSTERIZE,
-        enabled: true,
-        params: { ...DEFAULT_POSTERIZE_PARAMS, levels: 5 }
-      },
-      {
-        type: EFFECT_TYPES.VIBRANCE,
-        enabled: true,
-        params: { ...DEFAULT_VIBRANCE_PARAMS, vibrance: 0.5, saturation: 0.2 }
-      },
-      {
-        type: EFFECT_TYPES.HALFTONE,
-        enabled: true,
-        params: {
-          ...DEFAULT_HALFTONE_PARAMS,
-          gridSize: 3,
-          colorMode: 'original',
-          shape: 'circle',
-          dotScale: 0.8,
-          softness: 0.3,
-          mixOriginal: 0.5
-        }
-      },
-      {
-        type: EFFECT_TYPES.EXPOSURE,
-        enabled: true,
-        params: { ...DEFAULT_EXPOSURE_PARAMS, contrast: 0.25 }
       }
     ]
   }

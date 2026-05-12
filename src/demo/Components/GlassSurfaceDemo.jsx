@@ -264,7 +264,7 @@ const GlassSurfaceDemo = () => {
             ref={scrollContainerRef}
             position="relative"
             className="demo-container"
-            h={600}
+            h={500}
             p={0}
             css={{
               overflow: 'hidden'
@@ -295,7 +295,7 @@ const GlassSurfaceDemo = () => {
                     fontSize="2.6rem"
                     fontWeight={900}
                     zIndex={0}
-                    color="#271E37"
+                    color="#2F293A"
                   >
                     Try scrolling.
                   </Text>

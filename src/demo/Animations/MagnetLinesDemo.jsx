@@ -3,6 +3,9 @@ import { Flex } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -15,12 +18,14 @@ const DEFAULT_PROPS = {
   columns: 12,
   containerSize: '40vmin',
   lineWidth: '2px',
-  lineHeight: '30px'
+  lineHeight: '30px',
+  baseAngle: -10,
+  lineColor: '#efefef'
 };
 
 const MagnetLinesDemo = () => {
-  const { props, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { rows, columns, containerSize, lineWidth, lineHeight } = props;
+  const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const { rows, columns, containerSize, lineWidth, lineHeight, baseAngle, lineColor } = props;
 
   const propData = useMemo(
     () => [
@@ -93,8 +98,17 @@ const MagnetLinesDemo = () => {
               containerSize={containerSize}
               lineWidth={lineWidth}
               lineHeight={lineHeight}
+              baseAngle={baseAngle}
+              lineColor={lineColor}
             />
           </Flex>
+
+          <Customize>
+            <PreviewSlider title="Rows" min={3} max={20} step={1} value={rows} onChange={v => updateProp('rows', v)} />
+            <PreviewSlider title="Columns" min={3} max={20} step={1} value={columns} onChange={v => updateProp('columns', v)} />
+            <PreviewSlider title="Base Angle" min={-180} max={180} step={5} value={baseAngle} onChange={v => updateProp('baseAngle', v)} />
+            <PreviewColorPickerCustom title="Line Color" color={lineColor} onChange={v => updateProp('lineColor', v)} />
+          </Customize>
 
           <PropTable data={propData} />
         </PreviewTab>

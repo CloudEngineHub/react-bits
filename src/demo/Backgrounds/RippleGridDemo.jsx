@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
-import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -13,6 +12,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -50,8 +50,6 @@ const RippleGridDemo = () => {
     mouseInteraction,
     mouseInteractionRadius
   } = props;
-
-  const [key, forceRerender] = useForceRerender();
 
   const propData = useMemo(
     () => [
@@ -132,12 +130,11 @@ const RippleGridDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider value={{ props, updateProp, resetProps, hasChanges, forceRerender, DEFAULT_PROPS }}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             <RippleGrid
-              key={key}
               enableRainbow={enableRainbow}
               gridColor={gridColor}
               rippleIntensity={rippleIntensity}
@@ -191,17 +188,7 @@ const RippleGridDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Grid Color
-              </Text>
-              <Input
-                type="color"
-                value={gridColor}
-                onChange={e => updateProp('gridColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Grid Color" color={gridColor} onChange={val => updateProp('gridColor', val)} />
 
             <PreviewSlider
               title="Ripple Intensity"

@@ -3,28 +3,29 @@ import { useState, useEffect } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
 import { toast } from 'sonner';
 
+const MESSAGES = [
+  '🐴  Country roads, take me home!',
+  '🚀  To infinity and beyond!',
+  '🦾  Get to the choppa!',
+  '🚕  Grove Street, home...',
+  '🐉  Fus Ro Dah!',
+  '🍄  The princess is in another castle!',
+  '🦸‍♂️  Avengers, assemble!',
+  '🗡️  It’s dangerous to go alone! Take this.',
+  '📜  A wizard is never late.',
+  '💍  Foul Tarnished, in search of the Elden Ring!',
+  '🐊  See you later, alligator.',
+  '🔥  Dracarys!'
+];
+
+const randomMessage = () => MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+
 const BackToTopButton = () => {
   const [visible, setVisible] = useState(false);
-  const messages = [
-    '🐴  Country roads, take me home!',
-    '🚀  To infinity and beyond!',
-    '🦾  Get to the choppa!',
-    '🚕  Grove Street, home...',
-    '🐉  Fus Ro Dah!',
-    '🍄  The princess is in another castle!',
-    '🦸‍♂️  Avengers, assemble!',
-    '🗡️  It’s dangerous to go alone! Take this.',
-    '📜  A wizard is never late.',
-    '💍  Foul Tarnished, in search of the Elden Ring!',
-    '🐊  See you later, alligator.',
-    '🔥  Dracarys!'
-  ];
-
-  const getRandomMessage = messages => messages[Math.floor(Math.random() * messages.length)];
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
-    toast(getRandomMessage(messages));
+    toast(randomMessage());
   };
 
   useEffect(() => {

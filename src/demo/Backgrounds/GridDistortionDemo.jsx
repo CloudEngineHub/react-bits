@@ -73,10 +73,10 @@ const GridDistortionDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden" ref={containerRef}>
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden" ref={containerRef}>
             <GridDistortion
               key={key}
               imageSrc="https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

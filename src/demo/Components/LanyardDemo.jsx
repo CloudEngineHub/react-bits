@@ -72,13 +72,13 @@ const LanyardDemo = () => {
           <Box
             position="relative"
             className="demo-container"
-            h={600}
+            h={500}
             p={0}
             overflow="hidden"
-            bg="linear-gradient(180deg, #271E37 0%, #060010 100%)"
+            bg="linear-gradient(180deg, #2F293A 0%, #120F17 100%)"
           >
             <RefreshButton onClick={forceRerender} />
-            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#271E37">
+            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#2F293A">
               Drag It!
             </Text>
             <Lanyard key={key} position={[0, 0, cameraDistance]} gravity={stopGravity ? [0, 0, 0] : [0, -40, 0]} />

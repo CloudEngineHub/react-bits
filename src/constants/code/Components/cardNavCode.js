@@ -13,7 +13,7 @@ const App = () => {
   const items = [
     {
       label: "About",
-      bgColor: "#0D0716",
+      bgColor: "#1B1722",
       textColor: "#fff",
       links: [
         { label: "Company", ariaLabel: "About Company" },
@@ -22,7 +22,7 @@ const App = () => {
     },
     {
       label: "Projects", 
-      bgColor: "#170D27",
+      bgColor: "#2F293A",
       textColor: "#fff",
       links: [
         { label: "Featured", ariaLabel: "Featured Projects" },
@@ -31,7 +31,7 @@ const App = () => {
     },
     {
       label: "Contact",
-      bgColor: "#271E37", 
+      bgColor: "#2F293A", 
       textColor: "#fff",
       links: [
         { label: "Email", ariaLabel: "Email us" },

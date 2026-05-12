@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import BackToTopButton from '../components/common/Misc/BackToTopButton';
+import BackToTopButton from '../components/common/BackToTopButton';
 import { componentMetadata } from '../constants/Information';
 import ComponentList from '../components/common/ComponentList';
 

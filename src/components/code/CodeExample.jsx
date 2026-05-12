@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { getLanguage } from '../../utils/utils';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
 import { formatPropValue } from '../../utils/codeGeneration';
+import { colors } from '../../constants/colors';
 import CliInstallation from './CliInstallation';
 import CodeHighlighter from './CodeHighlighter';
 import CodeOptions, { CSS, Tailwind, TSCSS, TSTailwind } from './CodeOptions';
@@ -12,7 +13,7 @@ const SKIP_KEYS = new Set(['tailwind', 'css', 'tsTailwind', 'tsCode', 'dependenc
  * Injects current prop values into a usage code string.
  * Updates changed props in place, and adds new props that don't exist yet.
  */
-function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demoOnlyProps = []) {
+export function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demoOnlyProps = []) {
   if (!usageCode || !props || !componentName) return usageCode;
 
   const demoOnlySet = new Set(demoOnlyProps);
@@ -35,13 +36,21 @@ function injectPropsIntoCode(usageCode, props, defaultProps, componentName, demo
     const newPropLine =
       typeof propValue === 'boolean' && propValue === true ? propName : `${propName}=${formattedValue}`;
 
-    const simplePropRegex = new RegExp(`(^[ \\t]*)(${propName})(?:=(?:"[^"]*"|\\{[^{}\\n]*\\}))?[ \\t]*$`, 'gm');
+    const simplePropRegex = new RegExp(
+      `(^[ \\t]*)(${propName})(?:=(?:"[^"\\n]*"|'[^'\\n]*'|\\{[^{}\\n]*\\}|[^\\s/>]+))?[ \\t]*(\\r?\\n|$)`,
+      'gm'
+    );
 
     const hasSimpleMatch = simplePropRegex.test(result);
     simplePropRegex.lastIndex = 0;
 
     if (hasSimpleMatch) {
-      result = result.replace(simplePropRegex, `$1${newPropLine}`);
+      let seen = false;
+      result = result.replace(simplePropRegex, (_, indent, __, lineEnding) => {
+        if (seen) return '';
+        seen = true;
+        return `${indent}${newPropLine}${lineEnding}`;
+      });
       continue;
     }
 
@@ -119,7 +128,7 @@ const CodeExample = ({ codeObject, componentName }) => {
       {dynamicUsage && (
         <div>
           <h2 className="demo-title">
-            Usage {hasChanges && <span style={{ color: '#B19EEF', fontSize: '12px' }}>(with your settings)</span>}
+            Usage {hasChanges && <span style={{ color: colors.accent, fontSize: '12px' }}>(with your settings)</span>}
           </h2>
           <CodeHighlighter snippetId="usage" language="jsx" codeString={dynamicUsage} />
         </div>

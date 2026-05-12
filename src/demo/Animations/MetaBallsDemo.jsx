@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -11,6 +11,7 @@ import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import { metaBalls } from '../../constants/code/Animations/metaBallsCode';
 import MetaBalls from '../../content/Animations/MetaBalls/MetaBalls';
@@ -126,18 +127,7 @@ const MetaBallsDemo = () => {
           </Box>
 
           <Customize className="preview-options">
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                  updateProp('cursorBallColor', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); updateProp('cursorBallColor', val); }} />
 
             <PreviewSlider
               title="Ball Count"

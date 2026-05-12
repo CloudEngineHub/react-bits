@@ -1,22 +1,14 @@
 import { Box } from '@chakra-ui/react';
-import Announcement from '../../components/common/Misc/Announcement';
-import AnnouncementBar from '../landing/AnnouncementBar/AnnouncementBar';
-import Header from '../../components/navs/Header';
+import Navbar from '../landingnew/Navbar/Navbar';
 import Sidebar from '../../components/navs/Sidebar';
 import ProCard from '../common/ProCard';
+import ProCardMobile from '../common/ProCardMobile';
 import SponsorsCard from '../common/SponsorsCard';
 
 export default function SidebarLayout({ children }) {
   return (
     <main className="app-container">
-      <AnnouncementBar
-        message="React Bits Pro is here - 65 components, 100+ UI blocks, 5 full templates - check it out!"
-        link="https://pro.reactbits.dev"
-        backgroundColor="linear-gradient(to right, #060010, #5227FF, #060010)"
-        noBorder={true}
-      />
-      <Announcement />
-      <Header />
+      <Navbar showDocs />
       <section className="category-wrapper">
         <Sidebar />
 
@@ -29,6 +21,7 @@ export default function SidebarLayout({ children }) {
           </Box>
         </aside>
       </section>
+      <ProCardMobile />
     </main>
   );
 }

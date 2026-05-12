@@ -138,7 +138,7 @@ const ScrollRevealDemo = () => {
           >
             <Text
               textAlign="center"
-              color="#271E37"
+              color="#2F293A"
               fontSize="clamp(4rem, 6vw, 4rem)"
               fontWeight={900}
               position="absolute"

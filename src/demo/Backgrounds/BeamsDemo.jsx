@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -90,7 +91,7 @@ const BeamsDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <Beams
               beamWidth={beamWidth}
               beamHeight={beamHeight}
@@ -124,19 +125,7 @@ const BeamsDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex align="center" gap={2}>
-              <Text fontSize="sm" mr={1}>
-                Color:
-              </Text>
-              <Input
-                type="color"
-                value={lightColor}
-                onChange={e => {
-                  updateProp('lightColor', e.target.value);
-                }}
-                width="100px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={lightColor} onChange={val => updateProp('lightColor', val)} />
             <PreviewSlider
               title="Beam Width"
               min={0.1}

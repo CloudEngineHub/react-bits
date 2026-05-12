@@ -12,7 +12,7 @@ export const grainient = {
   <Grainient
     color1="#FF9FFC"
     color2="#5227FF"
-    color3="#B19EEF"
+    color3="#B497CF"
     timeSpeed={0.25}
     colorBalance={0.0}
     warpStrength={1.0}

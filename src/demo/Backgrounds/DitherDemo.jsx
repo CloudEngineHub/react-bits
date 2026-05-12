@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeExample from '../../components/code/CodeExample';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -17,6 +18,16 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import Dither from '../../content/Backgrounds/Dither/Dither';
 import { dither } from '../../constants/code/Backgrounds/ditherCode';
+
+function rgbArrayToHex([r, g, b]) {
+  const toHex = n => Math.round(n * 255).toString(16).padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function hexToRgbArray(hex) {
+  const h = hex.replace('#', '');
+  return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];
+}
 
 const DEFAULT_PROPS = {
   waveColor: [0.5, 0.5, 0.5],
@@ -106,7 +117,7 @@ const DitherDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Dither
               waveColor={waveColor}
               disableAnimation={disableAnimation}
@@ -151,56 +162,11 @@ const DitherDemo = () => {
           </Flex>
 
           <Customize>
-            <Text fontSize="sm">Colors</Text>
-            <Flex gap={4} wrap="wrap">
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={waveColor[0]}
-                  title="Red"
-                  onChange={val => {
-                    const newColors = [...waveColor];
-                    newColors[0] = val;
-                    updateProp('waveColor', newColors);
-                  }}
-                />
-              </Flex>
-
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={waveColor[1]}
-                  title="Green"
-                  onChange={val => {
-                    const newColors = [...waveColor];
-                    newColors[1] = val;
-                    updateProp('waveColor', newColors);
-                  }}
-                />
-              </Flex>
-
-              <Flex gap={4} align="center" mt={2} background="#170D27" px={4} borderRadius={16} position="relative">
-                <PreviewSlider
-                  min={0}
-                  max={1}
-                  width={50}
-                  step={0.1}
-                  value={waveColor[2]}
-                  title="Blue"
-                  onChange={val => {
-                    const newColors = [...waveColor];
-                    newColors[2] = val;
-                    updateProp('waveColor', newColors);
-                  }}
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom
+              title="Wave Color"
+              color={rgbArrayToHex(waveColor)}
+              onChange={hex => updateProp('waveColor', hexToRgbArray(hex))}
+            />
 
             <PreviewSlider
               title="Color Intensity"

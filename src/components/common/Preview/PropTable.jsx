@@ -1,114 +1,50 @@
-import { Table, Box, Text } from '@chakra-ui/react';
+import './PropTable.css';
 
-const CodeCell = ({ content = '' }) => {
-  return (
-    <Box
-      fontFamily="monospace"
-      fontSize="10px"
-      py="0.2em"
-      px="0.6em"
-      ml={2}
-      borderRadius="5px"
-      width="fit-content"
-      fontWeight={500}
-      color="#e9e9e9"
-      backgroundColor="#271E37"
-    >
-      {content}
-    </Box>
-  );
-};
+const PropTable = ({ data }) => (
+  <div className="prop-table-section">
+    <h2 className="demo-title-extra">Props</h2>
 
-const PropTable = ({ data }) => {
-  return (
-    <Box mt={12}>
-      <h2 className="demo-title-extra">Props</h2>
-      <Box overflowX="auto" mt={6}>
-        <Table.Root variant="line" size="sm" className="props-table">
-          <Table.Header borderBottom="1px solid #392e4e">
-            <Table.Row backgroundColor="#170D27" borderRadius="20px">
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Property
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Type
-              </Table.ColumnHeader>
-              <Table.ColumnHeader
-                letterSpacing="-.5px"
-                borderRight="1px solid #392e4e"
-                textTransform={'capitalize'}
-                fontSize={'l'}
-                p={4}
-                color="white"
-              >
-                Default
-              </Table.ColumnHeader>
-              <Table.ColumnHeader letterSpacing="-.5px" textTransform={'capitalize'} fontSize={'l'} p={4} color="white">
-                Description
-              </Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {data.map((prop, index) => (
-              <Table.Row key={index} borderBottom={index === data.length - 1 ? 'none' : '1px solid #392e4e'}>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={2}
-                  color="white"
-                  width={0}
-                  borderRight="1px solid #392e4e"
-                  bg={'#060010'}
-                >
-                  <CodeCell rightJustified content={prop.name} />
-                </Table.Cell>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={4}
-                  color="white"
-                  whiteSpace="nowrap"
-                  fontSize="12px"
-                  width={'120px'}
-                  borderRight="1px solid #392e4e"
-                  bg={'#060010'}
-                >
-                  <Text fontFamily="monospace" fontWeight={500}>
-                    {prop.type}
-                  </Text>
-                </Table.Cell>
-                <Table.Cell
-                  borderColor="#271E37"
-                  p={2}
-                  color="white"
-                  borderRight="1px solid #392e4e"
-                  whiteSpace="nowrap"
-                  bg={'#060010'}
-                >
-                  <CodeCell content={prop.default && prop.default.length ? prop.default : '—'} />
-                </Table.Cell>
-                <Table.Cell borderColor="#271E37" p={4} color="white" bg={'#060010'} fontSize="12px">
-                  <Text maxW={300}>{prop.description}</Text>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Box>
-    </Box>
-  );
-};
+    {/* Desktop table */}
+    <div className="prop-table-wrap">
+      <table className="prop-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((prop, index) => (
+            <tr key={index}>
+              <td><code className="prop-code">{prop.name}</code></td>
+              <td className="prop-type">{prop.type}</td>
+              <td><code className="prop-code">{prop.default?.length ? prop.default : '—'}</code></td>
+              <td className="prop-desc">{prop.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    {/* Mobile cards */}
+    <div className="prop-cards">
+      {data.map((prop, index) => (
+        <div className="prop-card" key={index}>
+          <div className="prop-card-header">
+            <code className="prop-code">{prop.name}</code>
+            <span className="prop-card-type">{prop.type}</span>
+          </div>
+          <p className="prop-card-desc">{prop.description}</p>
+          <div className="prop-card-default">
+            <span className="prop-card-label">Default</span>
+            <code className="prop-code">{prop.default?.length ? prop.default : '—'}</code>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 export default PropTable;

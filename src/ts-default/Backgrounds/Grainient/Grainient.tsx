@@ -157,7 +157,7 @@ const Grainient: React.FC<GrainientProps> = ({
   zoom = 0.9,
   color1 = '#FF9FFC',
   color2 = '#5227FF',
-  color3 = '#B19EEF',
+  color3 = '#B497CF',
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -223,6 +223,7 @@ const Grainient: React.FC<GrainientProps> = ({
       const res = (program.uniforms.iResolution as { value: Float32Array }).value;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
+      renderer.render({ scene: mesh });
     };
 
     const ro = new ResizeObserver(setSize);

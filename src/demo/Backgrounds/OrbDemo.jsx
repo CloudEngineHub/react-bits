@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useDebounce } from 'react-haiku';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
@@ -11,6 +11,7 @@ import BackgroundContent from '../../components/common/Preview/BackgroundContent
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import PropTable from '../../components/common/Preview/PropTable';
 
 import { orb } from '../../constants/code/Backgrounds/orbCode';
@@ -76,7 +77,7 @@ const OrbDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Orb
               key={key}
               hoverIntensity={debouncedHoverIntensity}
@@ -129,17 +130,7 @@ const OrbDemo = () => {
               onChange={checked => updateProp('forceHoverState', checked)}
             />
 
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Orb Background Color
-              </Text>
-              <Input
-                type="color"
-                value={backgroundColor}
-                onChange={e => updateProp('backgroundColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Orb Background Color" color={backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
           </Customize>
 
           <PropTable data={propData} />

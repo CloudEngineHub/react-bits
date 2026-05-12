@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { EffectComposer, RenderPass, EffectPass, BloomEffect, ChromaticAberrationEffect } from 'postprocessing';
-import * as THREE from 'three';
 import * as faceapi from 'face-api.js';
+import { BloomEffect, ChromaticAberrationEffect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
+import React, { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 import './GridScan.css';
 
 type GridScanProps = {
@@ -310,7 +310,7 @@ export const GridScan: React.FC<GridScanProps> = ({
   modelsPath = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights',
   sensitivity = 0.55,
   lineThickness = 1,
-  linesColor = '#392e4e',
+  linesColor = '#2F293A',
   scanColor = '#FF9FFC',
   scanOpacity = 0.4,
   gridScale = 0.1,
@@ -598,6 +598,7 @@ export const GridScan: React.FC<GridScanProps> = ({
         composerRef.current = null;
       }
       renderer.dispose();
+      renderer.forceContextLoss();
       container.removeChild(renderer.domElement);
     };
   }, [

@@ -26,13 +26,63 @@ import {
   removeSavedComponent,
   toggleSavedComponent
 } from '../../utils/favorites';
-import { FaChevronRight } from 'react-icons/fa';
-import { ArrowRightIcon } from 'lucide-react';
-import Aurora from '@/content/Backgrounds/Aurora/Aurora';
+// import { ArrowRightIcon } from 'lucide-react';
+// import Aurora from '../../content/Backgrounds/Aurora/Aurora';
+import { colors } from '../../constants/colors';
 
-const CARD_RADIUS = 30;
-const CARD_PADDING = 6;
-const INNER_RADIUS = `${CARD_RADIUS - CARD_PADDING}px`;
+const CARD_RADIUS = 16;
+
+const ACTION_BTN_STYLE = {
+  size: 'xs',
+  variant: 'ghost',
+  color: '#fff',
+  rounded: 'full',
+  position: 'absolute',
+  bg: 'rgba(0,0,0,0.5)',
+  top: 2,
+  right: 2,
+  zIndex: 2,
+  transition: 'opacity 0.15s ease',
+  _focus: { opacity: 1, pointerEvents: 'auto' },
+  _hover: { bg: 'rgba(0,0,0,0.7)' },
+};
+
+const FAV_BTN_STYLE = {
+  size: 'xs',
+  variant: 'unstyled',
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '8px',
+  right: '8px',
+  zIndex: 2,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  w: '28px',
+  h: '28px',
+  minW: 'unset',
+  bg: 'rgba(0,0,0,0.35)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  transition: 'all 0.2s ease',
+  _focus: { opacity: 1, pointerEvents: 'auto' },
+  _hover: { bg: 'rgba(0,0,0,0.55)', transform: 'scale(1.1)' },
+};
+
+const PILL_BTN_STYLE = {
+  px: 4,
+  h: '36px',
+  borderRadius: '10px',
+  cursor: 'pointer',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+  transition: 'border-color 0.2s ease, background 0.2s ease',
+  color: '#fff',
+  fontSize: '13px',
+  fontWeight: 500,
+  bg: 'rgba(18, 15, 23, 0.45)',
+  backdropFilter: 'blur(32px) saturate(1.3)',
+  _hover: { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' },
+};
 
 const slug = str => (str || '').replace(/\s+/g, '-').toLowerCase();
 const fromPascal = str =>
@@ -182,13 +232,13 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   return (
     <Box className="category-page" ref={scrollRef}>
-      <Flex
+      {/* <Flex
         position="relative"
         w="100%"
         h="110px"
-        border="1px solid #170D27"
+        border={`1px solid ${colors.bgElevated}`}
         overflow="hidden"
-        bg="#060010"
+        bg={colors.bgBody}
         mb={6}
         cursor="pointer"
         alignItems="center"
@@ -206,12 +256,11 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
           alignSelf={{ base: 'flex-start', md: 'center' }}
           pt={{ base: 4, md: 0 }}
         >
-          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#FFFFFF" letterSpacing={'-.5px'}>
+          <Text fontSize={{ base: '16px', md: '24px' }} fontWeight="600" color="#fff" letterSpacing={'-.5px'}>
             React Bits Pro is live!
           </Text>
-          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color="#B19EEF" letterSpacing={'-.5px'}>
-            25% off launch special (limited){' '}
-            <Icon boxSize={{ base: 2, md: 3 }} as={FaChevronRight} display="inline-block" mb={0.25} ml={0.5} />
+          <Text fontSize={{ base: '12px', md: '16px' }} fontWeight="500" color={colors.accent} letterSpacing={'-.5px'}>
+            Explore unique components, UI blocks, and templates to supercharge your work.
           </Text>
         </Flex>
 
@@ -228,7 +277,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
         <Box position="absolute" top={0} left={0} w="100%" h="100%" zIndex={0} rotate={'180deg'} opacity={0.25}>
           <Aurora colorStops={['#FF9FFC', '#5227FF', '#FF9FFC']} amplitude={6} blend={6} />
         </Box>
-      </Flex>
+      </Flex> */}
 
       <Flex
         className="page-transition-fade"
@@ -246,24 +295,31 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
         <Flex
           direction={{ base: 'column', md: 'row' }}
-          gap={2}
           alignItems="center"
+          position="relative"
+          left={{ base: 0, md: '6px' }}
+          justifyContent="flex-end"
+          gap={{ base: 2, md: 0 }}
           w={{ base: '100%', md: 'auto' }}
-          opacity={controlsDisabled ? 0.6 : 1}
+          opacity={controlsDisabled ? 0.5 : 1}
         >
           <InputGroup
-            startElement={<Icon as={FiSearch} color={controlsDisabled ? '#392e4e' : '#B19EEF'} fontSize="16px" />}
+            startElement={<Icon as={FiSearch} color="rgba(255,255,255,0.4)" fontSize="14px" />}
             w={{ base: '100%', md: '180px' }}
+            mr={{ base: 0, md: 2 }}
           >
             <Input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search..."
-              h={10}
-              borderRadius="full"
-              bg="#060010"
-              border="1px solid #271E37"
+              h="36px"
+              borderRadius="10px"
+              bg="rgba(18, 15, 23, 0.45)"
+              border="1px solid rgba(255, 255, 255, 0.08)"
+              backdropFilter="blur(32px) saturate(1.3)"
               color="#fff"
+              fontSize="13px"
+              fontWeight={500}
               disabled={controlsDisabled}
               tabIndex={controlsDisabled ? -1 : 0}
               onFocus={e => {
@@ -276,10 +332,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                 }
               }}
               pointerEvents={controlsDisabled ? 'none' : 'auto'}
-              _focus={{ bg: '#060010', borderColor: 'transparent', boxShadow: 'none', outline: 'none' }}
-              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: '#392e4e' }}
-              _hover={{ bg: '#060010' }}
-              _placeholder={{ color: '#392e4e', fontWeight: 500 }}
+              _focus={{ borderColor: 'rgba(255,255,255,0.15)', boxShadow: 'none', outline: 'none' }}
+              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: 'rgba(255,255,255,0.15)' }}
+              _hover={{ borderColor: 'rgba(255,255,255,0.15)' }}
+              _placeholder={{ color: 'rgba(255,255,255,0.3)', fontWeight: 500 }}
             />
           </InputGroup>
 
@@ -294,18 +350,19 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Select.HiddenSelect name="component-list-category-filter" />
             <Select.Control>
               <Select.Trigger
-                fontSize="14px"
-                bg="#060010"
-                border="1px solid #271E37"
-                rounded="full"
-                h={10}
-                fontWeight={600}
+                fontSize="13px"
+                bg="rgba(18, 15, 23, 0.45)"
+                border="1px solid rgba(255, 255, 255, 0.08)"
+                backdropFilter="blur(32px) saturate(1.3)"
+                rounded="10px"
+                h="36px"
+                fontWeight={500}
                 cursor={controlsDisabled ? 'default' : 'pointer'}
-                transition="background 0.3s"
-                _hover={controlsDisabled ? undefined : { background: '#170D27' }}
+                transition="border-color 0.2s ease, background 0.2s ease"
+                _hover={controlsDisabled ? undefined : { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }}
                 w="full"
               >
-                <Select.ValueText color={controlsDisabled ? '#392e4e' : '#fff'} pl={2}>
+                <Select.ValueText color={controlsDisabled ? 'rgba(255,255,255,0.3)' : '#fff'} pl={2}>
                   {selectedCategory}
                 </Select.ValueText>
                 <Select.IndicatorGroup>
@@ -316,12 +373,14 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Portal>
               <Select.Positioner>
                 <Select.Content
-                  bg="#060010"
-                  border="1px solid #271E37"
-                  borderRadius="15px"
+                  bg="rgba(18, 15, 23, 0.85)"
+                  backdropFilter="blur(32px) saturate(1.3)"
+                  border="1px solid rgba(255, 255, 255, 0.08)"
+                  borderRadius="12px"
                   w={{ base: '100%', md: '180px' }}
-                  px={2}
-                  py={2}
+                  px={1.5}
+                  py={1.5}
+                  boxShadow="0 8px 32px rgba(0,0,0,0.4)"
                 >
                   {categories.items.map(cat => (
                     <Select.Item
@@ -330,8 +389,9 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                       borderRadius="8px"
                       px={3}
                       py={2}
+                      fontSize="13px"
                       cursor="pointer"
-                      _highlighted={{ bg: '#271E37' }}
+                      _highlighted={{ bg: 'rgba(255,255,255,0.06)' }}
                     >
                       {cat}
                     </Select.Item>
@@ -343,6 +403,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
           <Box
             ref={clearSlotRef}
+            marginLeft={1.5}
             display={{ base: 'none', md: 'flex' }}
             alignItems="center"
             justifyContent="center"
@@ -351,22 +412,23 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <IconButton
               ref={clearBtnRef}
               aria-label="Clear filters"
-              rounded="full"
+              rounded="10px"
               size="sm"
               variant="ghost"
-              color="#B19EEF"
+              color="rgba(255,255,255,0.5)"
               onClick={clearFilters}
-              h={10}
-              w={10}
-              bg="#060010"
-              border="1px solid #271E37"
+              h="36px"
+              w="36px"
+              bg="rgba(18, 15, 23, 0.45)"
+              border="1px solid rgba(255, 255, 255, 0.08)"
+              backdropFilter="blur(32px) saturate(1.3)"
               opacity={0}
               style={{ transformOrigin: '50% 50%' }}
               pointerEvents={showClear ? 'auto' : 'none'}
               tabIndex={showClear ? 0 : -1}
-              _hover={{ bg: '#170D27' }}
+              _hover={{ borderColor: 'rgba(255,255,255,0.15)', bg: 'rgba(18, 15, 23, 0.55)' }}
               _focus={{ boxShadow: 'none', outline: 'none' }}
-              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: '#392e4e' }}
+              _focusVisible={{ boxShadow: 'none', outline: 'none' }}
             >
               <Icon as={FiX} />
             </IconButton>
@@ -381,46 +443,25 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               <Text color="#fff" fontWeight={500} fontSize="24px" mb={1}>
                 {items.length > 0 ? 'No results...' : 'Nothing here yet...'}
               </Text>
-              <Text color="#a6a6a6" fontSize="16px" mb={8}>
+              <Text color={colors.textMuted} fontSize="16px" mb={8}>
                 {items.length > 0 ? 'Try adjusting your filters' : 'Tap the heart on any component to save it'}
               </Text>
 
               <Flex gap={2} justify="center" wrap="wrap">
                 {items.length > 0 ? (
-                  <Box
-                    as="button"
-                    onClick={clearFilters}
-                    px={4}
-                    h={10}
-                    borderRadius="full"
-                    cursor="pointer"
-                    border="1px solid #271E37"
-                    transition="background 0.3s"
-                    color="#fff"
-                    fontWeight={500}
-                    bg="#060010"
-                    _hover={{ background: '#170D27' }}
-                  >
+                  <Box as="button" onClick={clearFilters} {...PILL_BTN_STYLE}>
                     Clear Filters
                   </Box>
                 ) : (
                   <Box
                     as={RouterLink}
                     to="/get-started/index"
-                    px={6}
-                    h={10}
-                    borderRadius="full"
-                    cursor="pointer"
-                    border="1px solid #271E37"
-                    transition="background 0.3s"
-                    color="#fff"
                     lineHeight={0}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    fontWeight={500}
-                    bg="#060010"
-                    _hover={{ background: '#170D27' }}
+                    px={6}
+                    {...PILL_BTN_STYLE}
                   >
                     Browse Components
                   </Box>
@@ -437,7 +478,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                     {({ width }) => {
                       const columnCount = getColumnsForWidth(width);
                       const columnWidth = Math.floor(width / columnCount);
-                      const cardHeight = 284;
+                      const cardHeight = 260;
                       const rowHeight = cardHeight + GAP_PX;
                       const rowCount = Math.ceil(filtered.length / columnCount);
 
@@ -466,40 +507,32 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                               data-item-key={item.key}
                               display="block"
                               role="group"
-                              bg="#170D27"
-                              border="1px solid #271E37"
+                              bg={colors.bgElevated}
+                              border="1px solid rgba(255,255,255,0.04)"
                               borderRadius={`${CARD_RADIUS}px`}
-                              p={`${CARD_PADDING}px`}
+                              p="6px"
                               textDecoration="none"
-                              transition="filter 0.25s ease"
-                              _hover={{ textDecoration: 'none', filter: 'saturate(150%)' }}
+                              overflow="hidden"
+                              transition="border-color 0.2s ease"
+                              _hover={{ textDecoration: 'none', borderColor: 'rgba(255,255,255,0.1)' }}
                               onMouseEnter={() => setHoveredKey(item.key)}
                               onMouseLeave={() => setHoveredKey(prev => (prev === item.key ? null : prev))}
                             >
-                              <Box px={4} pt={3} pb={3} position="relative">
-                                <Text color="#fff" fontSize="16px" fontWeight={500} lineHeight="1.4">
-                                  {item.title}
-                                </Text>
-                                <Text color="#B19EEF" fontWeight={400} fontSize="12px">
-                                  {item.categoryLabel}
-                                </Text>
+                              <Box position="relative" borderRadius="0px" overflow="hidden">
+                                <LazyCardMedia
+                                  key={item.videoUrl || item.key}
+                                  videoUrl={item.videoUrl}
+                                  playing={hoveredKey === item.key}
+                                />
 
                                 {hasDeleteButton ? (
                                   <IconButton
                                     aria-label="Remove from favorites"
-                                    size="xs"
-                                    variant="ghost"
-                                    color="#B19EEF"
-                                    rounded="full"
-                                    position="absolute"
-                                    bg="#1E1430"
-                                    top={2}
-                                    right={2}
+                                    {...FAV_BTN_STYLE}
                                     opacity={hoveredKey === item.key ? 1 : 0}
                                     pointerEvents={hoveredKey === item.key ? 'auto' : 'none'}
-                                    transition="opacity 0.15s ease"
-                                    _focus={{ opacity: 1, pointerEvents: 'auto' }}
-                                    _hover={{ bg: '#271E37' }}
+                                    color="rgba(255,255,255,0.85)"
+                                    _hover={{ bg: 'rgba(0,0,0,0.55)', transform: 'scale(1.1)', color: '#ef4444' }}
                                     onClick={e => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -519,26 +552,17 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                       }
                                     }}
                                   >
-                                    <Icon as={FiTrash2} />
+                                    <Icon as={FiTrash2} fontSize="13px" />
                                   </IconButton>
                                 ) : null}
 
                                 {!hasDeleteButton && hasFavoriteButton ? (
                                   <IconButton
                                     aria-label={isSaved ? 'Remove from favorites' : 'Add to favorites'}
-                                    size="xs"
-                                    variant="ghost"
-                                    color="#B19EEF"
-                                    rounded="full"
-                                    position="absolute"
-                                    bg="#1E1430"
-                                    top={2}
-                                    right={2}
-                                    opacity={hoveredKey === item.key ? 1 : 0}
+                                    {...FAV_BTN_STYLE}
+                                    opacity={isSaved || hoveredKey === item.key ? 1 : 0}
                                     pointerEvents={hoveredKey === item.key ? 'auto' : 'none'}
-                                    transition="opacity 0.15s ease"
-                                    _focus={{ opacity: 1, pointerEvents: 'auto' }}
-                                    _hover={{ bg: '#271E37' }}
+                                    color={isSaved ? '#A855F7' : 'rgba(255,255,255,0.85)'}
                                     onClick={e => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -547,7 +571,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                       toast?.[saved ? 'success' : 'error']?.(
                                         <>
                                           {saved ? 'Added' : 'Removed'}{' '}
-                                          <span style={{ color: '#B19EEF', fontWeight: 700 }}>
+                                          <span style={{ color: colors.accent, fontWeight: 700 }}>
                                             &lt;{item.title} /&gt;
                                           </span>{' '}
                                           {saved ? 'to favorites' : 'from favorites'}
@@ -558,15 +582,18 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                       }
                                     }}
                                   >
-                                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} />
+                                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} fontSize="13px" />
                                   </IconButton>
                                 ) : null}
                               </Box>
-                              <LazyCardMedia
-                                key={item.videoUrl || item.key}
-                                videoUrl={item.videoUrl}
-                                playing={hoveredKey === item.key}
-                              />
+                              <Box px={2} pt={3} pb={1.5}>
+                                <Text color="#fff" fontSize="14px" fontWeight={500} lineHeight="1.3" letterSpacing="-0.2px">
+                                  {item.title}
+                                </Text>
+                                <Text color={colors.textMuted} fontWeight={400} fontSize="12px" mt={0.5}>
+                                  {item.categoryLabel}
+                                </Text>
+                              </Box>
                             </Box>
                           </div>
                         );
@@ -648,7 +675,7 @@ const LazyCardMedia = ({ videoUrl, playing }) => {
   };
 
   return (
-    <Box h="200px" bg="#000" borderRadius={INNER_RADIUS} overflow="hidden">
+    <Box h="190px" bg={colors.bgBody} borderRadius={`12px`} overflow="hidden">
       {show ? (
         <video
           ref={videoRef}
@@ -662,7 +689,8 @@ const LazyCardMedia = ({ videoUrl, playing }) => {
             height: '100%',
             objectFit: 'cover',
             display: 'block',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            mixBlendMode: 'screen'
           }}
         >
           {/* Let the browser choose the best supported source */}

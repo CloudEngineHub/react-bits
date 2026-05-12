@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Text, Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -23,7 +24,7 @@ const DEFAULT_PROPS = {
   bloomRadius: 1.0,
   bloomThreshold: 0.025,
   brightness: 2,
-  color: '#B19EEF',
+  color: '#B497CF',
   fadeDelayMs: 1000,
   fadeDurationMs: 1500
 };
@@ -94,7 +95,7 @@ const GhostCursorDemo = () => {
         default: '1',
         description: 'Final brightness multiplier applied to the effect color.'
       },
-      { name: 'color', type: 'string', default: "'#B19EEF'", description: 'Base color of the ghost cursor effect.' },
+      { name: 'color', type: 'string', default: "'#B497CF'", description: 'Base color of the ghost cursor effect.' },
       {
         name: 'mixBlendMode',
         type: 'CSS mix-blend-mode',
@@ -145,7 +146,7 @@ const GhostCursorDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             <GhostCursor
               trailLength={trailLength}
               inertia={inertia}
@@ -165,7 +166,7 @@ const GhostCursorDemo = () => {
               fontSize="clamp(3rem, 8vw, 8rem)"
               zIndex={11}
               fontWeight={900}
-              color="#060010"
+              color="#120F17"
             >
               Boo!
             </Text>
@@ -188,12 +189,7 @@ const GhostCursorDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input type="color" value={color} onChange={e => updateProp('color', e.target.value)} width="50px" />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
 
             <PreviewSlider
               title="Trail Length"

@@ -1,12 +1,8 @@
-import { useEffect } from 'react';
+import useScrollToTop from '../hooks/useScrollToTop';
 import DocsButtonBar from './DocsButtonBar';
 
 const Introduction = () => {
-  const scrollToTop = () => window.scrollTo(0, 0);
-
-  useEffect(() => {
-    scrollToTop();
-  }, []);
+  useScrollToTop();
 
   return (
     <section className="docs-section">
@@ -24,6 +20,8 @@ const Introduction = () => {
         Basically, these components are here to help you stand out and make a statement visually by adding a touch of
         creativity to your projects.
       </p>
+
+      <hr className="docs-separator" />
 
       <h3 className="docs-category-title">Mission</h3>
 
@@ -82,6 +80,8 @@ const Introduction = () => {
       <p className="docs-paragraph dim">
         P.S. The header has a neat dropdown to help you choose your preferred technologies.
       </p>
+
+      <hr className="docs-separator" />
 
       <h3 className="docs-category-title">Performance</h3>
 

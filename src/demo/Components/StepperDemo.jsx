@@ -4,6 +4,9 @@ import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLay
 import { Box, Input, Text } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
+import Customize from '../../components/common/Preview/Customize';
+import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewInput from '../../components/common/Preview/PreviewInput';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -15,12 +18,15 @@ import { stepper } from '../../constants/code/Components/stepperCode';
 
 const DEFAULT_PROPS = {
   name: '',
-  step: 1
+  step: 1,
+  backButtonText: 'Previous',
+  nextButtonText: 'Next',
+  disableStepIndicators: false
 };
 
 const StepperDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { name, step } = props;
+  const { name, step, backButtonText, nextButtonText, disableStepIndicators } = props;
 
   const propData = useMemo(
     () => [
@@ -123,7 +129,7 @@ const StepperDemo = () => {
     >
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={400} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} overflow="hidden">
             <Stepper
               initialStep={step}
               onStepChange={newStep => {
@@ -137,9 +143,9 @@ const StepperDemo = () => {
               }}
               onFinalStepCompleted={() => toast('✅ All steps completed!')}
               nextButtonProps={{ disabled: step === 3 && !name }}
-              disableStepIndicators={step === 3 && !name}
-              backButtonText="Previous"
-              nextButtonText="Next"
+              disableStepIndicators={disableStepIndicators || (step === 3 && !name)}
+              backButtonText={backButtonText}
+              nextButtonText={nextButtonText}
             >
               <Step>
                 <Text color="#5227FF" fontSize="1.2rem" fontWeight={600}>
@@ -182,6 +188,12 @@ const StepperDemo = () => {
               </Step>
             </Stepper>
           </Box>
+
+          <Customize>
+            <PreviewInput title="Back Button Text" value={backButtonText} placeholder="Back" onChange={v => updateProp('backButtonText', v)} />
+            <PreviewInput title="Next Button Text" value={nextButtonText} placeholder="Continue" onChange={v => updateProp('nextButtonText', v)} />
+            <PreviewSwitch title="Disable Step Indicators" isChecked={disableStepIndicators} onChange={v => updateProp('disableStepIndicators', v)} />
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['motion']} />

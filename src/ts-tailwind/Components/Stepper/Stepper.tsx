@@ -263,7 +263,7 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators =
   return (
     <motion.div
       onClick={handleClick}
-      className="relative cursor-pointer outline-none focus:outline-none"
+      className={`relative outline-none focus:outline-none ${disableStepIndicators ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
       animate={status}
       initial={false}
     >
@@ -279,7 +279,7 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators =
         {status === 'complete' ? (
           <CheckIcon className="h-4 w-4 text-black" />
         ) : status === 'active' ? (
-          <div className="h-3 w-3 rounded-full bg-[#060010]" />
+          <div className="h-3 w-3 rounded-full bg-[#120F17]" />
         ) : (
           <span className="text-sm">{step}</span>
         )}

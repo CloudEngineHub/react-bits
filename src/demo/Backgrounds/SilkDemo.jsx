@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text, Input } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import Customize from '../../components/common/Preview/Customize';
@@ -12,6 +12,7 @@ import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 import { silkCode } from '../../constants/code/Backgrounds/silkCode';
@@ -30,6 +31,11 @@ const SilkDemo = () => {
   const { speed, scale, color, noiseIntensity, rotation } = props;
 
   const [key, forceRerender] = useForceRerender();
+
+  const handleReset = useCallback(() => {
+    resetProps();
+    forceRerender();
+  }, [resetProps, forceRerender]);
 
   const propData = useMemo(
     () => [
@@ -68,10 +74,10 @@ const SilkDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider reset={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={handleReset} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
             <Silk
               key={key}
               speed={speed}
@@ -142,18 +148,7 @@ const SilkDemo = () => {
               }}
             />
 
-            <Flex align="center" gap={2} mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                  forceRerender();
-                }}
-                width="100px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); forceRerender(); }} />
           </Customize>
 
           <PropTable data={propData} />

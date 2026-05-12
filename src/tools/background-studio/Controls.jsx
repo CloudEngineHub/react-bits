@@ -9,6 +9,7 @@ import { useOptions } from '../../components/context/OptionsContext/useOptions';
 import PreviewSliderVertical from '../../components/common/Preview/PreviewSliderVertical';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import CodeHighlighter from '../../components/code/CodeHighlighter';
 
 const BackgroundSelector = ({ selectedId, onSelect }) => {
@@ -53,20 +54,20 @@ const BackgroundSelector = ({ selectedId, onSelect }) => {
         w="100%"
         px={3}
         py={2.5}
-        bg="#170D27"
-        border="1px solid #271E37"
-        borderRadius="12px"
+        bg="var(--bg-elevated)"
+        border="1px solid var(--border-primary)"
+        borderRadius="var(--radius-md)"
         cursor="pointer"
         transition="all 0.2s"
-        _hover={{ borderColor: '#392e4e' }}
+        _hover={{ borderColor: 'var(--border-primary)' }}
       >
-        <Text fontSize="14px" fontWeight={600} color="#fff">
+        <Text fontSize="14px" fontWeight={600} color="var(--text-primary)">
           {selected.label}
         </Text>
         <Icon
           as={ChevronDown}
           boxSize={4}
-          color="#988BC7"
+          color="var(--text-muted)"
           transition="transform 0.2s"
           transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}
         />
@@ -78,9 +79,9 @@ const BackgroundSelector = ({ selectedId, onSelect }) => {
         left={0}
         right={0}
         mt={2}
-        bg="#0D0716"
-        border="1px solid #271E37"
-        borderRadius="12px"
+        bg="var(--bg-card)"
+        border="1px solid var(--border-primary)"
+        borderRadius="var(--radius-md)"
         maxH="350px"
         opacity={isOpen ? 1 : 0}
         visibility={isOpen ? 'visible' : 'hidden'}
@@ -89,20 +90,20 @@ const BackgroundSelector = ({ selectedId, onSelect }) => {
         zIndex={100}
         overflow="hidden"
       >
-        <Box p={2} borderBottom="1px solid #271E37">
+        <Box p={2} borderBottom="1px solid var(--border-primary)">
           <Input
             ref={searchInputRef}
             placeholder="Search backgrounds..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             size="sm"
-            bg="#170D27"
-            border="1px solid #271E37"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
             borderRadius="8px"
-            color="#fff"
+            color="var(--text-primary)"
             fontSize="13px"
-            _placeholder={{ color: '#988BC7' }}
-            _hover={{ borderColor: '#392e4e' }}
+            _placeholder={{ color: 'var(--text-muted)' }}
+            _hover={{ borderColor: 'var(--border-primary)' }}
             _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
           />
         </Box>
@@ -112,13 +113,13 @@ const BackgroundSelector = ({ selectedId, onSelect }) => {
           overflowY="auto"
           css={{
             '&::-webkit-scrollbar': { width: '6px' },
-            '&::-webkit-scrollbar-track': { background: '#170D27' },
-            '&::-webkit-scrollbar-thumb': { background: '#392e4e', borderRadius: '3px' }
+            '&::-webkit-scrollbar-track': { background: 'var(--bg-elevated)' },
+            '&::-webkit-scrollbar-thumb': { background: 'var(--border-primary)', borderRadius: '3px' }
           }}
         >
           {filteredBackgrounds.length === 0 ? (
             <Flex align="center" justify="center" py={4}>
-              <Text fontSize="13px" color="#988BC7">
+              <Text fontSize="13px" color="var(--text-muted)">
                 No backgrounds found
               </Text>
             </Flex>
@@ -137,11 +138,11 @@ const BackgroundSelector = ({ selectedId, onSelect }) => {
                 w="100%"
                 px={3}
                 py={2.5}
-                bg={selectedId === bg.id ? '#170D27' : 'transparent'}
-                _hover={{ bg: '#170D27' }}
+                bg={selectedId === bg.id ? 'var(--bg-elevated)' : 'transparent'}
+                _hover={{ bg: 'var(--bg-elevated)' }}
                 transition="background 0.15s"
               >
-                <Text fontSize="14px" fontWeight={500} color="#fff">
+                <Text fontSize="14px" fontWeight={500} color="var(--text-primary)">
                   {bg.label}
                 </Text>
               </Flex>
@@ -178,29 +179,11 @@ const ColorControl = ({ prop, value, onChange }) => {
   const { name, label } = prop;
 
   return (
-    <Flex justify="space-between" align="center" my={6}>
-      <Text fontSize="sm">{label}</Text>
-      <Flex align="center" gap={2}>
-        <Text fontSize="xs" color="#B19EEF" fontFamily="mono">
-          {value}
-        </Text>
-        <Box position="relative">
-          <Box w="28px" h="28px" borderRadius="6px" bg={value} border="2px solid #271E37" />
-          <Input
-            type="color"
-            value={value}
-            onChange={e => onChange(name, e.target.value)}
-            position="absolute"
-            top={0}
-            left={0}
-            w="100%"
-            h="100%"
-            opacity={0}
-            cursor="pointer"
-          />
-        </Box>
-      </Flex>
-    </Flex>
+    <PreviewColorPickerCustom
+      title={label}
+      color={value}
+      onChange={val => onChange(name, val)}
+    />
   );
 };
 
@@ -230,74 +213,62 @@ const ColorArrayControl = ({ prop, value, onChange }) => {
   };
 
   return (
-    <Box my={6}>
-      <Text fontSize="sm" mb={2}>
-        {label}
-      </Text>
-      <Flex flexWrap="wrap" gap={2} px={1} pt={1}>
+    <Box>
+      <Flex flexWrap="wrap" gap={2} align="center">
         {colors.map((color, index) => (
-          <Box key={index} position="relative" w="32px" h="32px">
-            <Box
-              w="32px"
-              h="32px"
-              borderRadius="6px"
-              bg={color}
-              border="2px solid #271E37"
-              overflow="hidden"
-              position="relative"
-            >
-              <Input
-                type="color"
-                value={color}
-                onChange={e => updateColor(index, e.target.value)}
-                position="absolute"
-                top={0}
-                left={0}
-                w="32px"
-                h="32px"
-                opacity={0}
-                cursor="pointer"
-              />
-            </Box>
+          <Box key={index} position="relative">
+            <PreviewColorPickerCustom
+              title={`${label} ${index + 1}`}
+              color={color}
+              onChange={val => updateColor(index, val)}
+            />
             {colors.length > minItems && (
               <Flex
                 as="button"
                 onClick={() => removeColor(index)}
                 position="absolute"
-                top="-6px"
-                right="-6px"
-                w="16px"
-                h="16px"
-                bg="#170D27"
-                border="1px solid #271E37"
+                top="4px"
+                right="4px"
+                w="18px"
+                h="18px"
+                bg="var(--bg-body)"
+                border="1px solid var(--border-primary)"
                 borderRadius="50%"
                 align="center"
                 justify="center"
                 cursor="pointer"
+                zIndex={5}
+                _hover={{ bg: 'var(--bg-hover)' }}
+                transition="background 0.15s"
               >
-                <Icon as={X} boxSize={2.5} color="#988BC7" />
+                <Icon as={X} boxSize={2.5} color="var(--text-muted)" />
               </Flex>
             )}
           </Box>
         ))}
-        {colors.length < maxItems && (
-          <Flex
-            as="button"
-            onClick={addColor}
-            w="32px"
-            h="32px"
-            borderRadius="6px"
-            border="2px dashed #392e4e"
-            align="center"
-            justify="center"
-            cursor="pointer"
-            _hover={{ borderColor: '#5227FF' }}
-            transition="border-color 0.2s"
-          >
-            <Icon as={Plus} boxSize={4} color="#988BC7" />
-          </Flex>
-        )}
       </Flex>
+      {colors.length < maxItems && (
+        <Flex
+          as="button"
+          onClick={addColor}
+          w="100%"
+          h="40px"
+          mt={2}
+          borderRadius="var(--radius-sm)"
+          border="1px dashed var(--border-primary)"
+          align="center"
+          justify="center"
+          cursor="pointer"
+          gap={1.5}
+          _hover={{ borderColor: '#5227FF', bg: 'rgba(82, 39, 255, 0.05)' }}
+          transition="all 0.2s"
+        >
+          <Icon as={Plus} boxSize={3.5} color="var(--text-muted)" />
+          <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
+            Add Color
+          </Text>
+        </Flex>
+      )}
     </Box>
   );
 };
@@ -340,29 +311,11 @@ const RgbArrayControl = ({ prop, value, onChange }) => {
   const hexValue = rgbToHex(rgb[0], rgb[1], rgb[2]);
 
   return (
-    <Flex justify="space-between" align="center" my={6}>
-      <Text fontSize="sm">{label}</Text>
-      <Flex align="center" gap={2}>
-        <Text fontSize="xs" color="#B19EEF" fontFamily="mono">
-          [{rgb.map(v => v.toFixed(2)).join(', ')}]
-        </Text>
-        <Box position="relative">
-          <Box w="28px" h="28px" borderRadius="6px" bg={hexValue} border="2px solid #271E37" />
-          <Input
-            type="color"
-            value={hexValue}
-            onChange={e => onChange(name, hexToRgb(e.target.value))}
-            position="absolute"
-            top={0}
-            left={0}
-            w="100%"
-            h="100%"
-            opacity={0}
-            cursor="pointer"
-          />
-        </Box>
-      </Flex>
-    </Flex>
+    <PreviewColorPickerCustom
+      title={label}
+      color={hexValue}
+      onChange={hex => onChange(name, hexToRgb(hex))}
+    />
   );
 };
 
@@ -370,7 +323,7 @@ const TextControl = ({ prop, value, onChange }) => {
   const { name, label } = prop;
 
   return (
-    <Box my={6}>
+    <Box>
       <Text fontSize="sm" mb={2}>
         {label}
       </Text>
@@ -378,14 +331,14 @@ const TextControl = ({ prop, value, onChange }) => {
         type="text"
         value={value || ''}
         onChange={e => onChange(name, e.target.value)}
-        bg="#170D27"
-        border="1px solid #271E37"
-        borderRadius="8px"
-        color="#fff"
+        bg="var(--bg-elevated)"
+        border="1px solid var(--border-primary)"
+        borderRadius="var(--radius-sm)"
+        color="var(--text-primary)"
         fontSize="13px"
         px={3}
         py={2}
-        _hover={{ borderColor: '#392e4e' }}
+        _hover={{ borderColor: 'var(--border-primary)' }}
         _focus={{ borderColor: '#5227FF', boxShadow: 'none' }}
         placeholder={`Enter ${label.toLowerCase()}...`}
       />
@@ -459,8 +412,8 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
       onClick={onClose}
     >
       <Box
-        bg="#0D0716"
-        border="1px solid #271E37"
+        bg="var(--bg-card)"
+        border="1px solid var(--border-primary)"
         borderRadius="40px"
         p={6}
         maxW="700px"
@@ -475,7 +428,7 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
         }}
       >
         <Flex justify="space-between" align="center" mb={6}>
-          <Text fontSize="18px" fontWeight={700} color="#fff">
+          <Text fontSize="18px" fontWeight={700} color="var(--text-primary)">
             Export Your Background
           </Text>
           <Flex
@@ -486,10 +439,10 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
             align="center"
             justify="center"
             borderRadius="8px"
-            _hover={{ bg: '#170D27' }}
+            _hover={{ bg: 'var(--bg-elevated)' }}
             cursor="pointer"
           >
-            <Icon as={X} boxSize={5} color="#988BC7" />
+            <Icon as={X} boxSize={5} color="var(--text-muted)" />
           </Flex>
         </Flex>
 
@@ -520,10 +473,10 @@ const ExportModal = ({ isOpen, onClose, background, props }) => {
                   right=".6em"
                   borderRadius="12px"
                   fontWeight={500}
-                  backgroundColor={copied === 'install' ? '#5227FF' : '#060010'}
-                  border="1px solid #392e4e"
+                  backgroundColor={copied === 'install' ? '#5227FF' : 'var(--bg-body)'}
+                  border="1px solid var(--border-primary)"
                   color={copied === 'install' ? 'black' : 'white'}
-                  _hover={{ backgroundColor: copied === 'install' ? '#5227FF' : '#170D27' }}
+                  _hover={{ backgroundColor: copied === 'install' ? '#5227FF' : 'var(--bg-elevated)' }}
                   _active={{ backgroundColor: '#5227FF' }}
                   transition="background-color 0.3s ease"
                   onClick={() => copyToClipboard(currentCommand, 'install')}
@@ -567,7 +520,7 @@ export default function Controls({
   toolSelector,
   isMobile = false,
   disabled = false,
-  canvasBg = '#060010',
+  canvasBg = '#120F17',
   onCanvasBgChange
 }) {
   const [exportOpen, setExportOpen] = useState(false);
@@ -603,26 +556,30 @@ export default function Controls({
           msOverflowStyle: 'none'
         }}
       >
-        <Text fontSize="11px" color="#988BC7" fontWeight={600} mb={3} textTransform="uppercase" letterSpacing="0.5px">
+        <Text fontSize="11px" color="var(--text-muted)" fontWeight={600} mb={3} textTransform="uppercase" letterSpacing="0.5px">
           Background
         </Text>
         <BackgroundSelector selectedId={backgroundId} onSelect={onBackgroundChange} />
 
         {onCanvasBgChange && (
-          <Flex justify="space-between" align="center" mb={4}>
-            <Flex align="center" gap={1.5}>
-              <Text fontSize="sm">Canvas BG</Text>
+          <Box mb={4}>
+            <Flex align="center" gap={1.5} mb={2}>
+              <PreviewColorPickerCustom
+                title="Canvas BG"
+                color={canvasBg}
+                onChange={onCanvasBgChange}
+              />
               <Tooltip.Root openDelay={200} closeDelay={100} positioning={{ placement: 'top', gutter: 8 }}>
                 <Tooltip.Trigger asChild>
                   <Flex align="center" justify="center" cursor="help">
-                    <Icon as={Info} boxSize={3.5} color="#988BC7" />
+                    <Icon as={Info} boxSize={3.5} color="var(--text-muted)" />
                   </Flex>
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
                   <Tooltip.Content
-                    bg="#060010"
-                    border="1px solid #271e37"
-                    color="#B19EEF"
+                    bg="var(--bg-body)"
+                    border="1px solid var(--border-primary)"
+                    color="var(--text-muted)"
                     fontSize="12px"
                     fontWeight="500"
                     px={3}
@@ -637,45 +594,25 @@ export default function Controls({
                 </Tooltip.Positioner>
               </Tooltip.Root>
             </Flex>
-            <Flex align="center" gap={2}>
-              <Text fontSize="xs" color="#B19EEF" fontFamily="mono">
-                {canvasBg}
-              </Text>
-              <Box position="relative">
-                <Box w="28px" h="28px" borderRadius="6px" bg={canvasBg} border="2px solid #271E37" />
-                <Input
-                  type="color"
-                  value={canvasBg}
-                  onChange={e => onCanvasBgChange(e.target.value)}
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  w="100%"
-                  h="100%"
-                  opacity={0}
-                  cursor="pointer"
-                />
-              </Box>
-            </Flex>
-          </Flex>
+          </Box>
         )}
 
-        <Box h="1px" bg="#271E37" mb={4} />
+        <Box h="1px" bg="var(--border-primary)" mb={4} />
 
-        <Box>
+        <Flex direction="column" gap={2}>
           {background?.props?.length > 0 ? (
             background.props.map(prop => (
               <DynamicControl key={prop.name} prop={prop} value={props[prop.name]} onChange={onPropChange} />
             ))
           ) : (
-            <Text fontSize="13px" color="#988BC7" textAlign="center" py={4}>
+            <Text fontSize="13px" color="var(--text-muted)" textAlign="center" py={4}>
               No customizable props for this background
             </Text>
           )}
-        </Box>
+        </Flex>
       </Box>
 
-      <Box pt={4} borderTop="1px solid #271E37" mt={4} flexShrink={0}>
+      <Box pt={4} borderTop="1px solid var(--border-primary)" mt={4} flexShrink={0}>
         <Flex gap={2} mb={2}>
           <Flex
             as="button"
@@ -684,17 +621,17 @@ export default function Controls({
             gap={1.5}
             px={3}
             py={2}
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="8px"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
+            borderRadius="var(--radius-sm)"
             cursor="pointer"
             flex={1}
             justify="center"
-            _hover={{ borderColor: '#392e4e' }}
-            transition="border-color 0.2s"
+            _hover={{ bg: 'var(--bg-card)' }}
+            transition="background 0.2s"
           >
-            <Icon as={RotateCcw} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={RotateCcw} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               Reset
             </Text>
           </Flex>
@@ -705,17 +642,17 @@ export default function Controls({
             gap={1.5}
             px={3}
             py={2}
-            bg="#170D27"
-            border="1px solid #271E37"
-            borderRadius="8px"
+            bg="var(--bg-elevated)"
+            border="1px solid var(--border-primary)"
+            borderRadius="var(--radius-sm)"
             cursor="pointer"
             flex={1}
             justify="center"
-            _hover={{ borderColor: '#392e4e' }}
-            transition="border-color 0.2s"
+            _hover={{ bg: 'var(--bg-card)' }}
+            transition="background 0.2s"
           >
-            <Icon as={Share2} boxSize={3.5} color="#988BC7" />
-            <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+            <Icon as={Share2} boxSize={3.5} color="var(--text-muted)" />
+            <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
               {shareStatus || 'Share'}
             </Text>
           </Flex>
@@ -729,18 +666,18 @@ export default function Controls({
           px={3}
           py={2}
           mb={2}
-          bg="#170D27"
-          border="1px solid #271E37"
-          borderRadius="8px"
+          bg="var(--bg-elevated)"
+          border="1px solid var(--border-primary)"
+          borderRadius="var(--radius-sm)"
           cursor="pointer"
           w="100%"
           justify="center"
-          _hover={{ borderColor: '#392e4e' }}
-          transition="border-color 0.2s"
+          _hover={{ bg: 'var(--bg-card)' }}
+          transition="background 0.2s"
           textDecoration="none"
         >
-          <Icon as={ExternalLink} boxSize={3.5} color="#988BC7" />
-          <Text fontSize="12px" color="#988BC7" fontWeight={500}>
+          <Icon as={ExternalLink} boxSize={3.5} color="var(--text-muted)" />
+          <Text fontSize="12px" color="var(--text-muted)" fontWeight={500}>
             Read Full Docs
           </Text>
         </Flex>
@@ -751,16 +688,16 @@ export default function Controls({
           gap={1.5}
           px={3}
           py={2.5}
-          bg="#5227FF"
-          borderRadius="8px"
+          bg="var(--color-primary)"
+          borderRadius="var(--radius-sm)"
           cursor="pointer"
           w="100%"
           justify="center"
-          _hover={{ bg: '#6b3fff' }}
+          _hover={{ bg: '#b96dfa' }}
           transition="background 0.2s"
         >
-          <Icon as={Code2} boxSize={4} color="#fff" />
-          <Text fontSize="13px" color="#fff" fontWeight={600}>
+          <Icon as={Code2} boxSize={4} color="var(--text-primary)" />
+          <Text fontSize="13px" color="var(--text-primary)" fontWeight={600}>
             Export Code
           </Text>
         </Flex>

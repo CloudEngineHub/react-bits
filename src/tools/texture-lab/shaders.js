@@ -153,26 +153,46 @@ export const CHROMATIC_FRAGMENT_SHADER = `
   varying vec2 v_texCoord;
   
   #define PI 3.14159265359
+  #define SAMPLES 8
+  
+  // Attempt to approximate spectral colors across samples
+  vec3 spectralWeight(float t) {
+    // t goes from -1 (red end) to +1 (blue end)
+    // Approximate prism dispersion: red shifts one way, blue the other
+    float r = smoothstep(0.0, 0.7, -t + 0.5);
+    float g = 1.0 - abs(t) * 0.8;
+    float b = smoothstep(0.0, 0.7, t + 0.5);
+    return vec3(r, g, b);
+  }
   
   void main() {
     vec2 center = vec2(0.5);
     vec2 dir;
     
     if (u_radial) {
-      // Radial chromatic aberration
-      dir = normalize(v_texCoord - center) * u_intensity;
+      dir = normalize(v_texCoord - center + 0.0001) * u_intensity;
     } else {
-      // Directional chromatic aberration
       float angle = u_angle * PI / 180.0;
       dir = vec2(cos(angle), sin(angle)) * u_intensity;
     }
     
-    float r = texture2D(u_image, v_texCoord + dir).r;
-    float g = texture2D(u_image, v_texCoord).g;
-    float b = texture2D(u_image, v_texCoord - dir).b;
+    // Multi-sample spectral dispersion
+    vec3 color = vec3(0.0);
+    vec3 totalWeight = vec3(0.0);
+    
+    for (int i = 0; i < SAMPLES; i++) {
+      float t = (float(i) / float(SAMPLES - 1)) * 2.0 - 1.0; // -1 to +1
+      vec2 offset = dir * t;
+      vec3 sampleColor = texture2D(u_image, v_texCoord + offset).rgb;
+      vec3 w = spectralWeight(t);
+      color += sampleColor * w;
+      totalWeight += w;
+    }
+    
+    color /= totalWeight;
     float a = texture2D(u_image, v_texCoord).a;
     
-    gl_FragColor = vec4(r, g, b, a);
+    gl_FragColor = vec4(color, a);
   }
 `;
 
@@ -252,9 +272,12 @@ export const PIXELATE_FRAGMENT_SHADER = `
     vec2 pixelSize;
     
     if (u_maintainAspect) {
-      float aspect = u_resolution.x / u_resolution.y;
-      pixelSize = vec2(u_size / u_resolution.x, u_size / u_resolution.y);
+      // Square pixels: use u_size as pixel count along the shorter axis
+      float minDim = min(u_resolution.x, u_resolution.y);
+      float ps = u_size / minDim;
+      pixelSize = vec2(ps);
     } else {
+      // Stretch to fill: same number of divisions on each axis
       pixelSize = vec2(u_size) / u_resolution;
     }
     
@@ -278,19 +301,19 @@ export const BLUR_FRAGMENT_SHADER = `
   
   #define PI 3.14159265359
   
-  // Simple box blur as approximation for real-time
   vec4 gaussianBlur(vec2 uv, float radius) {
     vec4 color = vec4(0.0);
     vec2 texelSize = 1.0 / u_resolution;
-    
     float total = 0.0;
-    int r = int(radius);
+    float sigma = max(radius * 0.5, 0.5);
+    float invSigma2 = -0.5 / (sigma * sigma);
     
-    for (int x = -5; x <= 5; x++) {
-      for (int y = -5; y <= 5; y++) {
-        if (x*x + y*y > r*r) continue;
-        float weight = 1.0 - float(x*x + y*y) / float(r*r + 1);
-        vec2 offset = vec2(float(x), float(y)) * texelSize * radius;
+    for (int x = -7; x <= 7; x++) {
+      for (int y = -7; y <= 7; y++) {
+        float dist2 = float(x*x + y*y);
+        if (dist2 > radius * radius) continue;
+        float weight = exp(dist2 * invSigma2);
+        vec2 offset = vec2(float(x), float(y)) * texelSize;
         color += texture2D(u_image, uv + offset) * weight;
         total += weight;
       }
@@ -303,29 +326,37 @@ export const BLUR_FRAGMENT_SHADER = `
     vec4 color = vec4(0.0);
     vec2 center = vec2(0.5);
     vec2 dir = uv - center;
-    float dist = length(dir);
+    float total = 0.0;
     
-    float samples = 10.0;
-    for (float i = 0.0; i < 10.0; i++) {
+    const float samples = 20.0;
+    for (float i = 0.0; i < 20.0; i++) {
       float t = i / samples * radius * 0.01;
-      color += texture2D(u_image, uv - dir * t);
+      float weight = 1.0 - i / samples;
+      color += texture2D(u_image, uv - dir * t) * weight;
+      total += weight;
     }
     
-    return color / samples;
+    return color / total;
   }
   
   vec4 motionBlur(vec2 uv, float radius, float angle) {
     vec4 color = vec4(0.0);
     vec2 dir = vec2(cos(angle * PI / 180.0), sin(angle * PI / 180.0));
     vec2 texelSize = 1.0 / u_resolution;
+    float total = 0.0;
+    float sigma = max(radius * 0.5, 0.5);
+    float invSigma2 = -0.5 / (sigma * sigma);
     
-    float samples = 10.0;
-    for (float i = -5.0; i <= 5.0; i++) {
-      vec2 offset = dir * texelSize * i * radius;
-      color += texture2D(u_image, uv + offset);
+    for (float i = -7.0; i <= 7.0; i++) {
+      float dist2 = i * i;
+      if (dist2 > radius * radius) continue;
+      float weight = exp(dist2 * invSigma2);
+      vec2 offset = dir * texelSize * i * radius / 7.0;
+      color += texture2D(u_image, uv + offset) * weight;
+      total += weight;
     }
     
-    return color / 11.0;
+    return color / total;
   }
   
   void main() {
@@ -580,23 +611,33 @@ export const COLOR_GRADE_FRAGMENT_SHADER = `
   void main() {
     vec4 color = texture2D(u_image, v_texCoord);
     
-    color.rgb += u_brightness;
+    // Brightness: multiplicative feels more natural than additive
+    color.rgb *= 1.0 + u_brightness;
     
+    // Contrast: pivot around midpoint
     color.rgb = (color.rgb - 0.5) * (1.0 + u_contrast) + 0.5;
     
+    // Saturation
     float luma = dot(color.rgb, vec3(0.299, 0.587, 0.114));
     color.rgb = mix(vec3(luma), color.rgb, 1.0 + u_saturation);
     
+    // Temperature: shift red-blue balance
     color.r += u_temperature * 0.1;
     color.b -= u_temperature * 0.1;
     
+    // Tint: shift green-magenta balance
     color.g += u_tint * 0.1;
     
-    float shadowMask = 1.0 - smoothstep(0.0, 0.5, luma);
-    float highlightMask = smoothstep(0.5, 1.0, luma);
+    // Recalculate luma after adjustments for accurate shadow/highlight masks
+    luma = dot(clamp(color.rgb, 0.0, 1.0), vec3(0.299, 0.587, 0.114));
     
-    color.rgb = mix(color.rgb, color.rgb * u_shadows, shadowMask * u_shadowInfluence);
-    color.rgb = mix(color.rgb, color.rgb * u_highlights, highlightMask * u_highlightInfluence);
+    // Shadow tinting: mix toward shadow color in dark areas
+    float shadowMask = 1.0 - smoothstep(0.0, 0.5, luma);
+    color.rgb = mix(color.rgb, mix(color.rgb, u_shadows * luma * 2.0, 0.5), shadowMask * u_shadowInfluence);
+    
+    // Highlight tinting: mix toward highlight color in bright areas
+    float highlightMask = smoothstep(0.5, 1.0, luma);
+    color.rgb = mix(color.rgb, mix(color.rgb, u_highlights * luma, 0.5), highlightMask * u_highlightInfluence);
     
     color.rgb = clamp(color.rgb, 0.0, 1.0);
     
@@ -873,9 +914,13 @@ export const ASCII_FRAGMENT_SHADER = `
   uniform vec2 u_resolution;
   uniform float u_brightness;
   uniform float u_contrast;
+  uniform float u_gamma;
   uniform float u_charBrightness;
+  uniform vec3 u_charColor;
+  uniform vec3 u_backgroundColor;
   uniform float u_backgroundBlend;
   uniform float u_edgeEnhance;
+  uniform float u_cellGap;
   
   varying vec2 v_texCoord;
   
@@ -900,53 +945,65 @@ export const ASCII_FRAGMENT_SHADER = `
     vec2 cellIndex = floor(v_texCoord * cellCount);
     vec2 cellUV = fract(v_texCoord * cellCount);
     
+    // Cell gap - discard pixels in gap region
+    if (u_cellGap > 0.0) {
+      float halfGap = u_cellGap * 0.5;
+      if (cellUV.x < halfGap || cellUV.x > 1.0 - halfGap ||
+          cellUV.y < halfGap || cellUV.y > 1.0 - halfGap) {
+        gl_FragColor = vec4(u_backgroundColor, 1.0);
+        return;
+      }
+      // Remap cellUV to fill remaining space
+      cellUV = (cellUV - halfGap) / (1.0 - u_cellGap);
+    }
+    
     vec2 sampleUV = (cellIndex + 0.5) / cellCount;
     vec4 sampleColor = texture2D(u_image, sampleUV);
     
     vec3 adjustedColor = sampleColor.rgb;
-    adjustedColor = (adjustedColor - 0.5) * u_contrast + 0.5;  // Contrast
-    adjustedColor = adjustedColor * u_brightness;              // Brightness
+    adjustedColor = (adjustedColor - 0.5) * u_contrast + 0.5;
+    adjustedColor = adjustedColor * u_brightness;
     adjustedColor = clamp(adjustedColor, 0.0, 1.0);
     
-    float brightness = dot(adjustedColor, vec3(0.299, 0.587, 0.114));
+    float luma = dot(adjustedColor, vec3(0.299, 0.587, 0.114));
+    
+    // Apply gamma curve for tone mapping
+    luma = pow(luma, 1.0 / u_gamma);
     
     if (u_edgeEnhance > 0.0) {
       vec2 texelSize = 1.0 / u_resolution;
       float edge = getEdge(sampleUV, texelSize);
-      brightness = mix(brightness, brightness + edge * 0.5, u_edgeEnhance);
-      brightness = clamp(brightness, 0.0, 1.0);
+      luma = mix(luma, luma + edge * 0.5, u_edgeEnhance);
+      luma = clamp(luma, 0.0, 1.0);
     }
     
-    if (u_invert) brightness = 1.0 - brightness;
+    if (u_invert) luma = 1.0 - luma;
     
-    float charIndex = floor(brightness * float(u_charCount - 1) + 0.5);
-    charIndex = clamp(charIndex, 0.0, float(u_charCount - 1));
+    float charIdx = floor(luma * float(u_charCount - 1) + 0.5);
+    charIdx = clamp(charIdx, 0.0, float(u_charCount - 1));
     
     vec2 atlasUV = vec2(
-      (charIndex + cellUV.x) / float(u_charCount),
-      1.0 - cellUV.y  // Flip Y for proper character orientation
+      (charIdx + cellUV.x) / float(u_charCount),
+      1.0 - cellUV.y
     );
     
     vec4 charSample = texture2D(u_charAtlas, atlasUV);
-    float charAlpha = charSample.r * u_charBrightness; // Apply character brightness
-    charAlpha = clamp(charAlpha, 0.0, 1.0);
+    float charAlpha = clamp(charSample.r * u_charBrightness, 0.0, 1.0);
     
+    // Character color: use original image color or custom char color
     vec3 charColor;
     if (u_color) {
       charColor = adjustedColor * charAlpha;
     } else {
-      charColor = vec3(charAlpha);
+      charColor = u_charColor * charAlpha;
     }
     
-    vec3 finalColor;
-    if (u_backgroundBlend > 0.0) {
-      vec3 bgColor = sampleColor.rgb * 0.5;
-      finalColor = mix(charColor, bgColor + charColor * 0.8, u_backgroundBlend);
-    } else {
-      finalColor = charColor;
-    }
+    // Background: blend between backgroundColor and original image
+    vec3 bgColor = mix(u_backgroundColor, sampleColor.rgb, u_backgroundBlend);
     
-    // Preserve original alpha for transparency support
+    // Composite: character on top of background
+    vec3 finalColor = mix(bgColor, charColor, charAlpha);
+    
     gl_FragColor = vec4(finalColor, sampleColor.a);
   }
 `;
@@ -1531,7 +1588,7 @@ export const LIGHT_LEAK_FRAGMENT_SHADER = `
     vec3 result;
     if (u_blendMode == 0) result = blendOverlay(color.rgb, leak);
     else if (u_blendMode == 1) result = blendSoftLight(color.rgb, leak);
-    else if (u_blendMode == 2) result = color.rgb * leak;
+    else if (u_blendMode == 2) result = blendAdd(color.rgb, leak);
     else result = blendScreen(color.rgb, leak);
     
     // Mix based on leak presence
@@ -1598,8 +1655,9 @@ export const BLOOM_FRAGMENT_SHADER = `
     float r = u_radius;
     
     // Two-pass Gaussian approximation in a single pass
-    for (int y = -12; y <= 12; y++) {
-      for (int x = -12; x <= 12; x++) {
+    // Use a 13x13 kernel for better performance while maintaining quality
+    for (int y = -6; y <= 6; y++) {
+      for (int x = -6; x <= 6; x++) {
         float fx = float(x);
         float fy = float(y);
         float dist = sqrt(fx * fx + fy * fy);
@@ -1607,8 +1665,8 @@ export const BLOOM_FRAGMENT_SHADER = `
         // Skip samples outside radius
         if (dist > r) continue;
         
-        // Gaussian weight with sigma = radius / 2
-        float sigma = r * 0.4;
+        // Gaussian weight
+        float sigma = max(r * 0.4, 0.5);
         float weight = exp(-(dist * dist) / (2.0 * sigma * sigma));
         
         vec2 offset = vec2(fx, fy) * texelSize;

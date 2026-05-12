@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -10,9 +10,9 @@ import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
-import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -21,7 +21,7 @@ import Plasma from '../../ts-default/Backgrounds/Plasma/Plasma';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
 const DEFAULT_PROPS = {
-  color: '#B19EEF',
+  color: '#B497CF',
   speed: 1.0,
   direction: 'forward',
   scale: 1.0,
@@ -32,8 +32,6 @@ const DEFAULT_PROPS = {
 const PlasmaDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { color, speed, direction, scale, opacity, mouseInteractive } = props;
-  const [key, forceRerender] = useForceRerender();
-
   const propData = useMemo(
     () => [
       {
@@ -77,12 +75,11 @@ const PlasmaDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges} forceRerender={forceRerender}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Plasma
-              key={key}
               color={color}
               speed={speed}
               direction={direction}
@@ -97,24 +94,12 @@ const PlasmaDemo = () => {
             <OpenInStudioButton
               backgroundId="plasma"
               currentProps={{ color, speed, scale, opacity, mouseInteractive }}
-              defaultProps={{ color: '#B19EEF', speed: 1.0, scale: 1.0, opacity: 1.0, mouseInteractive: false }}
+              defaultProps={{ color: '#B497CF', speed: 1.0, scale: 1.0, opacity: 1.0, mouseInteractive: false }}
             />
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4}>
-              <Text fontSize="sm" mr={2}>
-                Color
-              </Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                }}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
 
             <PreviewSelect
               title="Direction"

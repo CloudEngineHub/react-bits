@@ -10,6 +10,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import PropTable from '../../components/common/Preview/PropTable';
 
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import Customize from '../../components/common/Preview/Customize';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
@@ -106,7 +107,7 @@ const ClickSparkDemo = () => {
               fontWeight={900}
               fontSize="2rem"
               textAlign="center"
-              color="#271E37"
+              color="#2F293A"
               userSelect="none"
             >
               Click Around!
@@ -122,17 +123,7 @@ const ClickSparkDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Spark Color:</Text>
-              <input
-                type="color"
-                value={sparkColor}
-                onChange={e => {
-                  updateProp('sparkColor', e.target.value);
-                  forceRerender();
-                }}
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Spark Color" color={sparkColor} onChange={val => { updateProp('sparkColor', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Spark Size"

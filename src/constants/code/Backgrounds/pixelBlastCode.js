@@ -14,7 +14,7 @@ import PixelBlast from './PixelBlast';
   <PixelBlast
     variant="circle"
     pixelSize={6}
-    color="#B19EEF"
+    color="#B497CF"
     patternScale={3}
     patternDensity={1.2}
     pixelSizeJitter={0.5}

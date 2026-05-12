@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Text, Flex, Input, Icon } from '@chakra-ui/react';
-import { Plus, X } from 'lucide-react';
+import { Box, Text } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -10,6 +9,7 @@ import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewSelect from '../../components/common/Preview/PreviewSelect';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -18,7 +18,7 @@ import GradientText from '../../content/TextAnimations/GradientText/GradientText
 import { gradientText } from '../../constants/code/TextAnimations/gradientTextCode';
 
 const DEFAULT_PROPS = {
-  colors: ['#5227FF', '#FF9FFC', '#B19EEF'],
+  colors: ['#5227FF', '#FF9FFC', '#B497CF'],
   animationSpeed: 8,
   direction: 'horizontal',
   pauseOnHover: false,
@@ -34,21 +34,6 @@ const GradientTextDemo = () => {
     const newColors = [...colors];
     newColors[index] = newColor;
     updateProp('colors', newColors);
-  };
-
-  const addColor = () => {
-    if (colors.length < 8) {
-      updateProp('colors', [...colors, '#ffffff']);
-    }
-  };
-
-  const removeColor = index => {
-    if (colors.length > 2) {
-      updateProp(
-        'colors',
-        colors.filter((_, i) => i !== index)
-      );
-    }
   };
 
   const propData = useMemo(
@@ -68,7 +53,7 @@ const GradientTextDemo = () => {
       {
         name: 'colors',
         type: 'string[]',
-        default: `["#5227FF", "#FF9FFC", "#B19EEF"]`,
+        default: `["#5227FF", "#FF9FFC", "#B497CF"]`,
         description: 'Array of colors for the gradient effect.'
       },
       {
@@ -125,6 +110,32 @@ const GradientTextDemo = () => {
           </Box>
 
           <Customize>
+            {colors.map((color, index) => (
+              <PreviewColorPickerCustom
+                key={index}
+                title={`Color ${index + 1}`}
+                color={color}
+                onChange={val => updateColor(index, val)}
+              />
+            ))}
+
+            <PreviewSlider
+              title="Color Count"
+              min={2}
+              max={8}
+              step={1}
+              value={colors.length}
+              onChange={val => {
+                if (val > colors.length) {
+                  const newColors = [...colors];
+                  while (newColors.length < val) newColors.push('#ffffff');
+                  updateProp('colors', newColors);
+                } else if (val < colors.length) {
+                  updateProp('colors', colors.slice(0, val));
+                }
+              }}
+            />
+
             <PreviewSlider
               title="Animation Speed"
               min={1}
@@ -159,85 +170,6 @@ const GradientTextDemo = () => {
               isChecked={showBorder}
               onChange={checked => updateProp('showBorder', checked)}
             />
-
-            <Box mt={4}>
-              <Text fontSize="sm" mb={2}>
-                Colors
-              </Text>
-              <Flex flexWrap="wrap" gap={2} px={1} pt={1}>
-                {colors.map((color, index) => (
-                  <Box key={index} position="relative" w="32px" h="32px">
-                    <Box
-                      w="32px"
-                      h="32px"
-                      borderRadius="6px"
-                      bg={color}
-                      border="2px solid #271E37"
-                      overflow="hidden"
-                      position="relative"
-                    >
-                      <Input
-                        type="color"
-                        value={color}
-                        onChange={e => updateColor(index, e.target.value)}
-                        position="absolute"
-                        top={0}
-                        left={0}
-                        w="32px"
-                        h="32px"
-                        opacity={0}
-                        cursor="pointer"
-                      />
-                    </Box>
-                    {colors.length > 2 && (
-                      <Flex
-                        as="button"
-                        onClick={() => removeColor(index)}
-                        position="absolute"
-                        top="-6px"
-                        right="-6px"
-                        w="16px"
-                        h="16px"
-                        bg="#170D27"
-                        border="1px solid #271E37"
-                        borderRadius="50%"
-                        align="center"
-                        justify="center"
-                        cursor="pointer"
-                      >
-                        <Icon as={X} boxSize={2.5} color="#988BC7" />
-                      </Flex>
-                    )}
-                  </Box>
-                ))}
-                {colors.length < 8 && (
-                  <Flex
-                    as="button"
-                    onClick={addColor}
-                    w="32px"
-                    h="32px"
-                    borderRadius="6px"
-                    border="2px dashed #392e4e"
-                    align="center"
-                    justify="center"
-                    cursor="pointer"
-                    _hover={{ borderColor: '#5227FF' }}
-                    transition="border-color 0.2s"
-                  >
-                    <Icon as={Plus} boxSize={4} color="#988BC7" />
-                  </Flex>
-                )}
-              </Flex>
-              <Box
-                bg={`linear-gradient(to right, ${[...colors, colors[0]].join(', ')})`}
-                w="100%"
-                maxW="300px"
-                h="12px"
-                borderRadius="md"
-                border="1px solid #271E37"
-                mt={3}
-              />
-            </Box>
           </Customize>
 
           <PropTable data={propData} />

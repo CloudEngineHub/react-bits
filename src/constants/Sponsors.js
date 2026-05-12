@@ -7,14 +7,21 @@ export const diamondSponsors = [
     url: 'https://www.shadcnblocks.com/'
   },
   {
-    id: 1,
+    id: 2,
     name: 'shadcn studio',
     imageUrl: '/assets/sponsors/shadcnstudio.svg',
     url: 'https://shadcnstudio.com/'
   }
 ];
 
-export const platinumSponsors = [];
+export const platinumSponsors = [
+  {
+    id: 1,
+    name: 'Tailark',
+    imageUrl: '/assets/sponsors/tailark.svg',
+    url: 'https://pro.tailark.com'
+  },
+];
 
 export const silverSponsors = [
   {
@@ -25,21 +32,9 @@ export const silverSponsors = [
   },
   {
     id: 2,
-    name: 'Shadcraft',
-    imageUrl: '/assets/sponsors/shadcraft.svg',
-    url: 'https://shadcraft.com/'
-  },
-  {
-    id: 3,
-    name: 'Efferd',
-    imageUrl: '/assets/sponsors/efferd.svg',
-    url: 'https://efferd.com/'
-  },
-  {
-    id: 4,
-    name: 'shadcnspace',
-    imageUrl: '/assets/sponsors/shadcnspace.svg',
-    url: 'https://shadcnspace.com/'
+    name: 'Shadcncraft',
+    imageUrl: '/assets/sponsors/shadcncraft.svg',
+    url: 'https://shadcncraft.com/'
   }
 ];
 

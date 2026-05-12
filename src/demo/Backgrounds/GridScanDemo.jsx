@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Input, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -8,8 +8,8 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '@/components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
-import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -22,7 +22,7 @@ const DEFAULT_PROPS = {
   lineThickness: 1,
   gridScale: 0.1,
   lineJitter: 0.1,
-  linesColor: '#392e4e',
+  linesColor: '#2F293A',
   scanColor: '#FF9FFC',
   enablePost: true,
   chromaticAberration: 0.002,
@@ -50,8 +50,6 @@ const GridScanDemo = () => {
     showPreview
   } = props;
 
-  const [key, forceRerender] = useForceRerender();
-
   const propData = useMemo(
     () => [
       { name: 'enableWebcam', type: 'boolean', default: 'false', description: 'Enable face tracking via webcam.' },
@@ -64,7 +62,7 @@ const GridScanDemo = () => {
       },
       { name: 'sensitivity', type: 'number', default: '0.55', description: 'Overall responsiveness to input.' },
       { name: 'lineThickness', type: 'number', default: '1', description: 'Grid line thickness.' },
-      { name: 'linesColor', type: 'string', default: "'#392e4e'", description: 'Color of the grid lines.' },
+      { name: 'linesColor', type: 'string', default: "'#2F293A'", description: 'Color of the grid lines.' },
       { name: 'gridScale', type: 'number', default: '0.1', description: 'Grid spacing scale (smaller = denser).' },
       { name: 'lineStyle', type: "'solid' | 'dashed' | 'dotted'", default: "'solid'", description: 'Grid line style.' },
       { name: 'lineJitter', type: 'number', default: '0.1', description: 'Animated jitter along the grid lines.' },
@@ -102,12 +100,11 @@ const GridScanDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider resetProps={resetProps} hasChanges={hasChanges} forceRerender={forceRerender}>
+    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <GridScan
-              key={key}
               lineThickness={lineThickness}
               gridScale={gridScale}
               lineJitter={lineJitter}
@@ -141,7 +138,7 @@ const GridScanDemo = () => {
               defaultProps={{
                 sensitivity: 0.55,
                 lineThickness: 1,
-                linesColor: '#392e4e',
+                linesColor: '#2F293A',
                 scanColor: '#FF9FFC',
                 scanOpacity: 0.4,
                 gridScale: 0.1,
@@ -159,24 +156,8 @@ const GridScanDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex alignItems="center" mb={4} gap={2}>
-              <Text fontSize="sm">Lines Color</Text>
-              <Input
-                type="color"
-                value={linesColor}
-                onChange={e => updateProp('linesColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
-            <Flex alignItems="center" mb={4} gap={2}>
-              <Text fontSize="sm">Scan Color</Text>
-              <Input
-                type="color"
-                value={scanColor}
-                onChange={e => updateProp('scanColor', e.target.value)}
-                width="50px"
-              />
-            </Flex>
+            <PreviewColorPickerCustom title="Lines Color" color={linesColor} onChange={val => updateProp('linesColor', val)} />
+            <PreviewColorPickerCustom title="Scan Color" color={scanColor} onChange={val => updateProp('scanColor', val)} />
 
             <PreviewSlider
               title="Line Thickness"

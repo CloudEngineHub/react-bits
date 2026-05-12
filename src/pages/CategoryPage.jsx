@@ -4,8 +4,8 @@ import { componentMap } from '../constants/Components';
 import { decodeLabel } from '../utils/utils';
 import { Box, Text } from '@chakra-ui/react';
 import { useTransition } from '../hooks/useTransition';
-import BackToTopButton from '../components/common/Misc/BackToTopButton';
-import { SkeletonLoader, GetStartedLoader } from '../components/common/Misc/SkeletonLoader';
+import BackToTopButton from '../components/common/BackToTopButton';
+import { SkeletonLoader, GetStartedLoader } from '../components/common/SkeletonLoader';
 import IndexPage from './IndexPage';
 
 const CategoryPage = () => {

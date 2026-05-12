@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import CodeExample from '../../components/code/CodeExample';
 
@@ -10,6 +10,7 @@ import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
@@ -20,7 +21,7 @@ import { aurora } from '../../constants/code/Backgrounds/auroraCode';
 // Default prop values for this component
 const DEFAULT_PROPS = {
   color1: '#7cff67',
-  color2: '#B19EEF',
+  color2: '#B497CF',
   color3: '#5227FF',
   speed: 1,
   blend: 0.5
@@ -73,7 +74,7 @@ const AuroraDemo = () => {
     >
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Aurora key={key} blend={blend} speed={speed} colorStops={[color1, color2, color3]} />
 
             {/* For Demo Purposes Only */}
@@ -89,46 +90,9 @@ const AuroraDemo = () => {
           </Flex>
 
           <Customize>
-            <Flex gap={4} mb={2} align="center" wrap="wrap">
-              <Flex alignItems="center">
-                <Text mr={2}>Color 1</Text>
-                <input
-                  type="color"
-                  value={color1}
-                  style={{ height: '22px', outline: 'none', border: 'none' }}
-                  onChange={e => {
-                    updateProp('color1', e.target.value);
-                    forceRerender();
-                  }}
-                />
-              </Flex>
-
-              <Flex alignItems="center">
-                <Text mr={2}>Color 2</Text>
-                <input
-                  type="color"
-                  value={color2}
-                  style={{ height: '22px', outline: 'none', border: 'none' }}
-                  onChange={e => {
-                    updateProp('color2', e.target.value);
-                    forceRerender();
-                  }}
-                />
-              </Flex>
-
-              <Flex alignItems="center">
-                <Text mr={2}>Color 3</Text>
-                <input
-                  type="color"
-                  value={color3}
-                  style={{ height: '22px', outline: 'none', border: 'none' }}
-                  onChange={e => {
-                    updateProp('color3', e.target.value);
-                    forceRerender();
-                  }}
-                />
-              </Flex>
-            </Flex>
+            <PreviewColorPickerCustom title="Color 1" color={color1} onChange={val => { updateProp('color1', val); forceRerender(); }} />
+            <PreviewColorPickerCustom title="Color 2" color={color2} onChange={val => { updateProp('color2', val); forceRerender(); }} />
+            <PreviewColorPickerCustom title="Color 3" color={color3} onChange={val => { updateProp('color3', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Speed"

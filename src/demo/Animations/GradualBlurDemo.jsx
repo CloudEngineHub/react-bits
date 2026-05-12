@@ -209,7 +209,7 @@ const GradualBlurDemo = () => {
                 msOverflowStyle: 'none'
               }}
             >
-              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B19EEF">
+              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B497CF">
                 Scroll Down.
               </Text>
 
@@ -220,11 +220,11 @@ const GradualBlurDemo = () => {
                 alt="Lighthouse in the distance with purple colors."
                 w="100%"
                 maxW="600px"
-                border="1px solid #271E37"
+                border="1px solid #2F293A"
                 filter={'grayscale(0) brightness(2)'}
               />
 
-              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B19EEF">
+              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B497CF">
                 Gradual Blur
               </Text>
             </Flex>

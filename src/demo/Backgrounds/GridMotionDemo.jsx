@@ -51,7 +51,7 @@ const GridMotionDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} rounded="3xl" overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} rounded="3xl" overflow="hidden">
             <GridMotion items={items} gradientColor={gradientColor} />
           </Box>
 

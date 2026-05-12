@@ -15,7 +15,9 @@ function SplashCursor({
   SHADING = true,
   COLOR_UPDATE_SPEED = 10,
   BACK_COLOR = { r: 0.5, g: 0, b: 0 },
-  TRANSPARENT = true
+  TRANSPARENT = true,
+  RAINBOW_MODE = true,
+  COLOR = '#ff0000'
 }) {
   const canvasRef = useRef(null);
 
@@ -51,7 +53,9 @@ function SplashCursor({
       COLOR_UPDATE_SPEED,
       PAUSED: false,
       BACK_COLOR,
-      TRANSPARENT
+      TRANSPARENT,
+      RAINBOW_MODE,
+      COLOR
     };
 
     let pointers = [new pointerPrototype()];
@@ -876,7 +880,19 @@ function SplashCursor({
       return delta;
     }
 
+    function hexToRGB(hex) {
+      let val = hex.replace('#', '');
+      if (val.length === 3) val = val[0] + val[0] + val[1] + val[1] + val[2] + val[2];
+      const r = parseInt(val.slice(0, 2), 16) / 255;
+      const g = parseInt(val.slice(2, 4), 16) / 255;
+      const b = parseInt(val.slice(4, 6), 16) / 255;
+      return { r: r * 0.15, g: g * 0.15, b: b * 0.15 };
+    }
+
     function generateColor() {
+      if (!config.RAINBOW_MODE) {
+        return hexToRGB(config.COLOR);
+      }
       let c = HSVtoRGB(Math.random(), 1.0, 1.0);
       c.r *= 0.15;
       c.g *= 0.15;
@@ -1043,7 +1059,9 @@ function SplashCursor({
     SHADING,
     COLOR_UPDATE_SPEED,
     BACK_COLOR,
-    TRANSPARENT
+    TRANSPARENT,
+    RAINBOW_MODE,
+    COLOR
   ]);
 
   return (

@@ -112,7 +112,7 @@ const BounceCardsDemo = () => {
             overflow="hidden"
             justifyContent="center"
             alignItems="center"
-            minH="400px"
+            minH="500px"
             position="relative"
             pb="4em"
             className="demo-container"

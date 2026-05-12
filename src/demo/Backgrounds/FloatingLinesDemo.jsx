@@ -2,7 +2,6 @@ import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLay
 import { Box, Flex } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
-import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
@@ -12,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import BackgroundContent from '@/components/common/Preview/BackgroundContent';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -20,16 +20,20 @@ import { floatingLines } from '../../constants/code/Backgrounds/floatingLinesCod
 
 const DEFAULT_PROPS = {
   enabledWaves: ['top', 'middle', 'bottom'],
-  lineCount: 5,
-  lineDistance: 5,
-  bendRadius: 5,
-  bendStrength: -0.5
+  lineCount: 8,
+  lineDistance: 8,
+  animationSpeed: 1,
+  interactive: true,
+  bendRadius: 8,
+  bendStrength: -2,
+  gradientStart: '#e945f5',
+  gradientMid: '#6f6f6f',
+  gradientEnd: '#6a6a6a'
 };
 
 const FloatingLinesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { enabledWaves, lineCount, lineDistance, bendRadius, bendStrength } = props;
-  const [key] = useForceRerender();
+  const { enabledWaves, lineCount, lineDistance, animationSpeed, interactive, bendRadius, bendStrength, gradientStart, gradientMid, gradientEnd } = props;
 
   const toggleWave = wave => {
     updateProp(
@@ -138,14 +142,16 @@ const FloatingLinesDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={600} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <FloatingLines
-              key={key}
               enabledWaves={enabledWaves}
               lineCount={lineCount}
               lineDistance={lineDistance}
+              animationSpeed={animationSpeed}
+              interactive={interactive}
               bendRadius={bendRadius}
               bendStrength={bendStrength}
+              linesGradient={[gradientStart, gradientMid, gradientEnd]}
             />
             <BackgroundContent pillText="New Background" headline="Waves are cool! Even cooler with lines!" />
           </Box>
@@ -153,7 +159,7 @@ const FloatingLinesDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="floating-lines"
-              currentProps={{ enabledWaves, lineCount, lineDistance, bendRadius, bendStrength }}
+              currentProps={{ enabledWaves, lineCount, lineDistance, animationSpeed, interactive, bendRadius, bendStrength, linesGradient: [gradientStart, gradientMid, gradientEnd] }}
               defaultProps={{
                 linesGradient: ['#E945F5', '#2F4BC0', '#E945F5'],
                 animationSpeed: 1,
@@ -201,6 +207,19 @@ const FloatingLinesDemo = () => {
               onChange={val => updateProp('lineDistance', val)}
             />
             <PreviewSlider
+              title="Animation Speed"
+              min={0.1}
+              max={5}
+              step={0.1}
+              value={animationSpeed}
+              onChange={val => updateProp('animationSpeed', val)}
+            />
+            <PreviewSwitch
+              title="Interactive"
+              isChecked={interactive}
+              onChange={val => updateProp('interactive', val)}
+            />
+            <PreviewSlider
               title="Bend Radius"
               min={1}
               max={30}
@@ -216,6 +235,9 @@ const FloatingLinesDemo = () => {
               value={bendStrength}
               onChange={val => updateProp('bendStrength', val)}
             />
+            <PreviewColorPickerCustom title="Gradient Start" color={gradientStart} onChange={v => updateProp('gradientStart', v)} />
+            <PreviewColorPickerCustom title="Gradient Mid" color={gradientMid} onChange={v => updateProp('gradientMid', v)} />
+            <PreviewColorPickerCustom title="Gradient End" color={gradientEnd} onChange={v => updateProp('gradientEnd', v)} />
           </Customize>
 
           <PropTable data={propData} />

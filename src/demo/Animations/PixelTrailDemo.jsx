@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
-import { Box, Flex, Text, Input } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 import RefreshButton from '../../components/common/Preview/RefreshButton';
 import CodeExample from '../../components/code/CodeExample';
@@ -10,6 +10,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import Customize from '../../components/common/Preview/Customize';
 
 import PixelTrail from '../../content/Animations/PixelTrail/PixelTrail';
@@ -66,7 +67,7 @@ const PixelTrailDemo = () => {
               color={color}
               gooeyFilter={gooeyEnabled ? { id: 'custom-goo-filter', strength: gooStrength } : undefined}
             />
-            <Text position="absolute" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" color="#271E37" fontWeight={900}>
+            <Text position="absolute" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" color="#2F293A" fontWeight={900}>
               Move Cursor.
             </Text>
           </Box>
@@ -120,19 +121,7 @@ const PixelTrailDemo = () => {
               }}
             />
 
-            <Flex gap={4} align="center" mt={4}>
-              <Text fontSize="sm">Color</Text>
-              <Input
-                type="color"
-                value={color}
-                onChange={e => {
-                  updateProp('color', e.target.value);
-                  forceRerender();
-                }}
-                width="50px"
-              />
-              <Text fontSize="sm">{color}</Text>
-            </Flex>
+            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); forceRerender(); }} />
 
             <PreviewSwitch
               title="Gooey Filter"
