@@ -171,16 +171,23 @@ const ElectricBorder = ({
     };
 
     let { width, height } = updateSize();
+    let lastDpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const drawElectricBorder = currentTime => {
       if (!canvas || !ctx) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      if (dpr !== lastDpr) {
+        lastDpr = dpr;
+        const newSize = updateSize();
+        width = newSize.width;
+        height = newSize.height;
+      }
 
       const deltaTime = (currentTime - lastFrameTimeRef.current) / 1000;
       timeRef.current += deltaTime * speed;
       lastFrameTimeRef.current = currentTime;
 
-      // Clear canvas
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.scale(dpr, dpr);
