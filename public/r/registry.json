@@ -5033,11 +5033,11 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Lanyard/card.glb"
+					"path": "Lanyard.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "Lanyard/lanyard.png"
+					"path": "Lanyard.jsx"
 				}
 			]
 		},
@@ -5051,11 +5051,7 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Lanyard/card.glb"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lanyard/lanyard.png"
+					"path": "Lanyard.jsx"
 				}
 			]
 		},
@@ -5069,11 +5065,11 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Lanyard/card.glb"
+					"path": "Lanyard.css"
 				},
 				{
 					"type": "registry:component",
-					"path": "Lanyard/lanyard.png"
+					"path": "Lanyard.tsx"
 				}
 			]
 		},
@@ -5087,11 +5083,7 @@
 			"files": [
 				{
 					"type": "registry:component",
-					"path": "Lanyard/card.glb"
-				},
-				{
-					"type": "registry:component",
-					"path": "Lanyard/lanyard.png"
+					"path": "Lanyard.tsx"
 				}
 			]
 		},
