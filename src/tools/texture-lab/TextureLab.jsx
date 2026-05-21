@@ -733,6 +733,7 @@ export default function TextureLab({ toolSelector }) {
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
           onMediaDrop={file => handleMediaLoad(file, 'file')}
+          onMediaLoad={handleMediaLoad}
           isPlaying={isPlaying}
           currentTime={currentTime}
           duration={duration}

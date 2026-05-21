@@ -17,6 +17,7 @@ export default function Canvas({
   viewMode,
   onViewModeChange,
   onMediaDrop,
+  onMediaLoad,
   isPlaying,
   currentTime,
   duration,
@@ -185,6 +186,18 @@ export default function Canvas({
       }
     },
     [onMediaDrop, isExporting]
+  );
+
+  const fileInputRef = useRef(null);
+  const handleFileSelect = useCallback(
+    e => {
+      const file = e.target.files?.[0];
+      if (file) {
+        onMediaLoad(file, 'file');
+      }
+      e.target.value = '';
+    },
+    [onMediaLoad]
   );
 
   return (
@@ -435,15 +448,25 @@ export default function Canvas({
           justify="center"
           direction="column"
           gap={1}
+          as= "button"
+          cursor="pointer"
+          onClick={() => fileInputRef.current?.click()}
         >
-          <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
-            <Icon as={Upload} boxSize={8} color="var(--border-primary)" />
-          </Box>
-          <Text fontSize="14px" color="var(--text-muted)" textAlign="center">
-            Upload an image/video
-            <br />
-            to get started
-          </Text>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/ogg"
+              style={{ display: 'none' }}
+            />
+            <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
+              <Icon as={Upload} boxSize={8} color="var(--border-primary)" />
+            </Box>
+            <Text fontSize="14px" color="var(--text-muted)" textAlign="center">
+              Upload an image/video
+              <br />
+              to get started
+            </Text>
         </Flex>
       )}
 
