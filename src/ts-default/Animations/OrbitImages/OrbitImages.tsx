@@ -1,7 +1,7 @@
 // Component created by Dominik Koch
 // https://x.com/dominikkoch
 
-import { useMemo, useEffect, useRef, useState, ReactNode } from 'react';
+import { useMemo, useEffect, useLayoutEffect, useRef, useState, ReactNode } from 'react';
 import { motion, useMotionValue, useTransform, animate, MotionValue } from 'motion/react';
 import './OrbitImages.css';
 
@@ -175,7 +175,7 @@ export default function OrbitImages({
   responsive = false,
 }: OrbitImagesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState<number | null>(null);
 
   const designCenterX = baseWidth / 2;
   const designCenterY = baseWidth / 2;
@@ -207,7 +207,7 @@ export default function OrbitImages({
     }
   }, [shape, customPath, designCenterX, designCenterY, radiusX, radiusY, radius, starPoints, starInnerRatio]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!responsive || !containerRef.current) return;
     const updateScale = () => {
       if (!containerRef.current) return;
@@ -261,7 +261,8 @@ export default function OrbitImages({
         style={{
           width: responsive ? baseWidth : '100%',
           height: responsive ? baseWidth : '100%',
-          transform: responsive ? `translate(-50%, -50%) scale(${scale})` : undefined,
+          transform: responsive && scale !== null ? `translate(-50%, -50%) scale(${scale})` : undefined,
+          visibility: responsive && scale === null ? 'hidden' : undefined,
         }}
       >
         <div
@@ -275,7 +276,7 @@ export default function OrbitImages({
               viewBox={`0 0 ${baseWidth} ${baseWidth}`}
               className="orbit-path-svg"
             >
-              <path d={path} fill="none" stroke={pathColor} strokeWidth={pathWidth / scale} />
+              <path d={path} fill="none" stroke={pathColor} strokeWidth={pathWidth / (scale ?? 1)} />
             </svg>
           )}
 
