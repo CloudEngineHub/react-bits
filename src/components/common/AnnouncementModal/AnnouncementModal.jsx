@@ -9,7 +9,7 @@ const STORAGE_KEY = 'rb-pro-spring-sale-seen';
 const SHOW_DELAY = 1500;
 const PROMO_IMAGE = '/assets/rbp/springdiscount.webp';
 
-const DISABLED = false;
+const DISABLED = true;
 
 const AnnouncementModal = () => {
   const location = useLocation();
