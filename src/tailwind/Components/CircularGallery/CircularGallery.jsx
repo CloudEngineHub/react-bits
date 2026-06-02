@@ -22,13 +22,113 @@ function autoBind(instance) {
   });
 }
 
+const DEFAULT_FONT = 'bold 30px Figtree';
+// Figtree is not guaranteed to be available on the host page, so the component
+// loads it on demand whenever the default font is used.
+const DEFAULT_FONT_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap';
+
+function deriveFontFamilyFromUrl(url) {
+  const fileName = (url.split('/').pop() || 'custom-font').split('?')[0];
+  const base = fileName.replace(/\.(woff2?|ttf|otf|eot)$/i, '');
+  return base.replace(/[^a-zA-Z0-9-_ ]/g, '').trim() || 'CircularGalleryFont';
+}
+
+async function loadFontFromStylesheet(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch font stylesheet (${response.status})`);
+  const cssText = await response.text();
+  const faceBlocks = cssText.match(/@font-face\s*{[^}]*}/g) || [];
+  let family = null;
+  const fontFaces = [];
+  for (const block of faceBlocks) {
+    const familyMatch = block.match(/font-family:\s*['"]?([^;'"]+)['"]?/);
+    const urlMatch = block.match(/url\(\s*['"]?([^'")]+)['"]?\s*\)/);
+    if (!familyMatch || !urlMatch) continue;
+    family = familyMatch[1].trim();
+    const descriptors = {};
+    const weightMatch = block.match(/font-weight:\s*([^;]+);/);
+    const styleMatch = block.match(/font-style:\s*([^;]+);/);
+    const rangeMatch = block.match(/unicode-range:\s*([^;]+);/);
+    if (weightMatch) descriptors.weight = weightMatch[1].trim();
+    if (styleMatch) descriptors.style = styleMatch[1].trim();
+    if (rangeMatch) descriptors.unicodeRange = rangeMatch[1].trim();
+    fontFaces.push(new FontFace(family, `url(${urlMatch[1]})`, descriptors));
+  }
+  if (!family) throw new Error('No @font-face rule found in the stylesheet');
+  await Promise.allSettled(
+    fontFaces.map(async face => {
+      await face.load();
+      document.fonts.add(face);
+    })
+  );
+  return family;
+}
+
+async function loadFontFromFile(url) {
+  const family = deriveFontFamilyFromUrl(url);
+  const fontFace = new FontFace(family, `url(${url})`);
+  await fontFace.load();
+  document.fonts.add(fontFace);
+  return family;
+}
+
+async function loadCustomFont(fontUrl) {
+  const isStylesheet = fontUrl.includes('fonts.googleapis.com') || /\.css(\?.*)?$/i.test(fontUrl);
+  return isStylesheet ? loadFontFromStylesheet(fontUrl) : loadFontFromFile(fontUrl);
+}
+
+// Loads `fontUrl` (a stylesheet such as a Google Fonts URL, or a direct font
+// file) and returns a canvas-ready font string that keeps the size/weight from
+// `font` but swaps in the freshly loaded family. Falls back to `font` on error.
+async function resolveFont(font, fontUrl) {
+  // Use the bundled Figtree stylesheet when the caller relies on the default
+  // font, otherwise honor the explicit `fontUrl`.
+  const effectiveUrl = fontUrl || (font === DEFAULT_FONT ? DEFAULT_FONT_URL : null);
+  if (!effectiveUrl) {
+    // A custom family was supplied without a URL – make sure it is ready (in
+    // case the host page declares it) before we draw it to the canvas,
+    // otherwise the first paint silently falls back to a system font.
+    if (document.fonts && document.fonts.load) {
+      try {
+        await document.fonts.load(font);
+        await document.fonts.ready;
+      } catch {
+        // Ignore – fall back to whatever the browser provides.
+      }
+    }
+    return font;
+  }
+  try {
+    const family = await loadCustomFont(effectiveUrl);
+    const sizeMatch = font.match(/^\s*(.*?\d+px)/);
+    const prefix = sizeMatch ? sizeMatch[1].trim() : 'bold 30px';
+    const resolved = `${prefix} "${family}"`;
+    if (document.fonts && document.fonts.load) {
+      try {
+        await document.fonts.load(resolved);
+      } catch {
+        // Ignore – we still attempt to render with the requested font.
+      }
+    }
+    return resolved;
+  } catch (error) {
+    console.error('CircularGallery: unable to load font from', fontUrl, error);
+    return font;
+  }
+}
+
+function getFontSize(font) {
+  const match = font.match(/(\d+)px/);
+  return match ? parseInt(match[1], 10) : 30;
+}
+
 function createTextTexture(gl, text, font = 'bold 30px monospace', color = 'black') {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   context.font = font;
   const metrics = context.measureText(text);
   const textWidth = Math.ceil(metrics.width);
-  const textHeight = Math.ceil(parseInt(font, 10) * 1.2);
+  const textHeight = Math.ceil(getFontSize(font) * 1.2);
   canvas.width = textWidth + 20;
   canvas.height = textHeight + 20;
   context.font = font;
@@ -216,7 +316,7 @@ class Media {
       renderer: this.renderer,
       text: this.text,
       textColor: this.textColor,
-      fontFamily: this.font
+      font: this.font
     });
   }
   update(scroll, direction) {
@@ -459,15 +559,31 @@ export default function CircularGallery({
   textColor = '#ffffff',
   borderRadius = 0.05,
   font = 'bold 30px Figtree',
+  fontUrl,
   scrollSpeed = 2,
   scrollEase = 0.05
 }) {
   const containerRef = useRef(null);
   useEffect(() => {
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+    if (!containerRef.current) return;
+    let app;
+    let isMounted = true;
+    resolveFont(font, fontUrl).then(resolvedFont => {
+      if (!isMounted || !containerRef.current) return;
+      app = new App(containerRef.current, {
+        items,
+        bend,
+        textColor,
+        borderRadius,
+        font: resolvedFont,
+        scrollSpeed,
+        scrollEase
+      });
+    });
     return () => {
-      app.destroy();
+      isMounted = false;
+      if (app) app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
   return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
 }

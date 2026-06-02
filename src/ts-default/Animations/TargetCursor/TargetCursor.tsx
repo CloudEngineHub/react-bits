@@ -2,6 +2,36 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { gsap } from 'gsap';
 import './TargetCursor.css';
 
+// A position: fixed element is positioned relative to the viewport UNLESS an
+// ancestor establishes a containing block (transform, perspective, filter,
+// will-change of those, or contain). When that happens, the cursor's translate
+// no longer maps to viewport coordinates, so we measure and compensate for it.
+const getContainingBlock = (element: HTMLElement | null): HTMLElement | null => {
+  let node = element?.parentElement ?? null;
+  while (node && node !== document.documentElement) {
+    const style = getComputedStyle(node);
+    if (
+      style.transform !== 'none' ||
+      style.perspective !== 'none' ||
+      style.filter !== 'none' ||
+      style.willChange.includes('transform') ||
+      style.willChange.includes('perspective') ||
+      style.willChange.includes('filter') ||
+      /paint|layout|strict|content/.test(style.contain)
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
+};
+
+const getContainingBlockOffset = (block: HTMLElement | null): { x: number; y: number } => {
+  if (!block) return { x: 0, y: 0 };
+  const rect = block.getBoundingClientRect();
+  return { x: rect.left + block.clientLeft, y: rect.top + block.clientTop };
+};
+
 export interface TargetCursorProps {
   targetSelector?: string;
   spinDuration?: number;
@@ -21,6 +51,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   const cornersRef = useRef<NodeListOf<HTMLDivElement> | null>(null);
   const spinTl = useRef<gsap.core.Timeline | null>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+  const containingBlockRef = useRef<HTMLElement | null>(null);
 
   const isActiveRef = useRef(false);
   const targetCornerPositionsRef = useRef<{ x: number; y: number }[] | null>(null);
@@ -41,7 +72,8 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
   const moveCursor = useCallback((x: number, y: number) => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { x, y, duration: 0.1, ease: 'power3.out' });
+    const { x: offsetX, y: offsetY } = getContainingBlockOffset(containingBlockRef.current);
+    gsap.to(cursorRef.current, { x: x - offsetX, y: y - offsetY, duration: 0.1, ease: 'power3.out' });
   }, []);
 
   useEffect(() => {
@@ -55,6 +87,9 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     const cursor = cursorRef.current;
     cornersRef.current = cursor.querySelectorAll<HTMLDivElement>('.target-cursor-corner');
 
+    containingBlockRef.current = getContainingBlock(cursor);
+    const getOffset = () => getContainingBlockOffset(containingBlockRef.current);
+
     let activeTarget: Element | null = null;
     let currentLeaveHandler: (() => void) | null = null;
     let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -66,11 +101,12 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
       currentLeaveHandler = null;
     };
 
+    const initialOffset = getOffset();
     gsap.set(cursor, {
       xPercent: -50,
       yPercent: -50,
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
+      x: window.innerWidth / 2 - initialOffset.x,
+      y: window.innerHeight / 2 - initialOffset.y
     });
 
     const createSpinTimeline = () => {
@@ -118,8 +154,9 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
     const scrollHandler = () => {
       if (!activeTarget || !cursorRef.current) return;
-      const mouseX = gsap.getProperty(cursorRef.current, 'x') as number;
-      const mouseY = gsap.getProperty(cursorRef.current, 'y') as number;
+      const { x: offsetX, y: offsetY } = getOffset();
+      const mouseX = (gsap.getProperty(cursorRef.current, 'x') as number) + offsetX;
+      const mouseY = (gsap.getProperty(cursorRef.current, 'y') as number) + offsetY;
       const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
       const isStillOverTarget =
         elementUnderMouse &&
@@ -175,14 +212,15 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
       const rect = target.getBoundingClientRect();
       const { borderWidth, cornerSize } = constants;
+      const { x: offsetX, y: offsetY } = getOffset();
       const cursorX = gsap.getProperty(cursorRef.current, 'x') as number;
       const cursorY = gsap.getProperty(cursorRef.current, 'y') as number;
 
       targetCornerPositionsRef.current = [
-        { x: rect.left - borderWidth, y: rect.top - borderWidth },
-        { x: rect.right + borderWidth - cornerSize, y: rect.top - borderWidth },
-        { x: rect.right + borderWidth - cornerSize, y: rect.bottom + borderWidth - cornerSize },
-        { x: rect.left - borderWidth, y: rect.bottom + borderWidth - cornerSize }
+        { x: rect.left - borderWidth - offsetX, y: rect.top - borderWidth - offsetY },
+        { x: rect.right + borderWidth - cornerSize - offsetX, y: rect.top - borderWidth - offsetY },
+        { x: rect.right + borderWidth - cornerSize - offsetX, y: rect.bottom + borderWidth - cornerSize - offsetY },
+        { x: rect.left - borderWidth - offsetX, y: rect.bottom + borderWidth - cornerSize - offsetY }
       ];
 
       isActiveRef.current = true;
@@ -247,6 +285,11 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
     window.addEventListener('mouseover', enterHandler as EventListener);
 
+    const resizeHandler = () => {
+      containingBlockRef.current = getContainingBlock(cursor);
+    };
+    window.addEventListener('resize', resizeHandler);
+
     return () => {
       if (tickerFnRef.current) {
         gsap.ticker.remove(tickerFnRef.current);
@@ -254,6 +297,7 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
       window.removeEventListener('mousemove', moveHandler);
       window.removeEventListener('mouseover', enterHandler as EventListener);
       window.removeEventListener('scroll', scrollHandler);
+      window.removeEventListener('resize', resizeHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
       window.removeEventListener('mouseup', mouseUpHandler);
       if (activeTarget) {
