@@ -1,5 +1,70 @@
 export const BACKGROUNDS = [
   {
+    id: 'ferrofluid',
+    label: 'Ferrofluid',
+    component: () => import('../../../content/Backgrounds/Ferrofluid/Ferrofluid.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/ferrofluid"',
+    props: [
+      {
+        name: 'colors',
+        type: 'colorArray',
+        default: ['#ffffff', '#ffffff', '#ffffff'],
+        label: 'Colors',
+        minItems: 1,
+        maxItems: 8
+      },
+      { name: 'speed', type: 'number', default: 0.5, min: 0, max: 3, step: 0.1, label: 'Speed' },
+      { name: 'scale', type: 'number', default: 1.6, min: 0.3, max: 3, step: 0.1, label: 'Scale' },
+      { name: 'turbulence', type: 'number', default: 1, min: 0, max: 2, step: 0.05, label: 'Turbulence' },
+      { name: 'fluidity', type: 'number', default: 0.1, min: 0.02, max: 0.5, step: 0.01, label: 'Fluidity' },
+      { name: 'rimWidth', type: 'number', default: 0.2, min: 0.05, max: 0.5, step: 0.01, label: 'Rim Width' },
+      { name: 'sharpness', type: 'number', default: 2.5, min: 1, max: 6, step: 0.1, label: 'Sharpness' },
+      { name: 'shimmer', type: 'number', default: 1.5, min: 0, max: 2, step: 0.05, label: 'Shimmer' },
+      { name: 'glow', type: 'number', default: 2, min: 0.5, max: 5, step: 0.1, label: 'Glow' },
+      {
+        name: 'flowDirection',
+        type: 'select',
+        default: 'down',
+        options: ['down', 'up', 'left', 'right'],
+        label: 'Flow Direction'
+      },
+      { name: 'opacity', type: 'number', default: 1, min: 0, max: 1, step: 0.05, label: 'Opacity' },
+      { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Magnet' },
+      { name: 'mouseStrength', type: 'number', default: 1, min: 0, max: 3, step: 0.1, label: 'Cursor Strength' },
+      { name: 'mouseRadius', type: 'number', default: 0.35, min: 0.05, max: 1, step: 0.05, label: 'Cursor Radius' }
+    ]
+  },
+  {
+    id: 'lightfall',
+    label: 'Lightfall',
+    component: () => import('../../../content/Backgrounds/Lightfall/Lightfall.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/lightfall"',
+    props: [
+      {
+        name: 'colors',
+        type: 'colorArray',
+        default: ['#A6C8FF', '#5227FF', '#FF9FFC'],
+        label: 'Colors',
+        minItems: 1,
+        maxItems: 8
+      },
+      { name: 'backgroundColor', type: 'color', default: '#0A29FF', label: 'Background Color' },
+      { name: 'speed', type: 'number', default: 0.5, min: 0, max: 4, step: 0.1, label: 'Speed' },
+      { name: 'streakCount', type: 'number', default: 2, min: 1, max: 16, step: 1, label: 'Streak Count' },
+      { name: 'streakWidth', type: 'number', default: 1, min: 0.2, max: 4, step: 0.1, label: 'Streak Width' },
+      { name: 'streakLength', type: 'number', default: 1, min: 0.3, max: 3, step: 0.1, label: 'Streak Length' },
+      { name: 'density', type: 'number', default: 0.6, min: 0.3, max: 3, step: 0.1, label: 'Density' },
+      { name: 'twinkle', type: 'number', default: 1, min: 0, max: 1, step: 0.05, label: 'Twinkle' },
+      { name: 'glow', type: 'number', default: 1, min: 0.2, max: 3, step: 0.1, label: 'Glow' },
+      { name: 'backgroundGlow', type: 'number', default: 0.5, min: 0, max: 3, step: 0.1, label: 'Background Glow' },
+      { name: 'zoom', type: 'number', default: 3, min: 1, max: 5, step: 0.1, label: 'Zoom' },
+      { name: 'opacity', type: 'number', default: 1, min: 0, max: 1, step: 0.05, label: 'Opacity' },
+      { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Light' },
+      { name: 'mouseStrength', type: 'number', default: 0.5, min: 0, max: 3, step: 0.1, label: 'Cursor Strength' },
+      { name: 'mouseRadius', type: 'number', default: 1, min: 0.1, max: 2, step: 0.05, label: 'Cursor Radius' }
+    ]
+  },
+  {
     id: 'silk',
     label: 'Silk',
     component: () => import('../../../content/Backgrounds/Silk/Silk.jsx'),
@@ -1162,6 +1227,31 @@ export const BACKGROUNDS = [
       { name: 'gradientFrom', type: 'color', default: 'rgba(168, 85, 247, 0.35)', label: 'Gradient From' },
       { name: 'gradientTo', type: 'color', default: 'rgba(180, 151, 207, 0.25)', label: 'Gradient To' },
       { name: 'glowColor', type: 'color', default: '#120F17', label: 'Glow Color' }
+    ]
+  },
+  {
+    id: 'side-rays',
+    label: 'Side Rays',
+    component: () => import('../../../content/Backgrounds/SideRays/SideRays.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/side-rays"',
+    props: [
+      { name: 'rayColor1', type: 'color', default: '#EAB308', label: 'Ray Color 1' },
+      { name: 'rayColor2', type: 'color', default: '#96c8ff', label: 'Ray Color 2' },
+      {
+        name: 'origin',
+        type: 'select',
+        default: 'top-right',
+        options: ['top-right', 'top-left', 'bottom-right', 'bottom-left'],
+        label: 'Origin'
+      },
+      { name: 'speed', type: 'number', default: 2.5, min: 0.1, max: 5, step: 0.1, label: 'Speed' },
+      { name: 'intensity', type: 'number', default: 2, min: 0.1, max: 3, step: 0.1, label: 'Intensity' },
+      { name: 'spread', type: 'number', default: 2, min: 0.1, max: 3, step: 0.1, label: 'Spread' },
+      { name: 'tilt', type: 'number', default: 0, min: -60, max: 60, step: 1, label: 'Tilt' },
+      { name: 'saturation', type: 'number', default: 1.5, min: 0, max: 2, step: 0.05, label: 'Saturation' },
+      { name: 'blend', type: 'number', default: 0.75, min: 0, max: 1, step: 0.01, label: 'Blend' },
+      { name: 'falloff', type: 'number', default: 1.6, min: 0.5, max: 4, step: 0.1, label: 'Falloff' },
+      { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.05, label: 'Opacity' }
     ]
   }
 ];

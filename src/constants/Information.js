@@ -840,6 +840,22 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/backgrounds/gradient-blinds',
     tags: []
   },
+  'Backgrounds/Lightfall': {
+    videoUrl: '/assets/video/lightfall.webm',
+    description: 'Colorful light streaks raining down a glowing tunnel with a cursor light.',
+    category: 'Backgrounds',
+    name: 'Lightfall',
+    docsUrl: 'https://reactbits.dev/backgrounds/lightfall',
+    tags: []
+  },
+  'Backgrounds/Ferrofluid': {
+    videoUrl: '/assets/video/ferrofluid.webm',
+    description: 'A churning magnetic fluid traced by glowing contour lines, with a cursor magnet.',
+    category: 'Backgrounds',
+    name: 'Ferrofluid',
+    docsUrl: 'https://reactbits.dev/backgrounds/ferrofluid',
+    tags: []
+  },
   'Backgrounds/Grainient': {
     videoUrl: '/assets/video/grainient.webm',
     description: 'Grainy gradient swirls with soft wave distortion.',
@@ -1022,6 +1038,14 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'Silk',
     docsUrl: 'https://reactbits.dev/backgrounds/silk',
+    tags: []
+  },
+  'Backgrounds/SideRays': {
+    videoUrl: '/assets/video/siderays.webm',
+    description: 'Animated light rays emanating from the side with customizable colors and speed.',
+    category: 'Backgrounds',
+    name: 'SideRays',
+    docsUrl: 'https://reactbits.dev/backgrounds/side-rays',
     tags: []
   },
   'Backgrounds/ShapeGrid': {
