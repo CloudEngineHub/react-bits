@@ -1,6 +1,36 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
 import { gsap } from 'gsap';
 
+// A position: fixed element is positioned relative to the viewport UNLESS an
+// ancestor establishes a containing block (transform, perspective, filter,
+// will-change of those, or contain). When that happens, the cursor's translate
+// no longer maps to viewport coordinates, so we measure and compensate for it.
+const getContainingBlock = element => {
+  let node = element?.parentElement;
+  while (node && node !== document.documentElement) {
+    const style = getComputedStyle(node);
+    if (
+      style.transform !== 'none' ||
+      style.perspective !== 'none' ||
+      style.filter !== 'none' ||
+      style.willChange.includes('transform') ||
+      style.willChange.includes('perspective') ||
+      style.willChange.includes('filter') ||
+      /paint|layout|strict|content/.test(style.contain)
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
+};
+
+const getContainingBlockOffset = block => {
+  if (!block) return { x: 0, y: 0 };
+  const rect = block.getBoundingClientRect();
+  return { x: rect.left + block.clientLeft, y: rect.top + block.clientTop };
+};
+
 const TargetCursor = ({
   targetSelector = '.cursor-target',
   spinDuration = 2,
@@ -12,6 +42,7 @@ const TargetCursor = ({
   const cornersRef = useRef(null);
   const spinTl = useRef(null);
   const dotRef = useRef(null);
+  const containingBlockRef = useRef(null);
 
   const isActiveRef = useRef(false);
   const targetCornerPositionsRef = useRef(null);
@@ -38,9 +69,10 @@ const TargetCursor = ({
 
   const moveCursor = useCallback((x, y) => {
     if (!cursorRef.current) return;
+    const { x: offsetX, y: offsetY } = getContainingBlockOffset(containingBlockRef.current);
     gsap.to(cursorRef.current, {
-      x,
-      y,
+      x: x - offsetX,
+      y: y - offsetY,
       duration: 0.1,
       ease: 'power3.out'
     });
@@ -57,6 +89,9 @@ const TargetCursor = ({
     const cursor = cursorRef.current;
     cornersRef.current = cursor.querySelectorAll('.target-cursor-corner');
 
+    containingBlockRef.current = getContainingBlock(cursor);
+    const getOffset = () => getContainingBlockOffset(containingBlockRef.current);
+
     let activeTarget = null;
     let currentLeaveHandler = null;
     let resumeTimeout = null;
@@ -68,11 +103,12 @@ const TargetCursor = ({
       currentLeaveHandler = null;
     };
 
+    const initialOffset = getOffset();
     gsap.set(cursor, {
       xPercent: -50,
       yPercent: -50,
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2
+      x: window.innerWidth / 2 - initialOffset.x,
+      y: window.innerHeight / 2 - initialOffset.y
     });
 
     const createSpinTimeline = () => {
@@ -120,8 +156,9 @@ const TargetCursor = ({
 
     const scrollHandler = () => {
       if (!activeTarget || !cursorRef.current) return;
-      const mouseX = gsap.getProperty(cursorRef.current, 'x');
-      const mouseY = gsap.getProperty(cursorRef.current, 'y');
+      const { x: offsetX, y: offsetY } = getOffset();
+      const mouseX = gsap.getProperty(cursorRef.current, 'x') + offsetX;
+      const mouseY = gsap.getProperty(cursorRef.current, 'y') + offsetY;
       const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
       const isStillOverTarget =
         elementUnderMouse &&
@@ -179,14 +216,15 @@ const TargetCursor = ({
 
       const rect = target.getBoundingClientRect();
       const { borderWidth, cornerSize } = constants;
+      const { x: offsetX, y: offsetY } = getOffset();
       const cursorX = gsap.getProperty(cursorRef.current, 'x');
       const cursorY = gsap.getProperty(cursorRef.current, 'y');
 
       targetCornerPositionsRef.current = [
-        { x: rect.left - borderWidth, y: rect.top - borderWidth },
-        { x: rect.right + borderWidth - cornerSize, y: rect.top - borderWidth },
-        { x: rect.right + borderWidth - cornerSize, y: rect.bottom + borderWidth - cornerSize },
-        { x: rect.left - borderWidth, y: rect.bottom + borderWidth - cornerSize }
+        { x: rect.left - borderWidth - offsetX, y: rect.top - borderWidth - offsetY },
+        { x: rect.right + borderWidth - cornerSize - offsetX, y: rect.top - borderWidth - offsetY },
+        { x: rect.right + borderWidth - cornerSize - offsetX, y: rect.bottom + borderWidth - cornerSize - offsetY },
+        { x: rect.left - borderWidth - offsetX, y: rect.bottom + borderWidth - cornerSize - offsetY }
       ];
 
       isActiveRef.current = true;
@@ -251,6 +289,11 @@ const TargetCursor = ({
 
     window.addEventListener('mouseover', enterHandler, { passive: true });
 
+    const resizeHandler = () => {
+      containingBlockRef.current = getContainingBlock(cursor);
+    };
+    window.addEventListener('resize', resizeHandler);
+
     return () => {
       if (tickerFnRef.current) {
         gsap.ticker.remove(tickerFnRef.current);
@@ -258,6 +301,7 @@ const TargetCursor = ({
       window.removeEventListener('mousemove', moveHandler);
       window.removeEventListener('mouseover', enterHandler);
       window.removeEventListener('scroll', scrollHandler);
+      window.removeEventListener('resize', resizeHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
       window.removeEventListener('mouseup', mouseUpHandler);
       if (activeTarget) {

@@ -6,6 +6,7 @@ import CodeExample from '../../components/code/CodeExample';
 import Dependencies from '../../components/code/Dependencies';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import PreviewSelect from '../../components/common/Preview/PreviewSelect';
 import PropTable from '../../components/common/Preview/PropTable';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
@@ -14,16 +15,26 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 import { circularGallery } from '../../constants/code/Components/circularGalleryCode';
 import CircularGallery from '../../content/Components/CircularGallery/CircularGallery';
 
+const FONT_OPTIONS = [
+  { label: 'Figtree (default)', value: '' },
+  { label: 'Orbitron', value: 'https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap' },
+  { label: 'Playfair Display', value: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap' },
+  { label: 'Pacifico', value: 'https://fonts.googleapis.com/css2?family=Pacifico&display=swap' },
+  { label: 'Bungee', value: 'https://fonts.googleapis.com/css2?family=Bungee&display=swap' },
+  { label: 'Roboto Mono', value: 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap' }
+];
+
 const DEFAULT_PROPS = {
   bend: 1,
   borderRadius: 0.05,
   scrollSpeed: 2,
-  scrollEase: 0.05
+  scrollEase: 0.05,
+  fontUrl: ''
 };
 
 const CircularGalleryDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { bend, borderRadius, scrollSpeed, scrollEase } = props;
+  const { bend, borderRadius, scrollSpeed, scrollEase, fontUrl } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -55,6 +66,19 @@ const CircularGalleryDemo = () => {
         description: 'Sets the border radius for the media items to achieve rounded corners.'
       },
       {
+        name: 'font',
+        type: 'string',
+        default: '"bold 30px Figtree"',
+        description: 'CSS font shorthand (style, weight, size, family) used for the text labels below each card.'
+      },
+      {
+        name: 'fontUrl',
+        type: 'string',
+        default: 'undefined',
+        description:
+          'URL of a font to load for the labels. Accepts a stylesheet URL (e.g. a Google Fonts link) or a direct font file (.woff2, .woff, .ttf, .otf). The loaded family overrides the family in `font`.'
+      },
+      {
         name: 'scrollSpeed',
         type: 'number',
         default: '2',
@@ -83,10 +107,21 @@ const CircularGalleryDemo = () => {
               borderRadius={borderRadius}
               scrollSpeed={scrollSpeed}
               scrollEase={scrollEase}
+              fontUrl={fontUrl || undefined}
             />
           </Box>
 
           <Customize>
+            <PreviewSelect
+              title="Font"
+              options={FONT_OPTIONS}
+              value={fontUrl}
+              onChange={val => {
+                updateProp('fontUrl', val);
+                forceRerender();
+              }}
+            />
+
             <PreviewSlider
               title="Bend Level"
               min={-10}
