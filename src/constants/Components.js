@@ -143,7 +143,10 @@ const backgrounds = {
   'radar': () => import('../demo/Backgrounds/RadarDemo.jsx'),
   'soft-aurora': () => import('../demo/Backgrounds/SoftAuroraDemo.jsx'),
   'evil-eye': () => import('../demo/Backgrounds/EvilEyeDemo.jsx'),
-  'dot-field': () => import('../demo/Backgrounds/DotFieldDemo')
+  'dot-field': () => import('../demo/Backgrounds/DotFieldDemo'),
+  'side-rays': () => import('../demo/Backgrounds/SideRaysDemo'),
+  'lightfall': () => import('../demo/Backgrounds/LightfallDemo.jsx'),
+  'ferrofluid': () => import('../demo/Backgrounds/FerrofluidDemo.jsx')
 };
 
 export const componentMap = {

@@ -1,18 +1,16 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Side Rays',
   'Dot Field',
-  'Evil Eye',
+  'Plasma Wave',
+  'Lightfall',
+  'Ferrofluid',
   'Border Glow',
   'Soft Aurora',
   'Radar',
   'Line Waves',
-  'Shape Grid',
-  'Antigravity',
-  'Grainient',
-  'Orbit Images',
-  'Magic Rings'
 ];
-export const UPDATED = ['Shiny Text', 'Gradient Text', 'Electric Border', 'Flowing Menu', 'Metallic Paint', 'Splash Cursor', 'Decay Card'];
+export const UPDATED = [];
 
 // Used for main sidebar navigation
 export const CATEGORIES = [
@@ -126,12 +124,16 @@ export const CATEGORIES = [
   {
     name: 'Backgrounds',
     subcategories: [
+      'Ferrofluid',
+      'Lightfall',
       'Liquid Ether',
       'Prism',
       'Dark Veil',
+      'Ferrofluid',
       'Light Pillar',
       'Silk',
       'Floating Lines',
+      'Side Rays',
       'Light Rays',
       'Pixel Blast',
       'Color Bends',
