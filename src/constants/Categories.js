@@ -129,7 +129,6 @@ export const CATEGORIES = [
       'Liquid Ether',
       'Prism',
       'Dark Veil',
-      'Ferrofluid',
       'Light Pillar',
       'Silk',
       'Floating Lines',
