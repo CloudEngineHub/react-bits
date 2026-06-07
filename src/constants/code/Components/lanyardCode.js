@@ -10,6 +10,17 @@ export const lanyard = {
 
 <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
 
+// Pass custom images for the card's front/back faces and/or the lanyard band.
+// frontImage and backImage render independently; imageFit keeps aspect ratio.
+<Lanyard
+  position={[0, 0, 20]}
+  gravity={[0, -40, 0]}
+  frontImage="/my-front.png"
+  backImage="/my-back.png"
+  imageFit="cover"
+  lanyardImage="/my-band.png"
+/>
+
 /* IMPORTANT INFO BELOW
 
 1. You MUST have the card.glb and lanyard.png files in your project and import them
@@ -17,6 +28,7 @@ export const lanyard = {
 
 2. You can edit your card.glb file in this online .glb editor and change the texture:
 - https://modelviewer.dev/editor/
+- alternatively, pass the "frontImage" / "backImage" props to swap the card's faces at runtime
 
 4. The png file is the texture for the lanyard's band and can be edited in any image editor
 
