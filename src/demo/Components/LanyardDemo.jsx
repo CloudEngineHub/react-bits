@@ -77,6 +77,12 @@ const LanyardDemo = () => {
         type: 'string',
         default: 'null',
         description: "Custom image URL for the lanyard band's repeating texture. Falls back to the default band texture when not set."
+      },
+      {
+        name: 'lanyardWidth',
+        type: 'number',
+        default: '1',
+        description: 'Width of the lanyard band (meshline lineWidth). Increase it to give a custom band image more room and reduce stretching.'
       }
     ],
     []
