@@ -12,6 +12,7 @@ export const lanyard = {
 
 // Pass custom images for the card's front/back faces and/or the lanyard band.
 // frontImage and backImage render independently; imageFit keeps aspect ratio.
+// lanyardWidth widens the band so a custom band image has more room.
 <Lanyard
   position={[0, 0, 20]}
   gravity={[0, -40, 0]}
@@ -19,6 +20,7 @@ export const lanyard = {
   backImage="/my-back.png"
   imageFit="cover"
   lanyardImage="/my-band.png"
+  lanyardWidth={1}
 />
 
 /* IMPORTANT INFO BELOW
