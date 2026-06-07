@@ -42,6 +42,7 @@ interface LanyardProps {
   backImage?: string | null;
   imageFit?: 'cover' | 'contain';
   lanyardImage?: string | null;
+  lanyardWidth?: number;
 }
 
 export default function Lanyard({
@@ -52,7 +53,8 @@ export default function Lanyard({
   frontImage = null,
   backImage = null,
   imageFit = 'cover',
-  lanyardImage = null
+  lanyardImage = null,
+  lanyardWidth = 1
 }: LanyardProps) {
   const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
@@ -78,6 +80,7 @@ export default function Lanyard({
             backImage={backImage}
             imageFit={imageFit}
             lanyardImage={lanyardImage}
+            lanyardWidth={lanyardWidth}
           />
         </Physics>
         <Environment blur={0.75}>
@@ -123,6 +126,7 @@ interface BandProps {
   backImage?: string | null;
   imageFit?: 'cover' | 'contain';
   lanyardImage?: string | null;
+  lanyardWidth?: number;
 }
 
 function Band({
@@ -132,7 +136,8 @@ function Band({
   frontImage = null,
   backImage = null,
   imageFit = 'cover',
-  lanyardImage = null
+  lanyardImage = null,
+  lanyardWidth = 1
 }: BandProps) {
   // Using "any" for refs since the exact types depend on Rapier's internals
   const band = useRef<any>(null);
@@ -325,7 +330,7 @@ function Band({
           useMap
           map={texture}
           repeat={[-4, 1]}
-          lineWidth={1}
+          lineWidth={lanyardWidth}
         />
       </mesh>
     </>
