@@ -6938,6 +6938,150 @@
 			]
 		},
 		{
+			"name": "Lightfall-JS-CSS",
+			"title": "Lightfall",
+			"description": "Colorful light streaks raining down a glowing tunnel with a cursor light.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.jsx"
+				}
+			]
+		},
+		{
+			"name": "Lightfall-JS-TW",
+			"title": "Lightfall",
+			"description": "Colorful light streaks raining down a glowing tunnel with a cursor light.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.jsx"
+				}
+			]
+		},
+		{
+			"name": "Lightfall-TS-CSS",
+			"title": "Lightfall",
+			"description": "Colorful light streaks raining down a glowing tunnel with a cursor light.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.tsx"
+				}
+			]
+		},
+		{
+			"name": "Lightfall-TS-TW",
+			"title": "Lightfall",
+			"description": "Colorful light streaks raining down a glowing tunnel with a cursor light.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Lightfall/Lightfall.tsx"
+				}
+			]
+		},
+		{
+			"name": "Ferrofluid-JS-CSS",
+			"title": "Ferrofluid",
+			"description": "A churning magnetic fluid traced by glowing contour lines, with a cursor magnet.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.jsx"
+				}
+			]
+		},
+		{
+			"name": "Ferrofluid-JS-TW",
+			"title": "Ferrofluid",
+			"description": "A churning magnetic fluid traced by glowing contour lines, with a cursor magnet.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.jsx"
+				}
+			]
+		},
+		{
+			"name": "Ferrofluid-TS-CSS",
+			"title": "Ferrofluid",
+			"description": "A churning magnetic fluid traced by glowing contour lines, with a cursor magnet.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.tsx"
+				}
+			]
+		},
+		{
+			"name": "Ferrofluid-TS-TW",
+			"title": "Ferrofluid",
+			"description": "A churning magnetic fluid traced by glowing contour lines, with a cursor magnet.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Ferrofluid/Ferrofluid.tsx"
+				}
+			]
+		},
+		{
 			"name": "Grainient-JS-CSS",
 			"title": "Grainient",
 			"description": "Grainy gradient swirls with soft wave distortion.",
@@ -8594,6 +8738,78 @@
 				{
 					"type": "registry:component",
 					"path": "Silk/Silk.tsx"
+				}
+			]
+		},
+		{
+			"name": "SideRays-JS-CSS",
+			"title": "SideRays",
+			"description": "Animated light rays emanating from the side with customizable colors and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.jsx"
+				}
+			]
+		},
+		{
+			"name": "SideRays-JS-TW",
+			"title": "SideRays",
+			"description": "Animated light rays emanating from the side with customizable colors and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.jsx"
+				}
+			]
+		},
+		{
+			"name": "SideRays-TS-CSS",
+			"title": "SideRays",
+			"description": "Animated light rays emanating from the side with customizable colors and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.tsx"
+				}
+			]
+		},
+		{
+			"name": "SideRays-TS-TW",
+			"title": "SideRays",
+			"description": "Animated light rays emanating from the side with customizable colors and speed.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "SideRays/SideRays.tsx"
 				}
 			]
 		},

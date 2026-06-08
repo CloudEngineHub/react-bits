@@ -3,7 +3,7 @@
  */
 /**
  * The supported code/component variants for the registry system.
- * 
+ *
  * @type {readonly ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW']}
  */
 export const VARIANTS = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW'];
@@ -14,7 +14,7 @@ export const VARIANTS = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW'];
 
 /**
  * Type for all component metadata, including enforcement of the Category field.
- * 
+ *
  * @typedef {Object} ComponentMetadata
  * @property {string} videoUrl
  * @property {string} description
@@ -26,8 +26,8 @@ export const VARIANTS = ['JS-CSS', 'JS-TW', 'TS-CSS', 'TS-TW'];
  * @property {Record<string, any>} [meta]
  */
 
-/** 
- * @type {Record<string, ComponentMetadata>} 
+/**
+ * @type {Record<string, ComponentMetadata>}
  */
 export const componentMetadata = {
 
@@ -801,7 +801,7 @@ export const componentMetadata = {
     tags: []
   },
   'Backgrounds/DotField': {
-    videoUrl: '',
+    videoUrl: '/assets/video/dotfield.webm',
     description: 'Interactive dot grid with cursor bulge, glow, sparkle, and wave effects.',
     category: 'Backgrounds',
     name: 'DotField',
@@ -1001,7 +1001,7 @@ export const componentMetadata = {
     tags: []
   },
   'Backgrounds/PlasmaWave': {
-    videoUrl: '',
+    videoUrl: '/assets/video/plasmawave.webm',
     description: 'Raymarched plasma waves with dual-wave interference and OGL.',
     category: 'Backgrounds',
     name: 'PlasmaWave',

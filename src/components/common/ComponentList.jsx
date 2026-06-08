@@ -29,6 +29,7 @@ import {
 // import { ArrowRightIcon } from 'lucide-react';
 // import Aurora from '../../content/Backgrounds/Aurora/Aurora';
 import { colors } from '../../constants/colors';
+import { NEW } from '../../constants/Categories';
 
 const CARD_RADIUS = 16;
 
@@ -44,7 +45,7 @@ const ACTION_BTN_STYLE = {
   zIndex: 2,
   transition: 'opacity 0.15s ease',
   _focus: { opacity: 1, pointerEvents: 'auto' },
-  _hover: { bg: 'rgba(0,0,0,0.7)' },
+  _hover: { bg: 'rgba(0,0,0,0.7)' }
 };
 
 const FAV_BTN_STYLE = {
@@ -66,7 +67,7 @@ const FAV_BTN_STYLE = {
   border: '1px solid rgba(255,255,255,0.08)',
   transition: 'all 0.2s ease',
   _focus: { opacity: 1, pointerEvents: 'auto' },
-  _hover: { bg: 'rgba(0,0,0,0.55)', transform: 'scale(1.1)' },
+  _hover: { bg: 'rgba(0,0,0,0.55)', transform: 'scale(1.1)' }
 };
 
 const PILL_BTN_STYLE = {
@@ -81,7 +82,7 @@ const PILL_BTN_STYLE = {
   fontWeight: 500,
   bg: 'rgba(18, 15, 23, 0.45)',
   backdropFilter: 'blur(32px) saturate(1.3)',
-  _hover: { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' },
+  _hover: { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }
 };
 
 const slug = str => (str || '').replace(/\s+/g, '-').toLowerCase();
@@ -125,16 +126,18 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
       const meta = entry.key ? entry : (componentMetadata?.[entry] ?? {});
       const fullKey = key || entry;
       const [cat, comp] = (fullKey || '').split('/');
+      const title = fromPascal(meta?.name ?? comp);
       return {
         key: fullKey,
         categoryKey: cat,
         componentKey: comp,
         categoryLabel: fromPascal(meta?.category ?? cat),
-        title: fromPascal(meta?.name ?? comp),
+        title,
         description: meta?.description ?? '',
         videoUrl: meta?.videoUrl ?? '',
         tags: Array.isArray(meta?.tags) ? meta.tags : [],
-        docsUrl: meta?.docsUrl
+        docsUrl: meta?.docsUrl,
+        isNew: NEW.includes(title)
       };
     };
 
@@ -146,7 +149,15 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
       .map(mapToItem);
 
     if (sorting === 'alphabetical') {
-      arr = arr.sort((a, b) => a.title.localeCompare(b.title));
+      // New components are sorted to the top (in NEW list order), then the rest alphabetically.
+      arr = arr.sort((a, b) => {
+        const aNew = NEW.indexOf(a.title);
+        const bNew = NEW.indexOf(b.title);
+        if (aNew !== -1 && bNew !== -1) return aNew - bNew;
+        if (aNew !== -1) return -1;
+        if (bNew !== -1) return 1;
+        return a.title.localeCompare(b.title);
+      });
     }
     return arr;
   }, [list, sorting]);
@@ -359,7 +370,11 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                 fontWeight={500}
                 cursor={controlsDisabled ? 'default' : 'pointer'}
                 transition="border-color 0.2s ease, background 0.2s ease"
-                _hover={controlsDisabled ? undefined : { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }}
+                _hover={
+                  controlsDisabled
+                    ? undefined
+                    : { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }
+                }
                 w="full"
               >
                 <Select.ValueText color={controlsDisabled ? 'rgba(255,255,255,0.3)' : '#fff'} pl={2}>
@@ -525,6 +540,30 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   playing={hoveredKey === item.key}
                                 />
 
+                                {item.isNew ? (
+                                  <Box
+                                    position="absolute"
+                                    top="8px"
+                                    left="8px"
+                                    zIndex={2}
+                                    px="8px"
+                                    py="3px"
+                                    borderRadius="6px"
+                                    fontSize="10px"
+                                    fontWeight={600}
+                                    lineHeight={1}
+                                    textTransform="uppercase"
+                                    fontFamily="'Geist Mono', monospace"
+                                    color="#d8aeff"
+                                    border="1px solid var(--color-primary)"
+                                    bg="rgba(169, 85, 247, 0.4)"
+                                    backdropFilter="blur(8px)"
+                                    pointerEvents="none"
+                                  >
+                                    New
+                                  </Box>
+                                ) : null}
+
                                 {hasDeleteButton ? (
                                   <IconButton
                                     aria-label="Remove from favorites"
@@ -587,7 +626,13 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                 ) : null}
                               </Box>
                               <Box px={2} pt={3} pb={1.5}>
-                                <Text color="#fff" fontSize="14px" fontWeight={500} lineHeight="1.3" letterSpacing="-0.2px">
+                                <Text
+                                  color="#fff"
+                                  fontSize="14px"
+                                  fontWeight={500}
+                                  lineHeight="1.3"
+                                  letterSpacing="-0.2px"
+                                >
                                   {item.title}
                                 </Text>
                                 <Text color={colors.textMuted} fontWeight={400} fontSize="12px" mt={0.5}>
