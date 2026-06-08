@@ -69,6 +69,14 @@ export default function TextureLab({ toolSelector }) {
         rendererRef.current.destroy();
         rendererRef.current = null;
       }
+      if (videoRef.current) {
+        videoRef.current.pause();
+        if (videoRef.current.src && videoRef.current.src.startsWith('blob:')) {
+          URL.revokeObjectURL(videoRef.current.src);
+        }
+        videoRef.current.src = '';
+        videoRef.current = null;
+      }
     };
   }, []);
 
@@ -174,29 +182,39 @@ export default function TextureLab({ toolSelector }) {
       if (lastOverlayParamsRef.current === paramsKey) {
         return;
       }
-      lastOverlayParamsRef.current = paramsKey;
 
       if (texture === OVERLAY_TEXTURES.CUSTOM && customTextureUrl) {
         try {
           const result = await loadImageFromURL(customTextureUrl);
+          if (cancelled) return;
           rendererRef.current.setOverlayTexture(result.image);
+          lastOverlayParamsRef.current = paramsKey;
           renderPreview();
         } catch {
           console.warn('Failed to load custom overlay texture');
         }
       } else if (texture !== OVERLAY_TEXTURES.CUSTOM) {
         const textureImg = await generateProceduralTexture(texture);
+        if (cancelled) return;
         rendererRef.current.setOverlayTexture(textureImg);
+        lastOverlayParamsRef.current = paramsKey;
         renderPreview();
       }
     };
 
+    let cancelled = false;
     loadOverlayTextures();
+    return () => {
+      cancelled = true;
+    };
   }, [effects, renderPreview]);
 
   const handleImageLoad = useCallback(async (source, type) => {
     if (videoRef.current) {
       videoRef.current.pause();
+      if (videoRef.current.src && videoRef.current.src.startsWith('blob:')) {
+        URL.revokeObjectURL(videoRef.current.src);
+      }
       videoRef.current.src = '';
       videoRef.current = null;
     }
@@ -248,6 +266,9 @@ export default function TextureLab({ toolSelector }) {
   const handleVideoLoad = useCallback(async (source, type) => {
     if (videoRef.current) {
       videoRef.current.pause();
+      if (videoRef.current.src && videoRef.current.src.startsWith('blob:')) {
+        URL.revokeObjectURL(videoRef.current.src);
+      }
       videoRef.current.src = '';
     }
 

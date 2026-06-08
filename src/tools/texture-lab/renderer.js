@@ -122,6 +122,13 @@ export class WebGLRenderer {
       throw new Error(`Program link error: ${error}`);
     }
 
+    // Once linked, the individual shader objects are no longer needed; detach
+    // and delete them so they don't leak for the lifetime of the GL context.
+    gl.detachShader(program, vertexShader);
+    gl.detachShader(program, fragmentShader);
+    gl.deleteShader(vertexShader);
+    gl.deleteShader(fragmentShader);
+
     program.attributes = {
       position: gl.getAttribLocation(program, 'a_position'),
       texCoord: gl.getAttribLocation(program, 'a_texCoord')

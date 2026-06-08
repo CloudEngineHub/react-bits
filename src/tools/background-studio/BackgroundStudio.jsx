@@ -386,6 +386,9 @@ export default function BackgroundStudio({ toolSelector }) {
       }, 10000);
     } catch (err) {
       console.error('Failed to start recording:', err);
+      if (recordingAnimationRef.current) cancelAnimationFrame(recordingAnimationRef.current);
+      if (recordingIntervalRef.current) clearInterval(recordingIntervalRef.current);
+      if (recordingTimeoutRef.current) clearTimeout(recordingTimeoutRef.current);
       setIsRecording(false);
     }
   }, [backgroundId, isRecording, canvasBg]);
@@ -414,6 +417,18 @@ export default function BackgroundStudio({ toolSelector }) {
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
+      }
+      if (recordingAnimationRef.current) cancelAnimationFrame(recordingAnimationRef.current);
+      if (recordingIntervalRef.current) clearInterval(recordingIntervalRef.current);
+      if (recordingTimeoutRef.current) clearTimeout(recordingTimeoutRef.current);
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.ondataavailable = null;
+        mediaRecorderRef.current.onstop = null;
+        try {
+          mediaRecorderRef.current.stop();
+        } catch {
+          // ignore
+        }
       }
     };
   }, []);
@@ -463,7 +478,7 @@ export default function BackgroundStudio({ toolSelector }) {
         minH={{ base: '300px', lg: 'auto' }}
       >
         <Suspense fallback={<LoadingFallback />}>
-          <BackgroundRenderer key={renderKey} background={background} props={props} renderKey={renderKey} />
+          <BackgroundRenderer background={background} props={props} renderKey={renderKey} />
         </Suspense>
 
         <Box
@@ -530,7 +545,12 @@ export default function BackgroundStudio({ toolSelector }) {
               />
             )}
             <Icon as={Video} boxSize={3.5} color={isRecording ? '#ff3b30' : 'var(--text-muted)'} position="relative" />
-            <Text fontSize="12px" color={isRecording ? '#ff3b30' : 'var(--text-muted)'} fontWeight={500} position="relative">
+            <Text
+              fontSize="12px"
+              color={isRecording ? '#ff3b30' : 'var(--text-muted)'}
+              fontWeight={500}
+              position="relative"
+            >
               {isRecording ? `${Math.ceil((100 - recordingProgress) / 10)}s` : '10s Video'}
             </Text>
           </Flex>
