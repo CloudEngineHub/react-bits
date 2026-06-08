@@ -53,6 +53,36 @@ const LanyardDemo = () => {
         type: 'boolean',
         default: 'true',
         description: 'Enables a transparent background for the canvas.'
+      },
+      {
+        name: 'frontImage',
+        type: 'string',
+        default: 'null',
+        description: "Custom image URL for the card's front face. Falls back to the model's built-in texture when not set."
+      },
+      {
+        name: 'backImage',
+        type: 'string',
+        default: 'null',
+        description: "Custom image URL for the card's back face, rendered independently from the front."
+      },
+      {
+        name: 'imageFit',
+        type: '"cover" | "contain"',
+        default: '"cover"',
+        description: "How a custom front/back image fits its face. Both preserve aspect ratio; 'cover' fills and crops, 'contain' letterboxes."
+      },
+      {
+        name: 'lanyardImage',
+        type: 'string',
+        default: 'null',
+        description: "Custom image URL for the lanyard band's repeating texture. Falls back to the default band texture when not set."
+      },
+      {
+        name: 'lanyardWidth',
+        type: 'number',
+        default: '1',
+        description: 'Width of the lanyard band (meshline lineWidth). Increase it to give a custom band image more room and reduce stretching.'
       }
     ],
     []
