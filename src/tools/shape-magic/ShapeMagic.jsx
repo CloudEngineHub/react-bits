@@ -4,7 +4,7 @@ import { Settings, ChevronUp } from 'lucide-react';
 import Canvas from './Canvas';
 import Controls from './Controls';
 import { computeBridges, computeCornerRadii } from './computeBridges';
-import { createInitialState, createShape } from './types';
+import { createInitialState, createShape, PRESETS } from './types';
 
 const useHistory = initialState => {
   const [history, setHistory] = useState([initialState]);
@@ -50,12 +50,14 @@ export default function ShapeMagic({ toolSelector }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [style, setStyle] = useState(state.style);
   const [globalRadius, setGlobalRadius] = useState(state.globalRadius);
+  const [smoothing, setSmoothing] = useState(state.smoothing);
   const [showBridgeDebug, setShowBridgeDebug] = useState(false);
+  const [showGrid, setShowGrid] = useState(true);
+  const [snapToGrid, setSnapToGrid] = useState(true);
+  const [gridSize, setGridSize] = useState(10);
 
   const justPushedRef = useRef(false);
 
-  const snapToGrid = true;
-  const gridSize = 10;
   const tolerance = 1;
 
   useEffect(() => {
@@ -66,6 +68,7 @@ export default function ShapeMagic({ toolSelector }) {
     setShapes(state.shapes);
     setStyle(state.style);
     setGlobalRadius(state.globalRadius);
+    setSmoothing(state.smoothing);
   }, [state]);
 
   const bridges = useMemo(() => {
@@ -77,19 +80,46 @@ export default function ShapeMagic({ toolSelector }) {
   }, [shapes, globalRadius, tolerance]);
 
   const saveToHistory = useCallback(
-    (newShapes, newStyle, newRadius) => {
+    (newShapes, newStyle, newRadius, newSmoothing) => {
       justPushedRef.current = true;
       pushState({
         shapes: newShapes ?? shapes,
         style: newStyle ?? style,
-        globalRadius: newRadius ?? globalRadius
+        globalRadius: newRadius ?? globalRadius,
+        smoothing: newSmoothing ?? smoothing
       });
     },
-    [pushState, shapes, style, globalRadius]
+    [pushState, shapes, style, globalRadius, smoothing]
+  );
+
+  const handleApplyPreset = useCallback(
+    presetId => {
+      const preset = PRESETS.find(p => p.id === presetId);
+      if (!preset) return;
+      const newShapes = preset.build();
+      const newRadius = preset.radius ?? globalRadius;
+      setShapes(newShapes);
+      setGlobalRadius(newRadius);
+      setSelectedIds([]);
+      saveToHistory(newShapes, undefined, newRadius);
+    },
+    [globalRadius, saveToHistory]
   );
 
   const handleAddShape = useCallback(() => {
-    const newShape = createShape(100 + Math.random() * 200, 100 + Math.random() * 200, 120, 80);
+    // Place the new shape in clear space to the right of existing shapes so it
+    // doesn't accidentally overlap/merge into a blob. Falls back to a sensible
+    // default position when the canvas is empty.
+    let x = 320;
+    let y = 240;
+    if (shapes.length > 0) {
+      const maxX = Math.max(...shapes.map(s => s.x + s.w));
+      const minY = Math.min(...shapes.map(s => s.y));
+      const maxY = Math.max(...shapes.map(s => s.y + s.h));
+      x = maxX + 40;
+      y = Math.round((minY + maxY) / 2 - 40);
+    }
+    const newShape = createShape(x, y, 120, 80);
     const newShapes = [...shapes, newShape];
     setShapes(newShapes);
     setSelectedIds([newShape.id]);
@@ -307,6 +337,34 @@ export default function ShapeMagic({ toolSelector }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [undo, redo, selectedIds, handleDeleteShapes, handleDuplicateShapes, handleCopyShapes, handlePasteShapes]);
 
+  const controlsProps = {
+    shapes,
+    bridges,
+    cornerRadii,
+    selectedIds,
+    style,
+    globalRadius,
+    smoothing,
+    snapToGrid,
+    showGrid,
+    gridSize,
+    presets: PRESETS,
+    onAddShape: handleAddShape,
+    onDeleteShapes: handleDeleteShapes,
+    onDuplicateShapes: handleDuplicateShapes,
+    onStyleChange: setStyle,
+    onGlobalRadiusChange: setGlobalRadius,
+    onSmoothingChange: setSmoothing,
+    onShapeUpdate: handleShapeUpdate,
+    onAlignShapes: handleAlignShapes,
+    onDistributeShapes: handleDistributeShapes,
+    onApplyPreset: handleApplyPreset,
+    onToggleSnap: setSnapToGrid,
+    onToggleGrid: setShowGrid,
+    onGridSizeChange: setGridSize,
+    toolSelector
+  };
+
   return (
     <Flex
       h="100%"
@@ -324,23 +382,7 @@ export default function ShapeMagic({ toolSelector }) {
         display={{ base: 'none', lg: 'flex' }}
         flexDirection="column"
       >
-        <Controls
-          shapes={shapes}
-          bridges={bridges}
-          cornerRadii={cornerRadii}
-          selectedIds={selectedIds}
-          style={style}
-          globalRadius={globalRadius}
-          onAddShape={handleAddShape}
-          onDeleteShapes={handleDeleteShapes}
-          onDuplicateShapes={handleDuplicateShapes}
-          onStyleChange={setStyle}
-          onGlobalRadiusChange={setGlobalRadius}
-          onShapeUpdate={handleShapeUpdate}
-          onAlignShapes={handleAlignShapes}
-          onDistributeShapes={handleDistributeShapes}
-          toolSelector={toolSelector}
-        />
+        <Controls {...controlsProps} />
       </Box>
 
       <Box
@@ -361,6 +403,7 @@ export default function ShapeMagic({ toolSelector }) {
           bridges={bridges}
           cornerRadii={cornerRadii}
           globalRadius={globalRadius}
+          smoothing={smoothing}
           style={style}
           selectedIds={selectedIds}
           onShapeUpdate={handleShapeUpdate}
@@ -369,6 +412,7 @@ export default function ShapeMagic({ toolSelector }) {
           onAltDragDuplicate={handleAltDragDuplicate}
           snapToGrid={snapToGrid}
           gridSize={gridSize}
+          showGrid={showGrid}
           showBridgeDebug={showBridgeDebug}
           onShowBridgeDebugChange={setShowBridgeDebug}
         />
@@ -455,23 +499,7 @@ export default function ShapeMagic({ toolSelector }) {
             </Flex>
 
             <Box flex={1} overflow="hidden" px={4} py={4}>
-              <Controls
-                shapes={shapes}
-                bridges={bridges}
-                cornerRadii={cornerRadii}
-                selectedIds={selectedIds}
-                style={style}
-                globalRadius={globalRadius}
-                onAddShape={handleAddShape}
-                onDeleteShapes={handleDeleteShapes}
-                onDuplicateShapes={handleDuplicateShapes}
-                onStyleChange={setStyle}
-                onGlobalRadiusChange={setGlobalRadius}
-                onShapeUpdate={handleShapeUpdate}
-                onAlignShapes={handleAlignShapes}
-                onDistributeShapes={handleDistributeShapes}
-                toolSelector={toolSelector}
-              />
+              <Controls {...controlsProps} />
             </Box>
           </Box>
         </>

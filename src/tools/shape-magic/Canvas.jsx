@@ -1,7 +1,7 @@
-import { useRef, useState, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { Eye, EyeOff, Maximize2 } from 'lucide-react';
-import { getBridgePath, getRoundedRectPath } from './svgRenderers';
+import { getBridgePathAt, getRoundedRectPath, getFillSpec, getFxSpec, computeShapesBBox } from './svgRenderers';
 
 const Canvas = forwardRef(
   (
@@ -10,6 +10,7 @@ const Canvas = forwardRef(
       bridges,
       cornerRadii,
       globalRadius,
+      smoothing = 0.6,
       style,
       selectedIds,
       onShapeUpdate,
@@ -18,6 +19,7 @@ const Canvas = forwardRef(
       onAltDragDuplicate,
       snapToGrid,
       gridSize,
+      showGrid = true,
       showBridgeDebug = false,
       onShowBridgeDebugChange
     },
@@ -469,6 +471,10 @@ const Canvas = forwardRef(
       return () => container.removeEventListener('wheel', handleWheel);
     }, [handleWheel]);
 
+    const shapesBBox = useMemo(() => computeShapesBBox(shapes), [shapes]);
+    const fillSpec = useMemo(() => getFillSpec(style, shapesBBox, 'canvas'), [style, shapesBBox]);
+    const fxSpec = useMemo(() => getFxSpec(style, 'canvas'), [style]);
+
     const renderResizeHandles = shape => {
       if (!selectedIds.includes(shape.id)) return null;
 
@@ -553,7 +559,8 @@ const Canvas = forwardRef(
           top={0}
           right={0}
           bottom={0}
-          opacity={0.5}
+          opacity={showGrid ? 0.5 : 0}
+          transition="opacity 0.15s"
           style={{
             backgroundImage: `
             linear-gradient(var(--border-primary) 1px, transparent 1px),
@@ -564,47 +571,111 @@ const Canvas = forwardRef(
           }}
         />
 
+        {style.backgroundEnabled && (
+          <Box position="absolute" left={0} top={0} right={0} bottom={0} bg={style.backgroundColor} />
+        )}
+
         <svg width="100%" height="100%" style={{ position: 'absolute', left: 0, top: 0 }}>
+          <defs>
+            {fillSpec.type === 'linear' && (
+              <linearGradient
+                id={fillSpec.id}
+                gradientUnits="userSpaceOnUse"
+                x1={fillSpec.x1}
+                y1={fillSpec.y1}
+                x2={fillSpec.x2}
+                y2={fillSpec.y2}
+              >
+                {fillSpec.stops.map((s, i) => (
+                  <stop key={i} offset={s.offset} stopColor={s.color} />
+                ))}
+              </linearGradient>
+            )}
+            {fillSpec.type === 'radial' && (
+              <radialGradient
+                id={fillSpec.id}
+                gradientUnits="userSpaceOnUse"
+                cx={fillSpec.cx}
+                cy={fillSpec.cy}
+                r={fillSpec.r}
+              >
+                {fillSpec.stops.map((s, i) => (
+                  <stop key={i} offset={s.offset} stopColor={s.color} />
+                ))}
+              </radialGradient>
+            )}
+            {fxSpec && (
+              <filter id={fxSpec.id} x="-50%" y="-50%" width="200%" height="200%">
+                {fxSpec.hasShadow && (
+                  <>
+                    <feGaussianBlur in="SourceAlpha" stdDeviation={fxSpec.shadowBlur} result="smBlur" />
+                    <feOffset in="smBlur" dx={fxSpec.shadowOffsetX} dy={fxSpec.shadowOffsetY} result="smOff" />
+                    <feFlood
+                      floodColor={fxSpec.shadowColor}
+                      floodOpacity={fxSpec.shadowOpacity}
+                      result="smShadowColor"
+                    />
+                    <feComposite in="smShadowColor" in2="smOff" operator="in" result="smShadow" />
+                  </>
+                )}
+                {fxSpec.hasStroke && (
+                  <>
+                    <feMorphology in="SourceAlpha" operator="dilate" radius={fxSpec.strokeWidth} result="smDilated" />
+                    <feFlood floodColor={fxSpec.strokeColor} result="smStrokeColor" />
+                    <feComposite in="smStrokeColor" in2="smDilated" operator="in" result="smOutline" />
+                  </>
+                )}
+                <feMerge>
+                  {fxSpec.hasShadow && <feMergeNode in="smShadow" />}
+                  {fxSpec.hasStroke && <feMergeNode in="smOutline" />}
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            )}
+          </defs>
           <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
+            <g
+              fill={fillSpec.paint}
+              fillOpacity={style.opacity ?? 1}
+              filter={fxSpec ? `url(#${fxSpec.id})` : undefined}
+            >
+              {shapes.map(shape => {
+                const corners = cornerRadii[shape.id] || {
+                  tl: globalRadius,
+                  tr: globalRadius,
+                  br: globalRadius,
+                  bl: globalRadius
+                };
+                return <path key={shape.id} d={getRoundedRectPath(shape.x, shape.y, shape.w, shape.h, corners)} />;
+              })}
+
+              {bridges.map(bridge => (
+                <path key={bridge.id} d={getBridgePathAt(bridge.x, bridge.y, bridge.r, bridge.rotation, smoothing)} />
+              ))}
+            </g>
+
             {shapes.map(shape => {
               const isSelected = selectedIds.includes(shape.id);
-              const corners = cornerRadii[shape.id] || {
-                tl: globalRadius,
-                tr: globalRadius,
-                br: globalRadius,
-                bl: globalRadius
-              };
-
+              if (!isSelected) return null;
               return (
-                <g key={shape.id}>
-                  <path
-                    d={getRoundedRectPath(shape.x, shape.y, shape.w, shape.h, corners)}
-                    fill={style.fill}
-                    stroke={style.stroke}
-                    strokeWidth={style.strokeWidth}
-                  />
-                  {isSelected && (
-                    <rect
-                      x={shape.x - 2 / zoom}
-                      y={shape.y - 2 / zoom}
-                      width={shape.w + 4 / zoom}
-                      height={shape.h + 4 / zoom}
-                      fill="none"
-                      stroke="#A855F7"
-                      strokeWidth={2 / zoom}
-                      strokeDasharray={`${4 / zoom} ${2 / zoom}`}
-                    />
-                  )}
-                </g>
+                <rect
+                  key={`sel-${shape.id}`}
+                  x={shape.x - 2 / zoom}
+                  y={shape.y - 2 / zoom}
+                  width={shape.w + 4 / zoom}
+                  height={shape.h + 4 / zoom}
+                  fill="none"
+                  stroke="#A855F7"
+                  strokeWidth={2 / zoom}
+                  strokeDasharray={`${4 / zoom} ${2 / zoom}`}
+                />
               );
             })}
 
-            {bridges.map(bridge => (
-              <g key={bridge.id} transform={`translate(${bridge.x}, ${bridge.y})`}>
-                <path d={getBridgePath(bridge.r, bridge.rotation)} fill={style.fill} />
-                {showBridgeDebug && <circle cx={0} cy={0} r={3 / zoom} fill="#ff0" />}
-              </g>
-            ))}
+            {showBridgeDebug &&
+              bridges.map(bridge => (
+                <circle key={`dbg-${bridge.id}`} cx={bridge.x} cy={bridge.y} r={3 / zoom} fill="#ff0" />
+              ))}
 
             {shapes.map(shape => renderResizeHandles(shape))}
 

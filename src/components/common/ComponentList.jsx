@@ -33,21 +33,6 @@ import { NEW } from '../../constants/Categories';
 
 const CARD_RADIUS = 16;
 
-const ACTION_BTN_STYLE = {
-  size: 'xs',
-  variant: 'ghost',
-  color: '#fff',
-  rounded: 'full',
-  position: 'absolute',
-  bg: 'rgba(0,0,0,0.5)',
-  top: 2,
-  right: 2,
-  zIndex: 2,
-  transition: 'opacity 0.15s ease',
-  _focus: { opacity: 1, pointerEvents: 'auto' },
-  _hover: { bg: 'rgba(0,0,0,0.7)' }
-};
-
 const FAV_BTN_STYLE = {
   size: 'xs',
   variant: 'unstyled',
