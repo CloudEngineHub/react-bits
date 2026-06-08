@@ -49,9 +49,14 @@ export default function Canvas({
     return () => observer.disconnect();
   }, []);
 
+  const lastFitMediaRef = useRef(null);
   useEffect(() => {
     const media = mediaType === 'video' ? video : image;
     if (!media || !containerSize.width) return;
+    // Only fit-to-view when the media itself changes, not on every container
+    // resize (which would otherwise discard the user's manual zoom/pan).
+    if (lastFitMediaRef.current === media) return;
+    lastFitMediaRef.current = media;
 
     const mediaWidth = media.width || media.videoWidth;
     const mediaHeight = media.height || media.videoHeight;
@@ -448,25 +453,25 @@ export default function Canvas({
           justify="center"
           direction="column"
           gap={1}
-          as= "button"
+          as="button"
           cursor="pointer"
           onClick={() => fileInputRef.current?.click()}
         >
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileSelect}
-              accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/ogg"
-              style={{ display: 'none' }}
-            />
-            <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
-              <Icon as={Upload} boxSize={8} color="var(--border-primary)" />
-            </Box>
-            <Text fontSize="14px" color="var(--text-muted)" textAlign="center">
-              Upload an image/video
-              <br />
-              to get started
-            </Text>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/ogg"
+            style={{ display: 'none' }}
+          />
+          <Box w="60px" h="60px" borderRadius="16px" display="flex" alignItems="center" justifyContent="center">
+            <Icon as={Upload} boxSize={8} color="var(--border-primary)" />
+          </Box>
+          <Text fontSize="14px" color="var(--text-muted)" textAlign="center">
+            Upload an image/video
+            <br />
+            to get started
+          </Text>
         </Flex>
       )}
 
