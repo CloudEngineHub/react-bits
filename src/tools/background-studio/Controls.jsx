@@ -178,13 +178,7 @@ const BooleanControl = ({ prop, value, onChange }) => {
 const ColorControl = ({ prop, value, onChange }) => {
   const { name, label } = prop;
 
-  return (
-    <PreviewColorPickerCustom
-      title={label}
-      color={value}
-      onChange={val => onChange(name, val)}
-    />
-  );
+  return <PreviewColorPickerCustom title={label} color={value} onChange={val => onChange(name, val)} />;
 };
 
 const ColorArrayControl = ({ prop, value, onChange }) => {
@@ -214,37 +208,37 @@ const ColorArrayControl = ({ prop, value, onChange }) => {
 
   return (
     <Box>
-      <Flex flexWrap="wrap" gap={2} align="center">
+      <Flex direction="column" gap={2}>
         {colors.map((color, index) => (
-          <Box key={index} position="relative">
-            <PreviewColorPickerCustom
-              title={`${label} ${index + 1}`}
-              color={color}
-              onChange={val => updateColor(index, val)}
-            />
+          <Flex key={index} gap={2} align="center" w="100%">
+            <Box flex="1" minW={0}>
+              <PreviewColorPickerCustom
+                title={`${label} ${index + 1}`}
+                color={color}
+                onChange={val => updateColor(index, val)}
+              />
+            </Box>
             {colors.length > minItems && (
               <Flex
                 as="button"
                 onClick={() => removeColor(index)}
-                position="absolute"
-                top="4px"
-                right="4px"
-                w="18px"
-                h="18px"
-                bg="var(--bg-body)"
+                flexShrink={0}
+                w="40px"
+                h="40px"
+                bg="var(--bg-elevated)"
                 border="1px solid var(--border-primary)"
-                borderRadius="50%"
+                borderRadius="var(--radius-sm)"
                 align="center"
                 justify="center"
                 cursor="pointer"
-                zIndex={5}
-                _hover={{ bg: 'var(--bg-hover)' }}
-                transition="background 0.15s"
+                _hover={{ bg: 'var(--bg-hover)', borderColor: '#5227FF' }}
+                transition="background 0.15s, border-color 0.15s"
+                aria-label={`Remove ${label} ${index + 1}`}
               >
-                <Icon as={X} boxSize={2.5} color="var(--text-muted)" />
+                <Icon as={X} boxSize={3.5} color="var(--text-muted)" />
               </Flex>
             )}
-          </Box>
+          </Flex>
         ))}
       </Flex>
       {colors.length < maxItems && (
@@ -310,13 +304,7 @@ const RgbArrayControl = ({ prop, value, onChange }) => {
 
   const hexValue = rgbToHex(rgb[0], rgb[1], rgb[2]);
 
-  return (
-    <PreviewColorPickerCustom
-      title={label}
-      color={hexValue}
-      onChange={hex => onChange(name, hexToRgb(hex))}
-    />
-  );
+  return <PreviewColorPickerCustom title={label} color={hexValue} onChange={hex => onChange(name, hexToRgb(hex))} />;
 };
 
 const TextControl = ({ prop, value, onChange }) => {
@@ -556,7 +544,14 @@ export default function Controls({
           msOverflowStyle: 'none'
         }}
       >
-        <Text fontSize="11px" color="var(--text-muted)" fontWeight={600} mb={3} textTransform="uppercase" letterSpacing="0.5px">
+        <Text
+          fontSize="11px"
+          color="var(--text-muted)"
+          fontWeight={600}
+          mb={3}
+          textTransform="uppercase"
+          letterSpacing="0.5px"
+        >
           Background
         </Text>
         <BackgroundSelector selectedId={backgroundId} onSelect={onBackgroundChange} />
@@ -564,11 +559,7 @@ export default function Controls({
         {onCanvasBgChange && (
           <Box mb={4}>
             <Flex align="center" gap={1.5} mb={2}>
-              <PreviewColorPickerCustom
-                title="Canvas BG"
-                color={canvasBg}
-                onChange={onCanvasBgChange}
-              />
+              <PreviewColorPickerCustom title="Canvas BG" color={canvasBg} onChange={onCanvasBgChange} />
               <Tooltip.Root openDelay={200} closeDelay={100} positioning={{ placement: 'top', gutter: 8 }}>
                 <Tooltip.Trigger asChild>
                   <Flex align="center" justify="center" cursor="help">
