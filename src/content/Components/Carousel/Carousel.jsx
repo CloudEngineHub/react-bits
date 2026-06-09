@@ -245,9 +245,12 @@ export default function Carousel({
       <div className={`carousel-indicators-container ${round ? 'round' : ''}`}>
         <div className="carousel-indicators">
           {items.map((_, index) => (
-            <motion.div
+            <motion.button
+              type="button"
               key={index}
               className={`carousel-indicator ${activeIndex === index ? 'active' : 'inactive'}`}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={activeIndex === index}
               animate={{
                 scale: activeIndex === index ? 1.2 : 1
               }}
