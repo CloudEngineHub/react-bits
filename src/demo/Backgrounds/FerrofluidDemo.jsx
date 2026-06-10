@@ -194,7 +194,14 @@ const FerrofluidDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} hasChanges={hasChanges} resetProps={resetProps}>
+    <ComponentPropsProvider
+      props={props}
+      defaultProps={DEFAULT_PROPS}
+      hasChanges={hasChanges}
+      resetProps={resetProps}
+      demoOnlyProps={['color1', 'color2', 'color3']}
+      computedProps={{ colors }}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box
