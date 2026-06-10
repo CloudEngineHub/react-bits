@@ -66,6 +66,7 @@ export const CATEGORIES = [
       'Gradual Blur',
       'Click Spark',
       'Magnet',
+      'Strands',
       'Sticker Peel',
       'Pixel Trail',
       'Cubes',
@@ -78,8 +79,7 @@ export const CATEGORIES = [
       'Splash Cursor',
       'Meta Balls',
       'Blob Cursor',
-      'Star Border',
-      'Strands',
+      'Star Border'
     ]
   },
   {
