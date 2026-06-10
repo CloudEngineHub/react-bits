@@ -516,9 +516,9 @@ const Hero = () => {
 
       <div className="ln-hero-content">
         <div className="ln-hero-left">
-          <Link to="/backgrounds/line-waves" className="ln-hero-tag">
+          <Link to="/animations/strands" className="ln-hero-tag">
             <span className="ln-hero-tag-new" style={{ background: accentColor, color: accentFg }}>New Component</span>
-            Line Waves <FaArrowRight size={10} />
+            Strands <FaArrowRight size={10} />
           </Link>
           <h1 className="ln-hero-headline"><span className="ln-hero-headline-line">React components for</span><br /><span className="ln-hero-headline-line">creative developers</span></h1>
           <p className="ln-hero-description">

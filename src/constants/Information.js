@@ -153,6 +153,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/meta-balls',
     tags: []
   },
+  'Animations/Strands': {
+    videoUrl: '/assets/video/strands.webm',
+    description: 'Glowing ribbon-like strands that ripple and weave across a transparent canvas.',
+    category: 'Animations',
+    name: 'Strands',
+    docsUrl: 'https://reactbits.dev/animations/strands',
+    tags: []
+  },
   'Animations/MetallicPaint': {
     videoUrl: '/assets/video/metallicpaint.webm',
     description: 'Liquid metallic paint shader which can be applied to SVG elements.',

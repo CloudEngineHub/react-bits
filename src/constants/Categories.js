@@ -1,5 +1,6 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Strands',
   'Side Rays',
   'Dot Field',
   'Plasma Wave',
@@ -8,7 +9,7 @@ export const NEW = [
   'Border Glow',
   'Soft Aurora',
   'Radar',
-  'Line Waves',
+  'Line Waves'
 ];
 export const UPDATED = [];
 
@@ -78,6 +79,7 @@ export const CATEGORIES = [
       'Meta Balls',
       'Blob Cursor',
       'Star Border',
+      'Strands',
     ]
   },
   {

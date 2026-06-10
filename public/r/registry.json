@@ -988,6 +988,78 @@
 			]
 		},
 		{
+			"name": "Strands-JS-CSS",
+			"title": "Strands",
+			"description": "Glowing ribbon-like strands that ripple and weave across a transparent canvas.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.jsx"
+				}
+			]
+		},
+		{
+			"name": "Strands-JS-TW",
+			"title": "Strands",
+			"description": "Glowing ribbon-like strands that ripple and weave across a transparent canvas.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.jsx"
+				}
+			]
+		},
+		{
+			"name": "Strands-TS-CSS",
+			"title": "Strands",
+			"description": "Glowing ribbon-like strands that ripple and weave across a transparent canvas.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.css"
+				},
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.tsx"
+				}
+			]
+		},
+		{
+			"name": "Strands-TS-TW",
+			"title": "Strands",
+			"description": "Glowing ribbon-like strands that ripple and weave across a transparent canvas.",
+			"type": "registry:component",
+			"dependencies": [
+				"ogl@^1.0.11"
+			],
+			"registryDependencies": [],
+			"files": [
+				{
+					"type": "registry:component",
+					"path": "Strands/Strands.tsx"
+				}
+			]
+		},
+		{
 			"name": "MetallicPaint-JS-CSS",
 			"title": "MetallicPaint",
 			"description": "Liquid metallic paint shader which can be applied to SVG elements.",

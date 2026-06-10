@@ -33,6 +33,7 @@ const animations = {
   'antigravity': () => import('../demo/Animations/AntigravityDemo'),
   'orbit-images': () => import('../demo/Animations/OrbitImagesDemo'),
   'magic-rings': () => import('../demo/Animations/MagicRingsDemo'),
+  'strands': () => import('../demo/Animations/StrandsDemo'),
 };
 
 const textAnimations = {
