@@ -505,6 +505,7 @@ class App {
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
+  boundOnKeyDown!: (e: KeyboardEvent) => void;
 
   isDown: boolean = false;
   start: number = 0;
@@ -668,6 +669,22 @@ class App {
     this.onCheckDebounce();
   }
 
+  onKeyDown(e: KeyboardEvent) {
+    switch (e.key) {
+      case 'ArrowRight':
+        e.preventDefault();
+        this.scroll.target += this.scrollSpeed * 5;
+        this.onCheckDebounce();
+        break;
+
+      case 'ArrowLeft':
+        e.preventDefault();
+        this.scroll.target -= this.scrollSpeed * 5;
+        this.onCheckDebounce();
+        break;
+    }
+  }
+
   onCheck() {
     if (!this.medias || !this.medias[0]) return;
     const width = this.medias[0].width;
@@ -711,6 +728,8 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnKeyDown = this.onKeyDown.bind(this);
+
     window.addEventListener('resize', this.boundOnResize);
     window.addEventListener('mousewheel', this.boundOnWheel);
     window.addEventListener('wheel', this.boundOnWheel);
@@ -720,6 +739,12 @@ class App {
     window.addEventListener('touchstart', this.boundOnTouchDown);
     window.addEventListener('touchmove', this.boundOnTouchMove);
     window.addEventListener('touchend', this.boundOnTouchUp);
+
+    this.container?.addEventListener(
+      'keydown',
+
+      this.boundOnKeyDown
+    );
   }
 
   destroy() {
@@ -735,6 +760,13 @@ class App {
     window.removeEventListener('touchend', this.boundOnTouchUp);
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
+    }
+    if (this.container) {
+      this.container.removeEventListener(
+        'keydown',
+
+        this.boundOnKeyDown
+      );
     }
   }
 }
@@ -782,5 +814,13 @@ export default function CircularGallery({
       if (app) app.destroy();
     };
   }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
-  return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
+  return (
+    <div
+      className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
+      ref={containerRef}
+      tabIndex={0}
+      role="region"
+      aria-label="Circular image gallery. Use Left and Right Arrow keys to navigate."
+    />
+  );
 }
