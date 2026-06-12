@@ -5,11 +5,11 @@ import { LuX } from 'react-icons/lu';
 import { FiArrowRight } from 'react-icons/fi';
 import './AnnouncementModal.css';
 
-const STORAGE_KEY = 'rb-pro-spring-sale-seen';
+const STORAGE_KEY = 'rb-pro-yearly-pricing-seen';
 const SHOW_DELAY = 1500;
-const PROMO_IMAGE = '/assets/rbp/springdiscount.webp';
+const PROMO_IMAGE = '/assets/rbp/yearly.png';
 
-const DISABLED = true;
+const DISABLED = false;
 
 const AnnouncementModal = () => {
   const location = useLocation();
@@ -150,22 +150,18 @@ const AnnouncementModal = () => {
               <div className="announcement-modal-image">
                 <img
                   src={PROMO_IMAGE}
-                  alt="React Bits Pro Spring Sale - 30% off with code SPRING30"
+                  alt="React Bits Pro yearly pricing is now available"
                   loading="lazy"
                 />
               </div>
 
               <div className="announcement-modal-content">
                 <h2 id="announcement-modal-title" className="announcement-modal-title">
-                  Spring Sale is here!
+                  Yearly pricing is here!
                 </h2>
 
                 <p id="announcement-modal-description" className="announcement-modal-description">
-                  The May update adds 13 new components, bringing the total to 100+, plus 3 new templates &mdash; including a free portfolio template!
-                </p>
-
-                <p id="announcement-modal-description" className="announcement-modal-description">
-                  Save 30% on React Bits Pro with code <strong>SPRING30</strong>
+                  Alongside our lifetime plans, React Bits Pro now offers yearly pricing, a more flexible and affordable way to get access.
                 </p>
 
                 <a
@@ -175,7 +171,7 @@ const AnnouncementModal = () => {
                   className="announcement-modal-btn announcement-modal-btn--primary"
                   onClick={handleDismiss}
                 >
-                  Claim 30% Off <FiArrowRight size={14} />
+                  Get React Bits Pro <FiArrowRight size={14} />
                 </a>
               </div>
             </div>
