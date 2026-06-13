@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
 import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 
-function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize }) {
+function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize, label }) {
   const ref = useRef(null);
   const isHovered = useMotionValue(0);
 
@@ -18,6 +18,13 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
   const targetSize = useTransform(mouseDistance, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
   const size = useSpring(targetSize, spring);
 
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
+
   return (
     <motion.div
       ref={ref}
@@ -30,10 +37,12 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
       onFocus={() => isHovered.set(1)}
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       className={`relative inline-flex items-center justify-center rounded-full bg-[#120F17] border-neutral-700 border-2 shadow-md ${className}`}
       tabIndex={0}
       role="button"
       aria-haspopup="true"
+      aria-label={label}
     >
       {Children.map(children, child => cloneElement(child, { isHovered }))}
     </motion.div>
@@ -120,6 +129,7 @@ export default function Dock({
             distance={distance}
             magnification={magnification}
             baseItemSize={baseItemSize}
+            label={item.label}
           >
             <DockIcon>{item.icon}</DockIcon>
             <DockLabel>{item.label}</DockLabel>
