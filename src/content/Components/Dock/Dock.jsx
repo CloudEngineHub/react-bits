@@ -5,7 +5,7 @@ import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 're
 
 import './Dock.css';
 
-function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize }) {
+function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize, label }) {
   const ref = useRef(null);
   const isHovered = useMotionValue(0);
 
@@ -19,6 +19,13 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
 
   const targetSize = useTransform(mouseDistance, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
   const size = useSpring(targetSize, spring);
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
 
   return (
     <motion.div
@@ -36,6 +43,8 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
       tabIndex={0}
       role="button"
       aria-haspopup="true"
+      aria-label={label}
+      onKeyDown={handleKeyDown}
     >
       {Children.map(children, child => cloneElement(child, { isHovered }))}
     </motion.div>
@@ -122,6 +131,7 @@ export default function Dock({
             distance={distance}
             magnification={magnification}
             baseItemSize={baseItemSize}
+            label={item.label}
           >
             <DockIcon>{item.icon}</DockIcon>
             <DockLabel>{item.label}</DockLabel>
