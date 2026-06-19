@@ -316,7 +316,7 @@ const RadarDemo = () => {
 
             <PreviewSwitch
               title="Mouse Interaction"
-              value={enableMouseInteraction}
+              isChecked={enableMouseInteraction}
               onChange={val => {
                 updateProp('enableMouseInteraction', val);
               }}
