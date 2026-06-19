@@ -312,7 +312,7 @@ const LightRaysDemo = () => {
 
             <PreviewSwitch
               title="Pulsating"
-              checked={pulsating}
+              isChecked={pulsating}
               onChange={value => {
                 updateProp('pulsating', value);
                 forceRerender();
