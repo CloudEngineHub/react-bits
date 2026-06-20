@@ -135,6 +135,11 @@ const Threads: React.FC<ThreadsProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number>(0);
 
+  // Keep the latest props in a ref so updating them mutates the live shader
+  // uniforms instead of tearing down and rebuilding the whole WebGL context.
+  const propsRef = useRef({ color, amplitude, distance, enableMouseInteraction });
+  propsRef.current = { color, amplitude, distance, enableMouseInteraction };
+
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
@@ -155,26 +160,38 @@ const Threads: React.FC<ThreadsProps> = ({
         iResolution: {
           value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
         },
-        uColor: { value: new Color(...color) },
-        uAmplitude: { value: amplitude },
-        uDistance: { value: distance },
+        uColor: { value: new Color(...propsRef.current.color) },
+        uAmplitude: { value: propsRef.current.amplitude },
+        uDistance: { value: propsRef.current.distance },
         uMouse: { value: new Float32Array([0.5, 0.5]) }
       }
     });
 
     const mesh = new Mesh(gl, { geometry, program });
 
+    // The fragment shader is heavy (per-pixel Perlin noise across many lines), so
+    // its cost scales with the number of rendered pixels. Cap the internal render
+    // resolution to keep large / high-DPI screens smooth; the effect is soft
+    // enough that the downscale is imperceptible.
+    const MAX_RENDER_DIM = 1920;
     function resize() {
       const { clientWidth, clientHeight } = container;
+      const baseDpr = Math.min(window.devicePixelRatio || 1, 2);
+      const longestSide = Math.max(clientWidth, clientHeight) * baseDpr;
+      const dpr = longestSide > MAX_RENDER_DIM ? (baseDpr * MAX_RENDER_DIM) / longestSide : baseDpr;
+      renderer.dpr = dpr;
       renderer.setSize(clientWidth, clientHeight);
-      program.uniforms.iResolution.value.r = clientWidth;
-      program.uniforms.iResolution.value.g = clientHeight;
-      program.uniforms.iResolution.value.b = clientWidth / clientHeight;
+      program.uniforms.iResolution.value.r = gl.canvas.width;
+      program.uniforms.iResolution.value.g = gl.canvas.height;
+      program.uniforms.iResolution.value.b = gl.canvas.width / gl.canvas.height;
     }
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
     window.addEventListener('resize', resize);
     resize();
 
-    let currentMouse = [0.5, 0.5];
+    const currentMouse = [0.5, 0.5];
     let targetMouse = [0.5, 0.5];
 
     function handleMouseMove(e: MouseEvent) {
@@ -186,12 +203,30 @@ const Threads: React.FC<ThreadsProps> = ({
     function handleMouseLeave() {
       targetMouse = [0.5, 0.5];
     }
-    if (enableMouseInteraction) {
-      container.addEventListener('mousemove', handleMouseMove);
-      container.addEventListener('mouseleave', handleMouseLeave);
-    }
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseleave', handleMouseLeave);
+
+    // Only animate while the canvas is on screen and the tab is visible, so the
+    // shader never burns GPU/CPU for something the user can't see.
+    let isVisible = true;
+    const intersectionObserver = new IntersectionObserver(
+      entries => {
+        isVisible = entries[0].isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(container);
 
     function update(t: number) {
+      animationFrameId.current = requestAnimationFrame(update);
+      if (!isVisible || document.hidden) return;
+
+      const { color, amplitude, distance, enableMouseInteraction } = propsRef.current;
+
+      program.uniforms.uColor.value.set(...color);
+      program.uniforms.uAmplitude.value = amplitude;
+      program.uniforms.uDistance.value = distance;
+
       if (enableMouseInteraction) {
         const smoothing = 0.05;
         currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
@@ -205,22 +240,20 @@ const Threads: React.FC<ThreadsProps> = ({
       program.uniforms.iTime.value = t * 0.001;
 
       renderer.render({ scene: mesh });
-      animationFrameId.current = requestAnimationFrame(update);
     }
     animationFrameId.current = requestAnimationFrame(update);
 
     return () => {
       if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       window.removeEventListener('resize', resize);
-
-      if (enableMouseInteraction) {
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('mouseleave', handleMouseLeave);
-      }
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
       if (container.contains(gl.canvas)) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, amplitude, distance, enableMouseInteraction]);
+  }, []);
 
   return <div ref={containerRef} className="w-full h-full relative" {...rest} />;
 };
