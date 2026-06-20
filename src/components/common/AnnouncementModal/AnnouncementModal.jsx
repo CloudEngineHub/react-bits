@@ -9,7 +9,7 @@ const STORAGE_KEY = 'rb-pro-yearly-pricing-seen';
 const SHOW_DELAY = 1500;
 const PROMO_IMAGE = '/assets/rbp/yearly.png';
 
-const DISABLED = false;
+const DISABLED = true;
 
 const AnnouncementModal = () => {
   const location = useLocation();

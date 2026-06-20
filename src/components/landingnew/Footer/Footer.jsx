@@ -55,7 +55,17 @@ const Footer = () => (
             davidhdev
           </a>
         </p>
-        <p className="ln-footer-copy">© {new Date().getFullYear()} React Bits</p>
+        <p className="ln-footer-copy">
+          © {new Date().getFullYear()} React Bits ·{' '}
+          <a
+            href="https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ln-footer-creator"
+          >
+            License
+          </a>
+        </p>
       </div>
     </motion.div>
   </footer>
