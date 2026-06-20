@@ -76,7 +76,22 @@ const Folder = ({ color = '#5227FF', size = 1, items = [], className = '' }) => 
 
   return (
     <div style={scaleStyle} className={className}>
-      <div className={folderClassName} style={folderStyle} onClick={handleClick}>
+      <div
+        className={folderClassName}
+        style={folderStyle}
+        onClick={handleClick}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+
+            handleClick();
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-expanded={open}
+        aria-label={open ? 'Close folder' : 'Open folder'}
+      >
         <div className="folder__back">
           {papers.map((item, i) => (
             <div
