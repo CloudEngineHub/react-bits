@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
+import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 
 import TargetCursor from '../../content/Animations/TargetCursor/TargetCursor';
 import { targetCursor } from '../../constants/code/Animations/targetCursorCode';
@@ -19,12 +20,14 @@ const DEFAULT_PROPS = {
   spinDuration: 2,
   hideDefaultCursor: true,
   hoverDuration: 0.2,
-  parallaxOn: true
+  parallaxOn: true,
+  cursorColor: '#ffffff',
+  cursorColorOnTarget: '#B497CF'
 };
 
 const TargetCursorDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { spinDuration, hideDefaultCursor, hoverDuration, parallaxOn } = props;
+  const { spinDuration, hideDefaultCursor, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget } = props;
 
   const propData = useMemo(
     () => [
@@ -57,6 +60,18 @@ const TargetCursorDemo = () => {
         type: 'boolean',
         default: 'true',
         description: 'Enables a subtle parallax effect on the corners when moving over a target'
+      },
+      {
+        name: 'cursorColor',
+        type: 'string',
+        default: "'#ffffff'",
+        description: 'Color of the cursor dot and corner brackets at rest'
+      },
+      {
+        name: 'cursorColorOnTarget',
+        type: 'string',
+        default: 'undefined',
+        description: 'Optional color the cursor smoothly transitions to while locked onto a target'
       }
     ],
     []
@@ -172,6 +187,16 @@ const TargetCursorDemo = () => {
                 isChecked={parallaxOn}
                 onChange={val => updateProp('parallaxOn', val)}
               />
+              <PreviewColorPickerCustom
+                title="Cursor Color"
+                color={cursorColor}
+                onChange={val => updateProp('cursorColor', val)}
+              />
+              <PreviewColorPickerCustom
+                title="Cursor Color On Target"
+                color={cursorColorOnTarget}
+                onChange={val => updateProp('cursorColorOnTarget', val)}
+              />
             </Customize>
 
             <PropTable data={propData} />
@@ -189,6 +214,8 @@ const TargetCursorDemo = () => {
         hideDefaultCursor={hideDefaultCursor}
         hoverDuration={hoverDuration}
         parallaxOn={parallaxOn}
+        cursorColor={cursorColor}
+        cursorColorOnTarget={cursorColorOnTarget}
       />
     </>
   );
