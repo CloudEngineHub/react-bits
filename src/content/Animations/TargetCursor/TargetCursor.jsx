@@ -37,7 +37,9 @@ const TargetCursor = ({
   spinDuration = 2,
   hideDefaultCursor = true,
   hoverDuration = 0.2,
-  parallaxOn = true
+  parallaxOn = true,
+  cursorColor = '#ffffff',
+  cursorColorOnTarget
 }) => {
   const cursorRef = useRef(null);
   const cornersRef = useRef(null);
@@ -217,11 +219,26 @@ const TargetCursor = ({
 
       activeTarget = target;
       const corners = Array.from(cornersRef.current);
-      corners.forEach(corner => gsap.killTweensOf(corner));
+      corners.forEach(corner => gsap.killTweensOf(corner, 'x,y'));
 
       gsap.killTweensOf(cursorRef.current, 'rotation');
       spinTl.current?.pause();
       gsap.set(cursorRef.current, { rotation: 0 });
+
+      if (cursorColorOnTarget) {
+        gsap.to(corners, {
+          borderColor: cursorColorOnTarget,
+          duration: 0.15,
+          ease: 'power2.out'
+        });
+        if (dotRef.current) {
+          gsap.to(dotRef.current, {
+            backgroundColor: cursorColorOnTarget,
+            duration: 0.15,
+            ease: 'power2.out'
+          });
+        }
+      }
 
       const rect = target.getBoundingClientRect();
       const { borderWidth, cornerSize } = constants;
@@ -262,9 +279,24 @@ const TargetCursor = ({
         gsap.set(activeStrengthRef, { current: 0, overwrite: true });
         activeTarget = null;
 
+        if (cursorColorOnTarget && cornersRef.current) {
+          gsap.to(Array.from(cornersRef.current), {
+            borderColor: cursorColor,
+            duration: 0.15,
+            ease: 'power2.out'
+          });
+          if (dotRef.current) {
+            gsap.to(dotRef.current, {
+              backgroundColor: cursorColor,
+              duration: 0.15,
+              ease: 'power2.out'
+            });
+          }
+        }
+
         if (cornersRef.current) {
           const corners = Array.from(cornersRef.current);
-          gsap.killTweensOf(corners);
+          gsap.killTweensOf(corners, 'x,y');
           const { cornerSize } = constants;
           const positions = [
             { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
@@ -344,7 +376,18 @@ const TargetCursor = ({
       targetCornerPositionsRef.current = null;
       activeStrengthRef.current = 0;
     };
-  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn]);
+  }, [
+    targetSelector,
+    spinDuration,
+    moveCursor,
+    constants,
+    hideDefaultCursor,
+    isMobile,
+    hoverDuration,
+    parallaxOn,
+    cursorColor,
+    cursorColorOnTarget
+  ]);
 
   useEffect(() => {
     if (isMobile || !cursorRef.current || !spinTl.current) return;
@@ -362,11 +405,11 @@ const TargetCursor = ({
 
   return (
     <div ref={cursorRef} className="target-cursor-wrapper">
-      <div ref={dotRef} className="target-cursor-dot" />
-      <div className="target-cursor-corner corner-tl" />
-      <div className="target-cursor-corner corner-tr" />
-      <div className="target-cursor-corner corner-br" />
-      <div className="target-cursor-corner corner-bl" />
+      <div ref={dotRef} className="target-cursor-dot" style={{ backgroundColor: cursorColor }} />
+      <div className="target-cursor-corner corner-tl" style={{ borderColor: cursorColor }} />
+      <div className="target-cursor-corner corner-tr" style={{ borderColor: cursorColor }} />
+      <div className="target-cursor-corner corner-br" style={{ borderColor: cursorColor }} />
+      <div className="target-cursor-corner corner-bl" style={{ borderColor: cursorColor }} />
     </div>
   );
 };
