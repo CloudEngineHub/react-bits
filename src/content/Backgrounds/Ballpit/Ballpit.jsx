@@ -3,7 +3,7 @@ import {
   Vector3 as a,
   MeshPhysicalMaterial as c,
   InstancedMesh as d,
-  Clock as e,
+  Timer as e,
   AmbientLight as f,
   SphereGeometry as g,
   ShaderChunk as h,
@@ -186,6 +186,7 @@ class x {
     if (this.#n) return;
     const animate = () => {
       this.#l = requestAnimationFrame(animate);
+      this.#c.update();
       this.#h.delta = this.#c.getDelta();
       this.#h.elapsed += this.#h.delta;
       this.onBeforeRender(this.#h);
@@ -193,14 +194,13 @@ class x {
       this.onAfterRender(this.#h);
     };
     this.#n = true;
-    this.#c.start();
+    this.#c.reset();
     animate();
   }
   #z() {
     if (this.#n) {
       cancelAnimationFrame(this.#l);
       this.#n = false;
-      this.#c.stop();
     }
   }
   #i() {
@@ -224,6 +224,7 @@ class x {
   dispose() {
     this.#y();
     this.#z();
+    this.#c.dispose();
     this.clear();
     this.#t?.dispose();
     this.renderer.dispose();

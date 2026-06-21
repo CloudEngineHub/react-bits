@@ -16,6 +16,6 @@
 		"@react-three/fiber@^9.3.0",
 		"@react-three/postprocessing@^3.0.4",
 		"postprocessing@^6.36.0",
-		"three@^0.167.1"
+		"three@^0.180.0"
 	]
 }

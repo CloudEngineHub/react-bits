@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from 'react';
 import {
   ACESFilmicToneMapping,
   AmbientLight,
-  Clock,
   Color,
   InstancedMesh,
   MathUtils,
@@ -19,6 +18,7 @@ import {
   ShaderChunk,
   SphereGeometry,
   SRGBColorSpace,
+  Timer,
   Vector2,
   Vector3,
   WebGLRenderer,
@@ -51,7 +51,7 @@ class X {
   #intersectionObserver?: IntersectionObserver;
   #resizeTimer?: number;
   #animationFrameId: number = 0;
-  #clock: Clock = new Clock();
+  #timer: Timer = new Timer();
   #animationState = { elapsed: 0, delta: 0 };
   #isAnimating: boolean = false;
   #isVisible: boolean = false;
@@ -232,14 +232,15 @@ class X {
     if (this.#isVisible) return;
     const animateFrame = () => {
       this.#animationFrameId = requestAnimationFrame(animateFrame);
-      this.#animationState.delta = this.#clock.getDelta();
+      this.#timer.update();
+      this.#animationState.delta = this.#timer.getDelta();
       this.#animationState.elapsed += this.#animationState.delta;
       this.onBeforeRender(this.#animationState);
       this.render();
       this.onAfterRender(this.#animationState);
     };
     this.#isVisible = true;
-    this.#clock.start();
+    this.#timer.reset();
     animateFrame();
   }
 
@@ -247,7 +248,6 @@ class X {
     if (this.#isVisible) {
       cancelAnimationFrame(this.#animationFrameId);
       this.#isVisible = false;
-      this.#clock.stop();
     }
   }
 
@@ -274,6 +274,7 @@ class X {
   dispose() {
     this.#onResizeCleanup();
     this.#stopAnimation();
+    this.#timer.dispose();
     this.clear();
     this.#postprocessing?.dispose();
     this.renderer.dispose();
