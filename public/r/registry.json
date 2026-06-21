@@ -593,7 +593,7 @@
 			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -613,7 +613,7 @@
 			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -629,7 +629,7 @@
 			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -649,7 +649,7 @@
 			"description": "Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1195,7 +1195,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1217,7 +1217,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1235,7 +1235,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1257,7 +1257,7 @@
 			"dependencies": [
 				"@react-three/drei@^10.7.4",
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1417,7 +1417,7 @@
 			"description": "Morphing blurred geometric shape. The effect occurs on hover.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1433,7 +1433,7 @@
 			"description": "Morphing blurred geometric shape. The effect occurs on hover.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1449,7 +1449,7 @@
 			"description": "Morphing blurred geometric shape. The effect occurs on hover.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1465,7 +1465,7 @@
 			"description": "Morphing blurred geometric shape. The effect occurs on hover.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1745,7 +1745,7 @@
 			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1765,7 +1765,7 @@
 			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1781,7 +1781,7 @@
 			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1801,7 +1801,7 @@
 			"description": "Dynamic laser light that flows onto a surface, customizable effect.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1818,7 +1818,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1835,7 +1835,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1852,7 +1852,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1869,7 +1869,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1957,7 +1957,7 @@
 			"description": "Interactive magic rings effect with customizable parameters.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1977,7 +1977,7 @@
 			"description": "Interactive magic rings effect with customizable parameters.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -1993,7 +1993,7 @@
 			"description": "Interactive magic rings effect with customizable parameters.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -2013,7 +2013,7 @@
 			"description": "Interactive magic rings effect with customizable parameters.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -2029,7 +2029,7 @@
 			"description": "Renders text with an animated ASCII background for a retro feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -2045,7 +2045,7 @@
 			"description": "Renders text with an animated ASCII background for a retro feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -2061,7 +2061,7 @@
 			"description": "Renders text with an animated ASCII background for a retro feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -2077,7 +2077,7 @@
 			"description": "Renders text with an animated ASCII background for a retro feel.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -4625,7 +4625,7 @@
 			"description": "Glassmorphism container with animated liquid distortion refraction.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
 				"maath@^0.10.8"
@@ -4644,7 +4644,7 @@
 			"description": "Glassmorphism container with animated liquid distortion refraction.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
 				"maath@^0.10.8"
@@ -4663,7 +4663,7 @@
 			"description": "Glassmorphism container with animated liquid distortion refraction.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
 				"maath@^0.10.8"
@@ -4682,7 +4682,7 @@
 			"description": "Glassmorphism container with animated liquid distortion refraction.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
 				"maath@^0.10.8"
@@ -5311,7 +5311,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -5329,7 +5329,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -5347,7 +5347,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -5365,7 +5365,7 @@
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6289,7 +6289,7 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6305,7 +6305,7 @@
 			"description": "Physics ball pit simulation with bouncing colorful spheres.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6322,7 +6322,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6339,7 +6339,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"gsap@^3.13.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6355,7 +6355,7 @@
 			"description": "Crossing animated ribbons with customizable properties.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4"
 			],
@@ -6377,7 +6377,7 @@
 			"description": "Crossing animated ribbons with customizable properties.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4"
 			],
@@ -6395,7 +6395,7 @@
 			"description": "Crossing animated ribbons with customizable properties.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4"
 			],
@@ -6417,7 +6417,7 @@
 			"description": "Crossing animated ribbons with customizable properties.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1",
+				"three@^0.180.0",
 				"@react-three/fiber@^9.3.0",
 				"@react-three/drei@^10.7.4"
 			],
@@ -6435,7 +6435,7 @@
 			"description": "Vibrant color bends with smooth flowing animation.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6455,7 +6455,7 @@
 			"description": "Vibrant color bends with smooth flowing animation.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6471,7 +6471,7 @@
 			"description": "Vibrant color bends with smooth flowing animation.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6491,7 +6491,7 @@
 			"description": "Vibrant color bends with smooth flowing animation.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6582,7 +6582,7 @@
 				"@react-three/fiber@^9.3.0",
 				"@react-three/postprocessing@^3.0.4",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6605,7 +6605,7 @@
 				"@react-three/fiber@^9.3.0",
 				"@react-three/postprocessing@^3.0.4",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6624,7 +6624,7 @@
 				"@react-three/fiber@^9.3.0",
 				"@react-three/postprocessing@^3.0.4",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -6647,7 +6647,7 @@
 				"@react-three/fiber@^9.3.0",
 				"@react-three/postprocessing@^3.0.4",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7233,7 +7233,7 @@
 			"dependencies": [
 				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7255,7 +7255,7 @@
 			"dependencies": [
 				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7273,7 +7273,7 @@
 			"dependencies": [
 				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7295,7 +7295,7 @@
 			"dependencies": [
 				"face-api.js@^0.22.2",
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7311,7 +7311,7 @@
 			"description": "Warped grid mesh distorts smoothly reacting to cursor.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7331,7 +7331,7 @@
 			"description": "Warped grid mesh distorts smoothly reacting to cursor.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7347,7 +7347,7 @@
 			"description": "Warped grid mesh distorts smoothly reacting to cursor.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7367,7 +7367,7 @@
 			"description": "Warped grid mesh distorts smoothly reacting to cursor.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7456,7 +7456,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7481,7 +7481,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7502,7 +7502,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -7527,7 +7527,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8316,7 +8316,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8337,7 +8337,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8354,7 +8354,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8375,7 +8375,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"postprocessing@^6.36.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8752,7 +8752,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8769,7 +8769,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8786,7 +8786,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -8803,7 +8803,7 @@
 			"type": "registry:component",
 			"dependencies": [
 				"@react-three/fiber@^9.3.0",
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9091,7 +9091,7 @@
 			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9111,7 +9111,7 @@
 			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9127,7 +9127,7 @@
 			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9147,7 +9147,7 @@
 			"description": "Interactive liquid shader with flowing distortion and customizable colors.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9163,7 +9163,7 @@
 			"description": "3D floating lines that react to cursor movement.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9183,7 +9183,7 @@
 			"description": "3D floating lines that react to cursor movement.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9199,7 +9199,7 @@
 			"description": "3D floating lines that react to cursor movement.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9219,7 +9219,7 @@
 			"description": "3D floating lines that react to cursor movement.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9235,7 +9235,7 @@
 			"description": "Vertical pillar of light with glow effects.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9255,7 +9255,7 @@
 			"description": "Vertical pillar of light with glow effects.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9271,7 +9271,7 @@
 			"description": "Vertical pillar of light with glow effects.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9291,7 +9291,7 @@
 			"description": "Vertical pillar of light with glow effects.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9307,7 +9307,7 @@
 			"description": "Falling pixelated snow effect with customizable density and speed.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9327,7 +9327,7 @@
 			"description": "Falling pixelated snow effect with customizable density and speed.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9343,7 +9343,7 @@
 			"description": "Falling pixelated snow effect with customizable density and speed.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
@@ -9363,7 +9363,7 @@
 			"description": "Falling pixelated snow effect with customizable density and speed.",
 			"type": "registry:component",
 			"dependencies": [
-				"three@^0.167.1"
+				"three@^0.180.0"
 			],
 			"registryDependencies": [],
 			"files": [
