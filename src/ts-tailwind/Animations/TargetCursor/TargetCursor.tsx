@@ -37,6 +37,8 @@ export interface TargetCursorProps {
   hideDefaultCursor?: boolean;
   hoverDuration?: number;
   parallaxOn?: boolean;
+  cursorColor?: string;
+  cursorColorOnTarget?: string;
 }
 
 const TargetCursor: React.FC<TargetCursorProps> = ({
@@ -44,7 +46,9 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   spinDuration = 2,
   hideDefaultCursor = true,
   hoverDuration = 0.2,
-  parallaxOn = true
+  parallaxOn = true,
+  cursorColor = '#ffffff',
+  cursorColorOnTarget
 }) => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cornersRef = useRef<NodeListOf<HTMLDivElement> | null>(null);
@@ -204,10 +208,25 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
 
       activeTarget = target;
       const corners = Array.from(cornersRef.current);
-      corners.forEach(corner => gsap.killTweensOf(corner));
+      corners.forEach(corner => gsap.killTweensOf(corner, 'x,y'));
       gsap.killTweensOf(cursorRef.current, 'rotation');
       spinTl.current?.pause();
       gsap.set(cursorRef.current, { rotation: 0 });
+
+      if (cursorColorOnTarget) {
+        gsap.to(corners, {
+          borderColor: cursorColorOnTarget,
+          duration: 0.15,
+          ease: 'power2.out'
+        });
+        if (dotRef.current) {
+          gsap.to(dotRef.current, {
+            backgroundColor: cursorColorOnTarget,
+            duration: 0.15,
+            ease: 'power2.out'
+          });
+        }
+      }
 
       const rect = target.getBoundingClientRect();
       const { borderWidth, cornerSize } = constants;
@@ -242,9 +261,25 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
         targetCornerPositionsRef.current = null;
         gsap.set(activeStrengthRef.current, { current: 0, overwrite: true });
         activeTarget = null;
+
+        if (cursorColorOnTarget && cornersRef.current) {
+          gsap.to(Array.from(cornersRef.current), {
+            borderColor: cursorColor,
+            duration: 0.15,
+            ease: 'power2.out'
+          });
+          if (dotRef.current) {
+            gsap.to(dotRef.current, {
+              backgroundColor: cursorColor,
+              duration: 0.15,
+              ease: 'power2.out'
+            });
+          }
+        }
+
         if (cornersRef.current) {
           const corners = Array.from(cornersRef.current);
-          gsap.killTweensOf(corners);
+          gsap.killTweensOf(corners, 'x,y');
           const { cornerSize } = constants;
           const positions = [
             { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
@@ -308,7 +343,18 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
       targetCornerPositionsRef.current = null;
       activeStrengthRef.current.current = 0;
     };
-  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn]);
+  }, [
+    targetSelector,
+    spinDuration,
+    moveCursor,
+    constants,
+    hideDefaultCursor,
+    isMobile,
+    hoverDuration,
+    parallaxOn,
+    cursorColor,
+    cursorColorOnTarget
+  ]);
 
   useEffect(() => {
     if (isMobile || !cursorRef.current || !spinTl.current) return;
@@ -332,24 +378,24 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
     >
       <div
         ref={dotRef}
-        className="absolute top-1/2 left-1/2 w-1 h-1 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"
-        style={{ willChange: 'transform' }}
+        className="absolute top-1/2 left-1/2 w-1 h-1 rounded-full -translate-x-1/2 -translate-y-1/2"
+        style={{ willChange: 'transform', backgroundColor: cursorColor }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white -translate-x-[150%] -translate-y-[150%] border-r-0 border-b-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] -translate-x-[150%] -translate-y-[150%] border-r-0 border-b-0"
+        style={{ willChange: 'transform', borderColor: cursorColor }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white translate-x-1/2 -translate-y-[150%] border-l-0 border-b-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] translate-x-1/2 -translate-y-[150%] border-l-0 border-b-0"
+        style={{ willChange: 'transform', borderColor: cursorColor }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white translate-x-1/2 translate-y-1/2 border-l-0 border-t-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] translate-x-1/2 translate-y-1/2 border-l-0 border-t-0"
+        style={{ willChange: 'transform', borderColor: cursorColor }}
       />
       <div
-        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] border-white -translate-x-[150%] translate-y-1/2 border-r-0 border-t-0"
-        style={{ willChange: 'transform' }}
+        className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] -translate-x-[150%] translate-y-1/2 border-r-0 border-t-0"
+        style={{ willChange: 'transform', borderColor: cursorColor }}
       />
     </div>
   );
