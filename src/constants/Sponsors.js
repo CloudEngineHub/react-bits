@@ -26,12 +26,6 @@ export const platinumSponsors = [
 export const silverSponsors = [
   {
     id: 1,
-    name: 'Next.js Weekly',
-    imageUrl: '/assets/sponsors/nextjsweekly.svg',
-    url: 'https://nextjsweekly.com/'
-  },
-  {
-    id: 2,
     name: 'Shadcncraft',
     imageUrl: '/assets/sponsors/shadcncraft.svg',
     url: 'https://shadcncraft.com/'
