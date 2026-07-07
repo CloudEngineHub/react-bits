@@ -1,5 +1,6 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Line Sidebar',
   'Strands',
   'Side Rays',
   'Dot Field',
@@ -85,6 +86,7 @@ export const CATEGORIES = [
   {
     name: 'Components',
     subcategories: [
+      'Line Sidebar',
       'Animated List',
       'Scroll Stack',
       'Bubble Menu',
