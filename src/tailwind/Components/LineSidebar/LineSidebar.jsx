@@ -142,7 +142,7 @@ const LineSidebar = ({
 
   return (
     <nav
-      className={`relative flex justify-start [padding-left:calc(var(--marker-length)+var(--marker-gap))]${className ? ` ${className}` : ''}`}
+      className={`relative flex justify-start${showMarker ? ' [padding-left:calc(var(--marker-length)+var(--marker-gap))]' : ''}${className ? ` ${className}` : ''}`}
       style={{
         '--accent-color': accentColor,
         '--text-color': textColor,
