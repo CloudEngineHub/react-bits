@@ -710,6 +710,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/border-glow',
     tags: []
   },
+  'Components/LineSidebar': {
+    videoUrl: '/assets/video/linesidebar.webm',
+    description: 'Static list navigation with a cursor-proximity effect that shifts and highlights nearby items.',
+    category: 'Components',
+    name: 'LineSidebar',
+    docsUrl: 'https://reactbits.dev/components/line-sidebar',
+    tags: []
+  },
   'Components/Stack': {
     videoUrl: '/assets/video/stack.webm',
     description: 'Layered stack with swipe animations, autoplay and smooth transitions.',
