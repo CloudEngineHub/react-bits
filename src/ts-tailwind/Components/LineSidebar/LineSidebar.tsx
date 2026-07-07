@@ -191,7 +191,9 @@ const LineSidebar = ({
         {items.map((label, index) => (
           <li
             key={`${label}-${index}`}
-            ref={el => (itemRefs.current[index] = el)}
+            ref={el => {
+              itemRefs.current[index] = el;
+            }}
             aria-current={activeIndex === index ? 'true' : undefined}
             onClick={() => handleClick(index, label)}
             className={`relative cursor-pointer before:absolute before:-inset-x-12 before:-inset-y-[6px] before:content-[''] ${tickClass}`}

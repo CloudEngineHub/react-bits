@@ -13,6 +13,9 @@
   position: relative;
   display: flex;
   justify-content: flex-start;
+}
+
+.line-sidebar--markers {
   padding-left: calc(var(--marker-length) + var(--marker-gap));
 }
 
