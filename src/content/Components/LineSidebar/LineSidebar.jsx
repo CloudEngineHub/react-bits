@@ -153,7 +153,9 @@ const LineSidebar = ({
         {items.map((label, index) => (
           <li
             key={`${label}-${index}`}
-            ref={el => (itemRefs.current[index] = el)}
+            ref={el => {
+              itemRefs.current[index] = el;
+            }}
             className="line-sidebar__item"
             aria-current={activeIndex === index ? 'true' : undefined}
             onClick={() => handleClick(index, label)}
