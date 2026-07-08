@@ -318,7 +318,9 @@ const Category = memo(
           {items.map(({ sub, path, isActive, isNew, isUpdated, isFavorited }) => (
             <Link
               key={path}
-              ref={el => itemRefs.current && (itemRefs.current[path] = el)}
+              ref={el => {
+                if (itemRefs.current) itemRefs.current[path] = el;
+              }}
               to={path}
               className={`sidebar-item ${isActive ? 'active-sidebar-item' : ''} ${isTransitioning ? 'transitioning' : ''}`}
               onClick={e => {
