@@ -61,7 +61,9 @@ const GridMotion = ({ items = [], gradientColor = 'black' }) => {
               key={rowIndex}
               className="grid gap-4 grid-cols-7"
               style={{ willChange: 'transform, filter' }}
-              ref={el => (rowRefs.current[rowIndex] = el)}
+              ref={el => {
+                rowRefs.current[rowIndex] = el;
+              }}
             >
               {[...Array(7)].map((_, itemIndex) => {
                 const content = combinedItems[rowIndex * 7 + itemIndex];

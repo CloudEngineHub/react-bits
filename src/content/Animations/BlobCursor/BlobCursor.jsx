@@ -82,7 +82,9 @@ export default function BlobCursor({
         {Array.from({ length: trailCount }).map((_, i) => (
           <div
             key={i}
-            ref={el => (blobsRef.current[i] = el)}
+            ref={el => {
+              blobsRef.current[i] = el;
+            }}
             className="blob"
             style={{
               width: sizes[i],
