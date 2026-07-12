@@ -39,6 +39,11 @@ interface Pointer {
   color: ColorRGB;
 }
 
+interface TextureFormat {
+  internalFormat: number;
+  format: number;
+}
+
 function pointerPrototype(): Pointer {
   return {
     id: -1,
@@ -131,7 +136,7 @@ export default function SplashCursor({
       const isWebGL2 = 'drawBuffers' in gl;
 
       let supportLinearFiltering = false;
-      let halfFloat = null;
+      let halfFloat: OES_texture_half_float | null = null;
 
       if (isWebGL2) {
         (gl as WebGL2RenderingContext).getExtension('EXT_color_buffer_float');
@@ -145,11 +150,11 @@ export default function SplashCursor({
 
       const halfFloatTexType = isWebGL2
         ? (gl as WebGL2RenderingContext).HALF_FLOAT
-        : (halfFloat && (halfFloat as any).HALF_FLOAT_OES) || 0;
+        : (halfFloat && halfFloat.HALF_FLOAT_OES) || 0;
 
-      let formatRGBA: any;
-      let formatRG: any;
-      let formatR: any;
+      let formatRGBA: TextureFormat | null;
+      let formatRG: TextureFormat | null;
+      let formatR: TextureFormat | null;
 
       if (isWebGL2) {
         formatRGBA = getSupportedFormat(gl, (gl as WebGL2RenderingContext).RGBA16F, gl.RGBA, halfFloatTexType);
@@ -171,6 +176,10 @@ export default function SplashCursor({
         formatR = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
       }
 
+      if (!formatRGBA || !formatRG || !formatR) {
+        throw new Error('Unable to initialize WebGL render texture formats.');
+      }
+
       return {
         gl,
         ext: {
@@ -188,7 +197,7 @@ export default function SplashCursor({
       internalFormat: number,
       format: number,
       type: number
-    ): { internalFormat: number; format: number } | null {
+    ): TextureFormat | null {
       if (!supportRenderTextureFormat(gl, internalFormat, format, type)) {
         if ('drawBuffers' in gl) {
           const gl2 = gl as WebGL2RenderingContext;
