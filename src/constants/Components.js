@@ -100,7 +100,8 @@ const components = {
   'dome-gallery': () => import('../demo/Components/DomeGalleryDemo'),
   'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo'),
   'reflective-card': () => import('../demo/Components/ReflectiveCardDemo'),
-  'line-sidebar': () => import('../demo/Components/LineSidebarDemo')
+  'line-sidebar': () => import('../demo/Components/LineSidebarDemo'),
+  'curved-input': () => import('../demo/Components/CurvedInputDemo')
 };
 
 const backgrounds = {
