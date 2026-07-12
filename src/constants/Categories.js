@@ -1,5 +1,6 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Curved Input',
   'Line Sidebar',
   'Strands',
   'Side Rays',
@@ -86,6 +87,7 @@ export const CATEGORIES = [
   {
     name: 'Components',
     subcategories: [
+      'Curved Input',
       'Line Sidebar',
       'Animated List',
       'Scroll Stack',

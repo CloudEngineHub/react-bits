@@ -718,6 +718,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/line-sidebar',
     tags: []
   },
+  'Components/CurvedInput': {
+    videoUrl: '/assets/video/curvedinput.webm',
+    description: 'Arc-bent input bar with text, caret and submit button all following the curve.',
+    category: 'Components',
+    name: 'CurvedInput',
+    docsUrl: 'https://reactbits.dev/components/curved-input',
+    tags: []
+  },
   'Components/Stack': {
     videoUrl: '/assets/video/stack.webm',
     description: 'Layered stack with swipe animations, autoplay and smooth transitions.',
