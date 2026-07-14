@@ -103,14 +103,14 @@ const ProCard = () => {
           <span className="pro-card-badge">PRO</span>
           <h3 className="pro-card-title">Get React Bits Pro</h3>
           <p className="pro-card-desc">
-            100+ components, 158+ blocks &amp; 8+ templates to ship memorable products faster.
+            100 components, 238 blocks &amp; 11 templates to ship memorable products faster.
           </p>
           <div className="pro-card-cta">
             <span>Explore Pro</span>
             <LuArrowRight size={14} />
           </div>
           <div className="pro-card-promo">
-            <span className="pro-card-promo-text">Yearly Pricing Now Available</span>
+            <span className="pro-card-promo-text">80 New UI Blocks Just Landed</span>
           </div>
         </div>
       </div>
