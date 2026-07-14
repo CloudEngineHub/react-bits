@@ -84,7 +84,7 @@ const OptionWheel = ({
   const onChangeRef = useRef(onChange);
   const selectedRef = useRef(defaultSelected);
   const wheelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const dragRef = useRef<{ y: number; start: number } | null>(null);
+  const dragRef = useRef<{ y: number; start: number; id: number } | null>(null);
   const dragMovedRef = useRef(false);
   const [selectedIndex, setSelectedIndex] = useState(defaultSelected);
   const [isDragging, setIsDragging] = useState(false);
@@ -206,9 +206,8 @@ const OptionWheel = ({
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!cfgRef.current.draggable) return;
-    dragRef.current = { y: e.clientY, start: targetRef.current };
+    dragRef.current = { y: e.clientY, start: targetRef.current, id: e.pointerId };
     dragMovedRef.current = false;
-    rootRef.current?.setPointerCapture(e.pointerId);
     setIsDragging(true);
   }, []);
 
@@ -217,8 +216,13 @@ const OptionWheel = ({
       const drag = dragRef.current;
       if (!drag) return;
       const dy = e.clientY - drag.y;
-      if (Math.abs(dy) > 4) dragMovedRef.current = true;
-      applyTarget(drag.start - dy / cfgRef.current.rowH, false);
+      if (!dragMovedRef.current && Math.abs(dy) > 4) {
+        dragMovedRef.current = true;
+        // Capture only once a real drag starts, so plain clicks still reach
+        // the items and navigate to them.
+        rootRef.current?.setPointerCapture(drag.id);
+      }
+      if (dragMovedRef.current) applyTarget(drag.start - dy / cfgRef.current.rowH, false);
     },
     [applyTarget]
   );
