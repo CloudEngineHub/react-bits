@@ -167,9 +167,8 @@ const OptionWheel = ({
 
   const handlePointerDown = useCallback(e => {
     if (!cfgRef.current.draggable) return;
-    dragRef.current = { y: e.clientY, start: targetRef.current };
+    dragRef.current = { y: e.clientY, start: targetRef.current, id: e.pointerId };
     dragMovedRef.current = false;
-    rootRef.current?.setPointerCapture(e.pointerId);
     setIsDragging(true);
   }, []);
 
@@ -178,8 +177,13 @@ const OptionWheel = ({
       const drag = dragRef.current;
       if (!drag) return;
       const dy = e.clientY - drag.y;
-      if (Math.abs(dy) > 4) dragMovedRef.current = true;
-      applyTarget(drag.start - dy / cfgRef.current.rowH, false);
+      if (!dragMovedRef.current && Math.abs(dy) > 4) {
+        dragMovedRef.current = true;
+        // Capture only once a real drag starts, so plain clicks still reach
+        // the items and navigate to them.
+        rootRef.current?.setPointerCapture(drag.id);
+      }
+      if (dragMovedRef.current) applyTarget(drag.start - dy / cfgRef.current.rowH, false);
     },
     [applyTarget]
   );
