@@ -718,6 +718,30 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/line-sidebar',
     tags: []
   },
+  'Components/OptionWheel': {
+    videoUrl: '/assets/video/optionwheel.webm',
+    description: 'Curved option picker that spins via scroll, drag, or arrow keys, fading and tilting items away from the selection.',
+    category: 'Components',
+    name: 'OptionWheel',
+    docsUrl: 'https://reactbits.dev/components/option-wheel',
+    tags: []
+  },
+  'Components/SpecularButton': {
+    videoUrl: '/assets/video/specularbutton.webm',
+    description: 'Glass button with a shader-driven specular rim light that sweeps around the edge and follows the cursor.',
+    category: 'Components',
+    name: 'SpecularButton',
+    docsUrl: 'https://reactbits.dev/components/specular-button',
+    tags: []
+  },
+  'Animations/CursorGrid': {
+    videoUrl: '/assets/video/cursorgrid.webm',
+    description: 'Canvas grid whose cells light up around the cursor with configurable radius, falloff and click pulses.',
+    category: 'Animations',
+    name: 'CursorGrid',
+    docsUrl: 'https://reactbits.dev/animations/cursor-grid',
+    tags: []
+  },
   'Components/CurvedInput': {
     videoUrl: '/assets/video/curvedinput.webm',
     description: 'Arc-bent input bar with text, caret and submit button all following the curve.',

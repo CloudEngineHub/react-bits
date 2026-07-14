@@ -516,9 +516,9 @@ const Hero = () => {
 
       <div className="ln-hero-content">
         <div className="ln-hero-left">
-          <Link to="/components/line-sidebar" className="ln-hero-tag">
+          <Link to="/components/option-wheel" className="ln-hero-tag">
             <span className="ln-hero-tag-new" style={{ background: accentColor, color: accentFg }}>New Component</span>
-            Line Sidebar <FaArrowRight size={10} />
+            Option Wheel <FaArrowRight size={10} />
           </Link>
           <h1 className="ln-hero-headline"><span className="ln-hero-headline-line">React components for</span><br /><span className="ln-hero-headline-line">creative developers</span></h1>
           <p className="ln-hero-description">
