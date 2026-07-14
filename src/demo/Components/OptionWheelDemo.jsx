@@ -28,7 +28,9 @@ const DEFAULT_PROPS = {
   smoothing: 200,
   inset: 80,
   loop: false,
-  draggable: true
+  draggable: true,
+  soundUrl: '/assets/sounds/click-soft.mp3',
+  soundVolume: 0.5
 };
 
 const DEMO_ITEMS = ['Ambient', 'House', 'Techno', 'Jazz', 'Lo-Fi', 'Synthwave', 'Trance', 'Funk', 'Disco', 'Hip-Hop', 'Chillwave', 'Drum & Bass'];
@@ -40,7 +42,8 @@ const SIDE_OPTIONS = [
 
 const OptionWheelDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { textColor, activeColor, side, fontSize, spacing, curve, tilt, blur, fade, smoothing, inset, loop, draggable } = props;
+  const { textColor, activeColor, side, fontSize, spacing, curve, tilt, blur, fade, smoothing, inset, loop, draggable, soundUrl, soundVolume } =
+    props;
 
   const propData = useMemo(
     () => [
@@ -61,6 +64,8 @@ const OptionWheelDemo = () => {
       { name: 'inset', type: 'number', default: '80', description: 'Padding in pixels between the anchored edge and the centered option.' },
       { name: 'loop', type: 'boolean', default: 'false', description: 'Wrap around infinitely instead of stopping at the first and last option.' },
       { name: 'draggable', type: 'boolean', default: 'true', description: 'Allow dragging the wheel with a pointer, in addition to scroll and arrow keys.' },
+      { name: 'soundUrl', type: 'string', default: '""', description: 'URL of a short tick sound played when the selection changes; empty disables it.' },
+      { name: 'soundVolume', type: 'number', default: '0.5', description: 'Playback volume of the tick sound.' },
       { name: 'className', type: 'string', default: '""', description: 'Additional CSS classes for the outer wrapper.' }
     ],
     []
@@ -86,8 +91,14 @@ const OptionWheelDemo = () => {
             <PreviewSlider title="Fade" min={0} max={0.5} step={0.01} value={fade} onChange={val => updateProp('fade', val)} />
             <PreviewSlider title="Smoothing" min={50} max={800} step={10} value={smoothing} valueUnit="ms" onChange={val => updateProp('smoothing', val)} />
             <PreviewSlider title="Inset" min={0} max={240} step={4} value={inset} valueUnit="px" onChange={val => updateProp('inset', val)} />
+            <PreviewSlider title="Sound Volume" min={0} max={1} step={0.05} value={soundVolume} onChange={val => updateProp('soundVolume', val)} />
             <PreviewSwitch title="Loop" isChecked={loop} onChange={val => updateProp('loop', val)} />
             <PreviewSwitch title="Draggable" isChecked={draggable} onChange={val => updateProp('draggable', val)} />
+            <PreviewSwitch
+              title="Sound"
+              isChecked={!!soundUrl}
+              onChange={val => updateProp('soundUrl', val ? '/assets/sounds/click-soft.mp3' : '')}
+            />
           </Customize>
 
           <PropTable data={propData} />

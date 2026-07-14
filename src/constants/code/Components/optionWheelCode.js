@@ -23,6 +23,8 @@ export const optionWheel = {
   inset={80}
   loop={false}
   draggable
+  soundUrl="/sounds/click-soft.mp3"
+  soundVolume={0.5}
   onChange={(index, item) => console.log(index, item)}
 />`,
   code,
