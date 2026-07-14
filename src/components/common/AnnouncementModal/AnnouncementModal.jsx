@@ -1,21 +1,22 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
-import { LuX } from 'react-icons/lu';
+import { LuX, LuVolume2, LuVolumeX } from 'react-icons/lu';
 import { FiArrowRight } from 'react-icons/fi';
 import './AnnouncementModal.css';
 
-const STORAGE_KEY = 'rb-pro-yearly-pricing-seen';
+const STORAGE_KEY = 'rb-pro-july-release-seen';
 const SHOW_DELAY = 1500;
-const PROMO_IMAGE = '/assets/rbp/yearly.png';
+const PROMO_VIDEO = 'https://cdn.reactbits.dev/julyupdate.mp4';
 
-const DISABLED = true;
+const DISABLED = false;
 
 const AnnouncementModal = () => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const modalRef = useRef(null);
   const previouslyFocusedElement = useRef(null);
 
@@ -148,21 +149,35 @@ const AnnouncementModal = () => {
               </button>
 
               <div className="announcement-modal-image">
-                <img
-                  src={PROMO_IMAGE}
-                  alt="React Bits Pro yearly pricing is now available"
-                  loading="lazy"
+                <video
+                  src={PROMO_VIDEO}
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  aria-label="Preview of the new React Bits Pro animated UI blocks"
                 />
+                <button
+                  className="announcement-modal-sound"
+                  onClick={() => setIsMuted(m => !m)}
+                  aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                >
+                  {isMuted ? <LuVolumeX size={15} /> : <LuVolume2 size={15} />}
+                </button>
               </div>
 
               <div className="announcement-modal-content">
                 <h2 id="announcement-modal-title" className="announcement-modal-title">
-                  Yearly pricing is here!
+                  React Bits Pro July Update
                 </h2>
 
-                <p id="announcement-modal-description" className="announcement-modal-description">
-                  Alongside our lifetime plans, React Bits Pro now offers yearly pricing, a more flexible and affordable way to get access.
-                </p>
+                <div id="announcement-modal-description" className="announcement-modal-description">
+                  <p>
+                    <strong>80 new animated UI blocks</strong> just landed, plus a complete docs overhaul. Now{' '}
+                    <strong>100 components</strong>, <strong>238 blocks</strong>, and <strong>11 templates</strong>.
+                  </p>
+                  <p>Everything humans and agents need to ship creative pages.</p>
+                </div>
 
                 <a
                   href="https://pro.reactbits.dev"
@@ -171,7 +186,7 @@ const AnnouncementModal = () => {
                   className="announcement-modal-btn announcement-modal-btn--primary"
                   onClick={handleDismiss}
                 >
-                  Get React Bits Pro <FiArrowRight size={14} />
+                  Explore React Bits Pro <FiArrowRight size={14} />
                 </a>
               </div>
             </div>

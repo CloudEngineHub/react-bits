@@ -109,11 +109,43 @@
   transform: translateZ(0);
 }
 
-.announcement-modal-image img {
+.announcement-modal-image video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 14px;
+}
+
+.announcement-modal-sound {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(14, 11, 19, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.announcement-modal-sound:hover {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(14, 11, 19, 0.8);
+}
+
+.announcement-modal-sound:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
 }
 
 .announcement-modal-content {
@@ -135,24 +167,25 @@
 }
 
 .announcement-modal-description {
-  margin: 0 0 18px;
+  margin: 0;
+  padding: 12px 0 24px;
   font-family: 'Geist', sans-serif;
   font-size: 13.5px;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.65);
 }
 
+.announcement-modal-description p {
+  margin: 0;
+}
+
+.announcement-modal-description p + p {
+  margin-top: 12px;
+}
+
 .announcement-modal-description strong {
-  font-family: 'Geist Mono', ui-monospace, monospace;
-  font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.04em;
   color: #fff;
-  padding: 2px 7px;
-  margin: 0 1px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .announcement-modal-btn {
@@ -205,7 +238,7 @@
     margin: 6px 6px 0;
   }
 
-  .announcement-modal-image img {
+  .announcement-modal-image video {
     border-radius: 11px;
   }
 
