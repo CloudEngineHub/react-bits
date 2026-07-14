@@ -34,6 +34,7 @@ const animations = {
   'orbit-images': () => import('../demo/Animations/OrbitImagesDemo'),
   'magic-rings': () => import('../demo/Animations/MagicRingsDemo'),
   'strands': () => import('../demo/Animations/StrandsDemo'),
+  'cursor-grid': () => import('../demo/Animations/CursorGridDemo'),
 };
 
 const textAnimations = {
@@ -101,7 +102,9 @@ const components = {
   'staggered-menu': () => import('../demo/Components/StaggeredMenuDemo'),
   'reflective-card': () => import('../demo/Components/ReflectiveCardDemo'),
   'line-sidebar': () => import('../demo/Components/LineSidebarDemo'),
-  'curved-input': () => import('../demo/Components/CurvedInputDemo')
+  'curved-input': () => import('../demo/Components/CurvedInputDemo'),
+  'option-wheel': () => import('../demo/Components/OptionWheelDemo'),
+  'specular-button': () => import('../demo/Components/SpecularButtonDemo')
 };
 
 const backgrounds = {

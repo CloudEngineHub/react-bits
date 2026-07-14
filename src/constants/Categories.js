@@ -1,5 +1,8 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Cursor Grid',
+  'Specular Button',
+  'Option Wheel',
   'Curved Input',
   'Line Sidebar',
   'Strands',
@@ -52,6 +55,7 @@ export const CATEGORIES = [
   {
     name: 'Animations',
     subcategories: [
+      'Cursor Grid',
       'Animated Content',
       'Fade Content',
       'Electric Border',
@@ -87,6 +91,8 @@ export const CATEGORIES = [
   {
     name: 'Components',
     subcategories: [
+      'Specular Button',
+      'Option Wheel',
       'Curved Input',
       'Line Sidebar',
       'Animated List',
