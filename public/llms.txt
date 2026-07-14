@@ -62,6 +62,7 @@ Notes:
 - [Click Spark](https://www.reactbits.dev/animations/click-spark): Creates particle spark bursts at click position. CLI: `ClickSpark`.
 - [Crosshair](https://www.reactbits.dev/animations/crosshair): Custom crosshair cursor with tracking, and link hover effects. CLI: `Crosshair`.
 - [Cubes](https://www.reactbits.dev/animations/cubes): 3D rotating cube cluster. Supports auto-rotation or hover interaction. CLI: `Cubes`.
+- [Cursor Grid](https://www.reactbits.dev/animations/cursor-grid): Canvas grid whose cells light up around the cursor with configurable radius, falloff and click pulses. CLI: `CursorGrid`.
 - [Electric Border](https://www.reactbits.dev/animations/electric-border): Jittery electric energy border with animated arcs, glow and adjustable intensity. CLI: `ElectricBorder`.
 - [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple directional fade / slide entrance / exit wrapper with threshold-based activation. CLI: `FadeContent`.
 - [Ghost Cursor](https://www.reactbits.dev/animations/ghost-cursor): Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect. CLI: `GhostCursor`.
@@ -84,6 +85,7 @@ Notes:
 - [Splash Cursor](https://www.reactbits.dev/animations/splash-cursor): Liquid splash burst at cursor with curling ripples and waves. CLI: `SplashCursor`.
 - [Star Border](https://www.reactbits.dev/animations/star-border): Animated star / sparkle border orbiting content with twinkle pulses. CLI: `StarBorder`.
 - [Sticker Peel](https://www.reactbits.dev/animations/sticker-peel): Sticker corner lift + peel interaction using 3D transform and shadow depth. CLI: `StickerPeel`.
+- [Strands](https://www.reactbits.dev/animations/strands): Glowing ribbon-like strands that ripple and weave across a transparent canvas. CLI: `Strands`.
 - [Target Cursor](https://www.reactbits.dev/animations/target-cursor): A cursor follow animation with 4 corners that lock onto targets. CLI: `TargetCursor`.
 
 ## Components
@@ -98,6 +100,7 @@ Notes:
 - [Chroma Grid](https://www.reactbits.dev/components/chroma-grid): A responsive grid of grayscale tiles. Hovering the grid reaveals their colors. CLI: `ChromaGrid`.
 - [Circular Gallery](https://www.reactbits.dev/components/circular-gallery): Circular orbit gallery rotating images. CLI: `CircularGallery`.
 - [Counter](https://www.reactbits.dev/components/counter): Flexible animated counter supporting increments + easing. CLI: `Counter`.
+- [Curved Input](https://www.reactbits.dev/components/curved-input): Arc-bent input bar with text, caret and submit button all following the curve. CLI: `CurvedInput`.
 - [Decay Card](https://www.reactbits.dev/components/decay-card): Hover parallax effect that disintegrates the content of a card. CLI: `DecayCard`.
 - [Dock](https://www.reactbits.dev/components/dock): macOS style magnifying dock with proximity scaling of icons. CLI: `Dock`.
 - [Dome Gallery](https://www.reactbits.dev/components/dome-gallery): Immersive 3D dome gallery projecting images on a hemispheric surface. CLI: `DomeGallery`.
@@ -111,14 +114,17 @@ Notes:
 - [Gooey Nav](https://www.reactbits.dev/components/gooey-nav): Navigation indicator morphs with gooey blob transitions between items. CLI: `GooeyNav`.
 - [Infinite Menu](https://www.reactbits.dev/components/infinite-menu): Horizontally looping menu effect that scrolls endlessly with seamless wrap. CLI: `InfiniteMenu`.
 - [Lanyard](https://www.reactbits.dev/components/lanyard): Swinging 3D lanyard / badge card with realistic inertial motion. CLI: `Lanyard`.
+- [Line Sidebar](https://www.reactbits.dev/components/line-sidebar): Static list navigation with a cursor-proximity effect that shifts and highlights nearby items. CLI: `LineSidebar`.
 - [Magic Bento](https://www.reactbits.dev/components/magic-bento): Interactive bento grid tiles expand + animate with various options. CLI: `MagicBento`.
 - [Masonry](https://www.reactbits.dev/components/masonry): Responsive masonry layout with animated reflow + gaps optimization. CLI: `Masonry`.
 - [Model Viewer](https://www.reactbits.dev/components/model-viewer): Three.js model viewer with orbit controls and lighting presets. CLI: `ModelViewer`.
+- [Option Wheel](https://www.reactbits.dev/components/option-wheel): Curved option picker that spins via scroll, drag, or arrow keys, fading and tilting items away from the selection. CLI: `OptionWheel`.
 - [Pill Nav](https://www.reactbits.dev/components/pill-nav): Minimal pill nav with sliding active highlight + smooth easing. CLI: `PillNav`.
 - [Pixel Card](https://www.reactbits.dev/components/pixel-card): Card content revealed through pixel expansion transition. CLI: `PixelCard`.
 - [Profile Card](https://www.reactbits.dev/components/profile-card): Animated profile card glare with 3D hover effect. CLI: `ProfileCard`.
 - [Reflective Card](https://www.reactbits.dev/components/reflective-card): Card with dynamic webcam reflection and glare effects that respond to cursor movement. CLI: `ReflectiveCard`.
 - [Scroll Stack](https://www.reactbits.dev/components/scroll-stack): Overlapping card stack reveals on scroll with depth layering. CLI: `ScrollStack`.
+- [Specular Button](https://www.reactbits.dev/components/specular-button): Glass button with a shader-driven specular rim light that sweeps around the edge and follows the cursor. CLI: `SpecularButton`.
 - [Spotlight Card](https://www.reactbits.dev/components/spotlight-card): Dynamic spotlight follows cursor casting gradient illumination. CLI: `SpotlightCard`.
 - [Stack](https://www.reactbits.dev/components/stack): Layered stack with swipe animations, autoplay and smooth transitions. CLI: `Stack`.
 - [Staggered Menu](https://www.reactbits.dev/components/staggered-menu): Menu with staggered item animations and smooth transitions on open/close. CLI: `StaggeredMenu`.
@@ -138,6 +144,7 @@ Notes:
 - [Dot Grid](https://www.reactbits.dev/backgrounds/dot-grid): Animated dot grid with cursor interactions. CLI: `DotGrid`.
 - [Evil Eye](https://www.reactbits.dev/backgrounds/evil-eye): Procedural evil eye shader with animated iris, slit pupil, and fiery outer glow. CLI: `EvilEye`.
 - [Faulty Terminal](https://www.reactbits.dev/backgrounds/faulty-terminal): Terminal CRT scanline squares effect with flicker + noise. CLI: `FaultyTerminal`.
+- [Ferrofluid](https://www.reactbits.dev/backgrounds/ferrofluid): A churning magnetic fluid traced by glowing contour lines, with a cursor magnet. CLI: `Ferrofluid`.
 - [Floating Lines](https://www.reactbits.dev/backgrounds/floating-lines): 3D floating lines that react to cursor movement. CLI: `FloatingLines`.
 - [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Parallax realistic starfield with pointer interactions. CLI: `Galaxy`.
 - [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Layered gradient blinds with spotlight and noise distortion. CLI: `GradientBlinds`.
@@ -148,6 +155,7 @@ Notes:
 - [Hyperspeed](https://www.reactbits.dev/backgrounds/hyperspeed): Animated lines continuously moving to simulate hyperspace travel on click hold. CLI: `Hyperspeed`.
 - [Iridescence](https://www.reactbits.dev/backgrounds/iridescence): Slick iridescent shader with shifting waves. CLI: `Iridescence`.
 - [Letter Glitch](https://www.reactbits.dev/backgrounds/letter-glitch): Matrix style letter animation. CLI: `LetterGlitch`.
+- [Lightfall](https://www.reactbits.dev/backgrounds/lightfall): Colorful light streaks raining down a glowing tunnel with a cursor light. CLI: `Lightfall`.
 - [Lightning](https://www.reactbits.dev/backgrounds/lightning): Procedural lightning bolts with branching and glow flicker. CLI: `Lightning`.
 - [Light Pillar](https://www.reactbits.dev/backgrounds/light-pillar): Vertical pillar of light with glow effects. CLI: `LightPillar`.
 - [Light Rays](https://www.reactbits.dev/backgrounds/light-rays): Volumetric light rays/beams with customizable direction. CLI: `LightRays`.
@@ -165,6 +173,7 @@ Notes:
 - [Radar](https://www.reactbits.dev/backgrounds/radar): Radar sweep effect with concentric rings, radial spokes, and a rotating beam. CLI: `Radar`.
 - [Ripple Grid](https://www.reactbits.dev/backgrounds/ripple-grid): A grid that continuously animates with a ripple effect. CLI: `RippleGrid`.
 - [Shape Grid](https://www.reactbits.dev/backgrounds/shape-grid): Animated grid with shape variants (square, hexagon, circle, triangle) + direction customization. CLI: `ShapeGrid`.
+- [Side Rays](https://www.reactbits.dev/backgrounds/side-rays): Animated light rays emanating from the side with customizable colors and speed. CLI: `SideRays`.
 - [Silk](https://www.reactbits.dev/backgrounds/silk): Smooth waves background with soft lighting. CLI: `Silk`.
 - [Soft Aurora](https://www.reactbits.dev/backgrounds/soft-aurora): Soft aurora borealis shader with 3D Perlin noise and cosine gradient palettes. CLI: `SoftAurora`.
 - [Threads](https://www.reactbits.dev/backgrounds/threads): Animated pattern of lines forming a fabric-like motion. CLI: `Threads`.
