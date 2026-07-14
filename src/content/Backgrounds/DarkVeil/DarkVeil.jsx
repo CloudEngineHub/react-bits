@@ -59,6 +59,7 @@ vec4 cppn_fn(vec2 coordinate,float in0,float in1,float in2){
 
 void mainImage(out vec4 fragColor,in vec2 fragCoord){
     vec2 uv=fragCoord/uResolution.xy*2.-1.;
+    uv.x *= uResolution.x / uResolution.y;
     uv.y*=-1.;
     uv+=uWarp*vec2(sin(uv.y*6.283+uTime*0.5),cos(uv.x*6.283+uTime*0.5))*0.05;
     fragColor=cppn_fn(uv,0.1*sin(0.3*uTime),0.1*sin(0.69*uTime),0.1*sin(0.44*uTime));
@@ -75,14 +76,14 @@ void main(){
 `;
 
 export default function DarkVeil({
-  hueShift = 0,
-  noiseIntensity = 0,
-  scanlineIntensity = 0,
-  speed = 0.5,
-  scanlineFrequency = 0,
-  warpAmount = 0,
-  resolutionScale = 1
-}) {
+                                   hueShift = 0,
+                                   noiseIntensity = 0,
+                                   scanlineIntensity = 0,
+                                   speed = 0.5,
+                                   scanlineFrequency = 0,
+                                   warpAmount = 0,
+                                   resolutionScale = 1
+                                 }) {
   const ref = useRef(null);
   useEffect(() => {
     const canvas = ref.current;
@@ -143,5 +144,6 @@ export default function DarkVeil({
       window.removeEventListener('resize', resize);
     };
   }, [hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, resolutionScale]);
+
   return <canvas ref={ref} className="darkveil-canvas" />;
 }
