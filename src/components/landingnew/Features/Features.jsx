@@ -384,7 +384,7 @@ const StarCard = () => {
 
 const CARDS = [
   {
-    title: '130+ Components',
+    title: '140+ Components',
     desc: 'Backgrounds, text effects, animations, UI patterns. The stuff you\'d build from scratch, already done.',
     span: 5,
     visual: <ComponentMarquee />,

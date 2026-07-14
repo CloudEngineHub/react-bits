@@ -25,8 +25,8 @@ const buildSponsorUrl = (url, tier) => {
 
 const STATS = [
   { icon: Eye, value: '500K+', label: 'Monthly Visitors' },
-  { icon: Star, value: '37K+', label: 'GitHub Stars' },
-  { icon: Component, value: '130+', label: 'Components' },
+  { icon: Star, value: '43K+', label: 'GitHub Stars' },
+  { icon: Component, value: '140+', label: 'Components' },
 ];
 
 const TIERS = [
