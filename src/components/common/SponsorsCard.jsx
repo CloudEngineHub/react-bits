@@ -1,4 +1,5 @@
 import { FiExternalLink } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import {
   diamondSponsors,
   platinumSponsors,
@@ -43,9 +44,9 @@ const SponsorsCard = () => {
     <div className="right-card sc-card">
       <div className="sc-header">
         <span className="sc-title">Sponsors</span>
-        <a href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry" className="sc-become-link">
+        <Link to="/sponsors#sponsor-plans" className="sc-become-link">
           Become a sponsor <FiExternalLink size={10} />
-        </a>
+        </Link>
       </div>
 
       {hasDiamondSponsors && (
