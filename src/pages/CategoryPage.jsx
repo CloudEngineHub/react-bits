@@ -1,12 +1,24 @@
 import { useEffect, Suspense, lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { componentMap } from '../constants/Components';
+import { componentMetadata } from '../constants/Information';
 import { decodeLabel } from '../utils/utils';
 import { Box, Text } from '@chakra-ui/react';
 import { useTransition } from '../hooks/useTransition';
+import usePageSEO from '../hooks/usePageSEO';
 import BackToTopButton from '../components/common/BackToTopButton';
 import { SkeletonLoader, GetStartedLoader } from '../components/common/SkeletonLoader';
 import IndexPage from './IndexPage';
+
+const CATEGORY_KEYS = {
+  'components': 'Components',
+  'animations': 'Animations',
+  'backgrounds': 'Backgrounds',
+  'text-animations': 'TextAnimations'
+};
+
+const FALLBACK_DESCRIPTION =
+  'High quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.';
 
 const CategoryPage = () => {
   const { category, subcategory } = useParams();
@@ -33,11 +45,12 @@ const CategoryPage = () => {
     }
   }, [subcategory, transitionPhase]);
 
-  useEffect(() => {
-    if (decodedLabel) {
-      document.title = `React Bits - ${decodedLabel}`;
-    }
-  }, [decodedLabel]);
+  const metadataKey = `${CATEGORY_KEYS[category]}/${decodedLabel?.replace(/\s+/g, '')}`;
+  usePageSEO({
+    title: decodedLabel ? `React Bits - ${decodedLabel}` : undefined,
+    description: componentMetadata[metadataKey]?.description || FALLBACK_DESCRIPTION,
+    path: `/${category}/${subcategory}`
+  });
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { Eye, Star, Component, Gem, Crown, Medal, ArrowRight, Check } from 'lucide-react';
 import useScrollToTop from '../hooks/useScrollToTop';
+import usePageSEO from '../hooks/usePageSEO';
 import Navbar from '../components/landingnew/Navbar/Navbar';
 import Footer from '../components/landingnew/Footer/Footer';
 import DotField from '../components/landingnew/Hero/DotField';
@@ -74,6 +75,12 @@ const PRICING = [
 
 const SponsorsPage = () => {
   useScrollToTop();
+  usePageSEO({
+    title: 'React Bits - Sponsors',
+    description:
+      'Sponsor React Bits and get your brand in front of 500K+ developers monthly. Simple monthly plans for Diamond, Platinum and Silver tiers.',
+    path: '/sponsors'
+  });
 
   return (
     <>
@@ -82,7 +89,6 @@ const SponsorsPage = () => {
         <DotField sparkle waveAmplitude={5} dotRadius={2} />
       </div>
       <section className="sponsors-page">
-        <title>React Bits - Sponsors</title>
 
         {/* ── Header ──────────────────────────────────────────────── */}
         <div className="sponsors-page-header">
