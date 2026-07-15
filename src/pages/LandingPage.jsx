@@ -10,11 +10,18 @@ import CTA from '@/components/landingnew/CTA/CTA';
 import Footer from '@/components/landingnew/Footer/Footer';
 import LandingLoader from '@/components/landingnew/LandingLoader/LandingLoader';
 import useScrollToTop from '../hooks/useScrollToTop';
+import usePageSEO from '../hooks/usePageSEO';
 
 const MIN_LOADER_MS = 800;
 
 const LandingPage = () => {
   useScrollToTop();
+  usePageSEO({
+    title: 'React Bits - Animated UI Components For React',
+    description:
+      'An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.',
+    path: '/'
+  });
   const [loaded, setLoaded] = useState(false);
   const [hiding, setHiding] = useState(false);
 
@@ -48,8 +55,6 @@ const LandingPage = () => {
     <>
       {!loaded && <LandingLoader hiding={hiding} />}
       <section className={`landing-wrapper no-side-fades${loaded ? ' ln-loaded' : ' ln-loading'}`}>
-        <title>React Bits - Animated UI Components For React</title>
-
         <Navbar />
         <Hero />
         <Features />

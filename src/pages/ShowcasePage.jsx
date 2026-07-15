@@ -1,4 +1,5 @@
 import useScrollToTop from '../hooks/useScrollToTop';
+import usePageSEO from '../hooks/usePageSEO';
 import Navbar from '../components/landingnew/Navbar/Navbar';
 import Footer from '../components/landingnew/Footer/Footer';
 import DotField from '../components/landingnew/Hero/DotField';
@@ -9,6 +10,11 @@ import '../css/showcase.css';
 
 const ShowcasePage = () => {
   useScrollToTop();
+  usePageSEO({
+    title: 'React Bits - Showcase',
+    description: 'See how developers around the world are using React Bits components in their projects.',
+    path: '/showcase'
+  });
 
   return (
     <>
@@ -17,7 +23,6 @@ const ShowcasePage = () => {
         <DotField sparkle waveAmplitude={5} dotRadius={2} />
       </div>
       <section className="showcase-page">
-        <title>React Bits - Showcase</title>
 
         <div className="showcase-header">
           <div className="showcase-header-left">
