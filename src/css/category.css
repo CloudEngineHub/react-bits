@@ -915,11 +915,11 @@
 }
 
 .sc-tier-platinum {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
 .sc-tier-silver {
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .sc-sponsor-link {
@@ -949,31 +949,40 @@
   object-fit: contain;
 }
 
+/* Tier convention — every tier gets its own size AND treatment:
+   Diamond: 64px banner, purple gradient + tinted border (premium)
+   Platinum: 44px full-width neutral tile
+   Silver: 34px half-width tile, grayscale until hovered */
 .sc-sponsor-diamond {
-  height: 48px;
+  height: 64px;
   width: 100%;
+  box-shadow: inset 0 0 24px rgba(168, 85, 247, 0.08);
+}
+
+.sc-sponsor-diamond:hover {
+  box-shadow: inset 0 0 24px rgba(168, 85, 247, 0.14);
 }
 
 .sc-sponsor-diamond img {
-  padding: 8px 12px;
+  padding: 10px 14px;
 }
 
 .sc-sponsor-platinum {
-  height: 48px;
+  height: 44px;
   width: 100%;
 }
 
 .sc-sponsor-platinum img {
-  padding: 8px;
+  padding: 8px 12px;
 }
 
 .sc-sponsor-silver {
-  height: 48px;
+  height: 40px;
   width: 100%;
 }
 
 .sc-sponsor-silver img {
-  padding: 6px;
+  padding: 7px 10px;
 }
 
 .sc-reach {
