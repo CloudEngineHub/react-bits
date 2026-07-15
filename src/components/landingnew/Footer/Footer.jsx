@@ -45,6 +45,13 @@ const Footer = () => (
               Svelte Bits
             </a>
           </div>
+
+          <div className="ln-footer-col">
+            <span className="ln-footer-col-title">Pro</span>
+            <a href="https://pro.reactbits.dev" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
+              React Bits Pro
+            </a>
+          </div>
         </nav>
       </div>
 

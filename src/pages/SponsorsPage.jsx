@@ -1,4 +1,4 @@
-import { Eye, Star, Component, Gem, Crown, Medal, ArrowRight } from 'lucide-react';
+import { Eye, Star, Component, Gem, Crown, Medal, ArrowRight, Check } from 'lucide-react';
 import useScrollToTop from '../hooks/useScrollToTop';
 import Navbar from '../components/landingnew/Navbar/Navbar';
 import Footer from '../components/landingnew/Footer/Footer';
@@ -35,6 +35,43 @@ const TIERS = [
   { key: 'silver', label: 'Silver', icon: Medal, sponsors: silverSponsors },
 ].filter(tier => tier.sponsors.length > 0);
 
+// Polar checkout links per sponsorship tier
+const PRICING = [
+  {
+    key: 'diamond',
+    label: 'Diamond',
+    icon: Gem,
+    price: 500,
+    checkoutUrl: 'https://buy.polar.sh/polar_cl_CAKYEZJI4v1T5QdfNfAVAmDhyNVfPVBj6lNaF0H6bII',
+    featured: true,
+    benefits: [
+      'Largest logo on the docs sidebar',
+      'Largest logo in the README',
+      'Shoutout on X',
+      'Featured on the sponsors page',
+      'Direct line for feedback & requests'
+    ]
+  },
+  {
+    key: 'platinum',
+    label: 'Platinum',
+    icon: Crown,
+    price: 250,
+    checkoutUrl: 'https://buy.polar.sh/polar_cl_d9UlbstPFQlba5YiLjFHjfhQ8LwVfhQTZKGxf1HiJZ7',
+    featured: false,
+    benefits: ['Larger logo in the README', 'Larger logo on the docs sidebar', 'Shoutout on X']
+  },
+  {
+    key: 'silver',
+    label: 'Silver',
+    icon: Medal,
+    price: 100,
+    checkoutUrl: 'https://buy.polar.sh/polar_cl_XQulCE8GgwOmHo7wLjdDYkMZFm6nYogF3Igfl4cqAfM',
+    featured: false,
+    benefits: ['Logo in the README', 'Logo on the docs sidebar', 'Listed on the sponsors page']
+  }
+];
+
 const SponsorsPage = () => {
   useScrollToTop();
 
@@ -55,10 +92,7 @@ const SponsorsPage = () => {
               Your support keeps React Bits free and open-source for developers everywhere.
             </p>
           </div>
-          <a
-            href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
-            className="sponsors-page-cta"
-          >
+          <a href="#sponsor-plans" className="sponsors-page-cta">
             Become a Sponsor <FaArrowRight size={12} />
           </a>
         </div>
@@ -108,12 +142,47 @@ const SponsorsPage = () => {
           </div>
         ))}
 
-        {/* ── Divider ──────────────────────────────────────────── */}
-        <hr className="sponsors-divider" />
+        {/* ── Pricing ─────────────────────────────────────────────── */}
 
-        <h2 className="sponsors-section-title">Power the fastest growing creative UI library</h2>
+        <div className="sponsors-section-heading" id="sponsor-plans">
+          <h2 className="sponsors-section-title">Become a sponsor</h2>
+          <p className="sponsors-section-subtitle">Power the fastest growing open-source creative UI library, cancel anytime.</p>
+        </div>
+        <div className="sponsors-pricing">
+          {PRICING.map(tier => (
+            <div
+              key={tier.key}
+              className={`sponsors-pricing-card${tier.featured ? ' sponsors-pricing-card--featured' : ''}`}
+            >
+              <span className={`sponsors-tier-badge sponsors-tier-badge--${tier.key}`}>
+                <tier.icon size={13} />
+                {tier.label}
+              </span>
+              <div className="sponsors-pricing-price">
+                ${tier.price}
+                <span className="sponsors-pricing-period">/month</span>
+              </div>
+              <ul className="sponsors-pricing-benefits">
+                {tier.benefits.map(benefit => (
+                  <li key={benefit}>
+                    <Check size={14} />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={tier.checkoutUrl}
+                target="_blank"
+                rel="noopener"
+                className={`sponsors-pricing-btn${tier.featured ? ' sponsors-pricing-btn--featured' : ''}`}
+              >
+                Sponsor as {tier.label} <ArrowRight size={14} />
+              </a>
+            </div>
+          ))}
+        </div>
 
-        {/* ── Stats ───────────────────────────────────────────────── */}
+        {/* ── Stats ───────────────────────────────────────── */}
         <div className="sponsors-stats">
           {STATS.map(s => (
             <div className="sponsors-stat" key={s.label}>
@@ -124,18 +193,10 @@ const SponsorsPage = () => {
           ))}
         </div>
 
-        {/* ── Bottom CTA ──────────────────────────────────────────── */}
-        <div className="sponsors-bottom-cta">
-          <p className="sponsors-bottom-cta-text">
-            Get your brand in front of <strong>500K+</strong> developers monthly
-          </p>
-          <a
-            href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
-            className="sponsors-bottom-cta-btn"
-          >
-            Become a Sponsor <ArrowRight size={14} />
-          </a>
-        </div>
+        <p className="sponsors-pricing-note">
+          Questions or custom packages?{' '}
+          <a href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry">Get in touch</a>
+        </p>
       </section>
       <Footer />
     </>

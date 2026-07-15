@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight, Gem, Crown, Medal } from 'lucide-react';
+import { ArrowRight, Gem, Crown, Medal, Plus } from 'lucide-react';
 import {
   diamondSponsors,
   platinumSponsors,
   silverSponsors,
   hasDiamondSponsors,
-  hasPlatinumSponsors,
   hasSilverSponsors,
 } from '../../../constants/Sponsors';
 import './Sponsors.css';
@@ -48,14 +47,14 @@ const SponsorCard = ({ sponsor, tier }) => (
 );
 
 const EmptySlot = ({ tier }) => (
-  <div className={`ln-sp-card ln-sp-card--empty ln-sp-card--${tier}`}>
+  <Link to="/sponsors#sponsor-plans" className={`ln-sp-card ln-sp-card--empty ln-sp-card--${tier}`}>
     <div className={`ln-sp-card-visual ln-sp-card-visual--${tier}`}>
-      <span className="ln-sp-empty-label">Your logo here</span>
+      <Plus size={20} className="ln-sp-empty-icon" />
     </div>
     <div className="ln-sp-card-info">
       <span className="ln-sp-card-name ln-sp-empty-name">Available</span>
     </div>
-  </div>
+  </Link>
 );
 
 const PLATINUM_COLS = 3;
@@ -93,29 +92,27 @@ const Sponsors = () => (
         </motion.div>
       )}
 
-      {hasPlatinumSponsors && (
-        <motion.div
-          className="ln-sp-tier"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, delay: 0.14, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <div className="ln-sp-tier-header">
-            <span className="ln-sp-tier-badge ln-sp-tier-badge--platinum">
-              <Crown size={12} /> Platinum
-            </span>
-          </div>
-          <div className="ln-sp-grid ln-sp-grid--platinum">
-            {platinumSponsors.map((s) => (
-              <SponsorCard key={s.id} sponsor={s} tier="platinum" />
-            ))}
-            {Array.from({ length: PLATINUM_COLS - platinumSponsors.length }, (_, i) => (
-              <EmptySlot key={`empty-platinum-${i}`} tier="platinum" />
-            ))}
-          </div>
-        </motion.div>
-      )}
+      <motion.div
+        className="ln-sp-tier"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5, delay: 0.14, ease: [0.21, 0.47, 0.32, 0.98] }}
+      >
+        <div className="ln-sp-tier-header">
+          <span className="ln-sp-tier-badge ln-sp-tier-badge--platinum">
+            <Crown size={12} /> Platinum
+          </span>
+        </div>
+        <div className="ln-sp-grid ln-sp-grid--platinum">
+          {platinumSponsors.map((s) => (
+            <SponsorCard key={s.id} sponsor={s} tier="platinum" />
+          ))}
+          {Array.from({ length: PLATINUM_COLS - platinumSponsors.length }, (_, i) => (
+            <EmptySlot key={`empty-platinum-${i}`} tier="platinum" />
+          ))}
+        </div>
+      </motion.div>
 
       {hasSilverSponsors && (
         <motion.div
@@ -152,12 +149,9 @@ const Sponsors = () => (
         <Link to="/sponsors" className="ln-sp-footer-link">
           View all sponsors <ArrowRight size={12} />
         </Link>
-        <a
-          href="mailto:contact@davidhaz.com?subject=React%20Bits%20Sponsorship%20Inquiry"
-          className="ln-sp-footer-link"
-        >
+        <Link to="/sponsors#sponsor-plans" className="ln-sp-footer-link">
           Become a sponsor <ArrowRight size={12} />
-        </a>
+        </Link>
       </motion.div>
     </div>
   </section>

@@ -199,19 +199,22 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: none;
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .ln-sp-card--empty:hover {
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
   transform: none;
 }
 
-.ln-sp-empty-label {
-  font-family: 'Geist Mono', monospace;
-  font-size: 12px;
+.ln-sp-empty-icon {
   color: rgba(255, 255, 255, 0.15);
-  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.ln-sp-card--empty:hover .ln-sp-empty-icon {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .ln-sp-empty-name {
