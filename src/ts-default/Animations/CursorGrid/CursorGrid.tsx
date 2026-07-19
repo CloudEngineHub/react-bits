@@ -51,7 +51,7 @@ const FALLOFF_CURVES: Record<Falloff, (t: number) => number> = {
 const hexToRgb = (hex: string): [number, number, number] => {
   const h = hex.replace('#', '');
   const v = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
-  const num = parseInt(v, 16);
+  const num = parseInt(v.slice(0, 6), 16);
   return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
 };
 
