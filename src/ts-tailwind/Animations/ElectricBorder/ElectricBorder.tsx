@@ -9,7 +9,7 @@ function hexToRgba(hex: string, alpha: number = 1): string {
       .map(c => c + c)
       .join('');
   }
-  const int = parseInt(h, 16);
+  const int = parseInt(h.slice(0, 6), 16);
   const r = (int >> 16) & 255;
   const g = (int >> 8) & 255;
   const b = int & 255;
