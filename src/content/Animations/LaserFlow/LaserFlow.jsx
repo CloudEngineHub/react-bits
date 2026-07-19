@@ -282,7 +282,7 @@ export const LaserFlow = ({
         .split('')
         .map(x => x + x)
         .join('');
-    const n = parseInt(c, 16) || 0xffffff;
+    const n = parseInt(c.slice(0, 6), 16) || 0xffffff;
     return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
   };
 
