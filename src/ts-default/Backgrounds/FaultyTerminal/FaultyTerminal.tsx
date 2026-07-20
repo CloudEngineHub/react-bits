@@ -238,7 +238,7 @@ function hexToRgb(hex: string): [number, number, number] {
       .split('')
       .map(c => c + c)
       .join('');
-  const num = parseInt(h, 16);
+  const num = parseInt(h.slice(0, 6), 16);
   return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
 }
 
