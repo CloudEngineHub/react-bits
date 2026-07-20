@@ -200,7 +200,7 @@ const hexToRgb01 = (hex: string): [number, number, number] => {
       b = h[2];
     h = r + r + g + g + b + b;
   }
-  const intVal = parseInt(h, 16);
+  const intVal = parseInt(h.slice(0, 6), 16);
   if (isNaN(intVal) || (h.length !== 6 && h.length !== 8)) return [1, 1, 1];
   const r = ((intVal >> 16) & 255) / 255;
   const g = ((intVal >> 8) & 255) / 255;
