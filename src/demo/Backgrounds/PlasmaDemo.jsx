@@ -29,7 +29,7 @@ const DEFAULT_PROPS = {
   mouseInteractive: false,
   renderScale: 0.55,
   maxDpr: 1.5,
-  targetFps: 30,
+  targetFps: 60,
   quality: 45
 };
 
@@ -136,7 +136,7 @@ const PlasmaDemo = () => {
                 mouseInteractive: false,
                 renderScale: 0.55,
                 maxDpr: 1.5,
-                targetFps: 30,
+                targetFps: 60,
                 quality: 45
               }}
             />
