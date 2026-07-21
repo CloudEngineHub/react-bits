@@ -26,12 +26,16 @@ const DEFAULT_PROPS = {
   direction: 'forward',
   scale: 1.0,
   opacity: 1.0,
-  mouseInteractive: false
+  mouseInteractive: false,
+  renderScale: 0.55,
+  maxDpr: 1.5,
+  targetFps: 30,
+  quality: 45
 };
 
 const PlasmaDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { color, speed, direction, scale, opacity, mouseInteractive } = props;
+  const { color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality } = props;
   const propData = useMemo(
     () => [
       {
@@ -69,6 +73,32 @@ const PlasmaDemo = () => {
         type: 'boolean',
         default: 'false',
         description: 'Whether the plasma responds to mouse movement.'
+      },
+      {
+        name: 'renderScale',
+        type: 'number',
+        default: '0.55',
+        description:
+          'Internal render resolution multiplier. 1 = full res, 0.5 = quarter the pixels. Lower values improve performance.'
+      },
+      {
+        name: 'maxDpr',
+        type: 'number',
+        default: '1.5',
+        description:
+          'Hard cap on devicePixelRatio used for rendering. Lower values improve performance on high-DPI screens.'
+      },
+      {
+        name: 'targetFps',
+        type: 'number',
+        default: '30',
+        description: 'Target frame rate for the animation loop. Lower values reduce CPU/GPU load.'
+      },
+      {
+        name: 'quality',
+        type: 'number',
+        default: '45',
+        description: 'Raymarch step count — lower is cheaper but less detailed. Higher values produce smoother plasma.'
       }
     ],
     []
@@ -86,6 +116,10 @@ const PlasmaDemo = () => {
               scale={scale}
               opacity={opacity}
               mouseInteractive={mouseInteractive}
+              renderScale={renderScale}
+              maxDpr={maxDpr}
+              targetFps={targetFps}
+              quality={quality}
             />
             <BackgroundContent pillText="New Background" headline="Minimal plasma waves that soothe the eyes" />
           </Box>
@@ -93,8 +127,18 @@ const PlasmaDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="plasma"
-              currentProps={{ color, speed, scale, opacity, mouseInteractive }}
-              defaultProps={{ color: '#B497CF', speed: 1.0, scale: 1.0, opacity: 1.0, mouseInteractive: false }}
+              currentProps={{ color, speed, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality }}
+              defaultProps={{
+                color: '#B497CF',
+                speed: 1.0,
+                scale: 1.0,
+                opacity: 1.0,
+                mouseInteractive: false,
+                renderScale: 0.55,
+                maxDpr: 1.5,
+                targetFps: 30,
+                quality: 45
+              }}
             />
           </Flex>
 
@@ -138,6 +182,42 @@ const PlasmaDemo = () => {
               step={0.1}
               value={opacity}
               onChange={val => updateProp('opacity', val)}
+            />
+
+            <PreviewSlider
+              title="Quality"
+              min={10}
+              max={80}
+              step={5}
+              value={quality}
+              onChange={val => updateProp('quality', val)}
+            />
+
+            <PreviewSlider
+              title="Render Scale"
+              min={0.2}
+              max={1.0}
+              step={0.05}
+              value={renderScale}
+              onChange={val => updateProp('renderScale', val)}
+            />
+
+            <PreviewSlider
+              title="Target FPS"
+              min={10}
+              max={60}
+              step={5}
+              value={targetFps}
+              onChange={val => updateProp('targetFps', val)}
+            />
+
+            <PreviewSlider
+              title="Max DPR"
+              min={0.5}
+              max={3.0}
+              step={0.5}
+              value={maxDpr}
+              onChange={val => updateProp('maxDpr', val)}
             />
 
             <PreviewSwitch

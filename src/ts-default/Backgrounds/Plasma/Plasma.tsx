@@ -9,6 +9,14 @@ interface PlasmaProps {
   scale?: number;
   opacity?: number;
   mouseInteractive?: boolean;
+  /** Internal render resolution multiplier. 1 = full res, 0.5 = quarter the pixels. Default 0.55. */
+  renderScale?: number;
+  /** Hard cap on devicePixelRatio used for rendering. Default 1.5. */
+  maxDpr?: number;
+  /** Target frame rate for the animation loop. Default 30. */
+  targetFps?: number;
+  /** Raymarch step count — lower is cheaper, less detailed. Default 45. */
+  quality?: number;
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
@@ -28,7 +36,7 @@ void main() {
 }
 `;
 
-const fragment = `#version 300 es
+const buildFragment = (steps: number) => `#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
@@ -52,7 +60,7 @@ void mainImage(out vec4 o, vec2 C) {
   float i, d, z, T = iTime * uSpeed * uDirection;
   vec3 O, p, S;
 
-  for (vec2 r = iResolution.xy, Q; ++i < 60.; O += o.w/d*o.xyz) {
+  for (vec2 r = iResolution.xy, Q; ++i < ${steps.toFixed(1)}; O += o.w/d*o.xyz) {
     p = z*normalize(vec3(C-.5*r,r.y)); 
     p.z -= 4.; 
     S = p;
@@ -95,14 +103,23 @@ export const Plasma: React.FC<PlasmaProps> = ({
   direction = 'forward',
   scale = 1,
   opacity = 1,
-  mouseInteractive = true
+  mouseInteractive = true,
+  renderScale = 0.55,
+  maxDpr = 1.5,
+  targetFps = 30,
+  quality = 45,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mousePos = useRef({ x: 0, y: 0 });
+  const pendingMouse = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const containerEl = containerRef.current;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
@@ -115,7 +132,7 @@ export const Plasma: React.FC<PlasmaProps> = ({
         webgl: 2,
         alpha: true,
         antialias: false,
-        dpr: Math.min(window.devicePixelRatio || 1, 2)
+        dpr: Math.min(window.devicePixelRatio || 1, maxDpr)
       });
     } catch {
       return;
@@ -126,13 +143,14 @@ export const Plasma: React.FC<PlasmaProps> = ({
     canvas.style.display = 'block';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
+    // Rendering at renderScale internally, CSS stretches it back up.
     containerEl.appendChild(canvas);
 
     const geometry = new Triangle(gl);
 
     const program = new Program(gl, {
       vertex: vertex,
-      fragment: fragment,
+      fragment: buildFragment(quality),
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new Float32Array([1, 1]) },
@@ -152,38 +170,75 @@ export const Plasma: React.FC<PlasmaProps> = ({
     const handleMouseMove = (e: MouseEvent) => {
       if (!mouseInteractive) return;
       const rect = containerEl.getBoundingClientRect();
-      mousePos.current.x = e.clientX - rect.left;
-      mousePos.current.y = e.clientY - rect.top;
-      const mouseUniform = program.uniforms.uMouse.value as Float32Array;
-      mouseUniform[0] = mousePos.current.x;
-      mouseUniform[1] = mousePos.current.y;
+      // Store the latest position but don't touch GL state here, the rAF loop picks it up once per rendered frame instead of once per mouse event.
+      pendingMouse.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
     };
 
     if (mouseInteractive) {
-      containerEl.addEventListener('mousemove', handleMouseMove);
+      containerEl.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
+    let resizePending = false;
     const setSize = () => {
       const rect = containerEl.getBoundingClientRect();
-      const width = Math.max(1, Math.floor(rect.width));
-      const height = Math.max(1, Math.floor(rect.height));
+      const width = Math.max(1, Math.floor(rect.width * renderScale));
+      const height = Math.max(1, Math.floor(rect.height * renderScale));
       renderer.setSize(width, height);
+
+      // renderer.setSize also sets canvas.style.width/height to match the (scaled-down) drawing buffer - override that so the canvas still stretches to fill its container via CSS while the buffer stays small.
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+
       const res = program.uniforms.iResolution.value as Float32Array;
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
     };
 
-    const ro = new ResizeObserver(setSize);
+    const ro = new ResizeObserver(() => {
+      // Batch rapid resize events (ex. during a window drag) into one setSize per frame.
+      if (resizePending) return;
+      resizePending = true;
+      requestAnimationFrame(() => {
+        resizePending = false;
+        setSize();
+      });
+    });
     ro.observe(containerEl);
     setSize();
 
     let raf = 0;
     let contextLost = false;
     let isVisible = true;
+    let tabVisible = document.visibilityState !== 'hidden';
     const t0 = performance.now();
+    const frameInterval = 1000 / targetFps;
+    let lastFrameTime = 0;
+
+    const renderStaticFrame = () => {
+      (program.uniforms.iTime as any).value = 0;
+      renderer.render({ scene: mesh });
+    };
 
     const loop = (t: number) => {
-      if (contextLost || !isVisible) return;
+      if (contextLost || !isVisible || !tabVisible) return;
+
+      if (t - lastFrameTime < frameInterval) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrameTime = t;
+
+      if (pendingMouse.current) {
+        mousePos.current = pendingMouse.current;
+        pendingMouse.current = null;
+        const mouseUniform = program.uniforms.uMouse.value as Float32Array;
+        mouseUniform[0] = mousePos.current.x;
+        mouseUniform[1] = mousePos.current.y;
+      }
+
       let timeValue = (t - t0) * 0.001;
       if (direction === 'pingpong') {
         const pingpongDuration = 10;
@@ -208,7 +263,7 @@ export const Plasma: React.FC<PlasmaProps> = ({
     };
     const handleContextRestored = () => {
       contextLost = false;
-      if (isVisible) {
+      if (isVisible && tabVisible && !prefersReducedMotion) {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(loop);
       }
@@ -219,19 +274,37 @@ export const Plasma: React.FC<PlasmaProps> = ({
     const io = new IntersectionObserver(([entry]) => {
       const wasVisible = isVisible;
       isVisible = entry.isIntersecting;
-      if (isVisible && !wasVisible && !contextLost) {
+      if (isVisible && !wasVisible && !contextLost && tabVisible && !prefersReducedMotion) {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(loop);
       }
     }, { threshold: 0 });
     io.observe(containerEl);
 
-    raf = requestAnimationFrame(loop);
+    const handleVisibilityChange = () => {
+      tabVisible = document.visibilityState !== 'hidden';
+      if (tabVisible && isVisible && !contextLost && !prefersReducedMotion) {
+        cancelAnimationFrame(raf);
+        lastFrameTime = 0;
+        raf = requestAnimationFrame(loop);
+      } else {
+        cancelAnimationFrame(raf);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Respect prefers-reduced-motion: paint one frame and stop, rather than running a perpetual animation loop for users who've asked not to see motion.
+    if (prefersReducedMotion) {
+      renderStaticFrame();
+    } else {
+      raf = requestAnimationFrame(loop);
+    }
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       canvas.removeEventListener('webglcontextlost', handleContextLost);
       canvas.removeEventListener('webglcontextrestored', handleContextRestored);
       if (mouseInteractive && containerEl) {
@@ -241,7 +314,7 @@ export const Plasma: React.FC<PlasmaProps> = ({
         containerEl?.removeChild(canvas);
       } catch {}
     };
-  }, [color, speed, direction, scale, opacity, mouseInteractive]);
+  }, [color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality]);
 
   return <div ref={containerRef} className="plasma-container" />;
 };
