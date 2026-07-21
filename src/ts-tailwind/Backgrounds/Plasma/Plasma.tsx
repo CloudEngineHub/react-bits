@@ -345,7 +345,7 @@ export const Plasma: React.FC<PlasmaProps> = ({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full absolute overflow-hidden"
+      className="w-full h-full relative overflow-hidden"
     />
   );
 };
