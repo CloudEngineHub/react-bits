@@ -30,12 +30,12 @@ const DEFAULT_PROPS = {
   renderScale: 0.55,
   maxDpr: 1.5,
   targetFps: 60,
-  quality: 45
+  iterations: 60
 };
 
 const PlasmaDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality } = props;
+  const { color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, iterations } = props;
   const propData = useMemo(
     () => [
       {
@@ -95,9 +95,9 @@ const PlasmaDemo = () => {
         description: 'Target frame rate for the animation loop. Lower values reduce CPU/GPU load.'
       },
       {
-        name: 'quality',
+        name: 'iterations',
         type: 'number',
-        default: '45',
+        default: '60',
         description: 'Raymarch step count — lower is cheaper but less detailed. Higher values produce smoother plasma.'
       }
     ],
@@ -119,7 +119,7 @@ const PlasmaDemo = () => {
               renderScale={renderScale}
               maxDpr={maxDpr}
               targetFps={targetFps}
-              quality={quality}
+              iterations={iterations}
             />
             <BackgroundContent pillText="New Background" headline="Minimal plasma waves that soothe the eyes" />
           </Box>
@@ -127,7 +127,7 @@ const PlasmaDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="plasma"
-              currentProps={{ color, speed, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality }}
+              currentProps={{ color, speed, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, iterations }}
               defaultProps={{
                 color: '#B497CF',
                 speed: 1.0,
@@ -137,7 +137,7 @@ const PlasmaDemo = () => {
                 renderScale: 0.55,
                 maxDpr: 1.5,
                 targetFps: 60,
-                quality: 45
+                iterations: 60
               }}
             />
           </Flex>
@@ -185,12 +185,12 @@ const PlasmaDemo = () => {
             />
 
             <PreviewSlider
-              title="Quality"
+              title="Iterations"
               min={10}
               max={80}
               step={5}
-              value={quality}
-              onChange={val => updateProp('quality', val)}
+              value={iterations}
+              onChange={val => updateProp('iterations', val)}
             />
 
             <PreviewSlider

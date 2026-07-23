@@ -18,7 +18,10 @@ void main() {
 }
 `;
 
-const buildFragment = steps => `#version 300 es
+const ORIGINAL_QUALITY = 60;
+
+const buildFragment = iterations => {
+  return `#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
@@ -30,6 +33,8 @@ uniform float uScale;
 uniform float uOpacity;
 uniform vec2 uMouse;
 uniform float uMouseInteractive;
+uniform float uQuality;
+uniform float uStepScale;
 out vec4 fragColor;
 
 void mainImage(out vec4 o, vec2 C) {
@@ -42,7 +47,7 @@ void mainImage(out vec4 o, vec2 C) {
   float i, d, z, T = iTime * uSpeed * uDirection;
   vec3 O, p, S;
 
-  for (vec2 r = iResolution.xy, Q; ++i < ${steps.toFixed(1)}; O += o.w/d*o.xyz) {
+  for (vec2 r = iResolution.xy, Q; ++i < 60.0; O += o.w/d*o.xyz) {
     p = z*normalize(vec3(C-.5*r,r.y)); 
     p.z -= 4.; 
     S = p;
@@ -50,12 +55,14 @@ void mainImage(out vec4 o, vec2 C) {
     
     p.x += .4*(1.+p.y)*sin(d + p.x*0.1)*cos(.34*d + p.x*0.05); 
     Q = p.xz *= mat2(cos(p.y+vec4(0,11,33,0)-T)); 
-    z+= d = abs(sqrt(length(Q*Q)) - .25*(5.+S.y))/3.+8e-4; 
+    z += d = (abs(sqrt(length(Q*Q)) - .25*(5.+S.y))/3.+8e-4) * uStepScale;
     o = 1.+sin(S.y+p.z*.5+S.z-length(S-p)+vec4(2,1,0,8));
+    if (i >= uQuality) break;
   }
   
   o.xyz = tanh(O/1e4);
 }
+
 
 bool finite1(float x){ return !(isnan(x) || isinf(x)); }
 vec3 sanitize(vec3 c){
@@ -78,6 +85,7 @@ void main() {
   float alpha = length(rgb) * uOpacity;
   fragColor = vec4(finalColor, alpha);
 }`;
+};
 
 export const Plasma = ({
   color = '#ffffff',
@@ -89,7 +97,7 @@ export const Plasma = ({
   renderScale = 0.55,
   maxDpr = 1.5,
   targetFps = 60,
-  quality = 45,
+  iterations = 60
 }) => {
   const containerRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -100,8 +108,7 @@ export const Plasma = ({
     const containerEl = containerRef.current;
 
     const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
     const useCustomColor = color ? 1.0 : 0.0;
     const customColorRgb = color ? hexToRgb(color) : [1, 1, 1];
@@ -132,7 +139,7 @@ export const Plasma = ({
 
     const program = new Program(gl, {
       vertex: vertex,
-      fragment: buildFragment(quality),
+      fragment: buildFragment(iterations),
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new Float32Array([1, 1]) },
@@ -143,7 +150,9 @@ export const Plasma = ({
         uScale: { value: scale },
         uOpacity: { value: opacity },
         uMouse: { value: new Float32Array([0, 0]) },
-        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 }
+        uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 },
+        uQuality: { value: iterations },
+        uStepScale: { value: ORIGINAL_QUALITY / iterations }
       }
     });
 
@@ -155,7 +164,7 @@ export const Plasma = ({
       // Store the latest position but don't touch GL state here, the rAF loop picks it up once per rendered frame instead of once per mouse event.
       pendingMouse.current = {
         x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        y: e.clientY - rect.top
       };
     };
 
@@ -238,7 +247,7 @@ export const Plasma = ({
       raf = requestAnimationFrame(loop);
     };
 
-    const handleContextLost = (e) => {
+    const handleContextLost = e => {
       e.preventDefault();
       contextLost = true;
       cancelAnimationFrame(raf);
@@ -253,14 +262,17 @@ export const Plasma = ({
     canvas.addEventListener('webglcontextlost', handleContextLost);
     canvas.addEventListener('webglcontextrestored', handleContextRestored);
 
-    const io = new IntersectionObserver(([entry]) => {
-      const wasVisible = isVisible;
-      isVisible = entry.isIntersecting;
-      if (isVisible && !wasVisible && !contextLost && tabVisible && !prefersReducedMotion) {
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(loop);
-      }
-    }, { threshold: 0 });
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !wasVisible && !contextLost && tabVisible && !prefersReducedMotion) {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(loop);
+        }
+      },
+      { threshold: 0 }
+    );
     io.observe(containerEl);
 
     const handleVisibilityChange = () => {
@@ -296,7 +308,7 @@ export const Plasma = ({
         containerEl?.removeChild(canvas);
       } catch {}
     };
-  }, [color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, quality]);
+  }, [color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, iterations]);
 
   return <div ref={containerRef} className="w-full h-full overflow-hidden relative" />;
 };
