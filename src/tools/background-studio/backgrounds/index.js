@@ -544,10 +544,14 @@ export const BACKGROUNDS = [
     props: [
       { name: 'color', type: 'color', default: '#ffffff', label: 'Color' },
       { name: 'speed', type: 'number', default: 1, min: 0, max: 5, step: 0.1, label: 'Speed' },
-      { name: 'direction', type: 'select', default: 'forward', options: ['forward', 'backward'], label: 'Direction' },
+      { name: 'direction', type: 'select', default: 'forward', options: ['forward', 'reverse', 'pingpong'], label: 'Direction' },
       { name: 'scale', type: 'number', default: 1, min: 0.1, max: 3, step: 0.1, label: 'Scale' },
       { name: 'opacity', type: 'number', default: 1, min: 0, max: 1, step: 0.05, label: 'Opacity' },
-      { name: 'mouseInteractive', type: 'boolean', default: true, label: 'Mouse Interactive' }
+      { name: 'mouseInteractive', type: 'boolean', default: true, label: 'Mouse Interactive' },
+      { name: 'iterations', type: 'number', default: 60, min: 10, max: 80, step: 5, label: 'Iterations' },
+      { name: 'renderScale', type: 'number', default: 0.55, min: 0.2, max: 1.0, step: 0.05, label: 'Render Scale' },
+      { name: 'targetFps', type: 'number', default: 60, min: 10, max: 60, step: 5, label: 'Target FPS' },
+      { name: 'maxDpr', type: 'number', default: 1.5, min: 0.5, max: 3.0, step: 0.5, label: 'Max DPR' }
     ]
   },
   {
