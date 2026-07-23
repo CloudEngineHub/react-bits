@@ -4,7 +4,10 @@ import { gsap } from 'gsap';
 import './Masonry.css';
 
 const useMedia = (queries: string[], values: number[], defaultValue: number): number => {
-  const get = () => values[queries.findIndex(q => matchMedia(q).matches)] ?? defaultValue;
+  const get = () => {
+    if (typeof window === 'undefined') return defaultValue;
+    return values[queries.findIndex(q => matchMedia(q).matches)] ?? defaultValue;
+  };
 
   const [value, setValue] = useState<number>(get);
 
