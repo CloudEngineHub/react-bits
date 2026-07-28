@@ -431,7 +431,7 @@ class Y extends MeshPhysicalMaterial {
     thicknessPower: { value: 2 },
     thicknessScale: { value: 10 }
   };
-  defines: { USE_UV: string; };
+  defines: { USE_UV: string };
 
   constructor(params: any) {
     super(params);
@@ -771,6 +771,7 @@ interface CreateBallpitReturn {
   three: X;
   spheres: Z;
   setCount: (count: number) => void;
+  updateConfig: (newProps: { [key: string]: any }) => void;
   togglePause: () => void;
   dispose: () => void;
 }
@@ -833,6 +834,19 @@ function createBallpit(canvas: HTMLCanvasElement, config: any = {}): CreateBallp
     setCount(count: number) {
       initialize({ ...spheres.config, count });
     },
+    updateConfig(newProps: { [key: string]: any }) {
+      if (newProps.count !== undefined && newProps.count !== spheres.config.count) {
+        initialize({ ...spheres.config, ...newProps });
+      } else {
+        Object.assign(spheres.config, newProps);
+        if (newProps.colors) {
+          spheres.setColors(spheres.config.colors);
+        }
+        if (newProps.minSize !== undefined || newProps.maxSize !== undefined || newProps.size0 !== undefined) {
+          spheres.physics.setSizes();
+        }
+      }
+    },
     togglePause() {
       isPaused = !isPaused;
     },
@@ -852,6 +866,7 @@ interface BallpitProps {
 const Ballpit: React.FC<BallpitProps> = ({ className = '', followCursor = true, ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const spheresInstanceRef = useRef<CreateBallpitReturn | null>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -865,10 +880,21 @@ const Ballpit: React.FC<BallpitProps> = ({ className = '', followCursor = true, 
     return () => {
       if (spheresInstanceRef.current) {
         spheresInstanceRef.current.dispose();
+        spheresInstanceRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (spheresInstanceRef.current) {
+      spheresInstanceRef.current.updateConfig({ followCursor, ...props });
+    }
+  }, [props, followCursor]);
 
   return <canvas className={`${className} w-full h-full`} ref={canvasRef} />;
 };

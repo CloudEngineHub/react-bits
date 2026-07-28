@@ -711,6 +711,19 @@ function createBallpit(e, t = {}) {
     setCount(e) {
       initialize({ ...s.config, count: e });
     },
+    updateConfig(newProps) {
+      if (newProps.count !== undefined && newProps.count !== s.config.count) {
+        initialize({ ...s.config, ...newProps });
+      } else {
+        Object.assign(s.config, newProps);
+        if (newProps.colors) {
+          s.setColors(s.config.colors);
+        }
+        if (newProps.minSize !== undefined || newProps.maxSize !== undefined || newProps.size0 !== undefined) {
+          s.physics.setSizes();
+        }
+      }
+    },
     togglePause() {
       c = !c;
     },
@@ -724,6 +737,7 @@ function createBallpit(e, t = {}) {
 const Ballpit = ({ className = '', followCursor = true, ...props }) => {
   const canvasRef = useRef(null);
   const spheresInstanceRef = useRef(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -734,10 +748,21 @@ const Ballpit = ({ className = '', followCursor = true, ...props }) => {
     return () => {
       if (spheresInstanceRef.current) {
         spheresInstanceRef.current.dispose();
+        spheresInstanceRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (spheresInstanceRef.current) {
+      spheresInstanceRef.current.updateConfig({ followCursor, ...props });
+    }
+  }, [props, followCursor]);
 
   return <canvas className={className} ref={canvasRef} style={{ width: '100%', height: '100%' }} />;
 };
