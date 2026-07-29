@@ -55,13 +55,7 @@ const TWEETS = [
     avatar: 'https://pbs.twimg.com/profile_images/1794450494686932992/wqRqF4dt_400x400.jpg',
     text: 'Really impressed by reactbits.dev. Check it out. The Splash Cursor effect is amazing.',
     url: 'https://x.com/makwanadeepam/status/1879416558461890864',
-  },
-  {
-    handle: '@ajaypatel_aj',
-    avatar: 'https://pbs.twimg.com/profile_images/1957717329397141507/7ctDgOuc_400x400.jpg',
-    text: 'The next shadcn is emerging this year 🙌',
-    url: 'https://x.com/ajaypatel_aj/status/2006990484045193652',
-  },
+  }
 ];
 
 const COL_1 = [TWEETS[0], TWEETS[1], TWEETS[2], TWEETS[3]];
