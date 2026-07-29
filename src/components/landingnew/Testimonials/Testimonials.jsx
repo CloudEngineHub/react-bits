@@ -58,9 +58,9 @@ const TWEETS = [
   }
 ];
 
-const COL_1 = [TWEETS[0], TWEETS[1], TWEETS[2], TWEETS[3]];
-const COL_2 = [TWEETS[4], TWEETS[5], TWEETS[6]];
-const COL_3 = [TWEETS[7], TWEETS[8], TWEETS[9]];
+const COL_1 = [TWEETS[0], TWEETS[1], TWEETS[2]];
+const COL_2 = [TWEETS[3], TWEETS[4], TWEETS[5]];
+const COL_3 = [TWEETS[6], TWEETS[7], TWEETS[8]];
 
 const TweetCard = ({ tweet }) => (
   <a
