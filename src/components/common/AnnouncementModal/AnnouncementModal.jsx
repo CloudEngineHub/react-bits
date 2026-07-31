@@ -9,7 +9,7 @@ const STORAGE_KEY = 'rb-pro-july-release-seen';
 const SHOW_DELAY = 1500;
 const PROMO_VIDEO = 'https://cdn.reactbits.dev/julyupdate.mp4';
 
-const DISABLED = false;
+const DISABLED = true;
 
 const AnnouncementModal = () => {
   const location = useLocation();
