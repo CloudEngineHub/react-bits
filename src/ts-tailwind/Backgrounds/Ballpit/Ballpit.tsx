@@ -55,6 +55,11 @@ class X {
   #animationState = { elapsed: 0, delta: 0 };
   #isAnimating: boolean = false;
   #isVisible: boolean = false;
+  // Bind once: `.bind()` returns a new function on every call, so binding again
+  // in the teardown would hand removeEventListener a function that was never
+  // registered, leaving the listener attached for the lifetime of the page.
+  #boundResize = this.#onResize.bind(this);
+  #boundVisibilityChange = this.#onVisibilityChange.bind(this);
 
   canvas!: HTMLCanvasElement;
   camera!: PerspectiveCamera;
@@ -123,7 +128,7 @@ class X {
 
   #initObservers() {
     if (!(this.#config.size instanceof Object)) {
-      window.addEventListener('resize', this.#onResize.bind(this));
+      window.addEventListener('resize', this.#boundResize);
       if (this.#config.size === 'parent' && this.canvas.parentNode) {
         this.#resizeObserver = new ResizeObserver(this.#onResize.bind(this));
         this.#resizeObserver.observe(this.canvas.parentNode as Element);
@@ -135,7 +140,7 @@ class X {
       threshold: 0
     });
     this.#intersectionObserver.observe(this.canvas);
-    document.addEventListener('visibilitychange', this.#onVisibilityChange.bind(this));
+    document.addEventListener('visibilitychange', this.#boundVisibilityChange);
   }
 
   #onResize() {
@@ -283,10 +288,10 @@ class X {
   }
 
   #onResizeCleanup() {
-    window.removeEventListener('resize', this.#onResize.bind(this));
+    window.removeEventListener('resize', this.#boundResize);
     this.#resizeObserver?.disconnect();
     this.#intersectionObserver?.disconnect();
-    document.removeEventListener('visibilitychange', this.#onVisibilityChange.bind(this));
+    document.removeEventListener('visibilitychange', this.#boundVisibilityChange);
   }
 }
 
