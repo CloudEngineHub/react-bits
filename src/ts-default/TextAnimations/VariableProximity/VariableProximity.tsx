@@ -1,4 +1,12 @@
-import { forwardRef, useMemo, useRef, useEffect, MutableRefObject, RefObject, HTMLAttributes } from 'react';
+import {
+  forwardRef,
+  useMemo,
+  useRef,
+  useEffect,
+  type MutableRefObject,
+  type RefObject,
+  type HTMLAttributes
+} from 'react';
 import { motion } from 'motion/react';
 import './VariableProximity.css';
 
