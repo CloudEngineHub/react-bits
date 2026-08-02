@@ -132,6 +132,7 @@ const LineSidebar = ({
   useEffect(
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     },
     []
   );
