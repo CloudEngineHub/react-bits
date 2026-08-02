@@ -300,6 +300,7 @@ const OptionWheel = ({
   useEffect(
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
       audioRef.current?.pause();
     },
     []
