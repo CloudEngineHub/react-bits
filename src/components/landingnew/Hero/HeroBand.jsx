@@ -1,13 +1,23 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import * as THREE from 'three';
+import { createRenderGate, prefersReducedMotion } from '../../../utils/renderGate';
+
+const MAX_FPS = 60;
+const FRAME_INTERVAL_MS = 1000 / MAX_FPS - 1;
+
+let webGLSupport = null;
 
 function hasWebGL() {
+  if (webGLSupport !== null) return webGLSupport;
   try {
     const c = document.createElement('canvas');
-    return !!(c.getContext('webgl') || c.getContext('webgl2'));
+    const gl = c.getContext('webgl') || c.getContext('webgl2');
+    webGLSupport = !!gl;
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
   } catch {
-    return false;
+    webGLSupport = false;
   }
+  return webGLSupport;
 }
 
 const frag = `
@@ -97,12 +107,14 @@ const HeroBand = memo(function HeroBand({
   const pointerTarget = useRef(new THREE.Vector2(0, 0));
   const pointerCurrent = useRef(new THREE.Vector2(0, 0));
   const rectRef = useRef({ left: 0, top: 0, width: 1, height: 1 });
+  const redrawRef = useRef(null);
 
   useEffect(() => {
     if (!supported) return;
     const container = containerRef.current;
     if (!container) return;
 
+    const reduceMotion = prefersReducedMotion();
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -147,7 +159,7 @@ const HeroBand = memo(function HeroBand({
     }
 
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(1);
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -180,22 +192,53 @@ const HeroBand = memo(function HeroBand({
       const y = -(((e.clientY - r.top) / r.height) * 2 - 1);
       pointerTarget.current.set(x, y);
     };
-    window.addEventListener('mousemove', handlePointer, { passive: true });
+    if (!reduceMotion) window.addEventListener('mousemove', handlePointer, { passive: true });
 
-    const loop = () => {
-      const dt = clock.getDelta();
-      material.uniforms.uTime.value = clock.elapsedTime;
-
-      const amt = Math.min(1, dt * 4);
-      pointerCurrent.current.lerp(pointerTarget.current, amt);
+    const renderFrame = () => {
       material.uniforms.uPointer.value.copy(pointerCurrent.current);
-
       renderer.render(scene, camera);
-      rafRef.current = requestAnimationFrame(loop);
     };
-    rafRef.current = requestAnimationFrame(loop);
+
+    let elapsed = 0;
+    let lastFrame = 0;
+
+    const loop = (now) => {
+      rafRef.current = requestAnimationFrame(loop);
+
+      if (now - lastFrame < FRAME_INTERVAL_MS) return;
+      lastFrame = now;
+
+      const dt = Math.min(clock.getDelta(), 0.05);
+      elapsed += dt;
+      material.uniforms.uTime.value = elapsed;
+
+      pointerCurrent.current.lerp(pointerTarget.current, Math.min(1, dt * 4));
+      renderFrame();
+    };
+
+    let disposeGate = null;
+    if (reduceMotion) {
+      redrawRef.current = renderFrame;
+      renderFrame();
+    } else {
+      disposeGate = createRenderGate(container, {
+        onStart: () => {
+          if (rafRef.current !== null) return;
+          clock.getDelta();
+          lastFrame = 0;
+          rafRef.current = requestAnimationFrame(loop);
+        },
+        onStop: () => {
+          if (rafRef.current === null) return;
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        },
+      });
+    }
 
     return () => {
+      disposeGate?.();
+      redrawRef.current = null;
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       if (ro) ro.disconnect();
       else window.removeEventListener('resize', handleResize);
@@ -235,6 +278,8 @@ const HeroBand = memo(function HeroBand({
 
     const rad = (rotation * Math.PI) / 180;
     material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
+
+    redrawRef.current?.();
   }, [color, rotation, speed, scale, frequency, warpStrength, noise, bandWidth, yOffset, fadeTop, mouseInfluence, iterations, intensity]);
 
   if (!supported) return <div className={className} style={style} />;

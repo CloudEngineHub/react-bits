@@ -1,6 +1,8 @@
 import { useEffect, useRef, memo } from 'react';
+import { createRenderGate, prefersReducedMotion } from '../../../utils/renderGate';
 
 const TWO_PI = Math.PI * 2;
+const SETTLE_EPSILON = 0.05;
 
 const DotField = memo(({
   dotRadius = 1.5,
@@ -29,6 +31,7 @@ const DotField = memo(({
   const propsRef = useRef({});
   propsRef.current = { dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo };
   const rebuildRef = useRef(null);
+  const refreshRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +39,9 @@ const DotField = memo(({
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const reduceMotion = prefersReducedMotion();
     let resizeTimer;
+    let gradient = null;
 
     function resize() {
       clearTimeout(resizeTimer);
@@ -61,7 +66,9 @@ const DotField = memo(({
         offsetY: rect.top + window.scrollY,
       };
 
+      gradient = null;
       buildDots(w, h);
+      wake();
     }
 
     function buildDots(w, h) {
@@ -89,6 +96,7 @@ const DotField = memo(({
       const s = sizeRef.current;
       mouseRef.current.x = e.pageX - s.offsetX;
       mouseRef.current.y = e.pageY - s.offsetY;
+      wake();
     }
 
     function updateMouseSpeed() {
@@ -102,11 +110,28 @@ const DotField = memo(({
       m.prevY = m.y;
     }
 
-    const speedInterval = setInterval(updateMouseSpeed, 20);
-
     let frameCount = 0;
+    let gateOpen = false;
+    let settled = false;
+    let speedAccumulator = 0;
+    let lastTime = 0;
 
-    function tick() {
+    function wake() {
+      settled = false;
+      if (!gateOpen || rafRef.current != null) return;
+      lastTime = performance.now();
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    function stop() {
+      if (rafRef.current == null) return;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    function tick(now) {
+      rafRef.current = requestAnimationFrame(tick);
+
       frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
@@ -115,14 +140,22 @@ const DotField = memo(({
       const len = dots.length;
       const t = frameCount * 0.02;
 
+      speedAccumulator += Math.min(now - lastTime, 100);
+      lastTime = now;
+      while (speedAccumulator >= 20) {
+        speedAccumulator -= 20;
+        updateMouseSpeed();
+      }
+
       // Smooth engagement ramp (0 → 1)
-      const targetEngagement = Math.min(m.speed / 5, 1);
+      const targetEngagement = reduceMotion ? 0 : Math.min(m.speed / 5, 1);
       engagement.current += (targetEngagement - engagement.current) * 0.06;
       if (engagement.current < 0.001) engagement.current = 0;
       const eng = engagement.current;
 
       // Smoothly fade glow opacity
       glowOpacity.current += (eng - glowOpacity.current) * 0.08;
+      if (glowOpacity.current < 0.001) glowOpacity.current = 0;
 
       // Update SVG glow position and opacity
       if (glowEl) {
@@ -133,15 +166,20 @@ const DotField = memo(({
 
       ctx.clearRect(0, 0, w, h);
 
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, p.gradientFrom);
-      grad.addColorStop(1, p.gradientTo);
-      ctx.fillStyle = grad;
+      if (!gradient) {
+        gradient = ctx.createLinearGradient(0, 0, w, h);
+        gradient.addColorStop(0, p.gradientFrom);
+        gradient.addColorStop(1, p.gradientTo);
+      }
+      ctx.fillStyle = gradient;
 
       const cr = p.cursorRadius;
       const crSq = cr * cr;
       const rad = p.dotRadius / 2;
       const isBulge = p.bulgeOnly;
+      const hasWave = !reduceMotion && p.waveAmplitude > 0;
+      const hasSparkle = !reduceMotion && p.sparkle;
+      let atRest = !hasWave && !hasSparkle && eng === 0 && glowOpacity.current === 0;
 
       // Batch all dots into a single path
       ctx.beginPath();
@@ -153,18 +191,18 @@ const DotField = memo(({
         const distSq = dx * dx + dy * dy;
 
         if (distSq < crSq && eng > 0.01) {
-          const dist = Math.sqrt(distSq);
+          const dist = Math.sqrt(distSq) || 1;
+          const nx = dx / dist;
+          const ny = dy / dist;
           if (isBulge) {
-            const t = 1 - dist / cr;
-            const push = t * t * p.bulgeStrength * eng;
-            const angle = Math.atan2(dy, dx);
-            d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
-            d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
+            const falloff = 1 - dist / cr;
+            const push = falloff * falloff * p.bulgeStrength * eng;
+            d.sx += (d.ax - nx * push - d.sx) * 0.15;
+            d.sy += (d.ay - ny * push - d.sy) * 0.15;
           } else {
-            const angle = Math.atan2(dy, dx);
             const move = (500 / dist) * (m.speed * p.cursorForce);
-            d.vx += Math.cos(angle) * -move;
-            d.vy += Math.sin(angle) * -move;
+            d.vx -= nx * move;
+            d.vy -= ny * move;
           }
         } else if (isBulge) {
           d.sx += (d.ax - d.sx) * 0.1;
@@ -180,16 +218,23 @@ const DotField = memo(({
           d.sy += (d.y - d.sy) * 0.1;
         }
 
+        if (
+          atRest &&
+          (Math.abs(d.sx - d.ax) > SETTLE_EPSILON || Math.abs(d.sy - d.ay) > SETTLE_EPSILON)
+        ) {
+          atRest = false;
+        }
+
         // Wave displacement
         let drawX = d.sx;
         let drawY = d.sy;
-        if (p.waveAmplitude > 0) {
+        if (hasWave) {
           drawY += Math.sin(d.ax * 0.03 + t) * p.waveAmplitude;
           drawX += Math.cos(d.ay * 0.03 + t * 0.7) * p.waveAmplitude * 0.5;
         }
 
         // Sparkle: ~3% of dots glow, changing every ~8 frames
-        if (p.sparkle) {
+        if (hasSparkle) {
           const hash = ((i * 2654435761) ^ (frameCount >> 3)) >>> 0;
           if ((hash % 100) < 3) {
             ctx.moveTo(drawX + rad * 1.8, drawY);
@@ -206,23 +251,47 @@ const DotField = memo(({
 
       ctx.fill();
 
-      rafRef.current = requestAnimationFrame(tick);
+      if (atRest) {
+        settled = true;
+        stop();
+      }
     }
 
     // Initial setup without debounce
     doResize();
     window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    rafRef.current = requestAnimationFrame(tick);
+    if (!reduceMotion) window.addEventListener('mousemove', onMouseMove, { passive: true });
+
+    const disposeGate = createRenderGate(canvas, {
+      onStart: () => {
+        gateOpen = true;
+        if (settled) return;
+        lastTime = performance.now();
+        rafRef.current = requestAnimationFrame(tick);
+      },
+      onStop: () => {
+        gateOpen = false;
+        stop();
+      },
+    });
 
     rebuildRef.current = () => {
       const { w, h } = sizeRef.current;
       if (w > 0 && h > 0) buildDots(w, h);
+      gradient = null;
+      wake();
+    };
+
+    refreshRef.current = () => {
+      gradient = null;
+      wake();
     };
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      clearInterval(speedInterval);
+      disposeGate();
+      stop();
+      rebuildRef.current = null;
+      refreshRef.current = null;
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
@@ -233,6 +302,10 @@ const DotField = memo(({
   useEffect(() => {
     rebuildRef.current?.();
   }, [dotRadius, dotSpacing]);
+
+  useEffect(() => {
+    refreshRef.current?.();
+  }, [gradientFrom, gradientTo, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude]);
 
   return (
     <div

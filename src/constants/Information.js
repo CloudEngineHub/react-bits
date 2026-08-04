@@ -460,6 +460,78 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/text-animations/shuffle',
     tags: []
   },
+  'TextAnimations/ParticleText': {
+    videoUrl: '/assets/video/particletext.webm',
+    description: 'Text assembles from drifting particles that scatter and reform on demand.',
+    category: 'TextAnimations',
+    name: 'ParticleText',
+    docsUrl: 'https://reactbits.dev/text-animations/particle-text',
+    tags: []
+  },
+  'TextAnimations/SplitFlapText': {
+    videoUrl: '/assets/video/splitflaptext.webm',
+    description: 'Mechanical split-flap departure board that clacks through to each new phrase.',
+    category: 'TextAnimations',
+    name: 'SplitFlapText',
+    docsUrl: 'https://reactbits.dev/text-animations/split-flap-text',
+    tags: []
+  },
+  'TextAnimations/WarpText': {
+    videoUrl: '/assets/video/warptext.webm',
+    description: 'WebGL warp that bends and refracts the text around the pointer.',
+    category: 'TextAnimations',
+    name: 'WarpText',
+    docsUrl: 'https://reactbits.dev/text-animations/warp-text',
+    tags: []
+  },
+  'TextAnimations/StrokeText': {
+    videoUrl: '/assets/video/stroketext.webm',
+    description: 'Outlined letterforms draw themselves on, then flood with fill.',
+    category: 'TextAnimations',
+    name: 'StrokeText',
+    docsUrl: 'https://reactbits.dev/text-animations/stroke-text',
+    tags: []
+  },
+  'TextAnimations/DepthText': {
+    videoUrl: '/assets/video/depthtext.webm',
+    description: 'Layered extruded type with parallax that shifts against the pointer.',
+    category: 'TextAnimations',
+    name: 'DepthText',
+    docsUrl: 'https://reactbits.dev/text-animations/depth-text',
+    tags: []
+  },
+  'TextAnimations/FoldText': {
+    videoUrl: '/assets/video/foldtext.webm',
+    description: 'Lines unfold into place like creased paper opening flat.',
+    category: 'TextAnimations',
+    name: 'FoldText',
+    docsUrl: 'https://reactbits.dev/text-animations/fold-text',
+    tags: []
+  },
+  'TextAnimations/EchoText': {
+    videoUrl: '/assets/video/echotext.webm',
+    description: 'Ghosted copies trail behind the text and settle into a single word.',
+    category: 'TextAnimations',
+    name: 'EchoText',
+    docsUrl: 'https://reactbits.dev/text-animations/echo-text',
+    tags: []
+  },
+  'TextAnimations/MaskedHeading': {
+    videoUrl: '/assets/video/maskedheading.webm',
+    description: 'A large headline with a drifting colour mesh or image showing through the glyphs, revealed word by word.',
+    category: 'TextAnimations',
+    name: 'MaskedHeading',
+    docsUrl: 'https://reactbits.dev/text-animations/masked-heading',
+    tags: []
+  },
+  'TextAnimations/TextLoop': {
+    videoUrl: '/assets/video/textloop.webm',
+    description: 'A seamless text marquee that flows along curved SVG paths.',
+    category: 'TextAnimations',
+    name: 'TextLoop',
+    docsUrl: 'https://reactbits.dev/text-animations/text-loop',
+    tags: []
+  },
 
   //! Components -------------------------------------------------------------------------------------------------------------------------------
   'Components/AnimatedList': {
@@ -516,6 +588,38 @@ export const componentMetadata = {
     category: 'Components',
     name: 'ChromaGrid',
     docsUrl: 'https://reactbits.dev/components/chroma-grid',
+    tags: []
+  },
+  'Components/DepthCarousel': {
+    videoUrl: '/assets/video/depthcarousel.webm',
+    description: 'Cards recede into depth on a 3D rail, with drag, keyboard and auto-advance.',
+    category: 'Components',
+    name: 'DepthCarousel',
+    docsUrl: 'https://reactbits.dev/components/depth-carousel',
+    tags: []
+  },
+  'Components/AccordionGallery': {
+    videoUrl: '/assets/video/accordiongallery.webm',
+    description: 'Panels expand on hover or focus, revealing parallax imagery and captions.',
+    category: 'Components',
+    name: 'AccordionGallery',
+    docsUrl: 'https://reactbits.dev/components/accordion-gallery',
+    tags: []
+  },
+  'Components/MorphSlider': {
+    videoUrl: '/assets/video/morphslider.webm',
+    description: 'WebGL slider that melts between images with a displacement transition.',
+    category: 'Components',
+    name: 'MorphSlider',
+    docsUrl: 'https://reactbits.dev/components/morph-slider',
+    tags: []
+  },
+  'Components/DriftWall': {
+    videoUrl: '/assets/video/driftwall.webm',
+    description: 'An endless perspective wall of tiles drifting past, lifting on hover.',
+    category: 'Components',
+    name: 'DriftWall',
+    docsUrl: 'https://reactbits.dev/components/drift-wall',
     tags: []
   },
   'Components/CircularGallery': {
@@ -734,6 +838,46 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/specular-button',
     tags: []
   },
+  'Animations/ElasticMesh': {
+    videoUrl: '/assets/video/elasticmesh.webm',
+    description: 'Spring-mesh surface that stretches under the pointer and settles back with damped physics.',
+    category: 'Animations',
+    name: 'ElasticMesh',
+    docsUrl: 'https://reactbits.dev/animations/elastic-mesh',
+    tags: []
+  },
+  'Animations/RippleDistortion': {
+    videoUrl: '/assets/video/rippledistortion.webm',
+    description: 'Pointer-driven water displacement that warps content and leaves a decaying wake.',
+    category: 'Animations',
+    name: 'RippleDistortion',
+    docsUrl: 'https://reactbits.dev/animations/ripple-distortion',
+    tags: []
+  },
+  'Animations/SwarmCursor': {
+    videoUrl: '/assets/video/swarmcursor.webm',
+    description: 'Flocking particle swarm that chases the pointer, jostles for space and drifts apart at rest.',
+    category: 'Animations',
+    name: 'SwarmCursor',
+    docsUrl: 'https://reactbits.dev/animations/swarm-cursor',
+    tags: []
+  },
+  'Animations/HalftoneReveal': {
+    videoUrl: '/assets/video/halftonereveal.webm',
+    description: 'Print-style halftone dot matrix that resolves into sharp content around the cursor.',
+    category: 'Animations',
+    name: 'HalftoneReveal',
+    docsUrl: 'https://reactbits.dev/animations/halftone-reveal',
+    tags: []
+  },
+  'Animations/ScrollExpand': {
+    videoUrl: '/assets/video/scrollexpand.webm',
+    description: 'A rounded media frame that grows to full bleed as it scrolls through the viewport.',
+    category: 'Animations',
+    name: 'ScrollExpand',
+    docsUrl: 'https://reactbits.dev/animations/scroll-expand',
+    tags: []
+  },
   'Animations/CursorGrid': {
     videoUrl: '/assets/video/cursorgrid.webm',
     description: 'Canvas grid whose cells light up around the cursor with configurable radius, falloff and click pulses.',
@@ -902,6 +1046,70 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'Ferrofluid',
     docsUrl: 'https://reactbits.dev/backgrounds/ferrofluid',
+    tags: []
+  },
+  'Backgrounds/MoltenMetal': {
+    videoUrl: '/assets/video/moltenmetal.webm',
+    description: 'Swirling caustic plasma filaments with molten, white-hot cores.',
+    category: 'Backgrounds',
+    name: 'MoltenMetal',
+    docsUrl: 'https://reactbits.dev/backgrounds/molten-metal',
+    tags: []
+  },
+  'Backgrounds/GradientWaves': {
+    videoUrl: '/assets/video/gradientwaves.webm',
+    description: 'Raymarched sine waves rolling toward a soft, hazy horizon.',
+    category: 'Backgrounds',
+    name: 'GradientWaves',
+    docsUrl: 'https://reactbits.dev/backgrounds/gradient-waves',
+    tags: []
+  },
+  'Backgrounds/WebThreads': {
+    videoUrl: '/assets/video/webthreads.webm',
+    description: 'Glowing sine threads woven through a luminous convergence point.',
+    category: 'Backgrounds',
+    name: 'WebThreads',
+    docsUrl: 'https://reactbits.dev/backgrounds/web-threads',
+    tags: []
+  },
+  'Backgrounds/Topography': {
+    videoUrl: '/assets/video/topography.webm',
+    description: 'A living contour map with glowing, elevation-tinted lines.',
+    category: 'Backgrounds',
+    name: 'Topography',
+    docsUrl: 'https://reactbits.dev/backgrounds/topography',
+    tags: []
+  },
+  'Backgrounds/LightTunnel': {
+    videoUrl: '/assets/video/lighttunnel.webm',
+    description: 'A radial fibre-optic tunnel with light pulses racing into depth.',
+    category: 'Backgrounds',
+    name: 'LightTunnel',
+    docsUrl: 'https://reactbits.dev/backgrounds/light-tunnel',
+    tags: []
+  },
+  'Backgrounds/SlicedWaves': {
+    videoUrl: '/assets/video/slicedwaves.webm',
+    description: 'A grid of soft glowing bars rippling like a slatted equalizer.',
+    category: 'Backgrounds',
+    name: 'SlicedWaves',
+    docsUrl: 'https://reactbits.dev/backgrounds/sliced-waves',
+    tags: []
+  },
+  'Backgrounds/AcidSquares': {
+    videoUrl: '/assets/video/acidsquares.webm',
+    description: 'A crystalline corridor of stacked squares receding into depth.',
+    category: 'Backgrounds',
+    name: 'AcidSquares',
+    docsUrl: 'https://reactbits.dev/backgrounds/acid-squares',
+    tags: []
+  },
+  'Backgrounds/Scanner': {
+    videoUrl: '/assets/video/scanner.webm',
+    description: 'Calm interference bands sweeping across the screen like an oscilloscope.',
+    category: 'Backgrounds',
+    name: 'Scanner',
+    docsUrl: 'https://reactbits.dev/backgrounds/scanner',
     tags: []
   },
   'Backgrounds/Grainient': {

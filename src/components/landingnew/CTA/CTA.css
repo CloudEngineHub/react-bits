@@ -12,7 +12,7 @@
   position: relative;
   width: 100%;
   padding: 100px 0 160px;
-  background: #120F17;
+  background: #120f17;
   z-index: 4;
   overflow: hidden;
 }
@@ -24,11 +24,7 @@
   transform: translate(-50%, -50%);
   width: 700px;
   height: 500px;
-  background: radial-gradient(
-    ellipse,
-    rgba(255, 255, 255, 0.025) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.025) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -77,7 +73,9 @@
 }
 
 @keyframes cta-border-spin {
-  to { --cta-angle: 360deg; }
+  to {
+    --cta-angle: 360deg;
+  }
 }
 
 /* ─── Card ─── */
@@ -97,6 +95,19 @@
   box-shadow:
     0 4px 32px rgba(0, 0, 0, 0.1),
     inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.ln-cta-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  mix-blend-mode: luminosity;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask: radial-gradient(120% 130% at 50% 50%, #000 55%, transparent 100%);
+  mask: radial-gradient(120% 130% at 50% 50%, #000 55%, transparent 100%);
 }
 
 /* ─── Headlines ─── */
@@ -109,15 +120,19 @@
   letter-spacing: -0.02em;
   color: #fff;
   margin: 0 0 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .ln-cta-sub {
   font-family: 'Geist', sans-serif;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 32px;
   max-width: 46ch;
+  position: relative;
+  z-index: 1;
 }
 
 /* ─── Buttons ─── */
@@ -125,6 +140,8 @@
 .ln-cta-buttons {
   display: flex;
   gap: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .ln-cta-btn {
@@ -137,30 +154,43 @@
   padding: 11px 22px;
   border-radius: 10px;
   text-decoration: none;
-  transition: filter 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform var(--dur-press) var(--ease-out);
 }
 
 .ln-cta-btn--primary {
   background: #fff;
-  color: #120F17;
+  color: #120f17;
   border: 1px solid #fff;
+  padding-right: 19px;
 }
 
-.ln-cta-btn--primary:hover {
-  filter: brightness(0.88);
-  transform: translateY(-1px);
+.ln-cta-btn:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ln-cta-btn--primary:hover {
+    filter: brightness(0.88);
+    transform: translateY(-1px);
+  }
+
+  .ln-cta-btn--secondary:hover {
+    background: var(--surface-ghost-hover);
+    transform: translateY(-1px);
+  }
 }
 
 .ln-cta-btn--secondary {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ln-cta-btn--secondary:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.04);
-  transform: translateY(-1px);
+  background: var(--surface-ghost);
+  color: #fff;
+  border: 1px solid transparent;
+  box-shadow: var(--surface-ghost-highlight);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
 }
 
 /* ─── Responsive ─── */
@@ -181,5 +211,17 @@
 
   .ln-cta-btn {
     justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-cta-card-border {
+    animation: none;
+  }
+
+  .ln-cta-btn:active,
+  .ln-cta-btn--primary:hover,
+  .ln-cta-btn--secondary:hover {
+    transform: none;
   }
 }

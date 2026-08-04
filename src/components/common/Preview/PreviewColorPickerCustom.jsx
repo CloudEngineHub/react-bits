@@ -230,6 +230,7 @@ export default function PreviewColorPickerCustom({ title, color, onChange }) {
         createPortal(
           <div
             ref={popoverRef}
+            className="scrubber-popover"
             style={{
               position: 'fixed',
               top: popoverRect.bottom + 4,
@@ -308,6 +309,7 @@ export default function PreviewColorPickerCustom({ title, color, onChange }) {
               {SWATCH_PRESETS.map(c => (
                 <button
                   key={c}
+                  className="scrubber-preset-swatch"
                   onClick={() => {
                     const next = hexToHsv(c);
                     setHsv(next);

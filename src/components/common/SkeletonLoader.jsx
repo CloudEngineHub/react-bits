@@ -1,23 +1,11 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { colors } from '../../constants/colors';
 import '../../css/skeleton.css';
 
 const Bar = ({ h = '24px', mb = 4, maxW, mt, ...rest }) => (
-  <Box
-    height={h}
-    bg={colors.bgCard}
-    borderRadius="20px"
-    mb={mb}
-    mt={mt}
-    className="skeleton-pulse"
-    maxWidth={maxW}
-    {...rest}
-  />
+  <Box height={h} borderRadius="20px" mb={mb} mt={mt} className="skeleton-pulse" maxWidth={maxW} {...rest} />
 );
 
-const TabBar = ({ w }) => (
-  <Box borderRadius="10px" maxWidth={w} flex="1" height="100%" bg={colors.bgCard} className="skeleton-pulse" />
-);
+const TabBar = ({ w }) => <Box borderRadius="10px" maxWidth={w} flex="1" height="100%" className="skeleton-pulse" />;
 
 export const SkeletonLoader = () => (
   <Box className="skeleton-loader">
@@ -39,7 +27,7 @@ export const SkeletonLoader = () => (
 );
 
 export const GetStartedLoader = () => (
-  <Box className="skeleton-loader">
+  <Box className="skeleton-loader skeleton-loader--docs">
     <Box className="skeleton-content">
       <Bar mt={6} maxW="600px" />
       <Bar maxW="500px" />

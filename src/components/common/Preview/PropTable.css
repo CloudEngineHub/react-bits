@@ -20,16 +20,17 @@
 .prop-table thead th {
   text-align: left;
   padding: 14px 18px;
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
-  letter-spacing: 0.02em;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
 
 .prop-table tbody tr {
-  transition: background 0.15s ease;
+  transition: background var(--transition-fast);
 }
 
 .prop-table tbody tr:hover {
@@ -39,6 +40,7 @@
 .prop-table tbody td {
   padding: 14px 18px;
   font-size: 13px;
+  line-height: 1.45;
   color: rgba(255, 255, 255, 0.7);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   vertical-align: middle;
@@ -61,6 +63,8 @@
   font-family: 'Geist Mono', monospace;
   font-size: 12px;
   font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
   color: #d4d0dc;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.06);

@@ -35,14 +35,17 @@ const OpenInStudioButton = ({ backgroundId, currentProps = {}, defaultProps = {}
       size="sm"
       position="absolute"
       mt={3.5}
-      variant="outline"
       color="#ffffff"
       bg={colors.primary}
+      border="1px solid transparent"
+      boxShadow="var(--surface-ghost-highlight)"
       fontWeight={500}
       borderRadius="10px"
       fontSize="14px"
       onClick={handleClick}
+      transition="transform var(--dur-press) var(--ease-out), background-color var(--dur-menu) var(--ease-out)"
       _hover={{ color: '#fff', bg: `${colors.primary}aa` }}
+      _active={{ transform: 'scale(0.97)' }}
       display={{ base: 'none', md: 'inline-flex' }}
     >
       <Icon as={Palette} boxSize={4} /> Open in BG Studio

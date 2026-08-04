@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { FiArrowRight } from 'react-icons/fi';
 import { FaGithub } from 'react-icons/fa6';
+import MoltenMetal from '@/content/Backgrounds/MoltenMetal/MoltenMetal';
 import './CTA.css';
 
 const CTA = () => {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section className="ln-cta-section">
       <div className="ln-cta-glow" />
@@ -19,13 +22,15 @@ const CTA = () => {
         <div className="ln-cta-card-wrapper">
           <div className="ln-cta-card-border" />
           <div className="ln-cta-card">
-            <h2 className="ln-cta-headline">
-              Stop building from scratch.
-            </h2>
+            {!prefersReducedMotion && (
+              <div className="ln-cta-bg" aria-hidden="true">
+                <MoltenMetal opacity={0.4} mouseInteraction={false} />
+              </div>
+            )}
+            <h2 className="ln-cta-headline">Stop building from scratch.</h2>
 
             <p className="ln-cta-sub">
-              Beautiful, animated React components you can drop into any project.
-              Open source. Always free.
+              Beautiful, animated React components you can drop into any project. Open source. Always free.
             </p>
 
             <div className="ln-cta-buttons">
