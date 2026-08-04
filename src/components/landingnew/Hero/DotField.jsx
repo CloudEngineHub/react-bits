@@ -3,6 +3,8 @@ import { createRenderGate, prefersReducedMotion } from '../../../utils/renderGat
 
 const TWO_PI = Math.PI * 2;
 const SETTLE_EPSILON = 0.05;
+// Cursor speed is sampled on a fixed 50Hz cadence, independent of the frame rate.
+const SPEED_SAMPLE_MS = 20;
 
 const DotField = memo(({
   dotRadius = 1.5,
@@ -116,11 +118,23 @@ const DotField = memo(({
     let speedAccumulator = 0;
     let lastTime = 0;
 
+    function start() {
+      if (rafRef.current != null) return;
+      lastTime = performance.now();
+      // The loop parks once the field is at rest, so a restart is always preceded by a gap
+      // that `lastTime` deliberately swallows. That leaves only the wake-to-frame delta
+      // (~2ms) to feed `speedAccumulator`, which would never reach its 20ms sampling
+      // threshold - mouse speed would stay 0, engagement would stay 0, and the very first
+      // frame would consider itself at rest and park again. Prime it so the restarting
+      // frame always samples the cursor and the loop can actually get going.
+      speedAccumulator = SPEED_SAMPLE_MS;
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
     function wake() {
       settled = false;
-      if (!gateOpen || rafRef.current != null) return;
-      lastTime = performance.now();
-      rafRef.current = requestAnimationFrame(tick);
+      if (!gateOpen) return;
+      start();
     }
 
     function stop() {
@@ -140,10 +154,13 @@ const DotField = memo(({
       const len = dots.length;
       const t = frameCount * 0.02;
 
-      speedAccumulator += Math.min(now - lastTime, 100);
+      // rAF hands us the frame's start timestamp, which can predate `lastTime` when the
+      // frame was requested from a mousemove handler earlier in that same frame. Clamp so
+      // a negative delta can never drain the accumulator and stall cursor sampling.
+      speedAccumulator += Math.min(Math.max(now - lastTime, 0), 100);
       lastTime = now;
-      while (speedAccumulator >= 20) {
-        speedAccumulator -= 20;
+      while (speedAccumulator >= SPEED_SAMPLE_MS) {
+        speedAccumulator -= SPEED_SAMPLE_MS;
         updateMouseSpeed();
       }
 
@@ -266,8 +283,7 @@ const DotField = memo(({
       onStart: () => {
         gateOpen = true;
         if (settled) return;
-        lastTime = performance.now();
-        rafRef.current = requestAnimationFrame(tick);
+        start();
       },
       onStop: () => {
         gateOpen = false;
