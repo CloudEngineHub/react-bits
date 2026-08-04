@@ -84,6 +84,24 @@ body {
 }
 
 .back-to-top {
-  background: var(--bg-body) !important;
-  border: 1px solid var(--border-secondary);
+  background: var(--surface-ghost) !important;
+  border: 1px solid transparent;
+  box-shadow: var(--surface-ghost-highlight);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
+  right: calc(
+    var(--app-gutter, 32px) + var(--content-inset-right, 0px) +
+      max(
+        0px,
+        (
+            100vw - 2 * var(--app-gutter, 32px) - var(--content-inset-left, 0px) - var(--content-inset-right, 0px) -
+              var(--content-col-max, 1080px)
+          ) /
+          2
+      )
+  );
+}
+
+.back-to-top:hover {
+  background: var(--surface-ghost-hover) !important;
 }

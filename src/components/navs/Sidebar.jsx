@@ -1,4 +1,5 @@
 import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
+import { useReducedMotion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
 import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon } from 'lucide-react';
@@ -20,8 +21,9 @@ const SCROLL_OFFSET = 100;
 
 const ICON_BUTTON_STYLES = {
   rounded: '10px',
-  border: '1px solid #ffffff1c',
-  bg: colors.bgBody
+  border: '1px solid transparent',
+  bg: 'var(--surface-ghost-track)',
+  _hover: { bg: 'var(--surface-ghost-hover)' }
 };
 
 const ARROW_ICON_PROPS = { boxSize: 4, transform: 'rotate(-45deg)' };
@@ -32,9 +34,14 @@ const LINE_STYLES = {
   w: '2px',
   h: '16px',
   rounded: '1px',
-  transition: 'all 0.2s cubic-bezier(0.4,0,0.2,1)',
+  transition: 'transform var(--dur-menu) var(--ease-out), opacity var(--dur-menu) var(--ease-out)',
   pointerEvents: 'none'
 };
+
+const REDUCED_LINE_TRANSITION = 'opacity var(--dur-menu) var(--ease-out)';
+
+const BOTTOM_ENTER_PX = 8;
+const BOTTOM_EXIT_PX = 48;
 
 // ─── Utility Functions ───────────────────────────────────────────────────────
 const scrollToTop = () => window.scrollTo(0, 0);
@@ -76,11 +83,11 @@ const useScrolledToBottom = ref => {
     if (!el) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = el;
-      setIsScrolledToBottom(scrollTop + clientHeight >= scrollHeight - 10);
+      const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
+      setIsScrolledToBottom(prev => (prev ? remaining <= BOTTOM_EXIT_PX : remaining <= BOTTOM_ENTER_PX));
     };
 
-    el.addEventListener('scroll', handleScroll);
+    el.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => el.removeEventListener('scroll', handleScroll);
   }, [ref]);
@@ -89,9 +96,10 @@ const useScrolledToBottom = ref => {
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
-const ActiveLine = ({ position, isVisible }) => (
+const ActiveLine = ({ position, isVisible, reduce }) => (
   <Box
     {...LINE_STYLES}
+    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
     bg={colors.accent}
     zIndex={2}
     transform={isVisible && position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
@@ -99,9 +107,10 @@ const ActiveLine = ({ position, isVisible }) => (
   />
 );
 
-const HoverLine = ({ position, isVisible }) => (
+const HoverLine = ({ position, isVisible, reduce }) => (
   <Box
     {...LINE_STYLES}
+    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
     bg={colors.accentMuted}
     zIndex={1}
     transform={position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
@@ -110,7 +119,16 @@ const HoverLine = ({ position, isVisible }) => (
 );
 
 const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
-  <Box display={{ md: 'none' }} position="fixed" top="60px" left={0} zIndex="overlay" w="100%" bg={colors.bgBody} p="1em">
+  <Box
+    display={{ md: 'none' }}
+    position="fixed"
+    top="60px"
+    left={0}
+    zIndex="overlay"
+    w="100%"
+    bg={colors.bgBody}
+    p="1em"
+  >
     <Flex align="center" justify="space-between" gap="1em">
       <Link to="/">
         <Image src={Logo} h="22px" alt="React Bits logo" />
@@ -369,6 +387,7 @@ const Sidebar = () => {
   const { startTransition, isTransitioning } = useTransition();
   const savedSet = useFavoritesSync();
   const isScrolledToBottom = useScrolledToBottom(sidebarContainerRef);
+  const reduceMotion = useReducedMotion();
 
   // Helpers
   const findActiveElement = useCallback(() => {
@@ -510,8 +529,8 @@ const Sidebar = () => {
         className={`sidebar ${isScrolledToBottom ? 'sidebar-no-fade' : ''}`}
       >
         <Box ref={sidebarRef} position="relative">
-          <ActiveLine position={linePosition} isVisible={isLineVisible} />
-          <HoverLine position={hoverLinePosition} isVisible={isHoverLineVisible} />
+          <ActiveLine position={linePosition} isVisible={isLineVisible} reduce={reduceMotion} />
+          <HoverLine position={hoverLinePosition} isVisible={isHoverLineVisible} reduce={reduceMotion} />
 
           <VStack align="stretch" spacing={4}>
             {CATEGORIES.map((cat, i) => (

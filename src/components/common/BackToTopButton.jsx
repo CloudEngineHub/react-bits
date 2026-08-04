@@ -1,6 +1,7 @@
 import { Button, Icon } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
+import { useReducedMotion } from 'motion/react';
 import { toast } from 'sonner';
 
 const MESSAGES = [
@@ -22,6 +23,7 @@ const randomMessage = () => MESSAGES[Math.floor(Math.random() * MESSAGES.length)
 
 const BackToTopButton = () => {
   const [visible, setVisible] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -38,16 +40,19 @@ const BackToTopButton = () => {
     <Button
       fontWeight={500}
       rounded="xl"
-      py={4}
-      right={{ base: '12px', md: '2em' }}
+      boxSize="44px"
+      minW="44px"
+      p={0}
       position="fixed"
       zIndex={98}
-      boxShadow="10px 0 25px rgba(0, 0, 6, 1)"
-      transition="0.3s ease"
+      transition="opacity var(--transition-slow), transform var(--dur-press) var(--ease-out)"
+      _active={reduceMotion ? undefined : { transform: 'scale(0.94)' }}
       className="back-to-top"
       opacity={visible ? 1 : 0}
       bottom={visible ? { base: '6em', md: '2.5em' } : '1em'}
       cursor={visible ? 'pointer' : 'default'}
+      aria-hidden={!visible}
+      aria-label="Back to top"
       onClick={() => visible && scrollToTop()}
     >
       <Icon as={FiArrowUp} color="#fff" boxSize={4} />

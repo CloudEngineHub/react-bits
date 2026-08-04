@@ -5,12 +5,14 @@ import Features from '@/components/landingnew/Features/Features';
 import Testimonials from '@/components/landingnew/Testimonials/Testimonials';
 import LiveDemo from '@/components/landingnew/LiveDemo/LiveDemo';
 import QuickStart from '@/components/landingnew/QuickStart/QuickStart';
+import Ownership from '@/components/landingnew/Ownership/Ownership';
 import Sponsors from '@/components/landingnew/Sponsors/Sponsors';
 import CTA from '@/components/landingnew/CTA/CTA';
 import Footer from '@/components/landingnew/Footer/Footer';
 import LandingLoader from '@/components/landingnew/LandingLoader/LandingLoader';
 import useScrollToTop from '../hooks/useScrollToTop';
 import usePageSEO from '../hooks/usePageSEO';
+import usePauseOffscreenAnimations from '../hooks/usePauseOffscreenAnimations';
 
 const MIN_LOADER_MS = 800;
 
@@ -24,6 +26,8 @@ const LandingPage = () => {
   });
   const [loaded, setLoaded] = useState(false);
   const [hiding, setHiding] = useState(false);
+
+  usePauseOffscreenAnimations(loaded);
 
   const reveal = useCallback(() => {
     setHiding(true);
@@ -58,9 +62,10 @@ const LandingPage = () => {
         <Navbar />
         <Hero />
         <Features />
-        <Testimonials />
         <LiveDemo />
         <QuickStart />
+        <Ownership />
+        <Testimonials />
         <Sponsors />
         <CTA />
         <Footer />

@@ -1,15 +1,4 @@
-import {
-  Text,
-  Code,
-  Stack,
-  VStack,
-  HStack,
-  Flex,
-  Button,
-  Icon,
-  Box,
-  Tooltip,
-} from '@chakra-ui/react';
+import { Text, Code, Stack, VStack, HStack, Flex, Button, Icon, Box, Tooltip } from '@chakra-ui/react';
 import { TbCopy, TbCopyCheckFilled } from 'react-icons/tb';
 import { useActiveRoute } from '../../hooks/useActiveRoute';
 import { useOptions } from '../context/OptionsContext/useOptions';
@@ -52,8 +41,6 @@ const CliInstallation = ({ deps }) => {
       setMode('cli');
     }
   }, [hasManual, mode, setMode]);
-
-
 
   const [copied, setCopied] = useState(false);
   const codeRef = useRef(null);
@@ -187,10 +174,10 @@ const CliInstallation = ({ deps }) => {
       right=".6em"
       borderRadius="12px"
       fontWeight={500}
-      bg={copied ? colors.primary : colors.bgBody}
-      border={`1px solid ${colors.borderSecondary}`}
+      bg={copied ? colors.primary : 'var(--surface-ghost-track)'}
+      border="1px solid transparent"
       color={copied ? 'black' : 'white'}
-      _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
+      _hover={{ bg: copied ? colors.primary : 'var(--surface-ghost-hover)' }}
       _active={{ bg: colors.primary }}
       transition="background-color 0.3s ease"
       onClick={handleCopy}

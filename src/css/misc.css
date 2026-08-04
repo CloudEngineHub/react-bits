@@ -452,7 +452,10 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    box-shadow 120ms ease;
   box-shadow: 0 4px 16px rgba(82, 39, 255, 0.25);
 }
 
@@ -478,9 +481,116 @@
   border-color: var(--color-accent);
 }
 
+.browse-card {
+  transition:
+    background-color var(--transition-base),
+    transform var(--dur-press) var(--ease-out),
+    box-shadow var(--transition-base);
+  will-change: transform;
+}
+
+.browse-card-well {
+  background-color: #0e0b13;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Preview clips were recorded across a long stretch of time against different backdrops:
+   most are on pure black, but a later batch sits on the #120F15 surface colour and some on
+   a dark purple. `screen` blending drops a pure black backdrop out completely, so those
+   lifted ones instead composite their pedestal on top of the well (#0e0b13 -> #1f1a26) and
+   read as visibly washed out next to the rest.
+
+   The filter is a black-point correction that removes the pedestal before blending:
+     out = in * 1.0807 - 0.0810   (brightness k, then contrast c => slope k*c, offset .5(1-c))
+   which maps input 19/255 to 0 while leaving 1.0 at 1.0, so the lifted backdrops go black,
+   already-black clips are untouched, and highlights are not clipped. Deliberately built
+   from the CSS filter shorthands rather than an SVG feComponentTransfer, since those stay
+   on the GPU-accelerated path across a grid of simultaneously playing videos. */
+.browse-card-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: brightness(0.93) contrast(1.162);
+}
+
+.browse-card-empty {
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+    linear-gradient(180deg, rgba(168, 85, 247, 0.06), transparent 60%);
+}
+
+.browse-card:active {
+  transform: scale(0.97);
+  transition-duration: var(--dur-press);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .browse-card:hover {
+    background-color: var(--surface-ghost);
+    box-shadow:
+      0 4px 26px rgba(168, 85, 247, 0.16),
+      var(--surface-ghost-highlight);
+  }
+
+  .browse-card .browse-card-title {
+    transition: color var(--transition-base);
+  }
+
+  .browse-card:hover .browse-card-title {
+    color: #eadcff;
+  }
+
+  .browse-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .browse-card {
+    transition:
+      background-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  .browse-card:active {
+    transform: none;
+  }
+}
+
 /* Background content glass effect */
 .bg-content-glass {
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   backdrop-filter: blur(20px) saturate(1.4);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+[data-scope='menu'][data-part='trigger']:focus-visible {
+  outline: none;
+}
+
+:root[data-input-mode='keyboard'] [data-scope='menu'][data-part='trigger']:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Ark's floating positioner applies `transform: translate3d(var(--x), var(--y), 0)` one
+   frame before it assigns --x / --y. An undefined custom property invalidates the whole
+   transform, so for that frame the panel computes `transform: none` and paints at its
+   container's top-left corner, dragging its shadow across whatever sits there. Any
+   neighbouring element using backdrop-filter can then hold a stale sample of that flash.
+   These fallbacks keep it parked off-screen until real coordinates arrive; the inline
+   values Ark sets afterwards take precedence. */
+[data-scope='select'][data-part='positioner'],
+[data-scope='menu'][data-part='positioner'],
+[data-scope='popover'][data-part='positioner'],
+[data-scope='tooltip'][data-part='positioner'],
+[data-scope='hover-card'][data-part='positioner'],
+[data-scope='combobox'][data-part='positioner'],
+[data-scope='color-picker'][data-part='positioner'] {
+  --x: 0px;
+  --y: -100vh;
 }

@@ -2,14 +2,29 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Palette, Shapes, ImageIcon } from 'lucide-react';
-import { FiType, FiCircle, FiLayers, FiImage, FiCode, FiGrid, FiZap, FiBox, FiStar, FiHeart, FiEye, FiCompass } from 'react-icons/fi';
+import {
+  FiType,
+  FiCircle,
+  FiLayers,
+  FiImage,
+  FiCode,
+  FiGrid,
+  FiZap,
+  FiBox,
+  FiStar,
+  FiHeart,
+  FiEye,
+  FiCompass
+} from 'react-icons/fi';
 import { useStars } from '../../../hooks/useStars';
+import useInView from '../../../hooks/useInView';
+import { COMPONENT_COUNT } from '@/constants/Categories';
 import rbLogo from '../../../assets/logos/react-bits-logo-small.svg';
 import './Features.css';
 
 /* ─── 1. Component Name Marquee ─── */
 
-const toSlug = (s) => s.toLowerCase().replace(/\s+/g, '-');
+const toSlug = s => s.toLowerCase().replace(/\s+/g, '-');
 
 const ROW_A = [
   { name: 'Dot Field', cat: 'backgrounds' },
@@ -20,7 +35,7 @@ const ROW_A = [
   { name: 'Antigravity', cat: 'animations' },
   { name: 'Ballpit', cat: 'backgrounds' },
   { name: 'Pixel Trail', cat: 'animations' },
-  { name: 'Magic Rings', cat: 'animations' },
+  { name: 'Magic Rings', cat: 'animations' }
 ];
 
 const ROW_B = [
@@ -33,7 +48,7 @@ const ROW_B = [
   { name: 'Balatro', cat: 'backgrounds' },
   { name: 'Aurora', cat: 'backgrounds' },
   { name: 'Splash Cursor', cat: 'animations' },
-  { name: 'Beams', cat: 'backgrounds' },
+  { name: 'Beams', cat: 'backgrounds' }
 ];
 
 const ComponentMarquee = () => (
@@ -41,14 +56,18 @@ const ComponentMarquee = () => (
     <div className="ln-feat-marquee-track">
       <div className="ln-feat-marquee-scroll">
         {[...ROW_A, ...ROW_A].map((c, i) => (
-          <Link key={i} to={`/${c.cat}/${toSlug(c.name)}`} className="ln-feat-pill">{c.name}</Link>
+          <Link key={i} to={`/${c.cat}/${toSlug(c.name)}`} className="ln-feat-pill">
+            {c.name}
+          </Link>
         ))}
       </div>
     </div>
     <div className="ln-feat-marquee-track">
       <div className="ln-feat-marquee-scroll ln-feat-marquee-scroll--rev">
         {[...ROW_B, ...ROW_B].map((c, i) => (
-          <Link key={i} to={`/${c.cat}/${toSlug(c.name)}`} className="ln-feat-pill">{c.name}</Link>
+          <Link key={i} to={`/${c.cat}/${toSlug(c.name)}`} className="ln-feat-pill">
+            {c.name}
+          </Link>
         ))}
       </div>
     </div>
@@ -141,24 +160,27 @@ const VARIANTS = [
   { label: 'JS + CSS', accent: 'rgba(255,255,255,0.5)' },
   { label: 'TS + CSS', accent: 'rgba(255,255,255,0.5)' },
   { label: 'JS + Tailwind', accent: 'rgba(255,255,255,0.5)' },
-  { label: 'TS + Tailwind', accent: 'rgba(255,255,255,0.5)' },
+  { label: 'TS + Tailwind', accent: 'rgba(255,255,255,0.5)' }
 ];
 
 const VariantTabs = () => {
   const [active, setActive] = useState(0);
+  const [ref, visible] = useInView();
+
   useEffect(() => {
+    if (!visible) return;
     const id = setInterval(() => setActive(p => (p + 1) % 4), 2200);
     return () => clearInterval(id);
-  }, []);
+  }, [visible]);
 
   return (
-    <div className="ln-feat-vrows">
+    <div className="ln-feat-vrows" ref={ref}>
       {VARIANTS.map((v, i) => (
         <motion.div
           key={i}
           className="ln-feat-vrow"
           animate={{
-            opacity: i === active ? 1 : 0.3,
+            opacity: i === active ? 1 : 0.3
           }}
           transition={{ duration: 0.4 }}
         >
@@ -184,7 +206,7 @@ const AI_CONVOS = [
       { cls: 'kw', text: 'import ' },
       { cls: 'comp', text: 'BorderGlow' },
       { cls: 'kw', text: ' from ' },
-      { cls: 'str', text: '"./BorderGlow"' },
+      { cls: 'str', text: '"./BorderGlow"' }
     ],
     jsx: [
       { cls: 'tag', text: '<' },
@@ -192,8 +214,8 @@ const AI_CONVOS = [
       { cls: 'attr', text: ' glowIntensity' },
       { cls: 'punc', text: '=' },
       { cls: 'num', text: '{0.8}' },
-      { cls: 'tag', text: ' />' },
-    ],
+      { cls: 'tag', text: ' />' }
+    ]
   },
   {
     q: 'animate hero text',
@@ -201,7 +223,7 @@ const AI_CONVOS = [
       { cls: 'kw', text: 'import ' },
       { cls: 'comp', text: 'SplitText' },
       { cls: 'kw', text: ' from ' },
-      { cls: 'str', text: '"./SplitText"' },
+      { cls: 'str', text: '"./SplitText"' }
     ],
     jsx: [
       { cls: 'tag', text: '<' },
@@ -209,8 +231,8 @@ const AI_CONVOS = [
       { cls: 'attr', text: ' animation' },
       { cls: 'punc', text: '=' },
       { cls: 'str', text: '"fadeUp"' },
-      { cls: 'tag', text: ' />' },
-    ],
+      { cls: 'tag', text: ' />' }
+    ]
   },
   {
     q: 'particle background',
@@ -218,7 +240,7 @@ const AI_CONVOS = [
       { cls: 'kw', text: 'import ' },
       { cls: 'comp', text: 'Ballpit' },
       { cls: 'kw', text: ' from ' },
-      { cls: 'str', text: '"./Ballpit"' },
+      { cls: 'str', text: '"./Ballpit"' }
     ],
     jsx: [
       { cls: 'tag', text: '<' },
@@ -226,9 +248,9 @@ const AI_CONVOS = [
       { cls: 'attr', text: ' count' },
       { cls: 'punc', text: '=' },
       { cls: 'num', text: '{200}' },
-      { cls: 'tag', text: ' />' },
-    ],
-  },
+      { cls: 'tag', text: ' />' }
+    ]
+  }
 ];
 
 const AITerminal = () => {
@@ -237,6 +259,7 @@ const AITerminal = () => {
   const [phase, setPhase] = useState('prompt'); // prompt | thinking | code
   const [codeLines, setCodeLines] = useState(0);
   const timers = useRef([]);
+  const [ref, visible] = useInView();
 
   const clearTimers = useCallback(() => {
     timers.current.forEach(clearTimeout);
@@ -250,6 +273,7 @@ const AITerminal = () => {
   }, []);
 
   useEffect(() => {
+    if (!visible) return;
     const conv = AI_CONVOS[idx];
     setTyped('');
     setPhase('prompt');
@@ -268,7 +292,10 @@ const AITerminal = () => {
     delay += 900;
 
     // Code lines
-    schedule(() => { setPhase('code'); setCodeLines(1); }, delay);
+    schedule(() => {
+      setPhase('code');
+      setCodeLines(1);
+    }, delay);
     delay += 280;
     schedule(() => setCodeLines(2), delay);
     delay += 280;
@@ -279,12 +306,12 @@ const AITerminal = () => {
     schedule(() => setIdx(p => (p + 1) % AI_CONVOS.length), delay);
 
     return clearTimers;
-  }, [idx, clearTimers, schedule]);
+  }, [idx, visible, clearTimers, schedule]);
 
   const conv = AI_CONVOS[idx];
 
   return (
-    <div className="ln-feat-aichat">
+    <div className="ln-feat-aichat" ref={ref}>
       <AnimatePresence mode="wait">
         <motion.div
           key={idx}
@@ -296,7 +323,9 @@ const AITerminal = () => {
         >
           <div className="ln-feat-aichat-head">
             <div className="ln-feat-aichat-dots">
-              <span /><span /><span />
+              <span />
+              <span />
+              <span />
             </div>
             <span className="ln-feat-aichat-title">Editor</span>
           </div>
@@ -309,27 +338,52 @@ const AITerminal = () => {
 
           {phase === 'thinking' && (
             <div className="ln-feat-aichat-thinking">
-              <span /><span /><span />
+              <span />
+              <span />
+              <span />
             </div>
           )}
 
           {phase === 'code' && (
             <div className="ln-feat-aichat-code-block">
               {codeLines >= 1 && (
-                <motion.div className="ln-feat-aichat-code-line" initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+                <motion.div
+                  className="ln-feat-aichat-code-line"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <span className="ln-feat-aichat-ln">1</span>
-                  {conv.lines.map((t, j) => <span key={j} className={`ac-${t.cls}`}>{t.text}</span>)}
+                  {conv.lines.map((t, j) => (
+                    <span key={j} className={`ac-${t.cls}`}>
+                      {t.text}
+                    </span>
+                  ))}
                 </motion.div>
               )}
               {codeLines >= 2 && (
-                <motion.div className="ln-feat-aichat-code-line" initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+                <motion.div
+                  className="ln-feat-aichat-code-line"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <span className="ln-feat-aichat-ln">2</span>
                 </motion.div>
               )}
               {codeLines >= 3 && (
-                <motion.div className="ln-feat-aichat-code-line" initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+                <motion.div
+                  className="ln-feat-aichat-code-line"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <span className="ln-feat-aichat-ln">3</span>
-                  {conv.jsx.map((t, j) => <span key={j} className={`ac-${t.cls}`}>{t.text}</span>)}
+                  {conv.jsx.map((t, j) => (
+                    <span key={j} className={`ac-${t.cls}`}>
+                      {t.text}
+                    </span>
+                  ))}
                 </motion.div>
               )}
             </div>
@@ -384,41 +438,41 @@ const StarCard = () => {
 
 const CARDS = [
   {
-    title: '140+ Components',
-    desc: 'Backgrounds, text effects, animations, UI patterns. The stuff you\'d build from scratch, already done.',
+    title: `${COMPONENT_COUNT}+ Components`,
+    desc: "Backgrounds, text effects, animations, UI patterns. The stuff you'd build from scratch, already done.",
     span: 5,
-    visual: <ComponentMarquee />,
+    visual: <ComponentMarquee />
   },
   {
     title: 'Visual Editors',
     desc: 'Three free tools to play with components and grab the code.',
     span: 3,
-    visual: <ToolsFloat />,
+    visual: <ToolsFloat />
   },
   {
     title: 'Well Organized',
-    desc: 'Four clear categories so you\'re not scrolling through a wall of unrelated stuff.',
+    desc: "Four clear categories so you're not scrolling through a wall of unrelated stuff.",
     span: 4,
-    visual: <CategorySelector />,
+    visual: <CategorySelector />
   },
   {
     title: 'Pick Your Stack',
     desc: 'JS or TypeScript, CSS or Tailwind. Every component comes in all four flavors.',
     span: 4,
-    visual: <VariantTabs />,
+    visual: <VariantTabs />
   },
   {
     title: 'AI-Ready',
     desc: 'Works great with Cursor, Copilot, and v0. Describe what you need, drop it in, ship.',
     span: 5,
-    visual: <AITerminal />,
+    visual: <AITerminal />
   },
   {
     title: 'Growing Fast',
-    desc: 'React\'s fastest-growing component library on GitHub. Not even close.',
+    desc: "React's fastest-growing component library on GitHub. Not even close.",
     span: 3,
-    visual: <StarCard />,
-  },
+    visual: <StarCard />
+  }
 ];
 
 /* ─── Features Section ─── */
@@ -438,9 +492,7 @@ const Features = () => (
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: i * 0.07, ease: [0.21, 0.47, 0.32, 0.98] }}
           >
-            <div className="ln-features-card-visual">
-              {card.visual}
-            </div>
+            <div className="ln-features-card-visual">{card.visual}</div>
             <div className="ln-features-card-body">
               <h3>{card.title}</h3>
               <p>{card.desc}</p>

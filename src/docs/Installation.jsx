@@ -1,78 +1,95 @@
-import { useState } from 'react';
 import DocsButtonBar from './DocsButtonBar';
 import CodeBlock from './CodeBlock';
 import MethodSelector from './MethodSelector';
+import CopyPageButton from './CopyPageButton';
+import IconSelect from '../components/code/IconSelect';
 import useScrollToTop from '../hooks/useScrollToTop';
+import { useOptions } from '../components/context/OptionsContext/useOptions';
+import { useInstallation } from '../hooks/useInstallation';
 import { TbCopy, TbTerminal2 } from 'react-icons/tb';
 
-import codeoptions from '../assets/common/code-options.webp';
+import jsIcon from '../assets/icons/js.svg';
+import tsIcon from '../assets/icons/ts.svg';
+import cssIcon from '../assets/icons/css.svg';
+import twIcon from '../assets/icons/tw.svg';
 
-const ICON_STYLE = { fontSize: '50px' };
+const METHOD_ICON = { fontSize: '18px' };
 
 const METHODS = [
-  { key: 'manual', icon: <TbCopy style={ICON_STYLE} />, label: 'Manual' },
-  { key: 'cli', icon: <TbTerminal2 style={ICON_STYLE} />, label: 'CLI' },
+  { key: 'manual', icon: <TbCopy style={METHOD_ICON} />, label: 'Manual' },
+  { key: 'cli', icon: <TbTerminal2 style={METHOD_ICON} />, label: 'CLI' }
 ];
 
-const SHADCN_VARIANTS = [
-  { code: 'JS-CSS', label: 'JavaScript + Plain CSS' },
-  { code: 'JS-TW', label: 'JavaScript + Tailwind' },
-  { code: 'TS-CSS', label: 'TypeScript + Plain CSS' },
-  { code: 'TS-TW', label: 'TypeScript + Tailwind' },
+const CLI_TOOLS = [
+  { key: 'shadcn', label: 'shadcn' },
+  { key: 'jsrepo', label: 'jsrepo' }
 ];
 
-const JSREPO_VARIANTS = [
-  { code: 'default', label: 'JavaScript + Plain CSS' },
-  { code: 'tailwind', label: 'JavaScript + Tailwind' },
-  { code: 'ts/default', label: 'TypeScript + Plain CSS' },
-  { code: 'ts/tailwind', label: 'TypeScript + Tailwind' },
-];
+const LANG_ITEMS = ['JS', 'TS'];
+const STYLE_ITEMS = ['CSS', 'TW'];
+const ICON_MAP = { JS: jsIcon, TS: tsIcon, CSS: cssIcon, TW: twIcon };
+const COLOR_MAP = { JS: '#F7DF1E', TS: '#3178C6', CSS: '#B497CF', TW: '#38BDF8' };
+const LABEL_MAP = { JS: 'JavaScript', TS: 'TypeScript', CSS: 'CSS', TW: 'Tailwind' };
 
-const VariantList = ({ label, variants }) => (
-  <>
-    <p className="docs-paragraph short">{label}</p>
-    <ul className="docs-list">
-      {variants.map(({ code, label: desc }) => (
-        <li key={code} className="docs-list-item">
-          <span className="docs-highlight">{code}</span> - {desc}
-        </li>
-      ))}
-    </ul>
-  </>
-);
+const StackPicker = () => {
+  const { languagePreset, setLanguagePreset, stylePreset, setStylePreset } = useOptions();
+
+  return (
+    <div className="docs-code-options">
+      <IconSelect
+        collection={LANG_ITEMS}
+        value={languagePreset || 'JS'}
+        onChange={setLanguagePreset}
+        iconMap={ICON_MAP}
+        labelMap={LABEL_MAP}
+        colorMap={COLOR_MAP}
+        width="150px"
+      />
+      <IconSelect
+        collection={STYLE_ITEMS}
+        value={stylePreset || 'CSS'}
+        onChange={setStylePreset}
+        iconMap={ICON_MAP}
+        labelMap={LABEL_MAP}
+        colorMap={COLOR_MAP}
+        width="140px"
+      />
+    </div>
+  );
+};
 
 const ManualSteps = () => (
   <>
-    <p className="docs-paragraph dim">Follow these steps to manually install components:</p>
+    <p className="docs-paragraph dim">Copy a component&apos;s source straight into your project.</p>
 
-    <h4 className="docs-category-subtitle">1. Pick a component</h4>
+    <h3 className="docs-subtitle">1. Pick a component</h3>
     <p className="docs-paragraph">
-      Preview components and find something you like, then head to the{' '}
-      <span className="docs-highlight">Code</span> tab.
+      Browse the library, open a component you like, and switch to its <span className="docs-highlight">Code</span> tab.
     </p>
 
-    <h4 className="docs-category-subtitle">2. Install dependencies</h4>
+    <h3 className="docs-subtitle">2. Set your stack</h3>
     <p className="docs-paragraph short">
-      Components may use external libraries, don&apos;t forget to install them by selecting{' '}
-      <span className="docs-highlight">Manual</span>, copying the command, and running it in your terminal.
+      Choose your language and styling below. Every <span className="docs-highlight">Code</span> tab across the site
+      updates to match, and your choice is remembered on this device.
     </p>
-    <CodeBlock showLineNumbers>npm install gsap</CodeBlock>
+    <StackPicker />
 
-    <h4 className="docs-category-subtitle">3. Copy the code</h4>
-    <p className="docs-paragraph short">
-      The <span className="docs-highlight">Code</span> tab also contains all the code you need to copy - you can use
-      the controls below to switch between technologies on the Code tab.
+    <h3 className="docs-subtitle">3. Copy the code</h3>
+    <p className="docs-paragraph">
+      The <span className="docs-highlight">Code</span> tab now shows the full source for your selected stack — copy it
+      into a new file in your project.
     </p>
-    <div className="docs-code-options">
-      <img src={codeoptions} className="code-options-img" />
-    </div>
 
-    <h4 className="docs-category-subtitle">4. Use the component</h4>
+    <h3 className="docs-subtitle">4. Install dependencies &amp; use it</h3>
     <p className="docs-paragraph short">
-      A basic usage example is provided for every component, and if you want to go into details, you can check all the
-      available props on the <span className="docs-highlight">Preview</span> tab.
+      If a component relies on external libraries, its <span className="docs-highlight">Code</span> tab lists them.
+      Install what it needs:
     </p>
-    <CodeBlock showLineNumbers>
+    <CodeBlock language="bash" showLineNumbers>
+      npm install gsap
+    </CodeBlock>
+    <p className="docs-paragraph short">Then import and render it like any other component:</p>
+    <CodeBlock language="jsx" showLineNumbers>
       {`import SplitText from "./SplitText";
 
 <SplitText
@@ -84,83 +101,80 @@ const ManualSteps = () => (
   </>
 );
 
-const CliSteps = () => (
-  <>
-    <p className="docs-paragraph dim">Use a one-time command to pull any component directly into your project.</p>
+const CliSteps = () => {
+  const { languagePreset, stylePreset } = useOptions();
+  const { cliTool, setCliTool } = useInstallation();
 
-    <p className="docs-paragraph">
-      React Bits supports two CLI installation methods:{' '}
-      <a style={{ textDecoration: 'underline' }} href="https://ui.shadcn.com/" target="_blank" rel="noreferrer">
-        shadcn
-      </a>{' '}
-      and{' '}
-      <a style={{ textDecoration: 'underline' }} href="https://jsrepo.dev/" target="_blank" rel="noreferrer">
-        jsrepo
-      </a>
-      . Pick whichever you prefer – they both fetch the same component source.
-    </p>
+  const variant = `${languagePreset || 'JS'}-${stylePreset === 'TW' ? 'TW' : 'CSS'}`;
+  const command =
+    cliTool === 'shadcn'
+      ? `npx shadcn@latest add @react-bits/SplitText-${variant}`
+      : `npx jsrepo@latest add https://reactbits.dev/r/SplitText-${variant}`;
 
-    <h4 className="docs-category-subtitle">Installation</h4>
-    <p className="docs-paragraph short">
-      Below are example commands for the SplitText component. Replace placeholders to fit your stack.
-    </p>
+  return (
+    <>
+      <p className="docs-paragraph dim">Pull a component into your project with a single command.</p>
 
-    <h4 className="docs-category-subtitle docs-highlight" style={{ marginTop: '1.25rem' }}>
-      shadcn
-    </h4>
-    <p className="docs-paragraph short"></p>
-    <CodeBlock>{`npx shadcn@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`}</CodeBlock>
-    <VariantList label="<LANGUAGE> + <STYLE> combinations:" variants={SHADCN_VARIANTS} />
+      <h3 className="docs-subtitle">1. Choose a CLI</h3>
+      <p className="docs-paragraph short">
+        React Bits works with two registries — both fetch the same source, so pick whichever you already use.
+      </p>
+      <MethodSelector methods={CLI_TOOLS} selected={cliTool} onSelect={setCliTool} ariaLabel="CLI tool" />
 
-    <h4 className="docs-category-subtitle docs-highlight" style={{ marginTop: '1.25rem' }}>
-      jsrepo
-    </h4>
-    <p className="docs-paragraph short"></p>
-    <CodeBlock>{`npx jsrepo@latest add https://reactbits.dev/r/<Component>-<LANG>-<STYLE>`}</CodeBlock>
-    <VariantList label="<VARIANT> options:" variants={JSREPO_VARIANTS} />
+      <h3 className="docs-subtitle">2. Set your stack</h3>
+      <p className="docs-paragraph short">
+        The <span className="docs-highlight">{variant}</span> suffix in the command follows your language and styling
+        choice:
+      </p>
+      <StackPicker />
 
-    <p className="docs-paragraph dim" style={{ marginTop: '1rem' }}>
-      Tip: You can run these with other package managers (pnpm, yarn, bun) - just swap the prefix (e.g.{' '}
-      <code>pnpm dlx</code> or <code>yarn</code> instead of <code>npx</code>).
-    </p>
-  </>
-);
+      <h3 className="docs-subtitle">3. Run the command</h3>
+      <p className="docs-paragraph short">
+        This example installs <span className="docs-highlight">SplitText</span> — swap in any component name:
+      </p>
+      <CodeBlock language="bash">{command}</CodeBlock>
+
+      <p className="docs-paragraph dim">
+        Prefer pnpm, yarn or bun? Swap the <code>npx</code> prefix for <code>pnpm dlx</code>, <code>yarn</code>, or{' '}
+        <code>bun x --bun</code>.
+      </p>
+    </>
+  );
+};
 
 const Installation = () => {
-  const [selectedMethod, setSelectedMethod] = useState('manual');
+  const { installMode, setInstallMode } = useInstallation();
 
   useScrollToTop();
 
   return (
     <section className="docs-section">
-      <h3 className="docs-category-title">Installation</h3>
+      <div className="docs-page-header">
+        <h1 className="docs-title">Installation</h1>
+        <CopyPageButton />
+      </div>
 
-      <p className="docs-paragraph dim">Using components is very straightforward, anyone can do it.</p>
-
-      <hr className="docs-separator" />
-
-      <h3 className="docs-category-title">Pick The Method</h3>
-
-      <p className="docs-paragraph">
-        You can keep it simple and copy code directly from the documentation, or you can use CLI commands to install
-        components into your project.
+      <p className="docs-lead">
+        Add React Bits components two ways — copy the source by hand, or pull them in with a CLI. Your choice is saved
+        and used across the site.
       </p>
 
-      <p className="docs-paragraph dim">Click the cards below to change your preferred method.</p>
+      <h2 className="docs-section-title">Pick the method</h2>
+      <MethodSelector
+        methods={METHODS}
+        selected={installMode}
+        onSelect={setInstallMode}
+        ariaLabel="Installation method"
+      />
 
-      <MethodSelector methods={METHODS} selected={selectedMethod} onSelect={setSelectedMethod} />
+      <h2 className="docs-section-title">Steps</h2>
+      {installMode === 'manual' ? <ManualSteps /> : <CliSteps />}
 
-      <h3 className="docs-category-title">Steps</h3>
-
-      {selectedMethod === 'manual' ? <ManualSteps /> : <CliSteps />}
-
-      <hr className="docs-separator" />
-
-      <h4 className="docs-category-subtitle">That&apos;s all!</h4>
+      <h2 className="docs-section-title">That&apos;s all!</h2>
 
       <p className="docs-paragraph">
         From here on, it&apos;s all about how you integrate the component into your project. The code is yours to play
-        around with - modify styling, functionalities, anything goes!
+        around with — modify styling, functionality, anything goes!
       </p>
 
       <DocsButtonBar

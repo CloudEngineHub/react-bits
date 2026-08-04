@@ -6,7 +6,7 @@
   position: relative;
   width: 100%;
   padding: 80px 0 100px;
-  background: #120F17;
+  background: #120f17;
   z-index: 4;
 }
 
@@ -102,12 +102,20 @@
     inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
   text-decoration: none;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    transform var(--dur-press) var(--ease-out);
 }
 
-.ln-sp-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .ln-sp-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.ln-sp-card:not(.ln-sp-card--empty):active {
+  transform: scale(0.99);
 }
 
 /* ─── Card Visual (logo area) ─── */
@@ -147,7 +155,9 @@
   max-width: 65%;
   object-fit: contain;
   opacity: 0.75;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   position: relative;
   z-index: 1;
 }
@@ -182,7 +192,9 @@
 
 .ln-sp-card-arrow {
   color: rgba(255, 255, 255, 0.25);
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .ln-sp-card:hover .ln-sp-card-arrow {
@@ -218,7 +230,7 @@
 }
 
 .ln-sp-empty-name {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* ─── Footer links ─── */
@@ -290,5 +302,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-sp-card:hover,
+  .ln-sp-card:not(.ln-sp-card--empty):active,
+  .ln-sp-card:hover .ln-sp-card-logo,
+  .ln-sp-card:hover .ln-sp-card-arrow {
+    transform: none;
   }
 }

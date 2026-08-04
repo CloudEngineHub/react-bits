@@ -67,13 +67,19 @@
   border-radius: 10px;
   border: none;
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
-  box-shadow: 0 2px 16px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow:
+    0 2px 16px rgba(139, 92, 246, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   text-decoration: none;
 }
 
 .sponsors-page-cta:hover {
-  box-shadow: 0 4px 24px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 4px 24px rgba(139, 92, 246, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
@@ -293,7 +299,9 @@
   max-width: 70%;
   object-fit: contain;
   opacity: 0.85;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .sponsors-card-banner--diamond .sponsors-card-logo {
@@ -325,7 +333,9 @@
   display: flex;
   align-items: center;
   color: rgba(255, 255, 255, 0.3);
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .sponsors-page-card:hover .sponsors-card-arrow {
@@ -432,28 +442,35 @@
   font-weight: 500;
   color: #fff;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  border: 1px solid transparent;
+  background: var(--surface-ghost-track);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   text-decoration: none;
 }
 
 .sponsors-pricing-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: var(--surface-ghost);
+  box-shadow: var(--surface-ghost-highlight);
   transform: translateY(-1px);
 }
 
 .sponsors-pricing-btn--featured {
   border: none;
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
-  box-shadow: 0 2px 12px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 2px 12px rgba(139, 92, 246, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .sponsors-pricing-btn--featured:hover {
   background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
   border: none;
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 4px 20px rgba(139, 92, 246, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .sponsors-pricing-note {
@@ -471,7 +488,6 @@
 .sponsors-pricing-note a:hover {
   text-decoration: underline;
 }
-
 
 /* ─── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {

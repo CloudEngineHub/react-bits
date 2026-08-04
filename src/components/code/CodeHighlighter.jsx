@@ -1,5 +1,5 @@
-import { TbCopy, TbCopyCheckFilled, TbMoodSad } from 'react-icons/tb';
-import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
+import { TbCopy, TbCheck, TbMoodSad } from 'react-icons/tb';
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -18,13 +18,7 @@ const hashSnippet = str => {
   return hash.toString(36);
 };
 
-const COPY_BTN_STYLE = {
-  borderRadius: '10px',
-  fontWeight: 500,
-  border: `1px solid ${colors.borderSecondary}`,
-  transition: 'background-color 0.3s ease',
-  h: 10,
-};
+const COPY_RESET_MS = 2000;
 
 const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLines = 25, snippetId }) => {
   const { pathname } = useLocation();
@@ -41,7 +35,7 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
     try {
       await navigator.clipboard.writeText(codeString);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), COPY_RESET_MS);
     } catch (error) {
       console.error('Failed to copy text: ', error);
     }
@@ -85,38 +79,23 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
         )}
 
         {shouldCollapse && (
-          <Button
-            {...COPY_BTN_STYLE}
-            position="absolute"
-            bottom="0.9em"
-            right="0.8em"
-            rounded="10px"
-            bg={colors.bgBody}
-            color="white"
-            _hover={{ bg: colors.bgElevated }}
-            _active={{ bg: colors.bgElevated }}
-            zIndex={2}
-            onClick={() => setExpanded(prev => !prev)}
-          >
+          <button className="docs-expand-button" onClick={() => setExpanded(prev => !prev)}>
             {expanded ? 'Collapse Snippet' : 'Expand Snippet'}
-          </Button>
+          </button>
         )}
       </Box>
 
       {codeString && (
-        <Button
-          {...COPY_BTN_STYLE}
-          position="absolute"
-          top=".65em"
-          right=".6em"
-          bg={copied ? colors.primary : colors.bgBody}
-          color={copied ? 'black' : 'white'}
-          _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
-          _active={{ bg: colors.primary }}
-          onClick={handleCopy}
-        >
-          <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
-        </Button>
+        <div className="docs-code-header">
+          <button
+            className={`docs-copy-button${copied ? ' docs-copy-button--done' : ''}`}
+            onClick={handleCopy}
+            title={copied ? 'Copied!' : 'Copy to clipboard'}
+            aria-label={copied ? 'Code copied to clipboard' : 'Copy code to clipboard'}
+          >
+            {copied ? <TbCheck /> : <TbCopy />}
+          </button>
+        </div>
       )}
     </Box>
   );

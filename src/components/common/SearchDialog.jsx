@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile } from 'react-icons/fi';
 import { AiOutlineEnter } from 'react-icons/ai';
-import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../constants/Categories';
 import { fuzzyMatch } from '../../utils/fuzzy';
@@ -24,23 +23,11 @@ function searchComponents(query) {
   return results;
 }
 
-const AnimatedResult = ({ children, delay = 0, dataIndex, onMouseEnter, onClick }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { threshold: 0.5, triggerOnce: false });
-  return (
-    <motion.div
-      ref={ref}
-      data-index={dataIndex}
-      onMouseEnter={onMouseEnter}
-      onClick={onClick}
-      animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.7, opacity: 0 }}
-      transition={{ duration: 0.2, delay }}
-      style={{ cursor: 'pointer' }}
-    >
-      {children}
-    </motion.div>
-  );
-};
+const Result = ({ children, dataIndex, onMouseEnter, onClick }) => (
+  <div data-index={dataIndex} onMouseEnter={onMouseEnter} onClick={onClick} style={{ cursor: 'pointer' }}>
+    {children}
+  </div>
+);
 
 const categoryIconMapping = {
   'Get Started': FiFile,
@@ -178,71 +165,51 @@ const SearchDialog = ({ isOpen, onClose }) => {
             onChange={e => setInputValue(e.target.value)}
             placeholder="Search components, categories, or keywords..."
           />
-          <kbd className="search-kbd" onClick={onClose}>esc</kbd>
+          <kbd className="search-kbd" onClick={onClose}>
+            esc
+          </kbd>
         </div>
 
-        <AnimatePresence>
-          {searchValue && (
-            <motion.div
-              key="results"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div className="search-results-wrapper">
-                <div
-                  ref={resultsRef}
-                  className="search-results"
-                  onScroll={handleScroll}
-                >
-                  {results.length > 0 ? (
-                    results.map((r, i) => {
-                      const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
-                      const selected = i === selectedIndex;
-                      return (
-                        <AnimatedResult
-                          key={`${r.categoryName}-${r.componentName}-${i}`}
-                          delay={0.05}
-                          dataIndex={i}
-                          onMouseEnter={() => setSelectedIndex(i)}
-                          onClick={() => handleSelect(r)}
-                        >
-                          <div className={`search-result-item${selected ? ' selected' : ''}`}>
-                            <div className="search-result-icon">
-                              <IconComp size={20} />
-                            </div>
-                            <div className="search-result-text">
-                              <span className="search-result-name">{r.componentName}</span>
-                              <span className="search-result-category">in {r.categoryName}</span>
-                            </div>
-                            <div className="search-result-enter">
-                              <AiOutlineEnter size={16} />
-                            </div>
-                          </div>
-                        </AnimatedResult>
-                      );
-                    })
-                  ) : (
-                    <p className="search-no-results">
-                      No results found for <strong>{searchValue}</strong>
-                    </p>
-                  )}
-                </div>
+        {searchValue && (
+          <div className="search-results-wrapper">
+            <div ref={resultsRef} className="search-results" onScroll={handleScroll}>
+              {results.length > 0 ? (
+                results.map((r, i) => {
+                  const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
+                  const selected = i === selectedIndex;
+                  return (
+                    <Result
+                      key={`${r.categoryName}-${r.componentName}-${i}`}
+                      dataIndex={i}
+                      onMouseEnter={() => setSelectedIndex(i)}
+                      onClick={() => handleSelect(r)}
+                    >
+                      <div className={`search-result-item${selected ? ' selected' : ''}`}>
+                        <div className="search-result-icon">
+                          <IconComp size={20} />
+                        </div>
+                        <div className="search-result-text">
+                          <span className="search-result-name">{r.componentName}</span>
+                          <span className="search-result-category">in {r.categoryName}</span>
+                        </div>
+                        <div className="search-result-enter">
+                          <AiOutlineEnter size={16} />
+                        </div>
+                      </div>
+                    </Result>
+                  );
+                })
+              ) : (
+                <p className="search-no-results">
+                  No results found for <strong>{searchValue}</strong>
+                </p>
+              )}
+            </div>
 
-                <div
-                  className="search-gradient search-gradient-top"
-                  style={{ opacity: topGradientOpacity }}
-                />
-                <div
-                  className="search-gradient search-gradient-bottom"
-                  style={{ opacity: bottomGradientOpacity }}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            <div className="search-gradient search-gradient-top" style={{ opacity: topGradientOpacity }} />
+            <div className="search-gradient search-gradient-bottom" style={{ opacity: bottomGradientOpacity }} />
+          </div>
+        )}
       </div>
     </div>
   );

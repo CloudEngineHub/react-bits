@@ -1,14 +1,18 @@
 import useScrollToTop from '../hooks/useScrollToTop';
 import DocsButtonBar from './DocsButtonBar';
+import CopyPageButton from './CopyPageButton';
 
 const Introduction = () => {
   useScrollToTop();
 
   return (
     <section className="docs-section">
-      <h3 className="docs-category-title">Introduction</h3>
+      <div className="docs-page-header">
+        <h1 className="docs-title">Introduction</h1>
+        <CopyPageButton />
+      </div>
 
-      <p className="docs-paragraph dim">
+      <p className="docs-lead">
         React Bits is an open-source collection of carefully designed UI components that aim to enhance your React web
         applications.
       </p>
@@ -21,9 +25,7 @@ const Introduction = () => {
         creativity to your projects.
       </p>
 
-      <hr className="docs-separator" />
-
-      <h3 className="docs-category-title">Mission</h3>
+      <h2 className="docs-section-title">Mission</h2>
 
       <p className="docs-paragraph dim">
         The goal of React Bits is simple - provide flexible, visually stunning and most importantly, free components
@@ -49,28 +51,28 @@ const Introduction = () => {
         </li>
       </ul>
 
-      <h4 className="docs-category-subtitle">Free For All</h4>
+      <h3 className="docs-subtitle">Free For All</h3>
 
       <p className="docs-paragraph">
         Every component you choose to bring into your project is yours to modify or extend, because you get full
         visibility of the code, not just an import.
       </p>
 
-      <h4 className="docs-category-subtitle">Prop-First Approach</h4>
+      <h3 className="docs-subtitle">Prop-First Approach</h3>
 
       <p className="docs-paragraph">
         Every component is designed to be flexible and customizable, with props that allow you to adjust the look and
         feel without having to always dive into the code.
       </p>
 
-      <h4 className="docs-category-subtitle">Fully Modular</h4>
+      <h3 className="docs-subtitle">Fully Modular</h3>
 
       <p className="docs-paragraph">
         React Bits is not your classic NPM library, you install only the components you need by either copying the code
         or using the CLI, without pulling in a whole library.
       </p>
 
-      <h4 className="docs-category-subtitle">Free Choice</h4>
+      <h3 className="docs-subtitle">Free Choice</h3>
 
       <p className="docs-paragraph">
         I don&apos;t want to dictate how you build your projects. Whether you prefer JavaScript or TypeScript, plain CSS
@@ -81,9 +83,7 @@ const Introduction = () => {
         P.S. The header has a neat dropdown to help you choose your preferred technologies.
       </p>
 
-      <hr className="docs-separator" />
-
-      <h3 className="docs-category-title">Performance</h3>
+      <h2 className="docs-section-title">Performance</h2>
 
       <p className="docs-paragraph dim">
         While we do everything possible to optimize components and offer the best experience, here are some tips to keep
