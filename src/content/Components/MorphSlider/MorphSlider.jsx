@@ -7,10 +7,22 @@ import './MorphSlider.css';
 const TRANSITIONS = { melt: 0, ripple: 1, shear: 2, swirl: 3 };
 
 const DEFAULT_ITEMS = [
-  { image: 'https://picsum.photos/seed/morph-a/1600/1000', caption: 'Northern Drift' },
-  { image: 'https://picsum.photos/seed/morph-b/1200/1500', caption: 'Quiet Harbour' },
-  { image: 'https://picsum.photos/seed/morph-c/1600/900', caption: 'Golden Ridge' },
-  { image: 'https://picsum.photos/seed/morph-d/1400/1400', caption: 'Still Water' }
+  {
+    image: 'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?q=80&w=1600&auto=format&fit=crop',
+    caption: 'One'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1781499455083-6ccc3beb20cd?q=80&w=1600&auto=format&fit=crop',
+    caption: 'Two'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1776394254711-4a0d7345269a?q=80&w=1600&auto=format&fit=crop',
+    caption: 'Three'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1781242629922-6f39cc3671cd?q=80&w=1600&auto=format&fit=crop',
+    caption: 'Four'
+  }
 ];
 
 const vertexShader = `
