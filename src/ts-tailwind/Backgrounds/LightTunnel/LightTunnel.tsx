@@ -28,6 +28,7 @@ export interface LightTunnelProps {
   brightness?: number;
   colorVariance?: boolean;
   grain?: boolean;
+  grainIntensity?: number;
   opacity?: number;
   mouseInteraction?: boolean;
   mouseStrength?: number;
@@ -76,6 +77,7 @@ uniform vec3 uPulseColor;
 uniform vec3 uTunnelColor;
 uniform float uTunnelOpacity;
 uniform float uGrain;
+uniform float uGrainIntensity;
 out vec4 fragColor;
 
 void mainImage(out vec4 o, in vec2 fragCoord) {
@@ -141,14 +143,17 @@ void mainImage(out vec4 o, in vec2 fragCoord) {
   float distFade = smoothstep(0.0, uFadeNear, r) * smoothstep(uFadeFar, uFadeFar - 0.9, r);
   float inten = clamp(aBody + aRim + aPulse, 0.0, 1.0) * distFade;
 
-  if (uGrain > 0.5) {
-    float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    inten += (g - 0.5) * 0.05 * inten;
-  }
-
   vec3 finalCol = fiberCol * uBrightness;
   float alpha = clamp(inten, 0.0, 1.0) * uOpacity;
-  o = vec4(finalCol, alpha);
+  vec3 outRgb = finalCol * alpha;
+
+  if (uGrain > 0.5) {
+    float gv = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453) - 0.5) * uGrainIntensity;
+    outRgb = clamp(outRgb + gv, 0.0, 1.0);
+    alpha = clamp(alpha + gv, 0.0, 1.0);
+  }
+
+  o = vec4(outRgb, alpha);
 }
 
 void main() {
@@ -190,6 +195,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
   brightness = 1.0,
   colorVariance = true,
   grain = true,
+  grainIntensity = 0.05,
   opacity = 1.0,
   mouseInteraction = true,
   mouseStrength = 0.1,
@@ -206,7 +212,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -250,7 +256,8 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
         uPulseColor: { value: new Float32Array([0.65882353, 0.33333333, 0.96862745]) },
         uTunnelColor: { value: new Float32Array([0.32156863, 0.15294118, 1]) },
         uTunnelOpacity: { value: 0.0 },
-        uGrain: { value: 1.0 }
+        uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 }
       }
     });
 
@@ -382,6 +389,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
     u.uBrightness.value = brightness;
     u.uColorVariance.value = colorVariance ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     u.uOpacity.value = opacity;
     const cable = hexToRgb(cableColor);
     const cableU = u.uCableColor.value as Float32Array;
@@ -424,6 +432,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
     brightness,
     colorVariance,
     grain,
+    grainIntensity,
     opacity,
     mouseInteraction,
     mouseStrength

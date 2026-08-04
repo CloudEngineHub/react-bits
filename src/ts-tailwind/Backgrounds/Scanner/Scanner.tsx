@@ -25,6 +25,7 @@ export interface ScannerProps {
   vignette?: number;
   scanline?: boolean;
   grain?: boolean;
+  grainIntensity?: number;
   opacity?: number;
   mouseInteraction?: boolean;
   mouseRadius?: number;
@@ -69,6 +70,7 @@ uniform float uVignette;
 uniform float uOpacity;
 uniform float uScanline;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform float uDirection;
 uniform vec2 uMouse;
 uniform float uMouseEnabled;
@@ -152,13 +154,14 @@ void main() {
 
   if (uGrain > 0.5) {
     float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    inten += (g - 0.5) * 0.05;
+    inten += (g - 0.5) * uGrainIntensity;
   }
 
   inten *= clamp(1.0 - uVignette * smoothstep(0.55, 1.65, length(uv0)), 0.0, 1.0);
   inten = clamp(inten, 0.0, 1.0);
 
-  fragColor = vec4(clamp(col, 0.0, 1.0), inten * uOpacity);
+  float a = clamp(inten * uOpacity, 0.0, 1.0);
+  fragColor = vec4(clamp(col, 0.0, 1.0) * a, a);
 }
 `;
 
@@ -191,6 +194,7 @@ const Scanner: React.FC<ScannerProps> = ({
   vignette = 0.45,
   scanline = true,
   grain = true,
+  grainIntensity = 0.05,
   opacity = 1.0,
   mouseInteraction = true,
   mouseRadius = 0.5,
@@ -207,7 +211,7 @@ const Scanner: React.FC<ScannerProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -245,6 +249,7 @@ const Scanner: React.FC<ScannerProps> = ({
         uOpacity: { value: 1.0 },
         uScanline: { value: 1.0 },
         uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 },
         uDirection: { value: 0.0 },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseEnabled: { value: 1.0 },
@@ -382,6 +387,7 @@ const Scanner: React.FC<ScannerProps> = ({
     u.uOpacity.value = opacity;
     u.uScanline.value = scanline ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     u.uDirection.value = directionToFloat(scanDirection);
     u.uMouseEnabled.value = mouseInteraction ? 1.0 : 0.0;
     u.uMouseRadius.value = mouseRadius;
@@ -419,6 +425,7 @@ const Scanner: React.FC<ScannerProps> = ({
     opacity,
     scanline,
     grain,
+    grainIntensity,
     scanDirection,
     mouseInteraction,
     mouseRadius,

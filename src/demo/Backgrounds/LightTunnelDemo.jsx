@@ -45,6 +45,7 @@ const DEFAULT_PROPS = {
   brightness: 1.0,
   colorVariance: true,
   grain: true,
+  grainIntensity: 0.05,
   opacity: 1.0,
   mouseInteraction: true,
   mouseStrength: 0.1
@@ -77,6 +78,7 @@ const LightTunnelDemo = () => {
     brightness,
     colorVariance,
     grain,
+    grainIntensity,
     opacity,
     mouseInteraction,
     mouseStrength
@@ -231,6 +233,12 @@ const LightTunnelDemo = () => {
         description: 'Adds a whisper-subtle animated film grain to break up banding in the gradients.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'opacity',
         type: 'number',
         default: '1.0',
@@ -289,6 +297,7 @@ const LightTunnelDemo = () => {
               brightness={brightness}
               colorVariance={colorVariance}
               grain={grain}
+              grainIntensity={grainIntensity}
               opacity={opacity}
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
@@ -324,6 +333,7 @@ const LightTunnelDemo = () => {
                 brightness,
                 colorVariance,
                 grain,
+                grainIntensity,
                 opacity,
                 mouseInteraction,
                 mouseStrength
@@ -353,6 +363,7 @@ const LightTunnelDemo = () => {
                 brightness: 1.0,
                 colorVariance: true,
                 grain: true,
+                grainIntensity: 0.05,
                 opacity: 1.0,
                 mouseInteraction: true,
                 mouseStrength: 0.1
@@ -557,6 +568,15 @@ const LightTunnelDemo = () => {
             />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
 
             <PreviewSlider
               title="Opacity"

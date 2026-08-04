@@ -35,6 +35,7 @@ const DEFAULT_PROPS = {
   brightness: 1.3,
   colorMode: 'molten',
   grain: true,
+  grainIntensity: 0.05,
   mouseInteraction: true,
   mouseStrength: 0.3,
   opacity: 1.0
@@ -57,6 +58,7 @@ const MoltenMetalDemo = () => {
     brightness,
     colorMode,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseStrength,
     opacity
@@ -150,6 +152,12 @@ const MoltenMetalDemo = () => {
         description: 'Adds subtle animated film grain.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'mouseInteraction',
         type: 'boolean',
         default: 'true',
@@ -198,6 +206,7 @@ const MoltenMetalDemo = () => {
               brightness={brightness}
               colorMode={colorMode}
               grain={grain}
+              grainIntensity={grainIntensity}
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
               opacity={opacity}
@@ -223,6 +232,7 @@ const MoltenMetalDemo = () => {
                 brightness,
                 colorMode,
                 grain,
+                grainIntensity,
                 mouseInteraction,
                 mouseStrength,
                 opacity
@@ -242,6 +252,7 @@ const MoltenMetalDemo = () => {
                 brightness: 1.3,
                 colorMode: 'molten',
                 grain: true,
+                grainIntensity: 0.05,
                 mouseInteraction: true,
                 mouseStrength: 0.3,
                 opacity: 1.0
@@ -358,6 +369,15 @@ const MoltenMetalDemo = () => {
             />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
 
             <PreviewSwitch
               title="Cursor Drift"

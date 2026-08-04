@@ -44,6 +44,7 @@ uniform float uMouseRadius;
 uniform float uEnableMouse;
 uniform float uMouseActive;
 uniform float uGrain;
+uniform float uGrainIntensity;
 out vec4 fragColor;
 
 void main() {
@@ -88,11 +89,13 @@ void main() {
   col *= v;
 
   float a = clamp(v, 0.0, 1.0) * uOpacity;
+  vec3 outRgb = col * a;
   if (uGrain > 0.5) {
-    float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    a = clamp(a * (1.0 + (g - 0.5) * 0.05), 0.0, 1.0);
+    float gv = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453) - 0.5) * uGrainIntensity;
+    outRgb = clamp(outRgb + gv, 0.0, 1.0);
+    a = clamp(a + gv, 0.0, 1.0);
   }
-  fragColor = vec4(col, a);
+  fragColor = vec4(outRgb, a);
 }
 `;
 
@@ -102,16 +105,13 @@ uniform sampler2D tMap;
 uniform vec2 iResolution;
 uniform vec2 uDirection;
 uniform float uRadius;
-uniform float uPremultiply;
-uniform float uUnpremultiply;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform float iTime;
 out vec4 fragColor;
 
 vec4 samp(vec2 uv) {
-  vec4 c = texture(tMap, uv);
-  c.rgb = mix(c.rgb, c.rgb * c.a, uPremultiply);
-  return c;
+  return texture(tMap, uv);
 }
 
 void main() {
@@ -124,10 +124,10 @@ void main() {
   sum += (samp(uv + texel * (st * 3.0)) + samp(uv - texel * (st * 3.0))) * 0.0672;
   sum += (samp(uv + texel * (st * 4.0)) + samp(uv - texel * (st * 4.0))) * 0.0285;
   vec4 col = sum;
-  col.rgb = mix(col.rgb, col.rgb / max(col.a, 1e-4), uUnpremultiply);
   if (uGrain > 0.5) {
-    float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    col.a = clamp(col.a * (1.0 + (g - 0.5) * 0.05), 0.0, 1.0);
+    float gv = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453) - 0.5) * uGrainIntensity;
+    col.rgb = clamp(col.rgb + gv, 0.0, 1.0);
+    col.a = clamp(col.a + gv, 0.0, 1.0);
   }
   fragColor = col;
 }
@@ -157,6 +157,7 @@ const AcidSquares = ({
   mouseRadius = 0.35,
   blur = 0,
   grain = true,
+  grainIntensity = 0.05,
   className = ''
 }) => {
   const containerRef = useRef(null);
@@ -168,6 +169,7 @@ const AcidSquares = ({
   const mouseActiveTarget = useRef(0);
   const blurRef = useRef(blur);
   const grainRef = useRef(grain);
+  const grainIntensityRef = useRef(grainIntensity);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -176,7 +178,7 @@ const AcidSquares = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -217,7 +219,8 @@ const AcidSquares = ({
         uMouseRadius: { value: 0.35 },
         uEnableMouse: { value: 1.0 },
         uMouseActive: { value: 0.0 },
-        uGrain: { value: 1.0 }
+        uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 }
       }
     });
 
@@ -231,9 +234,8 @@ const AcidSquares = ({
         iResolution: { value: new Float32Array([1, 1]) },
         uDirection: { value: new Float32Array([1, 0]) },
         uRadius: { value: 0 },
-        uPremultiply: { value: 0 },
-        uUnpremultiply: { value: 0 },
         uGrain: { value: 0 },
+        uGrainIntensity: { value: 0.05 },
         iTime: { value: 0 }
       }
     });
@@ -252,6 +254,9 @@ const AcidSquares = ({
 
     const renderFrame = () => {
       const grainOn = grainRef.current ? 1.0 : 0.0;
+      const grainAmt = grainIntensityRef.current;
+      program.uniforms.uGrainIntensity.value = grainAmt;
+      postProgram.uniforms.uGrainIntensity.value = grainAmt;
       if (blurRef.current > 0) {
         ensureTargets();
         program.uniforms.uGrain.value = 0.0;
@@ -261,15 +266,11 @@ const AcidSquares = ({
         pu.tMap.value = rtA.texture;
         pu.uDirection.value[0] = 1;
         pu.uDirection.value[1] = 0;
-        pu.uPremultiply.value = 1.0;
-        pu.uUnpremultiply.value = 0.0;
         pu.uGrain.value = 0.0;
         renderer.render({ scene: postMesh, target: rtB });
         pu.tMap.value = rtB.texture;
         pu.uDirection.value[0] = 0;
         pu.uDirection.value[1] = 1;
-        pu.uPremultiply.value = 0.0;
-        pu.uUnpremultiply.value = 1.0;
         pu.uGrain.value = grainOn;
         renderer.render({ scene: postMesh });
       } else {
@@ -433,6 +434,7 @@ const AcidSquares = ({
     mouseStrengthRef.current = mouseStrength;
     blurRef.current = blur;
     grainRef.current = grain;
+    grainIntensityRef.current = grainIntensity;
   }, [
     color1,
     color2,
@@ -454,7 +456,8 @@ const AcidSquares = ({
     mouseStrength,
     mouseRadius,
     blur,
-    grain
+    grain,
+    grainIntensity
   ]);
 
   return <div ref={containerRef} className={`acid-squares-container ${className}`.trim()} />;

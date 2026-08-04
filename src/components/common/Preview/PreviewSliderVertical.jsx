@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import useScrubGesture from '../../../hooks/useScrubGesture';
 import '../../../css/preview-slider.css';
 
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
@@ -24,13 +25,11 @@ const PreviewSliderVertical = ({
   onChange
 }) => {
   const trackRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isHoverDevice, setIsHoverDevice] = useState(false);
 
   const range = max - min;
   const percentage = range > 0 ? ((value - min) / range) * 100 : 0;
-  const isActive = isDragging || (isHoverDevice && isHovering);
 
   useEffect(() => {
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -52,28 +51,14 @@ const PreviewSliderVertical = ({
     [min, max, step, range, value]
   );
 
-  const handlePointerDown = useCallback(
-    (e) => {
-      if (isDisabled) return;
-      e.preventDefault();
-      trackRef.current?.setPointerCapture(e.pointerId);
-      setIsDragging(true);
-      onChange?.(computeValue(e.clientX));
-    },
-    [computeValue, onChange, isDisabled]
-  );
+  const { isDragging, onPointerDown, onPointerMove, onPointerUp, onPointerCancel } = useScrubGesture({
+    trackRef,
+    computeValue,
+    onChange,
+    isDisabled
+  });
 
-  const handlePointerMove = useCallback(
-    (e) => {
-      if (!isDragging) return;
-      onChange?.(computeValue(e.clientX));
-    },
-    [isDragging, computeValue, onChange]
-  );
-
-  const handlePointerUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const isActive = isDragging || (isHoverDevice && isHovering);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -122,9 +107,10 @@ const PreviewSliderVertical = ({
         data-dragging={isDragging}
         data-disabled={isDisabled}
         data-active={isActive}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         onKeyDown={handleKeyDown}

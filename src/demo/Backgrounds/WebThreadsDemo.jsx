@@ -39,6 +39,7 @@ const DEFAULT_PROPS = {
   mirror: true,
   shimmer: false,
   grain: true,
+  grainIntensity: 0.05,
   mouseInteraction: true,
   mouseStrength: 0.3
 };
@@ -64,6 +65,7 @@ const WebThreadsDemo = () => {
     mirror,
     shimmer,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseStrength
   } = props;
@@ -180,6 +182,12 @@ const WebThreadsDemo = () => {
         description: 'Overlay a whisper-subtle animated film grain on the threads.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'mouseInteraction',
         type: 'boolean',
         default: 'true',
@@ -226,6 +234,7 @@ const WebThreadsDemo = () => {
               mirror={mirror}
               shimmer={shimmer}
               grain={grain}
+              grainIntensity={grainIntensity}
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
             />
@@ -254,6 +263,7 @@ const WebThreadsDemo = () => {
                 mirror,
                 shimmer,
                 grain,
+                grainIntensity,
                 mouseInteraction,
                 mouseStrength
               }}
@@ -276,6 +286,7 @@ const WebThreadsDemo = () => {
                 mirror: true,
                 shimmer: false,
                 grain: true,
+                grainIntensity: 0.05,
                 mouseInteraction: true,
                 mouseStrength: 0.3
               }}
@@ -404,6 +415,15 @@ const WebThreadsDemo = () => {
             <PreviewSwitch title="Shimmer" isChecked={shimmer} onChange={val => updateProp('shimmer', val)} />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
 
             <PreviewSwitch
               title="Cursor Light"

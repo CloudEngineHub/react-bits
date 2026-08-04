@@ -294,9 +294,13 @@ function startDrag(onMove, onEnd) {
   const onUp = () => {
     document.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerup', onUp);
+    document.removeEventListener('pointercancel', onUp);
     onEnd?.();
   };
   document.addEventListener('pointerup', onUp);
+  // A touch handed over to the browser for panning ends in pointercancel, never pointerup,
+  // so without this the move listener would outlive the gesture.
+  document.addEventListener('pointercancel', onUp);
 }
 
 /* ── Audio ── */
@@ -389,14 +393,19 @@ function EditableValue({ type, value, onChange, min, max, step }) {
   }
 
   const handlePointerDown = e => {
-    e.preventDefault();
+    // Preventing the default on touch would also cancel the page scroll this gesture might
+    // turn out to be. The |dx| > 2 threshold below keeps the value safe until it commits.
+    const isTouch = e.pointerType === 'touch';
+    if (!isTouch) e.preventDefault();
     const startX = e.clientX;
     const { value: startVal, step: s, min: mn, max: mx } = stateRef.current;
     let moved = false;
     let lastVal = startVal;
 
-    document.body.style.cursor = 'ew-resize';
-    document.body.style.userSelect = 'none';
+    if (!isTouch) {
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
+    }
 
     startDrag(
       ev => {

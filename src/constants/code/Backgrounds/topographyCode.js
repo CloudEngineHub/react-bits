@@ -27,6 +27,7 @@ export const topography = {
     fillBands={false}
     opacity={1.0}
     grain={true}
+    grainIntensity={0.05}
     mouseInteraction={true}
     mouseRadius={0.3}
     mouseStrength={0.4}

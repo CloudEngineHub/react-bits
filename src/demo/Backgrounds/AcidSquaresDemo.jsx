@@ -41,7 +41,8 @@ const DEFAULT_PROPS = {
   mouseStrength: 0.1,
   mouseRadius: 0.35,
   blur: 0,
-  grain: true
+  grain: true,
+  grainIntensity: 0.05
 };
 
 const AcidSquaresDemo = () => {
@@ -67,7 +68,8 @@ const AcidSquaresDemo = () => {
     mouseStrength,
     mouseRadius,
     blur,
-    grain
+    grain,
+    grainIntensity
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -200,6 +202,12 @@ const AcidSquaresDemo = () => {
         description: 'Adds a faint animated film grain over the final image for a subtle analog texture.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'className',
         type: 'string',
         default: "''",
@@ -237,6 +245,7 @@ const AcidSquaresDemo = () => {
               mouseRadius={mouseRadius}
               blur={blur}
               grain={grain}
+              grainIntensity={grainIntensity}
             />
             <BackgroundContent pillText="New Background" headline="A luminous crystal corridor of stacked squares." />
           </Box>
@@ -265,7 +274,8 @@ const AcidSquaresDemo = () => {
                 mouseStrength,
                 mouseRadius,
                 blur,
-                grain
+                grain,
+                grainIntensity
               }}
               defaultProps={{
                 color1: '#5227FF',
@@ -288,7 +298,8 @@ const AcidSquaresDemo = () => {
                 mouseStrength: 0.1,
                 mouseRadius: 0.35,
                 blur: 0,
-                grain: true
+                grain: true,
+                grainIntensity: 0.05
               }}
             />
           </Flex>
@@ -453,6 +464,15 @@ const AcidSquaresDemo = () => {
             />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
           </Customize>
 
           <PropTable data={propData} />

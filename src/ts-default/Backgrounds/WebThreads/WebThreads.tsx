@@ -23,6 +23,7 @@ export interface WebThreadsProps {
   mirror?: boolean;
   shimmer?: boolean;
   grain?: boolean;
+  grainIntensity?: number;
   mouseInteraction?: boolean;
   mouseStrength?: number;
   className?: string;
@@ -62,6 +63,7 @@ uniform float uOpacity;
 uniform float uMirror;
 uniform float uShimmer;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
@@ -132,14 +134,15 @@ void main() {
 
   float alpha = clamp(gsum, 0.0, 1.0) * uOpacity;
 
+  vec3 outRgb = col * alpha;
+
   if (uGrain > 0.5) {
-    float gr = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    float grain = (gr - 0.5) * 0.05;
-    col += col * grain;
-    alpha += alpha * grain;
+    float gv = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453) - 0.5) * uGrainIntensity;
+    outRgb = clamp(outRgb + gv, 0.0, 1.0);
+    alpha = clamp(alpha + gv, 0.0, 1.0);
   }
 
-  fragColor = vec4(col, alpha);
+  fragColor = vec4(outRgb, alpha);
 }
 `;
 
@@ -169,6 +172,7 @@ const WebThreads: React.FC<WebThreadsProps> = ({
   mirror = true,
   shimmer = false,
   grain = true,
+  grainIntensity = 0.05,
   mouseInteraction = true,
   mouseStrength = 0.3,
   className = ''
@@ -183,7 +187,7 @@ const WebThreads: React.FC<WebThreadsProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -218,6 +222,7 @@ const WebThreads: React.FC<WebThreadsProps> = ({
         uMirror: { value: 1.0 },
         uShimmer: { value: 0.0 },
         uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 },
         uColor1: { value: new Float32Array([1, 1, 1]) },
         uColor2: { value: new Float32Array([1, 1, 1]) },
         uColor3: { value: new Float32Array([1, 1, 1]) },
@@ -353,6 +358,7 @@ const WebThreads: React.FC<WebThreadsProps> = ({
     u.uMirror.value = mirror ? 1.0 : 0.0;
     u.uShimmer.value = shimmer ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     const c1 = u.uColor1.value as Float32Array;
     const rgb1 = hexToRgb(color1);
     c1[0] = rgb1[0];
@@ -391,6 +397,7 @@ const WebThreads: React.FC<WebThreadsProps> = ({
     mirror,
     shimmer,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseStrength
   ]);

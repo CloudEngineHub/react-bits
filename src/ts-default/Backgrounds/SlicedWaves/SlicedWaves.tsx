@@ -26,6 +26,7 @@ export interface SlicedWavesProps {
   mouseStrength?: number;
   mouseRadius?: number;
   grain?: boolean;
+  grainIntensity?: number;
   className?: string;
 }
 
@@ -66,6 +67,7 @@ uniform float uMouseRadius;
 uniform float uEnableMouse;
 uniform float uMouseActive;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
@@ -113,7 +115,7 @@ void main() {
 
   if (uGrain > 0.5) {
     float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    intensity = clamp(intensity + (g - 0.5) * 0.05, 0.0, 1.0);
+    intensity = clamp(intensity + (g - 0.5) * uGrainIntensity, 0.0, 1.0);
   }
 
   float tint = mv;
@@ -125,7 +127,7 @@ void main() {
   col = clamp(col, 0.0, 1.0);
 
   float a = intensity * uOpacity;
-  fragColor = vec4(col, a);
+  fragColor = vec4(col * a, a);
 }
 `;
 
@@ -158,6 +160,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
   mouseStrength = 1,
   mouseRadius = 0.3,
   grain = true,
+  grainIntensity = 0.05,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -169,7 +172,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -209,6 +212,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
         uEnableMouse: { value: 1.0 },
         uMouseActive: { value: 0.0 },
         uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 },
         uColor1: { value: new Float32Array([1, 1, 1]) },
         uColor2: { value: new Float32Array([1, 1, 1]) },
         uColor3: { value: new Float32Array([1, 1, 1]) }
@@ -334,6 +338,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
     u.uMouseRadius.value = mouseRadius;
     u.uEnableMouse.value = mouseInteraction ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     const c1 = hexToRgb(color1);
     const a1 = u.uColor1.value as Float32Array;
     a1[0] = c1[0];
@@ -370,7 +375,8 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
     mouseInteraction,
     mouseStrength,
     mouseRadius,
-    grain
+    grain,
+    grainIntensity
   ]);
 
   return <div ref={containerRef} className={`sliced-waves-container ${className}`.trim()} />;

@@ -12,7 +12,9 @@
   border: 1px solid transparent;
   cursor: pointer;
   overflow: hidden;
-  touch-action: none;
+  /* Horizontal drags are ours, vertical panning stays the browser's. The customize panels
+     are wall-to-wall control rows, so claiming both axes would leave nothing to scroll. */
+  touch-action: pan-y;
   outline: none;
   outline-offset: 2px;
 }

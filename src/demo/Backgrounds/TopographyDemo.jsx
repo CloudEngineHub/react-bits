@@ -38,6 +38,7 @@ const DEFAULT_PROPS = {
   fillBands: false,
   opacity: 1.0,
   grain: true,
+  grainIntensity: 0.05,
   mouseInteraction: true,
   mouseRadius: 0.3,
   mouseStrength: 0.4
@@ -63,6 +64,7 @@ const TopographyDemo = () => {
     fillBands,
     opacity,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseRadius,
     mouseStrength
@@ -174,6 +176,12 @@ const TopographyDemo = () => {
         description: 'Whisper-subtle animated film grain over the effect.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'mouseInteraction',
         type: 'boolean',
         default: 'true',
@@ -225,6 +233,7 @@ const TopographyDemo = () => {
               fillBands={fillBands}
               opacity={opacity}
               grain={grain}
+              grainIntensity={grainIntensity}
               mouseInteraction={mouseInteraction}
               mouseRadius={mouseRadius}
               mouseStrength={mouseStrength}
@@ -253,6 +262,7 @@ const TopographyDemo = () => {
                 fillBands,
                 opacity,
                 grain,
+                grainIntensity,
                 mouseInteraction,
                 mouseRadius,
                 mouseStrength
@@ -275,6 +285,7 @@ const TopographyDemo = () => {
                 fillBands: false,
                 opacity: 1.0,
                 grain: true,
+                grainIntensity: 0.05,
                 mouseInteraction: true,
                 mouseRadius: 0.3,
                 mouseStrength: 0.4
@@ -405,6 +416,15 @@ const TopographyDemo = () => {
             <PreviewSwitch title="Fill Bands" isChecked={fillBands} onChange={val => updateProp('fillBands', val)} />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
 
             <PreviewSlider
               title="Opacity"

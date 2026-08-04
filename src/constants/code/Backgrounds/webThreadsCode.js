@@ -28,6 +28,7 @@ export const webThreads = {
     mirror={true}
     shimmer={false}
     grain={true}
+    grainIntensity={0.05}
     mouseInteraction={true}
     mouseStrength={0.3}
   />

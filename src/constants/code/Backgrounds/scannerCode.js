@@ -31,6 +31,7 @@ export const scanner = {
     vignette={0.45}
     scanline={true}
     grain={true}
+    grainIntensity={0.05}
     opacity={1.0}
     mouseInteraction={true}
     mouseRadius={0.5}
