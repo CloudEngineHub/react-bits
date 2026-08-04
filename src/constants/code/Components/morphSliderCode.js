@@ -9,9 +9,9 @@ export const morphSlider = {
   usage: `import MorphSlider from './MorphSlider'
 
 const items = [
-  { image: 'https://picsum.photos/seed/morph-a/1600/1000', caption: 'Northern Drift' },
-  { image: 'https://picsum.photos/seed/morph-b/1200/1500', caption: 'Quiet Harbour' },
-  { image: 'https://picsum.photos/seed/morph-c/1600/900', caption: 'Golden Ridge' }
+  { image: 'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?q=80&w=1600&auto=format&fit=crop', caption: 'One' },
+  { image: 'https://images.unsplash.com/photo-1781499455083-6ccc3beb20cd?q=80&w=1600&auto=format&fit=crop', caption: 'Two' },
+  { image: 'https://images.unsplash.com/photo-1776394254711-4a0d7345269a?q=80&w=1600&auto=format&fit=crop', caption: 'Three' }
 ]
 
 <div style={{ height: '500px', position: 'relative' }}>
