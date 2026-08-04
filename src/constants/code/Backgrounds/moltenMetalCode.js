@@ -24,6 +24,7 @@ export const moltenMetal = {
     brightness={1.3}
     colorMode="molten"
     grain={true}
+    grainIntensity={0.05}
     mouseInteraction={true}
     mouseStrength={0.3}
     opacity={1.0}

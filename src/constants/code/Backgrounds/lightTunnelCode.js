@@ -34,6 +34,7 @@ export const lightTunnel = {
     brightness={1.0}
     colorVariance={true}
     grain={true}
+    grainIntensity={0.05}
     opacity={1.0}
     mouseInteraction={true}
     mouseStrength={0.1}

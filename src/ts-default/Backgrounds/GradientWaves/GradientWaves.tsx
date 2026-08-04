@@ -24,6 +24,7 @@ export interface GradientWavesProps {
   mouseInteraction?: boolean;
   parallaxStrength?: number;
   grain?: boolean;
+  grainIntensity?: number;
   className?: string;
 }
 
@@ -64,6 +65,7 @@ uniform float uSteps;
 uniform float uBrightness;
 uniform float uOpacity;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform vec2 uMouse;
 uniform float uParallax;
 uniform bool uEnableMouse;
@@ -71,6 +73,14 @@ uniform vec3 uHorizonColor;
 uniform vec3 uWaveColor;
 uniform vec3 uCrestColor;
 out vec4 fragColor;
+
+const float MAX_DIST = 20000.0;
+
+float hash21(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
 
 float plasma(vec3 r, vec2 freq, vec4 tc) {
   float mx = r.x + tc.x;
@@ -87,6 +97,7 @@ float raymarch(vec3 pos, vec3 dir, vec2 freq, vec4 tc) {
     float dscene = plasma(pos + dist * dir, freq, tc);
     if (abs(dscene) < 0.1) break;
     dist += 0.9 * dscene;
+    if (!(abs(dist) < MAX_DIST)) return MAX_DIST;
   }
   return dist;
 }
@@ -103,10 +114,11 @@ void main() {
   uv.y *= -1.0;
 
   vec3 dir = vec3(0.0, 0.0, -1.0);
-  float xrot = vfov * length(uv);
+  float ulen = length(uv);
+  float xrot = vfov * ulen;
   c = cos(xrot); s = sin(xrot);
   dir = mat3(1.0, 0.0, 0.0, 0.0, c, -s, 0.0, s, c) * dir;
-  vec2 nuv = normalize(uv + 1e-6);
+  vec2 nuv = ulen > 1e-5 ? uv / ulen : vec2(1.0, 0.0);
   c = nuv.x; s = nuv.y;
   dir = mat3(c, -s, 0.0, s, c, 0.0, 0.0, 0.0, 1.0) * dir;
   c = cos(uTilt); s = sin(uTilt);
@@ -132,11 +144,11 @@ void main() {
 
   float alpha = clamp(t, 0.0, 1.0) * uOpacity;
   if (uGrain > 0.5) {
-    float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    alpha += (g - 0.5) * 0.05;
+    float g = hash21(gl_FragCoord.xy + mod(iTime, 64.0) * 11.0);
+    alpha += (g - 0.5) * uGrainIntensity;
   }
   alpha = clamp(alpha, 0.0, 1.0);
-  fragColor = vec4(col, alpha);
+  fragColor = vec4(col * alpha, alpha);
 }
 `;
 
@@ -167,6 +179,7 @@ const GradientWaves: React.FC<GradientWavesProps> = ({
   mouseInteraction = true,
   parallaxStrength = 0.5,
   grain = true,
+  grainIntensity = 0.05,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -179,7 +192,7 @@ const GradientWaves: React.FC<GradientWavesProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -213,6 +226,7 @@ const GradientWaves: React.FC<GradientWavesProps> = ({
         uBrightness: { value: 1.0 },
         uOpacity: { value: 1.0 },
         uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uParallax: { value: 0.5 },
         uEnableMouse: { value: true },
@@ -339,6 +353,7 @@ const GradientWaves: React.FC<GradientWavesProps> = ({
     u.uBrightness.value = brightness;
     u.uOpacity.value = opacity;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     u.uParallax.value = parallaxStrength;
     u.uEnableMouse.value = mouseInteraction;
     const hc = u.uHorizonColor.value as Float32Array;
@@ -374,6 +389,7 @@ const GradientWaves: React.FC<GradientWavesProps> = ({
     brightness,
     opacity,
     grain,
+    grainIntensity,
     mouseInteraction,
     parallaxStrength
   ]);

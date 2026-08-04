@@ -31,6 +31,7 @@ uniform float uBlackPoint;
 uniform float uBrightness;
 uniform float uColorMode;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform float uOpacity;
 uniform vec2 uMouse;
 uniform float uMouseStrength;
@@ -91,10 +92,10 @@ void main() {
   float a = g;
   if (uGrain > 0.5) {
     float gr = hash(gl_FragCoord.xy + iTime);
-    a += (gr - 0.5) * 0.05;
+    a += (gr - 0.5) * uGrainIntensity;
   }
   a = clamp(a, 0.0, 1.0) * uOpacity;
-  fragColor = vec4(col, a);
+  fragColor = vec4(col * a, a);
 }
 `;
 
@@ -115,6 +116,7 @@ const MoltenMetal = ({
   brightness = 1.3,
   colorMode = 'molten',
   grain = true,
+  grainIntensity = 0.05,
   mouseInteraction = true,
   mouseStrength = 0.3,
   opacity = 1.0,
@@ -129,7 +131,7 @@ const MoltenMetal = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -160,6 +162,7 @@ const MoltenMetal = ({
         uBrightness: { value: 1.3 },
         uColorMode: { value: 0 },
         uGrain: { value: 1 },
+        uGrainIntensity: { value: 0.05 },
         uOpacity: { value: 1.0 },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseStrength: { value: 0.3 },
@@ -278,6 +281,7 @@ const MoltenMetal = ({
     u.uBrightness.value = brightness;
     u.uColorMode.value = colorModeToFloat(colorMode);
     u.uGrain.value = grain ? 1 : 0;
+    u.uGrainIntensity.value = grainIntensity;
     u.uOpacity.value = opacity;
     u.uMouseStrength.value = mouseStrength;
     u.uEnableMouse.value = mouseInteraction;
@@ -311,6 +315,7 @@ const MoltenMetal = ({
     brightness,
     colorMode,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseStrength,
     opacity

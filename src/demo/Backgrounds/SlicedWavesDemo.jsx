@@ -41,7 +41,8 @@ const DEFAULT_PROPS = {
   mouseInteraction: true,
   mouseStrength: 1,
   mouseRadius: 0.3,
-  grain: true
+  grain: true,
+  grainIntensity: 0.05
 };
 
 const SlicedWavesDemo = () => {
@@ -67,7 +68,8 @@ const SlicedWavesDemo = () => {
     mouseInteraction,
     mouseStrength,
     mouseRadius,
-    grain
+    grain,
+    grainIntensity
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -200,6 +202,12 @@ const SlicedWavesDemo = () => {
         description: 'Adds a subtle animated grain.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'className',
         type: 'string',
         default: "''",
@@ -237,6 +245,7 @@ const SlicedWavesDemo = () => {
               mouseStrength={mouseStrength}
               mouseRadius={mouseRadius}
               grain={grain}
+              grainIntensity={grainIntensity}
             />
             <BackgroundContent pillText="New Background" headline="A soft slatted wave rippling across the grid." />
           </Box>
@@ -265,7 +274,8 @@ const SlicedWavesDemo = () => {
                 mouseInteraction,
                 mouseStrength,
                 mouseRadius,
-                grain
+                grain,
+                grainIntensity
               }}
               defaultProps={{
                 color1: '#FF9FFC',
@@ -288,7 +298,8 @@ const SlicedWavesDemo = () => {
                 mouseInteraction: true,
                 mouseStrength: 1,
                 mouseRadius: 0.3,
-                grain: true
+                grain: true,
+                grainIntensity: 0.05
               }}
             />
           </Flex>
@@ -431,6 +442,15 @@ const SlicedWavesDemo = () => {
             />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
 
             <PreviewSlider
               title="Cursor Strength"

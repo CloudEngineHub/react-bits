@@ -26,6 +26,7 @@ export const BACKGROUNDS = [
       { name: 'brightness', type: 'number', default: 1.3, min: 0.2, max: 3, step: 0.05, label: 'Brightness' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.05, label: 'Opacity' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Drift' },
       { name: 'mouseStrength', type: 'number', default: 0.3, min: 0, max: 1, step: 0.05, label: 'Cursor Strength' }
     ]
@@ -53,6 +54,7 @@ export const BACKGROUNDS = [
       { name: 'brightness', type: 'number', default: 1.0, min: 0.2, max: 2, step: 0.05, label: 'Brightness' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.01, label: 'Opacity' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Parallax' },
       { name: 'parallaxStrength', type: 'number', default: 0.5, min: 0, max: 1, step: 0.01, label: 'Parallax Strength' }
     ]
@@ -81,6 +83,7 @@ export const BACKGROUNDS = [
       { name: 'mirror', type: 'boolean', default: true, label: 'Mirror' },
       { name: 'shimmer', type: 'boolean', default: false, label: 'Shimmer' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Light' },
       { name: 'mouseStrength', type: 'number', default: 0.3, min: 0, max: 1, step: 0.01, label: 'Cursor Strength' }
     ]
@@ -114,6 +117,7 @@ export const BACKGROUNDS = [
       { name: 'fillBands', type: 'boolean', default: false, label: 'Fill Bands' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.05, label: 'Opacity' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Elevation' },
       { name: 'mouseRadius', type: 'number', default: 0.3, min: 0.05, max: 1, step: 0.01, label: 'Cursor Radius' },
       { name: 'mouseStrength', type: 'number', default: 0.4, min: 0, max: 1.5, step: 0.05, label: 'Cursor Strength' }
@@ -155,6 +159,7 @@ export const BACKGROUNDS = [
       { name: 'brightness', type: 'number', default: 1.0, min: 0, max: 2.5, step: 0.05, label: 'Brightness' },
       { name: 'colorVariance', type: 'boolean', default: true, label: 'Color Variance' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.01, label: 'Opacity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Parallax' },
       { name: 'mouseStrength', type: 'number', default: 0.1, min: 0, max: 0.4, step: 0.01, label: 'Cursor Strength' }
@@ -190,6 +195,7 @@ export const BACKGROUNDS = [
       },
       { name: 'alternate', type: 'boolean', default: false, label: 'Alternate Rows' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Interaction' },
       { name: 'mouseStrength', type: 'number', default: 1.0, min: 0, max: 2, step: 0.05, label: 'Cursor Strength' },
       { name: 'mouseRadius', type: 'number', default: 0.3, min: 0.05, max: 1, step: 0.05, label: 'Cursor Radius' }
@@ -219,6 +225,7 @@ export const BACKGROUNDS = [
       { name: 'blur', type: 'number', default: 0.0, min: 0, max: 1, step: 0.01, label: 'Blur' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.05, label: 'Opacity' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Collapse' },
       { name: 'mouseRadius', type: 'number', default: 0.35, min: 0.05, max: 1, step: 0.01, label: 'Cursor Radius' },
       { name: 'mouseStrength', type: 'number', default: 0.1, min: 0, max: 1.5, step: 0.05, label: 'Collapse Strength' }
@@ -257,6 +264,7 @@ export const BACKGROUNDS = [
       { name: 'vignette', type: 'number', default: 0.45, min: 0, max: 1, step: 0.01, label: 'Vignette' },
       { name: 'scanline', type: 'boolean', default: true, label: 'Scanline' },
       { name: 'grain', type: 'boolean', default: true, label: 'Grain' },
+      { name: 'grainIntensity', type: 'number', default: 0.05, min: 0, max: 0.3, step: 0.01, label: 'Grain Intensity' },
       { name: 'opacity', type: 'number', default: 1.0, min: 0, max: 1, step: 0.01, label: 'Opacity' },
       { name: 'mouseInteraction', type: 'boolean', default: true, label: 'Cursor Focus' },
       { name: 'mouseRadius', type: 'number', default: 0.5, min: 0.1, max: 1.5, step: 0.01, label: 'Cursor Radius' },

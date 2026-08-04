@@ -433,7 +433,8 @@
   color: #9ce2ee;
   background: rgba(120, 209, 225, 0.14);
   cursor: ew-resize;
-  touch-action: none;
+  /* Horizontal scrubbing is ours, vertical panning stays the browser's. */
+  touch-action: pan-y;
 }
 
 .ln-hero-code-value--number:hover {
@@ -511,7 +512,8 @@
   cursor: pointer;
   background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
   margin-bottom: 8px;
-  touch-action: none;
+  /* Hue is picked horizontally, so vertical panning can stay with the browser. */
+  touch-action: pan-y;
 }
 
 .ln-hero-color-picker-thumb {

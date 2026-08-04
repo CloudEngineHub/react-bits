@@ -29,6 +29,7 @@ export const gradientWaves = {
     mouseInteraction={true}
     parallaxStrength={0.5}
     grain={true}
+    grainIntensity={0.05}
   />
 </div>`,
   code,

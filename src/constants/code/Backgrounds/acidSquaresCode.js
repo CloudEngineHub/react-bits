@@ -31,6 +31,7 @@ export const acidSquares = {
     mouseRadius={0.35}
     blur={0}
     grain={true}
+    grainIntensity={0.05}
   />
 </div>`,
   code,

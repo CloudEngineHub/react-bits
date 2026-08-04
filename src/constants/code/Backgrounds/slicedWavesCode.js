@@ -31,6 +31,7 @@ export const slicedWaves = {
     mouseStrength={1}
     mouseRadius={0.3}
     grain={true}
+    grainIntensity={0.05}
   />
 </div>`,
   code,

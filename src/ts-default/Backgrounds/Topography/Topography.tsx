@@ -22,6 +22,7 @@ export interface TopographyProps {
   fillBands?: boolean;
   opacity?: number;
   grain?: boolean;
+  grainIntensity?: number;
   mouseInteraction?: boolean;
   mouseRadius?: number;
   mouseStrength?: number;
@@ -71,6 +72,7 @@ uniform float uMouseRadius;
 uniform float uMouseStrength;
 uniform float uMouseActive;
 uniform float uGrain;
+uniform float uGrainIntensity;
 uniform vec4 uCtrlA;
 uniform vec4 uCtrlB;
 uniform vec4 uCtrlC;
@@ -153,13 +155,14 @@ void main() {
 
   if (uGrain > 0.5) {
     float g = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)) + iTime) * 43758.5453);
-    outAlpha += (g - 0.5) * 0.05;
+    outAlpha += (g - 0.5) * uGrainIntensity;
   }
 
   outColor *= uBrightness;
   outColor = clamp(outColor, 0.0, 1.0);
 
-  fragColor = vec4(outColor, clamp(outAlpha, 0.0, 1.0) * uOpacity);
+  float a = clamp(outAlpha, 0.0, 1.0) * uOpacity;
+  fragColor = vec4(outColor * a, a);
 }
 `;
 
@@ -195,6 +198,7 @@ const Topography: React.FC<TopographyProps> = ({
   fillBands = false,
   opacity = 1.0,
   grain = true,
+  grainIntensity = 0.05,
   mouseInteraction = true,
   mouseRadius = 0.3,
   mouseStrength = 0.4,
@@ -209,7 +213,7 @@ const Topography: React.FC<TopographyProps> = ({
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
     });
@@ -243,6 +247,7 @@ const Topography: React.FC<TopographyProps> = ({
         uFillBands: { value: 0.0 },
         uOpacity: { value: 1.0 },
         uGrain: { value: 1.0 },
+        uGrainIntensity: { value: 0.05 },
         uLow: { value: new Float32Array([1, 1, 1]) },
         uMid: { value: new Float32Array([1, 1, 1]) },
         uHigh: { value: new Float32Array([1, 1, 1]) },
@@ -399,6 +404,7 @@ const Topography: React.FC<TopographyProps> = ({
     u.uFillBands.value = fillBands ? 1.0 : 0.0;
     u.uOpacity.value = opacity;
     u.uGrain.value = grain ? 1.0 : 0.0;
+    u.uGrainIntensity.value = grainIntensity;
     u.uLow.value = new Float32Array(hexToRgb(lowColor));
     u.uMid.value = new Float32Array(hexToRgb(midColor));
     u.uHigh.value = new Float32Array(hexToRgb(highColor));
@@ -423,6 +429,7 @@ const Topography: React.FC<TopographyProps> = ({
     fillBands,
     opacity,
     grain,
+    grainIntensity,
     mouseInteraction,
     mouseRadius,
     mouseStrength

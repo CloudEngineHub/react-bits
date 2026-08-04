@@ -39,7 +39,8 @@ const DEFAULT_PROPS = {
   opacity: 1.0,
   mouseInteraction: true,
   parallaxStrength: 0.5,
-  grain: true
+  grain: true,
+  grainIntensity: 0.05
 };
 
 const GradientWavesDemo = () => {
@@ -63,7 +64,8 @@ const GradientWavesDemo = () => {
     opacity,
     mouseInteraction,
     parallaxStrength,
-    grain
+    grain,
+    grainIntensity
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -184,6 +186,12 @@ const GradientWavesDemo = () => {
         description: 'Overlay a whisper-subtle animated film grain on the effect.'
       },
       {
+        name: 'grainIntensity',
+        type: 'number',
+        default: '0.05',
+        description: 'Amplitude of the grain overlay. 0 disables it entirely.'
+      },
+      {
         name: 'className',
         type: 'string',
         default: "''",
@@ -219,6 +227,7 @@ const GradientWavesDemo = () => {
               mouseInteraction={mouseInteraction}
               parallaxStrength={parallaxStrength}
               grain={grain}
+              grainIntensity={grainIntensity}
             />
             <BackgroundContent pillText="New Background" headline="Soft rolling gradient waves fading into haze." />
           </Box>
@@ -245,7 +254,8 @@ const GradientWavesDemo = () => {
                 opacity,
                 mouseInteraction,
                 parallaxStrength,
-                grain
+                grain,
+                grainIntensity
               }}
               defaultProps={{
                 horizonColor: '#5227FF',
@@ -266,7 +276,8 @@ const GradientWavesDemo = () => {
                 opacity: 1.0,
                 mouseInteraction: true,
                 parallaxStrength: 0.5,
-                grain: true
+                grain: true,
+                grainIntensity: 0.05
               }}
             />
           </Flex>
@@ -425,6 +436,15 @@ const GradientWavesDemo = () => {
             />
 
             <PreviewSwitch title="Grain" isChecked={grain} onChange={val => updateProp('grain', val)} />
+
+            <PreviewSlider
+              title="Grain Intensity"
+              min={0}
+              max={0.3}
+              step={0.01}
+              value={grainIntensity}
+              onChange={val => updateProp('grainIntensity', val)}
+            />
           </Customize>
 
           <PropTable data={propData} />
