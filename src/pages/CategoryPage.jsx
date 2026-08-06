@@ -11,14 +11,24 @@ import { SkeletonLoader, GetStartedLoader } from '../components/common/SkeletonL
 import IndexPage from './IndexPage';
 
 const CATEGORY_KEYS = {
-  'components': 'Components',
-  'animations': 'Animations',
-  'backgrounds': 'Backgrounds',
+  components: 'Components',
+  animations: 'Animations',
+  backgrounds: 'Backgrounds',
   'text-animations': 'TextAnimations'
 };
 
 const FALLBACK_DESCRIPTION =
   'High quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.';
+
+const lazyComponentCache = new Map();
+
+const getLazyComponent = (subcategory, componentFactory) => {
+  if (!subcategory || !componentFactory) return null;
+  if (!lazyComponentCache.has(subcategory)) {
+    lazyComponentCache.set(subcategory, lazy(componentFactory));
+  }
+  return lazyComponentCache.get(subcategory);
+};
 
 const CategoryPage = () => {
   const { category, subcategory } = useParams();
@@ -32,7 +42,7 @@ const CategoryPage = () => {
 
   const componentFactory = subcategory && componentMap[subcategory];
   const SubcategoryComponent =
-    getPreloadedComponent(subcategory)?.default || (componentFactory ? lazy(componentFactory) : null);
+    getPreloadedComponent(subcategory)?.default || getLazyComponent(subcategory, componentFactory);
   const Loader = isGetStartedRoute ? GetStartedLoader : SkeletonLoader;
 
   useEffect(() => {
