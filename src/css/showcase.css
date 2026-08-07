@@ -155,10 +155,21 @@
 
 @media (max-width: 640px) {
   .showcase-page {
+    /* box-sizing: border-box; */
     padding: 100px 1em 3em;
   }
 
   .showcase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .showcase-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .showcase-submit-btn {
+    margin-top: 0;
   }
 }
