@@ -2,19 +2,38 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import '../../../css/preview-slider.css';
 
+const formatOptionLabel = str => {
+  if (typeof str !== 'string') return String(str);
+  if (str === 'pingpong') return 'Ping Pong';
+  if (str === 'rotate3d') return 'Rotate 3D';
+  return str.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+};
+
 const PreviewSelect = ({ title = '', options = [], value = '', isDisabled = false, onChange }) => {
   const [open, setOpen] = useState(false);
   const [rect, setRect] = useState(null);
   const wrapRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  const formattedOptions = useMemo(
+    () =>
+      options.map(opt =>
+        typeof opt === 'string'
+          ? { value: opt, label: formatOptionLabel(opt) }
+          : typeof opt === 'object' && opt !== null
+          ? { ...opt, label: opt.label || formatOptionLabel(opt.value) }
+          : { value: String(opt), label: String(opt) }
+      ),
+    [options]
+  );
+
   const labelMap = useMemo(
     () =>
-      options.reduce((map, opt) => {
+      formattedOptions.reduce((map, opt) => {
         map[opt.value] = opt.label;
         return map;
       }, {}),
-    [options]
+    [formattedOptions]
   );
 
   useEffect(() => {
@@ -92,7 +111,7 @@ const PreviewSelect = ({ title = '', options = [], value = '', isDisabled = fals
               zIndex: 9999
             }}
           >
-            {options.map(opt => (
+            {formattedOptions.map(opt => (
               <button
                 key={opt.value}
                 type="button"

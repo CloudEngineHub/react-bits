@@ -269,12 +269,11 @@ const ColorArrayControl = ({ prop, value, onChange }) => {
 
 const SelectControl = ({ prop, value, onChange }) => {
   const { name, label, options = [] } = prop;
-  const selectOptions = options.map(opt => (typeof opt === 'string' ? { value: opt, label: opt } : opt));
 
   return (
     <PreviewSelect
       title={label}
-      options={selectOptions}
+      options={options}
       value={value}
       onChange={val => onChange(name, val)}
       width={120}
