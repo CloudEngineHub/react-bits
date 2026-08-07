@@ -155,7 +155,6 @@
 
 @media (max-width: 640px) {
   .showcase-page {
-    /* box-sizing: border-box; */
     padding: 100px 1em 3em;
   }
 
