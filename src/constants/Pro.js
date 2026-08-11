@@ -17,6 +17,29 @@ import { Blocks, Box, LayoutTemplate, Bot, Component } from 'lucide-react';
  * `variantLevel` render one card per variant instead of one per category.
  * `previewDir`  asset folder under `assets.baseUrl` holding variant previews.
  */
+/**
+ * Headline totals for the static Pro copy: the docs sidebar card, the mobile
+ * bar and the announcement message.
+ *
+ * The /pro pages read live counts straight from pro-manifest.json, but these
+ * three surfaces render on every docs page, where fetching a 340KB manifest to
+ * fill in one line of text is not worth it. Keep these in step with
+ * `counts` in public/pro-manifest.json whenever the catalogue grows.
+ */
+export const PRO_COUNTS = {
+  components: 134,
+  blocks: 238,
+  appUi: 300,
+  templates: 11,
+  agentKit: 19,
+  total: 683
+};
+
+/** Full breakdown, used where there is room for the whole list. */
+export const PRO_SUMMARY =
+  `${PRO_COUNTS.components} components, ${PRO_COUNTS.blocks} blocks, ${PRO_COUNTS.appUi} app UI blocks, ` +
+  `${PRO_COUNTS.templates} templates and ${PRO_COUNTS.agentKit} agent skills`;
+
 export const PRO_SECTIONS = [
   {
     slug: 'components',
@@ -134,7 +157,7 @@ export const PRO_FAQ = [
   },
   {
     q: 'Can I match it to my brand?',
-    a: 'Yes, and you restyle every app UI screen at once. They share CSS custom properties for accent, base grey, font and radius, so a live theme panel with six presets changes all of them without editing a single block.'
+    a: 'Yes, and you restyle every app UI block at once. They share CSS custom properties for accent, base grey, font and radius, so a live theme panel with six presets changes all of them without editing a single file.'
   },
   {
     q: 'How does this work with AI?',
