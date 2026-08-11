@@ -4,13 +4,16 @@ import { useLocation } from 'react-router-dom';
 import { LuX, LuVolume2, LuVolumeX } from 'react-icons/lu';
 import { FiArrowRight } from 'react-icons/fi';
 import { proUrl, trackProClick } from '../../../utils/pro';
+import { PRO_COUNTS } from '../../../constants/Pro';
 import './AnnouncementModal.css';
 
-const STORAGE_KEY = 'rb-pro-july-release-seen';
+// Bumped for each release so people who dismissed the previous announcement
+// still see the new one.
+const STORAGE_KEY = 'rb-pro-august-release-seen';
 const SHOW_DELAY = 1500;
-const PROMO_VIDEO = 'https://cdn.reactbits.dev/julyupdate.mp4';
+const PROMO_VIDEO = 'https://cdn.reactbits.dev/august-update.mp4';
 
-const DISABLED = true;
+const DISABLED = false;
 
 const AnnouncementModal = () => {
   const location = useLocation();
@@ -141,11 +144,7 @@ const AnnouncementModal = () => {
             <div className="announcement-modal-border" aria-hidden="true" />
 
             <div className="announcement-modal-card">
-              <button
-                className="announcement-modal-close"
-                onClick={handleDismiss}
-                aria-label="Close announcement"
-              >
+              <button className="announcement-modal-close" onClick={handleDismiss} aria-label="Close announcement">
                 <LuX size={16} />
               </button>
 
@@ -156,7 +155,7 @@ const AnnouncementModal = () => {
                   loop
                   muted={isMuted}
                   playsInline
-                  aria-label="Preview of the new React Bits Pro animated UI blocks"
+                  aria-label="Preview of the new React Bits Pro app UI blocks and agent kit"
                 />
                 <button
                   className="announcement-modal-sound"
@@ -169,15 +168,18 @@ const AnnouncementModal = () => {
 
               <div className="announcement-modal-content">
                 <h2 id="announcement-modal-title" className="announcement-modal-title">
-                  React Bits Pro July Update
+                  React Bits Pro August Update
                 </h2>
 
                 <div id="announcement-modal-description" className="announcement-modal-description">
                   <p>
-                    <strong>80 new animated UI blocks</strong> just landed, plus a complete docs overhaul. Now{' '}
-                    <strong>100 components</strong>, <strong>238 blocks</strong>, and <strong>11 templates</strong>.
+                    <strong>34 new components</strong>, <strong>{PRO_COUNTS.appUi} app UI blocks</strong> and an{' '}
+                    <strong>agent kit</strong> just landed. Now <strong>{PRO_COUNTS.components} components</strong>,{' '}
+                    <strong>{PRO_COUNTS.blocks} blocks</strong>, <strong>{PRO_COUNTS.appUi} app UI blocks</strong>,{' '}
+                    <strong>{PRO_COUNTS.templates} templates</strong> and{' '}
+                    <strong>{PRO_COUNTS.agentKit} agent skills</strong>.
                   </p>
-                  <p>Everything humans and agents need to ship creative pages.</p>
+                  <p>Everything humans and agents need to ship creative products.</p>
                 </div>
 
                 <a

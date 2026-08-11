@@ -106,7 +106,7 @@ const ProPage = () => {
   usePageSEO({
     title: 'React Bits Pro - Components, Blocks, App UI & Templates',
     description:
-      'See everything that ships with React Bits Pro: animated components, marketing blocks, app UI screens, complete Next.js templates and an Agent Kit for AI coding tools. Lifetime or annual, full source, yours to edit.',
+      'See everything that ships with React Bits Pro: animated components, marketing blocks, app UI blocks, complete Next.js templates and an Agent Kit for AI coding tools. Lifetime or annual, full source, yours to edit.',
     path: '/pro'
   });
 
@@ -143,7 +143,7 @@ const ProPage = () => {
 
             <p className="prox-hero-desc">
               React Bits stays free forever. Pro adds 134 more components, built to the same standard, plus page blocks,
-              app screens, templates and an agent kit.
+              app UI blocks, templates and an agent kit.
             </p>
 
             <div className="prox-actions">
