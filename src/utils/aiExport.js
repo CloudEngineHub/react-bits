@@ -196,7 +196,8 @@ export function buildCompactPrompt({ componentName, category, subcategory, langu
 
   lines.push(
     '',
-    'Please fetch the registry JSON above for the exact source, install any listed dependencies, add the component to my project, and wire it into the right place.'
+    'Please fetch the registry JSON above for the exact source, install any listed dependencies, add the component to my project, and wire it into the right place.',
+    `If this is not the right component, the full library index is at ${SITE_ORIGIN}/llms.txt.`
   );
 
   return lines.join('\n');

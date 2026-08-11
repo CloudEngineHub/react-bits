@@ -5,6 +5,7 @@ import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separa
 import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon } from 'lucide-react';
 
 import { TOOLS } from '../../constants/Tools';
+import { PRO_SECTIONS } from '../../constants/Pro';
 import { colors } from '../../constants/colors';
 
 import { useSearch } from '../context/SearchContext/useSearch';
@@ -151,6 +152,31 @@ const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
   </Box>
 );
 
+// ─── Pro Configuration ───────────────────────────────────────────────────────
+const ProLinks = ({ onClose }) => (
+  <>
+    <Text className="sidebar-pro-name" mb={3}>
+      Pro
+    </Text>
+    <Flex direction="column" gap={2}>
+      <Link to="/pro" onClick={onClose}>
+        <Flex alignItems="center" gap="8px">
+          <span>Overview</span>
+        </Flex>
+      </Link>
+      {PRO_SECTIONS.map(section => (
+        <Link key={section.slug} to={`/pro/${section.slug}`} onClick={onClose}>
+          <Flex alignItems="center" gap="8px">
+            <Icon as={section.icon} boxSize={4} color={colors.accent} />
+            <span>{section.label}</span>
+          </Flex>
+        </Link>
+      ))}
+    </Flex>
+    <Separator my={4} />
+  </>
+);
+
 // ─── Tools Configuration ─────────────────────────────────────────────────────
 const ToolsLinks = ({ onClose }) => (
   <>
@@ -170,7 +196,6 @@ const ToolsLinks = ({ onClose }) => (
           }}
         >
           <Flex alignItems="center" gap="8px">
-            <Icon as={tool.icon} boxSize={4} color={colors.accent} />
             <span>{tool.label}</span>
             {tool.comingSoon && (
               <Text as="span" fontSize="10px" color={colors.accentMuted} fontWeight={600}>
@@ -248,7 +273,12 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
                   isTransitioning={isTransitioning}
                   isFirstCategory={i === 0}
                 />
-                {i === 0 && <ToolsLinks onClose={onClose} />}
+                {i === 0 && (
+                  <>
+                    <ProLinks onClose={onClose} />
+                    <ToolsLinks onClose={onClose} />
+                  </>
+                )}
               </Box>
             ))}
           </VStack>
@@ -549,7 +579,39 @@ const Sidebar = () => {
                   isFirstCategory={i === 0}
                   savedSet={savedSet}
                 />
-                {/* Tools Section - after Get Started */}
+                {/* Pro Section - after Get Started */}
+                {i === 0 && (
+                  <Box>
+                    <Text className="category-name sidebar-pro-name" mb={2} mt={4}>
+                      Pro
+                    </Text>
+                    <Stack spacing={0.5} pl={4} borderLeft={`1px solid ${colors.borderSecondary}`} position="relative">
+                      {PRO_SECTIONS.map(section => {
+                        const path = `/pro/${section.slug}`;
+                        return (
+                          <Link
+                            key={section.slug}
+                            ref={el => {
+                              if (itemRefs.current) itemRefs.current[path] = el;
+                            }}
+                            to={path}
+                            className={`sidebar-item ${location.pathname === path ? 'active-sidebar-item' : ''}`}
+                            onClick={scrollToTop}
+                            onMouseEnter={e => onItemEnter(path, e)}
+                            onMouseLeave={onItemLeave}
+                          >
+                            <Flex alignItems="center" gap="6px">
+                              <Icon as={section.icon} boxSize={3.5} color={colors.accent} />
+                              <span>{section.label}</span>
+                            </Flex>
+                          </Link>
+                        );
+                      })}
+                    </Stack>
+                  </Box>
+                )}
+
+                {/* Tools Section - after Pro */}
                 {i === 0 && (
                   <Box>
                     <Text className="category-name" mb={2} mt={4}>
@@ -563,10 +625,7 @@ const Sidebar = () => {
                           className={`sidebar-item ${location.pathname === tool.path ? 'active-sidebar-item' : ''}`}
                           onClick={scrollToTop}
                         >
-                          <Flex alignItems="center" gap="6px">
-                            <Icon as={tool.icon} boxSize={3.5} color={colors.accent} />
-                            <span>{tool.label}</span>
-                          </Flex>
+                          <span>{tool.label}</span>
                         </Link>
                       ))}
                     </Stack>

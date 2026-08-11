@@ -13,6 +13,8 @@ import ShowcasePage from './pages/ShowcasePage';
 import FavoritesPage from './pages/FavoritesPage';
 import SponsorsPage from './pages/SponsorsPage';
 import ToolsPage from './pages/ToolsPage';
+import ProPage from './pages/ProPage';
+import ProSectionPage from './pages/ProSectionPage';
 
 function AppContent() {
   return (
@@ -23,6 +25,15 @@ function AppContent() {
           <Route exact path="/showcase" element={<ShowcasePage />} />
           <Route exact path="/sponsors" element={<SponsorsPage />} />
           <Route path="/tools/:toolId?" element={<ToolsPage />} />
+          <Route exact path="/pro" element={<ProPage />} />
+          <Route
+            path="/pro/:section"
+            element={
+              <SidebarLayout hideProCard>
+                <ProSectionPage />
+              </SidebarLayout>
+            }
+          />
           <Route
             path="/:category/:subcategory"
             element={

@@ -412,8 +412,11 @@
   }
 }
 
+/* Horizontal padding is deliberately small: the label and the links each carry
+   their own 14px inset, so this lands their text on the 16px gutter the navbar
+   logo sits on, while the link hover surface still bleeds wider than the text. */
 .ln-navbar-mobile-section {
-  padding: 12px 16px 4px;
+  padding: 12px 2px 4px;
 }
 
 .ln-navbar-mobile-label {

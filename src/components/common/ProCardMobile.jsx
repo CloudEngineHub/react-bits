@@ -1,12 +1,11 @@
 import { LuArrowRight, LuSparkles } from 'react-icons/lu';
+import { proLinkProps } from '../../utils/pro';
 import './ProCardMobile.css';
 
 const ProCardMobile = () => {
   return (
     <a
-      href="https://pro.reactbits.dev"
-      target="_blank"
-      rel="noopener noreferrer"
+      {...proLinkProps('/', 'mobile-bar')}
       className="pro-mobile-bar"
       aria-label="Get React Bits Pro"
     >

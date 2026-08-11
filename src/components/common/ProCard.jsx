@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
+import { proLinkProps } from '../../utils/pro';
 
 const ORB_COUNT = 5;
 const LINE_DIST = 120;
@@ -95,7 +96,7 @@ const ProCard = () => {
   useParticles(canvasRef);
 
   return (
-    <a href="https://pro.reactbits.dev" target="_blank" rel="noopener noreferrer" className="pro-card-link">
+    <a {...proLinkProps('/', 'right-panel-card')} className="pro-card-link">
       <div className="pro-card">
         <canvas ref={canvasRef} className="pro-card-particles" />
         <div className="pro-card-glow" />
