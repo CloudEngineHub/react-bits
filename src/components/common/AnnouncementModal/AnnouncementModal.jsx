@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 import { LuX, LuVolume2, LuVolumeX } from 'react-icons/lu';
 import { FiArrowRight } from 'react-icons/fi';
+import { proUrl, trackProClick } from '../../../utils/pro';
 import './AnnouncementModal.css';
 
 const STORAGE_KEY = 'rb-pro-july-release-seen';
@@ -180,11 +181,14 @@ const AnnouncementModal = () => {
                 </div>
 
                 <a
-                  href="https://pro.reactbits.dev"
+                  href={proUrl('/', 'announcement-modal')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="announcement-modal-btn announcement-modal-btn--primary"
-                  onClick={handleDismiss}
+                  onClick={() => {
+                    trackProClick('announcement-modal');
+                    handleDismiss();
+                  }}
                 >
                   Explore React Bits Pro <FiArrowRight size={14} />
                 </a>

@@ -1,11 +1,26 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile } from 'react-icons/fi';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile, FiArrowUpRight } from 'react-icons/fi';
 import { AiOutlineEnter } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../constants/Categories';
 import { fuzzyMatch } from '../../utils/fuzzy';
+import { searchPro } from '../../utils/proSearch';
+import { proUrl, trackProClick } from '../../utils/pro';
+import { useProManifest } from '../../hooks/useProManifest';
 import { useSearch } from '../context/SearchContext/useSearch';
 import './SearchDialog.css';
+
+const PRO_PLACEMENT = 'search';
+const FREE_ONLY_KEY = 'reactbits:search-free-only';
+
+/** Persisted so someone who opts out of Pro results only has to say so once. */
+const readFreeOnly = () => {
+  try {
+    return window.localStorage.getItem(FREE_ONLY_KEY) === 'true';
+  } catch {
+    return false;
+  }
+};
 
 function searchComponents(query) {
   if (!query || query.trim() === '') return [];
@@ -44,10 +59,14 @@ const SearchDialog = ({ isOpen, onClose }) => {
   const [bottomGradientOpacity, setBottomGradientOpacity] = useState(1);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [keyboardNav, setKeyboardNav] = useState(false);
+  const [freeOnly, setFreeOnly] = useState(readFreeOnly);
   const resultsRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const { toggleSearch } = useSearch();
+
+  // Only fetched once the dialog has been opened, and cached from then on.
+  const { manifest } = useProManifest({ enabled: isOpen && !freeOnly });
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -57,7 +76,31 @@ const SearchDialog = ({ isOpen, onClose }) => {
     return () => clearTimeout(t);
   }, [inputValue]);
 
-  const results = searchComponents(searchValue);
+  const freeResults = useMemo(() => searchComponents(searchValue), [searchValue]);
+
+  const proResults = useMemo(
+    () => (freeOnly ? [] : searchPro(manifest, searchValue)),
+    [freeOnly, manifest, searchValue]
+  );
+
+  // One flat list so arrow keys and Enter run across both groups.
+  const results = useMemo(
+    () => [...freeResults.map(item => ({ kind: 'free', item })), ...proResults.map(item => ({ kind: 'pro', item }))],
+    [freeResults, proResults]
+  );
+
+  const toggleFreeOnly = () => {
+    setFreeOnly(prev => {
+      const next = !prev;
+      try {
+        window.localStorage.setItem(FREE_ONLY_KEY, String(next));
+      } catch {
+        /* storage unavailable, the preference just won't persist */
+      }
+      return next;
+    });
+    setSelectedIndex(-1);
+  };
 
   const handleScroll = e => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -76,8 +119,17 @@ const SearchDialog = ({ isOpen, onClose }) => {
 
   const handleSelect = useCallback(
     result => {
-      const slug = str => str.replace(/\s+/g, '-').toLowerCase();
-      navigate(`/${slug(result.categoryName)}/${slug(result.componentName)}`);
+      if (!result) return;
+
+      if (result.kind === 'pro') {
+        const { item } = result;
+        trackProClick(PRO_PLACEMENT, { section: item.section, item: item.name });
+        window.open(proUrl(item.href, PRO_PLACEMENT), '_blank', 'noopener,noreferrer');
+      } else {
+        const slug = str => str.replace(/\s+/g, '-').toLowerCase();
+        navigate(`/${slug(result.item.categoryName)}/${slug(result.item.componentName)}`);
+      }
+
       setInputValue('');
       setSearchValue('');
       setSelectedIndex(-1);
@@ -174,31 +226,67 @@ const SearchDialog = ({ isOpen, onClose }) => {
           <div className="search-results-wrapper">
             <div ref={resultsRef} className="search-results" onScroll={handleScroll}>
               {results.length > 0 ? (
-                results.map((r, i) => {
-                  const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
-                  const selected = i === selectedIndex;
-                  return (
-                    <Result
-                      key={`${r.categoryName}-${r.componentName}-${i}`}
-                      dataIndex={i}
-                      onMouseEnter={() => setSelectedIndex(i)}
-                      onClick={() => handleSelect(r)}
-                    >
-                      <div className={`search-result-item${selected ? ' selected' : ''}`}>
-                        <div className="search-result-icon">
-                          <IconComp size={20} />
+                <>
+                  {freeResults.map((r, i) => {
+                    const IconComp = categoryIconMapping[r.categoryName] || FiSearch;
+                    return (
+                      <Result
+                        key={`free-${r.categoryName}-${r.componentName}-${i}`}
+                        dataIndex={i}
+                        onMouseEnter={() => setSelectedIndex(i)}
+                        onClick={() => handleSelect(results[i])}
+                      >
+                        <div className={`search-result-item${i === selectedIndex ? ' selected' : ''}`}>
+                          <div className="search-result-icon">
+                            <IconComp size={20} />
+                          </div>
+                          <div className="search-result-text">
+                            <span className="search-result-name">{r.componentName}</span>
+                            <span className="search-result-category">in {r.categoryName}</span>
+                          </div>
+                          <div className="search-result-enter">
+                            <AiOutlineEnter size={16} />
+                          </div>
                         </div>
-                        <div className="search-result-text">
-                          <span className="search-result-name">{r.componentName}</span>
-                          <span className="search-result-category">in {r.categoryName}</span>
+                      </Result>
+                    );
+                  })}
+
+                  {proResults.length > 0 && (
+                    <div className="search-group-label">
+                      React Bits Pro
+                      <span>opens pro.reactbits.dev</span>
+                    </div>
+                  )}
+
+                  {proResults.map((r, i) => {
+                    const index = freeResults.length + i;
+                    return (
+                      <Result
+                        key={r.id}
+                        dataIndex={index}
+                        onMouseEnter={() => setSelectedIndex(index)}
+                        onClick={() => handleSelect(results[index])}
+                      >
+                        <div className={`search-result-item is-pro${index === selectedIndex ? ' selected' : ''}`}>
+                          <div className="search-result-icon">
+                            <FiLayers size={20} />
+                          </div>
+                          <div className="search-result-text">
+                            <span className="search-result-name">
+                              {r.name}
+                              {r.isFree && <span className="search-result-free">Free</span>}
+                            </span>
+                            <span className="search-result-category">{r.context}</span>
+                          </div>
+                          <div className="search-result-enter">
+                            <FiArrowUpRight size={16} />
+                          </div>
                         </div>
-                        <div className="search-result-enter">
-                          <AiOutlineEnter size={16} />
-                        </div>
-                      </div>
-                    </Result>
-                  );
-                })
+                      </Result>
+                    );
+                  })}
+                </>
               ) : (
                 <p className="search-no-results">
                   No results found for <strong>{searchValue}</strong>
@@ -210,6 +298,14 @@ const SearchDialog = ({ isOpen, onClose }) => {
             <div className="search-gradient search-gradient-bottom" style={{ opacity: bottomGradientOpacity }} />
           </div>
         )}
+
+        <div className="search-footer">
+          <label className="search-toggle">
+            <input type="checkbox" checked={freeOnly} onChange={toggleFreeOnly} />
+            <span className="search-toggle-box" aria-hidden="true" />
+            Free only
+          </label>
+        </div>
       </div>
     </div>
   );
