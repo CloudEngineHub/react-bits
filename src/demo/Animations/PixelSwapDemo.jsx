@@ -1,4 +1,3 @@
-import { useCallback, useRef, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import CodeExample from '../../components/code/CodeExample';
@@ -96,22 +95,6 @@ const propData = [
 const PixelSwapDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { pixelSize, enterColor, exitColor, duration, pixelDuration, pattern } = props;
-  const [revealOpacity, setRevealOpacity] = useState(1);
-  const [promptOpacity, setPromptOpacity] = useState(1);
-  const fadeRef = useRef(null);
-
-  const handleActiveChange = useCallback((next) => {
-    if (fadeRef.current) clearTimeout(fadeRef.current);
-    if (next) {
-      setRevealOpacity(0);
-    } else {
-      setPromptOpacity(0);
-    }
-    fadeRef.current = setTimeout(() => {
-      if (next) setRevealOpacity(1);
-      else setPromptOpacity(1);
-    }, Math.max(200, duration) + 500);
-  }, [duration]);
 
   return (
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
@@ -121,12 +104,12 @@ const PixelSwapDemo = () => {
             <PixelSwap
               firstContent={
                 <div className="pixel-swap-demo__panel pixel-swap-demo__prompt">
-                  <span style={{ opacity: promptOpacity, transition: 'opacity 0.5s' }}>Use reactbits</span>
+                  <span>Use reactbits</span>
                 </div>
               }
               secondContent={
                 <div className="pixel-swap-demo__panel pixel-swap-demo__reveal">
-                  <span style={{ opacity: revealOpacity, transition: 'opacity 0.5s' }}>Build anything</span>
+                  <span>Build anything</span>
                 </div>
               }
               pixelSize={pixelSize}
@@ -135,7 +118,6 @@ const PixelSwapDemo = () => {
               duration={duration}
               pixelDuration={pixelDuration}
               pattern={pattern}
-              onActiveChange={handleActiveChange}
               className="pixel-swap-demo"
             />
           </Box>
