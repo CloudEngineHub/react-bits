@@ -104,11 +104,8 @@ const PixelSwapDemo = () => {
   const handleMouseEnter = useCallback(() => {
     if (lockedRef.current) return;
     lockedRef.current = true;
-    setActive(prev => !prev);
-  }, []);
-
-  const handleActiveChange = useCallback(() => {
     if (!fadeReady) setFadeReady(true);
+    setActive(prev => !prev);
     if (unlockRef.current) clearTimeout(unlockRef.current);
     unlockRef.current = setTimeout(() => {
       lockedRef.current = false;
@@ -119,8 +116,7 @@ const PixelSwapDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box className="demo-container" minH={500} p={{ base: 4, md: 8 }}>
-            <div onMouseEnter={handleMouseEnter}>
+          <Box className="demo-container" minH={500} p={{ base: 4, md: 8 }} onMouseEnter={handleMouseEnter}>
             <PixelSwap
               active={active}
               trigger="manual"
@@ -140,10 +136,8 @@ const PixelSwapDemo = () => {
               duration={duration}
               pixelDuration={pixelDuration}
               pattern={pattern}
-              onActiveChange={handleActiveChange}
               className="pixel-swap-demo"
             />
-            </div>
           </Box>
 
           <Customize>
