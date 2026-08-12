@@ -43,7 +43,7 @@
 /* After animation: fade in */
 .pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .animate-fade span {
   opacity: 1;
-  transition: opacity 0.5s 0.5s;
+  transition: opacity 0.3s 0.15s;
 }
 
 .pixel-swap-demo:focus-visible {
