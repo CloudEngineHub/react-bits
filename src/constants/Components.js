@@ -18,6 +18,7 @@ const animations = {
   'splash-cursor': () => import('../demo/Animations/SplashCursorDemo'),
   'click-spark': () => import('../demo/Animations/ClickSparkDemo'),
   'pixel-transition': () => import('../demo/Animations/PixelTransitionDemo'),
+  'pixel-swap': () => import('../demo/Animations/PixelSwapDemo'),
   'image-trail': () => import('../demo/Animations/ImageTrailDemo'),
   'pixel-trail': () => import('../demo/Animations/PixelTrailDemo'),
   'ribbons': () => import('../demo/Animations/RibbonsDemo'),

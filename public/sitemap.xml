@@ -301,6 +301,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://reactbits.dev/animations/pixel-swap</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://reactbits.dev/animations/cursor-grid</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>
