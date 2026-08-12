@@ -130,12 +130,8 @@ function PixelSwap({
     timerRefs.current.push(
       window.setTimeout(() => {
         setShownActive(direction);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            clearTransition();
-            setDirection(null);
-          });
-        });
+        clearTransition();
+        setDirection(null);
       }, total)
     );
   }, [clearTransition, direction, duration, easing, pixelColor, pixelDuration, pixels, reversePixelColor]);

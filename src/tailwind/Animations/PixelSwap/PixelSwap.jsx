@@ -129,12 +129,8 @@ function PixelSwap({
     timerRefs.current.push(
       window.setTimeout(() => {
         setShownActive(direction);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            clearTransition();
-            setDirection(null);
-          });
-        });
+        clearTransition();
+        setDirection(null);
       }, total)
     );
   }, [clearTransition, direction, duration, easing, pixelColor, pixelDuration, pixels, reversePixelColor]);
@@ -176,10 +172,10 @@ function PixelSwap({
       data-transitioning={direction !== null}
       {...interactionProps}
     >
-      <div className={`absolute inset-0 h-full w-full transition-opacity duration-400 pointer-events-none ${shownActive ? 'opacity-0' : 'opacity-100 pointer-events-auto'}`} aria-hidden={shownActive}>
+      <div className={`absolute inset-0 h-full w-full ${shownActive ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto transition-opacity duration-400'}`} aria-hidden={shownActive}>
         {firstContent}
       </div>
-      <div className={`absolute inset-0 h-full w-full transition-opacity duration-400 pointer-events-none ${shownActive ? 'opacity-100 pointer-events-auto' : 'opacity-0'}`} aria-hidden={!shownActive}>
+      <div className={`absolute inset-0 h-full w-full ${shownActive ? 'opacity-100 pointer-events-auto transition-opacity duration-400' : 'opacity-0 pointer-events-none'}`} aria-hidden={!shownActive}>
         {secondContent}
       </div>
       {direction !== null && (
