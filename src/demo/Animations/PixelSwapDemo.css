@@ -30,14 +30,20 @@
   color: #120f17;
 }
 
-/* After animation: fade in the revealed text */
-.pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .animate-fade span {
-  animation: pixelSwapFadeIn 0.3s 0.1s both;
+/* Panel targeted for fade: start at opacity 0 while hidden */
+.pixel-swap__content[aria-hidden="true"] .fade-target span {
+  opacity: 0;
 }
 
-@keyframes pixelSwapFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Keep at opacity 0 when revealed but still behind pixels */
+.pixel-swap-demo[data-transitioning="true"] .pixel-swap__content[aria-hidden="false"] .fade-target span {
+  opacity: 0;
+}
+
+/* After animation: fade in */
+.pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .fade-target span {
+  opacity: 1;
+  transition: opacity 0.3s 0.1s;
 }
 
 .pixel-swap-demo:focus-visible {
