@@ -20,11 +20,15 @@ export const pixelSwap = {
     </div>
   }
   pixelSize={64}
-  pixelColor="#120f17"
-  reversePixelColor="#120f17"
-  duration={3000}
-  pixelDuration={600}
+  gap={0}
+  pixelRadius={0}
+  pixelSpin={0}
+  pixelScale={0.35}
+  duration={1400}
+  pixelDuration={450}
   pattern="random"
+  randomness={0}
+  fade
   trigger="click"
 />`,
   code,

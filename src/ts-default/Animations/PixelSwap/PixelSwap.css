@@ -6,31 +6,31 @@
   outline: none;
 }
 
-.pixel-swap__content {
+.pixel-swap__layer {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.pixel-swap__content[aria-hidden='true'] {
+.pixel-swap__layer[data-visible='false'] {
   visibility: hidden;
 }
 
 .pixel-swap__grid {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  display: grid;
+  inset: 0;
+  z-index: 3;
   pointer-events: none;
 }
 
-.pixel-swap__grid span {
-  min-width: 0;
-  min-height: 0;
+.pixel-swap__pixel {
+  position: absolute;
+  overflow: hidden;
   opacity: 0;
-  transform: scale(0.2);
-  will-change: transform, opacity;
+  contain: paint;
+}
+
+.pixel-swap__pixel-content {
+  position: absolute;
 }
