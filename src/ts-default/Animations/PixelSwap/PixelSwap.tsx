@@ -150,7 +150,7 @@ function PixelSwap({
     });
 
     timerRefs.current.push(
-      window.setTimeout(() => setShownActive(direction), swapAt),
+      window.setTimeout(() => setShownActive(direction), total),
       window.setTimeout(() => {
         clearTransition();
         setDirection(null);
