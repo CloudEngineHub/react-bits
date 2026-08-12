@@ -22,16 +22,19 @@ const readFreeOnly = () => {
   }
 };
 
+const matchesSearch = (value, query) =>
+  fuzzyMatch(value, query) || fuzzyMatch(value.replace(/\s+/g, ''), query.replace(/\s+/g, ''));
+
 function searchComponents(query) {
   if (!query || query.trim() === '') return [];
   const results = [];
   CATEGORIES.forEach(category => {
     const { name: categoryName, subcategories } = category;
-    if (fuzzyMatch(categoryName, query)) {
+    if (matchesSearch(categoryName, query)) {
       subcategories.forEach(component => results.push({ categoryName, componentName: component }));
     } else {
       subcategories.forEach(component => {
-        if (fuzzyMatch(component, query)) results.push({ categoryName, componentName: component });
+        if (matchesSearch(component, query)) results.push({ categoryName, componentName: component });
       });
     }
   });

@@ -92,6 +92,7 @@ Notes:
 - [Metallic Paint](https://www.reactbits.dev/animations/metallic-paint): Liquid metallic paint shader which can be applied to SVG elements. CLI: `MetallicPaint`.
 - [Noise](https://www.reactbits.dev/animations/noise): Animated film grain / noise overlay adding subtle texture and motion. CLI: `Noise`.
 - [Orbit Images](https://www.reactbits.dev/animations/orbit-images): SVG Path customizable orbiting images effect. CLI: `OrbitImages`.
+- [Pixel Swap](https://www.reactbits.dev/animations/pixel-swap): Pixel fragments assemble into a full cover, swap arbitrary content, then dissolve away with reversible colors and triggers. CLI: `PixelSwap`.
 - [Pixel Trail](https://www.reactbits.dev/animations/pixel-trail): Pixelated cursor trail emitting fading squares with retro digital feel. CLI: `PixelTrail`.
 - [Pixel Transition](https://www.reactbits.dev/animations/pixel-transition): Pixel dissolve transition for content reveal on hover. CLI: `PixelTransition`.
 - [Ribbons](https://www.reactbits.dev/animations/ribbons): Flowing responsive ribbons/cursor trail driven by physics and pointer motion. CLI: `Ribbons`.

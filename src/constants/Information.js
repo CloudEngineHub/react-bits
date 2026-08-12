@@ -193,6 +193,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/pixel-transition',
     tags: []
   },
+  'Animations/PixelSwap': {
+    videoUrl: '/assets/video/pixelswap.webm',
+    description: 'Pixel fragments assemble into a full cover, swap arbitrary content, then dissolve away with reversible colors and triggers.',
+    category: 'Animations',
+    name: 'PixelSwap',
+    docsUrl: 'https://reactbits.dev/animations/pixel-swap',
+    tags: []
+  },
   'Animations/Ribbons': {
     videoUrl: '/assets/video/ribbons.webm',
     description: 'Flowing responsive ribbons/cursor trail driven by physics and pointer motion.',
