@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import CodeExample from '../../components/code/CodeExample';
@@ -95,6 +96,11 @@ const propData = [
 const PixelSwapDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { pixelSize, enterColor, exitColor, duration, pixelDuration, pattern } = props;
+  const [fadeReady, setFadeReady] = useState(false);
+
+  const handleActiveChange = (next) => {
+    if (!fadeReady) setFadeReady(true);
+  };
 
   return (
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
@@ -103,12 +109,12 @@ const PixelSwapDemo = () => {
           <Box className="demo-container" minH={500} p={{ base: 4, md: 8 }}>
             <PixelSwap
               firstContent={
-                <div className="pixel-swap-demo__panel pixel-swap-demo__prompt">
+                <div className={`pixel-swap-demo__panel pixel-swap-demo__prompt${fadeReady ? ' animate-fade' : ''}`}>
                   <span>Use reactbits</span>
                 </div>
               }
               secondContent={
-                <div className="pixel-swap-demo__panel pixel-swap-demo__reveal">
+                <div className={`pixel-swap-demo__panel pixel-swap-demo__reveal${fadeReady ? ' animate-fade' : ''}`}>
                   <span>Build anything</span>
                 </div>
               }
@@ -118,6 +124,7 @@ const PixelSwapDemo = () => {
               duration={duration}
               pixelDuration={pixelDuration}
               pattern={pattern}
+              onActiveChange={handleActiveChange}
               className="pixel-swap-demo"
             />
           </Box>
