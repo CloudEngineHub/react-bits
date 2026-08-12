@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import CodeExample from '../../components/code/CodeExample';
@@ -96,18 +96,34 @@ const propData = [
 const PixelSwapDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { pixelSize, enterColor, exitColor, duration, pixelDuration, pattern } = props;
+  const [active, setActive] = useState(false);
   const [fadeReady, setFadeReady] = useState(false);
+  const lockedRef = useRef(false);
+  const unlockRef = useRef(null);
 
-  const handleActiveChange = (next) => {
+  const handleMouseEnter = useCallback(() => {
+    if (lockedRef.current) return;
+    lockedRef.current = true;
+    setActive(prev => !prev);
+  }, []);
+
+  const handleActiveChange = useCallback(() => {
     if (!fadeReady) setFadeReady(true);
-  };
+    if (unlockRef.current) clearTimeout(unlockRef.current);
+    unlockRef.current = setTimeout(() => {
+      lockedRef.current = false;
+    }, Math.max(200, duration) + 200);
+  }, [duration, fadeReady]);
 
   return (
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box className="demo-container" minH={500} p={{ base: 4, md: 8 }}>
+            <div onMouseEnter={handleMouseEnter}>
             <PixelSwap
+              active={active}
+              trigger="manual"
               firstContent={
                 <div className={`pixel-swap-demo__panel pixel-swap-demo__prompt${fadeReady ? ' animate-fade' : ''}`}>
                   <span>Use reactbits</span>
@@ -127,6 +143,7 @@ const PixelSwapDemo = () => {
               onActiveChange={handleActiveChange}
               className="pixel-swap-demo"
             />
+            </div>
           </Box>
 
           <Customize>
