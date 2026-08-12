@@ -40,11 +40,10 @@
   opacity: 0;
 }
 
-/* Start fading in at swapAt — text emerges as pixels dissolve */
-.pixel-swap-demo[data-active="true"] .pixel-swap__content[aria-hidden="false"] .pixel-swap-demo__reveal.fade-target span,
-.pixel-swap-demo[data-active="false"] .pixel-swap__content[aria-hidden="false"] .pixel-swap-demo__prompt.fade-target span {
+/* After animation ends: fade in immediately */
+.pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .fade-target span {
   opacity: 1;
-  transition: opacity 0.4s 0.05s;
+  transition: opacity 0.25s 0s;
 }
 
 .pixel-swap-demo:focus-visible {
