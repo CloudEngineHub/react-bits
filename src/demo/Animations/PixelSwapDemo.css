@@ -30,20 +30,15 @@
   color: #120f17;
 }
 
-.pixel-swap-demo__panel span {
-  transition: opacity 0.5s 0.5s;
-}
-
-/* During pixel animation: hide text instantly */
-.pixel-swap-demo[data-transitioning="true"] .pixel-swap-demo__panel span {
+/* Hidden panel's text: prepare at opacity 0 so it fades in later */
+.pixel-swap__content[aria-hidden="true"] .animate-fade span {
   opacity: 0;
-  transition: none;
 }
 
-/* After animation: fade in the revealed panel's text */
-.pixel-swap-demo[data-transitioning="false"][data-active="true"] .pixel-swap-demo__reveal span,
-.pixel-swap-demo[data-transitioning="false"][data-active="false"] .pixel-swap-demo__prompt span {
+/* After animation: fade in the revealed text */
+.pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .animate-fade span {
   opacity: 1;
+  transition: opacity 0.5s 0.5s;
 }
 
 .pixel-swap-demo:focus-visible {
