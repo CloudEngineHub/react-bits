@@ -46,7 +46,8 @@ const HyperspeedDemo = () => {
     { value: 'two', label: 'Akira' },
     { value: 'three', label: 'Golden' },
     { value: 'four', label: 'Split' },
-    { value: 'five', label: 'Highway' }
+    { value: 'five', label: 'Highway' },
+    { value: 'six', label: 'Neon Waves' }
   ];
 
   return (
