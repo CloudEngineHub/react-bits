@@ -134,15 +134,15 @@ function PixelSwap({
       pixel.style.backgroundColor = direction ? pixelColor : (reversePixelColor ?? pixelColor);
       const enterAnimation = pixel.animate(
         [
-          { opacity: 0, transform: 'scale(0.2)', filter: 'blur(2px)' },
-          { opacity: 1, transform: 'scale(1.03)', filter: 'blur(0px)' }
+          { opacity: 0, transform: 'scale(0.2)' },
+          { opacity: 1, transform: 'scale(1.03)' }
         ],
         { duration: blockDuration, delay: data.enter * maxEnterDelay, easing, fill: 'both' }
       );
       const exitAnimation = pixel.animate(
         [
-          { opacity: 1, transform: 'scale(1.03)', filter: 'blur(0px)' },
-          { opacity: 0, transform: 'scale(0.15)', filter: 'blur(2px)' }
+          { opacity: 1, transform: 'scale(1.03)' },
+          { opacity: 0, transform: 'scale(0.15)' }
         ],
         { duration: blockDuration, delay: swapAt + data.exit * maxExitDelay, easing, fill: 'forwards' }
       );

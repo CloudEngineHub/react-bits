@@ -16,8 +16,8 @@ import './PixelSwapDemo.css';
 
 const DEFAULT_PROPS = {
   pixelSize: 64,
-  enterColor: '#120f17',
-  exitColor: '#120f17',
+  enterColor: '#ffffff',
+  exitColor: 'var(--bg-body)',
   duration: 3000,
   pixelDuration: 600,
   pattern: 'random'
@@ -104,12 +104,12 @@ const PixelSwapDemo = () => {
             <PixelSwap
               firstContent={
                 <div className="pixel-swap-demo__panel pixel-swap-demo__prompt">
-                  <span>Click me</span>
+                  <span>Use reactbits</span>
                 </div>
               }
               secondContent={
                 <div className="pixel-swap-demo__panel pixel-swap-demo__reveal">
-                  <span>You found me</span>
+                  <span>Build anything</span>
                 </div>
               }
               pixelSize={pixelSize}
@@ -118,7 +118,6 @@ const PixelSwapDemo = () => {
               duration={duration}
               pixelDuration={pixelDuration}
               pattern={pattern}
-              trigger="click"
               className="pixel-swap-demo"
             />
           </Box>
