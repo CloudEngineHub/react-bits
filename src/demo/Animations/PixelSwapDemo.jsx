@@ -97,20 +97,21 @@ const PixelSwapDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { pixelSize, enterColor, exitColor, duration, pixelDuration, pattern } = props;
   const [active, setActive] = useState(false);
-  const [fadeReady, setFadeReady] = useState(false);
+  const [fadePanel, setFadePanel] = useState(null);
   const lockedRef = useRef(false);
   const unlockRef = useRef(null);
 
   const handleMouseEnter = useCallback(() => {
     if (lockedRef.current) return;
     lockedRef.current = true;
-    if (!fadeReady) setFadeReady(true);
-    setActive(prev => !prev);
+    const next = !active;
+    setActive(next);
+    setFadePanel(next ? 'reveal' : 'prompt');
     if (unlockRef.current) clearTimeout(unlockRef.current);
     unlockRef.current = setTimeout(() => {
       lockedRef.current = false;
     }, Math.max(200, duration) + 200);
-  }, [duration, fadeReady]);
+  }, [active, duration]);
 
   return (
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
@@ -121,12 +122,12 @@ const PixelSwapDemo = () => {
               active={active}
               trigger="manual"
               firstContent={
-                <div className={`pixel-swap-demo__panel pixel-swap-demo__prompt${fadeReady ? ' animate-fade' : ''}`}>
+                <div className={`pixel-swap-demo__panel pixel-swap-demo__prompt${fadePanel === 'prompt' ? ' fade-target' : ''}`}>
                   <span>Use reactbits</span>
                 </div>
               }
               secondContent={
-                <div className={`pixel-swap-demo__panel pixel-swap-demo__reveal${fadeReady ? ' animate-fade' : ''}`}>
+                <div className={`pixel-swap-demo__panel pixel-swap-demo__reveal${fadePanel === 'reveal' ? ' fade-target' : ''}`}>
                   <span>Build anything</span>
                 </div>
               }
