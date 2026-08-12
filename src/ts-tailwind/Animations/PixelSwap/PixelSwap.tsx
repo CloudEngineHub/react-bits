@@ -196,10 +196,10 @@ function PixelSwap({
       data-transitioning={direction !== null}
       {...interactionProps}
     >
-      <div className={`absolute inset-0 h-full w-full ${shownActive ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto transition-opacity duration-400'}`} aria-hidden={shownActive}>
+      <div className={`absolute inset-0 h-full w-full ${shownActive ? 'invisible' : ''}`} aria-hidden={shownActive}>
         {firstContent}
       </div>
-      <div className={`absolute inset-0 h-full w-full ${shownActive ? 'opacity-100 pointer-events-auto transition-opacity duration-400' : 'opacity-0 pointer-events-none'}`} aria-hidden={!shownActive}>
+      <div className={`absolute inset-0 h-full w-full ${shownActive ? '' : 'invisible'}`} aria-hidden={!shownActive}>
         {secondContent}
       </div>
       {direction !== null && (
