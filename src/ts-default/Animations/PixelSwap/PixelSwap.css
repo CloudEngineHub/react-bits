@@ -12,12 +12,12 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.4s ease;
   pointer-events: none;
 }
 
 .pixel-swap__content[aria-hidden='false'] {
   opacity: 1;
+  transition: opacity 0.4s ease;
   pointer-events: auto;
 }
 
