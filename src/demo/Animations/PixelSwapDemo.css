@@ -30,12 +30,17 @@
   color: #120f17;
 }
 
-/* Hidden panel's text: prepare at opacity 0 so it fades in later */
+/* Hidden panel: prepare at opacity 0 */
 .pixel-swap__content[aria-hidden="true"] .animate-fade span {
   opacity: 0;
 }
 
-/* After animation: fade in the revealed text */
+/* Revealed but still transitioning: keep at opacity 0 */
+.pixel-swap-demo[data-transitioning="true"] .pixel-swap__content[aria-hidden="false"] .animate-fade span {
+  opacity: 0;
+}
+
+/* After animation: fade in */
 .pixel-swap-demo[data-transitioning="false"] .pixel-swap__content[aria-hidden="false"] .animate-fade span {
   opacity: 1;
   transition: opacity 0.5s 0.5s;
