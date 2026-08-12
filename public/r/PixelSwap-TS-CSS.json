@@ -8,7 +8,7 @@
 		{
 			"type": "registry:component",
 			"path": "PixelSwap/PixelSwap.css",
-			"content": ".pixel-swap {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n  isolation: isolate;\n  outline: none;\n}\n\n.pixel-swap__content {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 0;\n  pointer-events: none;\n}\n\n.pixel-swap__content[aria-hidden='false'] {\n  opacity: 1;\n  transition: opacity 0.4s ease;\n  pointer-events: auto;\n}\n\n.pixel-swap__grid {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  z-index: 10;\n  display: grid;\n  pointer-events: none;\n}\n\n.pixel-swap__grid span {\n  min-width: 0;\n  min-height: 0;\n  opacity: 0;\n  transform: scale(0.2);\n  will-change: transform, opacity;\n}\n"
+			"content": ".pixel-swap {\n  position: relative;\n  width: 100%;\n  overflow: hidden;\n  isolation: isolate;\n  outline: none;\n}\n\n.pixel-swap__content {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.pixel-swap__content[aria-hidden='true'] {\n  visibility: hidden;\n}\n\n.pixel-swap__grid {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n  z-index: 10;\n  display: grid;\n  pointer-events: none;\n}\n\n.pixel-swap__grid span {\n  min-width: 0;\n  min-height: 0;\n  opacity: 0;\n  transform: scale(0.2);\n  will-change: transform, opacity;\n}\n"
 		},
 		{
 			"type": "registry:component",
