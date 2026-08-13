@@ -258,6 +258,8 @@ const ShapeBlur: FC<ShapeBlurProps> = ({
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
+      geo.dispose();
+      material.dispose();
       materialRef.current = null;
       renderer.dispose();
       renderer.forceContextLoss();
