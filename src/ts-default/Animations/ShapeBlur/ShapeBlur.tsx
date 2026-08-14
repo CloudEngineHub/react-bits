@@ -136,6 +136,7 @@ const ShapeBlur = ({
   circleEdge = 0.5
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -179,6 +180,7 @@ const ShapeBlur = ({
       defines: { VAR: variation },
       transparent: true
     });
+    materialRef.current = material;
 
     const quad = new THREE.Mesh(geo, material);
     scene.add(quad);
@@ -245,10 +247,24 @@ const ShapeBlur = ({
       if (mount.contains(renderer.domElement)) {
         mount.removeChild(renderer.domElement);
       }
+      geo.dispose();
+      material.dispose();
+      materialRef.current = null;
       renderer.dispose();
       renderer.forceContextLoss();
     };
-  }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
+  }, [variation]);
+
+  useEffect(() => {
+    const mat = materialRef.current;
+    if (!mat) return;
+    mat.uniforms.u_pixelRatio.value = pixelRatioProp;
+    mat.uniforms.u_shapeSize.value = shapeSize;
+    mat.uniforms.u_roundness.value = roundness;
+    mat.uniforms.u_borderSize.value = borderSize;
+    mat.uniforms.u_circleSize.value = circleSize;
+    mat.uniforms.u_circleEdge.value = circleEdge;
+  }, [pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 
   return <div className={className} ref={mountRef} style={{ width: '100%', height: '100%' }} />;
 };
