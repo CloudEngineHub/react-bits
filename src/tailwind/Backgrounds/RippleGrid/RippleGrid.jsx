@@ -200,6 +200,7 @@ void main() {
     }
     resize();
 
+    let animationFrameId;
     const render = t => {
       uniforms.iTime.value = t * 0.001;
 
@@ -214,13 +215,14 @@ void main() {
       uniforms.mousePosition.value = [mousePositionRef.current.x, mousePositionRef.current.y];
 
       renderer.render({ scene: mesh });
-      requestAnimationFrame(render);
+      animationFrameId = requestAnimationFrame(render);
     };
 
-    requestAnimationFrame(render);
+    animationFrameId = requestAnimationFrame(render);
 
     const container = containerRef.current;
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
       if (mouseInteraction && container) {
         container.removeEventListener('mousemove', handleMouseMove);
