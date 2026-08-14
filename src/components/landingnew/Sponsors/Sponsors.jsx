@@ -6,7 +6,7 @@ import {
   platinumSponsors,
   silverSponsors,
   hasDiamondSponsors,
-  hasSilverSponsors,
+  hasSilverSponsors
 } from '../../../constants/Sponsors';
 import './Sponsors.css';
 
@@ -32,12 +32,7 @@ const SponsorCard = ({ sponsor, tier }) => (
     className={`ln-sp-card ln-sp-card--${tier}`}
   >
     <div className={`ln-sp-card-visual ln-sp-card-visual--${tier}`}>
-      <img
-        className="ln-sp-card-logo"
-        src={sponsor.imageUrl}
-        alt={sponsor.name}
-        loading="lazy"
-      />
+      <img className="ln-sp-card-logo" src={sponsor.imageUrl} alt={sponsor.name} loading="lazy" />
     </div>
     <div className="ln-sp-card-info">
       <span className="ln-sp-card-name">{sponsor.name}</span>
@@ -57,6 +52,7 @@ const EmptySlot = ({ tier }) => (
   </Link>
 );
 
+const DIAMOND_COLS = 2;
 const PLATINUM_COLS = 3;
 const SILVER_COLS = 5;
 
@@ -69,7 +65,9 @@ const Sponsors = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      >Sponsors</motion.h2>
+      >
+        Sponsors
+      </motion.h2>
 
       {hasDiamondSponsors && (
         <motion.div
@@ -85,8 +83,11 @@ const Sponsors = () => (
             </span>
           </div>
           <div className="ln-sp-grid ln-sp-grid--diamond">
-            {diamondSponsors.map((s) => (
+            {diamondSponsors.map(s => (
               <SponsorCard key={s.id} sponsor={s} tier="diamond" />
+            ))}
+            {Array.from({ length: Math.max(0, DIAMOND_COLS - diamondSponsors.length) }, (_, i) => (
+              <EmptySlot key={`empty-diamond-${i}`} tier="diamond" />
             ))}
           </div>
         </motion.div>
@@ -105,10 +106,10 @@ const Sponsors = () => (
           </span>
         </div>
         <div className="ln-sp-grid ln-sp-grid--platinum">
-          {platinumSponsors.map((s) => (
+          {platinumSponsors.map(s => (
             <SponsorCard key={s.id} sponsor={s} tier="platinum" />
           ))}
-          {Array.from({ length: PLATINUM_COLS - platinumSponsors.length }, (_, i) => (
+          {Array.from({ length: Math.max(0, PLATINUM_COLS - platinumSponsors.length) }, (_, i) => (
             <EmptySlot key={`empty-platinum-${i}`} tier="platinum" />
           ))}
         </div>
@@ -128,16 +129,15 @@ const Sponsors = () => (
             </span>
           </div>
           <div className="ln-sp-grid ln-sp-grid--silver">
-            {silverSponsors.map((s) => (
+            {silverSponsors.map(s => (
               <SponsorCard key={s.id} sponsor={s} tier="silver" />
             ))}
-            {Array.from({ length: SILVER_COLS - silverSponsors.length }, (_, i) => (
+            {Array.from({ length: Math.max(0, SILVER_COLS - silverSponsors.length) }, (_, i) => (
               <EmptySlot key={`empty-silver-${i}`} tier="silver" />
             ))}
           </div>
         </motion.div>
-      )
-      }
+      )}
 
       <motion.div
         className="ln-sp-footer"

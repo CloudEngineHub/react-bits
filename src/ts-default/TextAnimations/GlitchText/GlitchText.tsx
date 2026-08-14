@@ -1,4 +1,4 @@
-import { FC, CSSProperties } from 'react';
+import { type FC, type CSSProperties } from 'react';
 import './GlitchText.css';
 
 interface GlitchTextProps {

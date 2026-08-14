@@ -1,20 +1,37 @@
 // Highlighted sidebar items
 export const NEW = [
-  'Cursor Grid',
+  'Scroll Expand',
+  'Masked Heading',
+  'Elastic Mesh',
+  'Ripple Distortion',
+  'Swarm Cursor',
+  'Halftone Reveal',
+  'Pixel Swap',
+  'Depth Carousel',
+  'Accordion Gallery',
+  'Morph Slider',
+  'Drift Wall',
+  'Particle Text',
+  'Split Flap Text',
+  'Warp Text',
+  'Stroke Text',
+  'Depth Text',
+  'Fold Text',
+  'Echo Text',
+  'Text Loop',
+  'Molten Metal',
+  'Gradient Waves',
+  'Web Threads',
+  'Topography',
+  'Light Tunnel',
+  'Sliced Waves',
+  'Acid Squares',
+  'Scanner',
   'Specular Button',
   'Option Wheel',
   'Curved Input',
   'Line Sidebar',
-  'Strands',
-  'Side Rays',
-  'Dot Field',
-  'Plasma Wave',
-  'Lightfall',
-  'Ferrofluid',
-  'Border Glow',
-  'Soft Aurora',
-  'Radar',
-  'Line Waves'
+  'Strands'
 ];
 export const UPDATED = [];
 
@@ -27,6 +44,15 @@ export const CATEGORIES = [
   {
     name: 'Text Animations',
     subcategories: [
+      'Masked Heading',
+      'Particle Text',
+      'Split Flap Text',
+      'Warp Text',
+      'Stroke Text',
+      'Depth Text',
+      'Fold Text',
+      'Echo Text',
+      'Text Loop',
       'Split Text',
       'Blur Text',
       'Circular Text',
@@ -55,6 +81,12 @@ export const CATEGORIES = [
   {
     name: 'Animations',
     subcategories: [
+      'Scroll Expand',
+      'Elastic Mesh',
+      'Ripple Distortion',
+      'Swarm Cursor',
+      'Halftone Reveal',
+      'Pixel Swap',
       'Cursor Grid',
       'Animated Content',
       'Fade Content',
@@ -91,6 +123,10 @@ export const CATEGORIES = [
   {
     name: 'Components',
     subcategories: [
+      'Depth Carousel',
+      'Accordion Gallery',
+      'Morph Slider',
+      'Drift Wall',
       'Specular Button',
       'Option Wheel',
       'Curved Input',
@@ -136,6 +172,14 @@ export const CATEGORIES = [
   {
     name: 'Backgrounds',
     subcategories: [
+      'Molten Metal',
+      'Gradient Waves',
+      'Web Threads',
+      'Topography',
+      'Light Tunnel',
+      'Sliced Waves',
+      'Acid Squares',
+      'Scanner',
       'Ferrofluid',
       'Lightfall',
       'Liquid Ether',
@@ -184,3 +228,7 @@ export const CATEGORIES = [
     ]
   }
 ];
+
+export const COMPONENT_COUNT = Math.floor(
+  CATEGORIES.filter((c) => c.name !== 'Get Started').reduce((sum, c) => sum + c.subcategories.length, 0) / 5
+) * 5;

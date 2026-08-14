@@ -42,6 +42,11 @@ class x {
   onAfterResize = () => {};
   #s = false;
   #n = false;
+  // Bind once: `.bind()` returns a new function on every call, so binding again
+  // in the teardown would hand removeEventListener a function that was never
+  // registered, leaving the listener attached for the lifetime of the page.
+  #boundResize = this.#f.bind(this);
+  #boundVisibilityChange = this.#v.bind(this);
   isDisposed = false;
   #o;
   #r;
@@ -83,7 +88,7 @@ class x {
   }
   #g() {
     if (!(this.#e.size instanceof Object)) {
-      window.addEventListener('resize', this.#f.bind(this));
+      window.addEventListener('resize', this.#boundResize);
       if (this.#e.size === 'parent' && this.canvas.parentNode) {
         this.#r = new ResizeObserver(this.#f.bind(this));
         this.#r.observe(this.canvas.parentNode);
@@ -95,13 +100,13 @@ class x {
       threshold: 0
     });
     this.#o.observe(this.canvas);
-    document.addEventListener('visibilitychange', this.#v.bind(this));
+    document.addEventListener('visibilitychange', this.#boundVisibilityChange);
   }
   #y() {
-    window.removeEventListener('resize', this.#f.bind(this));
+    window.removeEventListener('resize', this.#boundResize);
     this.#r?.disconnect();
     this.#o?.disconnect();
-    document.removeEventListener('visibilitychange', this.#v.bind(this));
+    document.removeEventListener('visibilitychange', this.#boundVisibilityChange);
   }
   #u(e) {
     this.#s = e[0].isIntersecting;
@@ -711,6 +716,19 @@ function createBallpit(e, t = {}) {
     setCount(e) {
       initialize({ ...s.config, count: e });
     },
+    updateConfig(newProps) {
+      if (newProps.count !== undefined && newProps.count !== s.config.count) {
+        initialize({ ...s.config, ...newProps });
+      } else {
+        Object.assign(s.config, newProps);
+        if (newProps.colors) {
+          s.setColors(s.config.colors);
+        }
+        if (newProps.minSize !== undefined || newProps.maxSize !== undefined || newProps.size0 !== undefined) {
+          s.physics.setSizes();
+        }
+      }
+    },
     togglePause() {
       c = !c;
     },
@@ -724,6 +742,7 @@ function createBallpit(e, t = {}) {
 const Ballpit = ({ className = '', followCursor = true, ...props }) => {
   const canvasRef = useRef(null);
   const spheresInstanceRef = useRef(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -734,10 +753,21 @@ const Ballpit = ({ className = '', followCursor = true, ...props }) => {
     return () => {
       if (spheresInstanceRef.current) {
         spheresInstanceRef.current.dispose();
+        spheresInstanceRef.current = null;
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (spheresInstanceRef.current) {
+      spheresInstanceRef.current.updateConfig({ followCursor, ...props });
+    }
+  }, [props, followCursor]);
 
   return <canvas className={className} ref={canvasRef} style={{ width: '100%', height: '100%' }} />;
 };

@@ -1,9 +1,11 @@
 import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
+import { useReducedMotion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
 import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon } from 'lucide-react';
 
 import { TOOLS } from '../../constants/Tools';
+import { PRO_SECTIONS } from '../../constants/Pro';
 import { colors } from '../../constants/colors';
 
 import { useSearch } from '../context/SearchContext/useSearch';
@@ -20,8 +22,9 @@ const SCROLL_OFFSET = 100;
 
 const ICON_BUTTON_STYLES = {
   rounded: '10px',
-  border: '1px solid #ffffff1c',
-  bg: colors.bgBody
+  border: '1px solid transparent',
+  bg: 'var(--surface-ghost-track)',
+  _hover: { bg: 'var(--surface-ghost-hover)' }
 };
 
 const ARROW_ICON_PROPS = { boxSize: 4, transform: 'rotate(-45deg)' };
@@ -32,9 +35,14 @@ const LINE_STYLES = {
   w: '2px',
   h: '16px',
   rounded: '1px',
-  transition: 'all 0.2s cubic-bezier(0.4,0,0.2,1)',
+  transition: 'transform var(--dur-menu) var(--ease-out), opacity var(--dur-menu) var(--ease-out)',
   pointerEvents: 'none'
 };
+
+const REDUCED_LINE_TRANSITION = 'opacity var(--dur-menu) var(--ease-out)';
+
+const BOTTOM_ENTER_PX = 8;
+const BOTTOM_EXIT_PX = 48;
 
 // ─── Utility Functions ───────────────────────────────────────────────────────
 const scrollToTop = () => window.scrollTo(0, 0);
@@ -76,11 +84,11 @@ const useScrolledToBottom = ref => {
     if (!el) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = el;
-      setIsScrolledToBottom(scrollTop + clientHeight >= scrollHeight - 10);
+      const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
+      setIsScrolledToBottom(prev => (prev ? remaining <= BOTTOM_EXIT_PX : remaining <= BOTTOM_ENTER_PX));
     };
 
-    el.addEventListener('scroll', handleScroll);
+    el.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => el.removeEventListener('scroll', handleScroll);
   }, [ref]);
@@ -89,9 +97,10 @@ const useScrolledToBottom = ref => {
 };
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
-const ActiveLine = ({ position, isVisible }) => (
+const ActiveLine = ({ position, isVisible, reduce }) => (
   <Box
     {...LINE_STYLES}
+    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
     bg={colors.accent}
     zIndex={2}
     transform={isVisible && position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
@@ -99,9 +108,10 @@ const ActiveLine = ({ position, isVisible }) => (
   />
 );
 
-const HoverLine = ({ position, isVisible }) => (
+const HoverLine = ({ position, isVisible, reduce }) => (
   <Box
     {...LINE_STYLES}
+    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
     bg={colors.accentMuted}
     zIndex={1}
     transform={position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
@@ -110,7 +120,16 @@ const HoverLine = ({ position, isVisible }) => (
 );
 
 const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
-  <Box display={{ md: 'none' }} position="fixed" top="60px" left={0} zIndex="overlay" w="100%" bg={colors.bgBody} p="1em">
+  <Box
+    display={{ md: 'none' }}
+    position="fixed"
+    top="60px"
+    left={0}
+    zIndex="overlay"
+    w="100%"
+    bg={colors.bgBody}
+    p="1em"
+  >
     <Flex align="center" justify="space-between" gap="1em">
       <Link to="/">
         <Image src={Logo} h="22px" alt="React Bits logo" />
@@ -133,6 +152,31 @@ const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
   </Box>
 );
 
+// ─── Pro Configuration ───────────────────────────────────────────────────────
+const ProLinks = ({ onClose }) => (
+  <>
+    <Text className="sidebar-pro-name" mb={3}>
+      Pro
+    </Text>
+    <Flex direction="column" gap={2}>
+      <Link to="/pro" onClick={onClose}>
+        <Flex alignItems="center" gap="8px">
+          <span>Overview</span>
+        </Flex>
+      </Link>
+      {PRO_SECTIONS.map(section => (
+        <Link key={section.slug} to={`/pro/${section.slug}`} onClick={onClose}>
+          <Flex alignItems="center" gap="8px">
+            <Icon as={section.icon} boxSize={4} color={colors.accent} />
+            <span>{section.label}</span>
+          </Flex>
+        </Link>
+      ))}
+    </Flex>
+    <Separator my={4} />
+  </>
+);
+
 // ─── Tools Configuration ─────────────────────────────────────────────────────
 const ToolsLinks = ({ onClose }) => (
   <>
@@ -152,7 +196,6 @@ const ToolsLinks = ({ onClose }) => (
           }}
         >
           <Flex alignItems="center" gap="8px">
-            <Icon as={tool.icon} boxSize={4} color={colors.accent} />
             <span>{tool.label}</span>
             {tool.comingSoon && (
               <Text as="span" fontSize="10px" color={colors.accentMuted} fontWeight={600}>
@@ -230,7 +273,12 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
                   isTransitioning={isTransitioning}
                   isFirstCategory={i === 0}
                 />
-                {i === 0 && <ToolsLinks onClose={onClose} />}
+                {i === 0 && (
+                  <>
+                    <ProLinks onClose={onClose} />
+                    <ToolsLinks onClose={onClose} />
+                  </>
+                )}
               </Box>
             ))}
           </VStack>
@@ -369,6 +417,7 @@ const Sidebar = () => {
   const { startTransition, isTransitioning } = useTransition();
   const savedSet = useFavoritesSync();
   const isScrolledToBottom = useScrolledToBottom(sidebarContainerRef);
+  const reduceMotion = useReducedMotion();
 
   // Helpers
   const findActiveElement = useCallback(() => {
@@ -510,8 +559,8 @@ const Sidebar = () => {
         className={`sidebar ${isScrolledToBottom ? 'sidebar-no-fade' : ''}`}
       >
         <Box ref={sidebarRef} position="relative">
-          <ActiveLine position={linePosition} isVisible={isLineVisible} />
-          <HoverLine position={hoverLinePosition} isVisible={isHoverLineVisible} />
+          <ActiveLine position={linePosition} isVisible={isLineVisible} reduce={reduceMotion} />
+          <HoverLine position={hoverLinePosition} isVisible={isHoverLineVisible} reduce={reduceMotion} />
 
           <VStack align="stretch" spacing={4}>
             {CATEGORIES.map((cat, i) => (
@@ -530,7 +579,39 @@ const Sidebar = () => {
                   isFirstCategory={i === 0}
                   savedSet={savedSet}
                 />
-                {/* Tools Section - after Get Started */}
+                {/* Pro Section - after Get Started */}
+                {i === 0 && (
+                  <Box>
+                    <Text className="category-name sidebar-pro-name" mb={2} mt={4}>
+                      Pro
+                    </Text>
+                    <Stack spacing={0.5} pl={4} borderLeft={`1px solid ${colors.borderSecondary}`} position="relative">
+                      {PRO_SECTIONS.map(section => {
+                        const path = `/pro/${section.slug}`;
+                        return (
+                          <Link
+                            key={section.slug}
+                            ref={el => {
+                              if (itemRefs.current) itemRefs.current[path] = el;
+                            }}
+                            to={path}
+                            className={`sidebar-item ${location.pathname === path ? 'active-sidebar-item' : ''}`}
+                            onClick={scrollToTop}
+                            onMouseEnter={e => onItemEnter(path, e)}
+                            onMouseLeave={onItemLeave}
+                          >
+                            <Flex alignItems="center" gap="6px">
+                              <Icon as={section.icon} boxSize={3.5} color={colors.accent} />
+                              <span>{section.label}</span>
+                            </Flex>
+                          </Link>
+                        );
+                      })}
+                    </Stack>
+                  </Box>
+                )}
+
+                {/* Tools Section - after Pro */}
                 {i === 0 && (
                   <Box>
                     <Text className="category-name" mb={2} mt={4}>
@@ -544,10 +625,7 @@ const Sidebar = () => {
                           className={`sidebar-item ${location.pathname === tool.path ? 'active-sidebar-item' : ''}`}
                           onClick={scrollToTop}
                         >
-                          <Flex alignItems="center" gap="6px">
-                            <Icon as={tool.icon} boxSize={3.5} color={colors.accent} />
-                            <span>{tool.label}</span>
-                          </Flex>
+                          <span>{tool.label}</span>
                         </Link>
                       ))}
                     </Stack>

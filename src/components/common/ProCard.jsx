@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
+import { proLinkProps } from '../../utils/pro';
+import { PRO_SUMMARY } from '../../constants/Pro';
 
 const ORB_COUNT = 5;
 const LINE_DIST = 120;
@@ -30,10 +32,10 @@ function useParticles(canvasRef) {
       r: Math.random() * 25 + 15,
       dx: (Math.random() - 0.5) * 0.2,
       dy: (Math.random() - 0.5) * 0.2,
-      phase: Math.random() * Math.PI * 2,
+      phase: Math.random() * Math.PI * 2
     }));
 
-    const draw = (t) => {
+    const draw = t => {
       ctx.clearRect(0, 0, w, h);
       const s = t * 0.001;
 
@@ -95,22 +97,20 @@ const ProCard = () => {
   useParticles(canvasRef);
 
   return (
-    <a href="https://pro.reactbits.dev" target="_blank" rel="noopener noreferrer" className="pro-card-link">
+    <a {...proLinkProps('/', 'right-panel-card')} className="pro-card-link">
       <div className="pro-card">
         <canvas ref={canvasRef} className="pro-card-particles" />
         <div className="pro-card-glow" />
         <div className="pro-card-content">
           <span className="pro-card-badge">PRO</span>
           <h3 className="pro-card-title">Get React Bits Pro</h3>
-          <p className="pro-card-desc">
-            100 components, 238 blocks &amp; 11 templates to ship memorable products faster.
-          </p>
+          <p className="pro-card-desc">{PRO_SUMMARY}.</p>
           <div className="pro-card-cta">
             <span>Explore Pro</span>
             <LuArrowRight size={14} />
           </div>
           <div className="pro-card-promo">
-            <span className="pro-card-promo-text">80 New UI Blocks Just Landed</span>
+            <span className="pro-card-promo-text">☀️ Summer Sale - 30% off: SUNBITS30</span>
           </div>
         </div>
       </div>

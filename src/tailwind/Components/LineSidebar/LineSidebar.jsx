@@ -83,7 +83,9 @@ const LineSidebar = ({
   }, []);
 
   const startLoop = useCallback(() => {
-    if (rafRef.current != null) return;
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current);
+    }
     lastRef.current = performance.now();
     rafRef.current = requestAnimationFrame(runFrame);
   }, [runFrame]);
@@ -128,6 +130,7 @@ const LineSidebar = ({
   useEffect(
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     },
     []
   );

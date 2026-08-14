@@ -3,8 +3,8 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { Settings, ChevronUp } from 'lucide-react';
 import Canvas from './Canvas';
 import Controls from './Controls';
-import { computeBridges, computeCornerRadii } from './computeBridges';
-import { createInitialState, createShape, PRESETS } from './types';
+import { computeLiquidPath } from './liquid';
+import { createInitialState, createShape, DEFAULT_DETAIL } from './types';
 
 const useHistory = initialState => {
   const [history, setHistory] = useState([initialState]);
@@ -50,15 +50,13 @@ export default function ShapeMagic({ toolSelector }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [style, setStyle] = useState(state.style);
   const [globalRadius, setGlobalRadius] = useState(state.globalRadius);
-  const [smoothing, setSmoothing] = useState(state.smoothing);
-  const [showBridgeDebug, setShowBridgeDebug] = useState(false);
+  const [blend, setBlend] = useState(state.blend);
+  const [detail, setDetail] = useState(DEFAULT_DETAIL);
   const [showGrid, setShowGrid] = useState(true);
   const [snapToGrid, setSnapToGrid] = useState(true);
   const [gridSize, setGridSize] = useState(10);
 
   const justPushedRef = useRef(false);
-
-  const tolerance = 1;
 
   useEffect(() => {
     if (justPushedRef.current) {
@@ -68,42 +66,25 @@ export default function ShapeMagic({ toolSelector }) {
     setShapes(state.shapes);
     setStyle(state.style);
     setGlobalRadius(state.globalRadius);
-    setSmoothing(state.smoothing);
+    setBlend(state.blend);
   }, [state]);
 
-  const bridges = useMemo(() => {
-    return computeBridges(shapes, globalRadius, tolerance);
-  }, [shapes, globalRadius, tolerance]);
-
-  const cornerRadii = useMemo(() => {
-    return computeCornerRadii(shapes, globalRadius, tolerance);
-  }, [shapes, globalRadius, tolerance]);
+  // The fused liquid skin: SDF smooth-union of every rect, traced to one path.
+  const fusedPath = useMemo(() => {
+    return computeLiquidPath(shapes, globalRadius, blend, { cell: detail });
+  }, [shapes, globalRadius, blend, detail]);
 
   const saveToHistory = useCallback(
-    (newShapes, newStyle, newRadius, newSmoothing) => {
+    (newShapes, newStyle, newRadius, newBlend) => {
       justPushedRef.current = true;
       pushState({
         shapes: newShapes ?? shapes,
         style: newStyle ?? style,
         globalRadius: newRadius ?? globalRadius,
-        smoothing: newSmoothing ?? smoothing
+        blend: newBlend ?? blend
       });
     },
-    [pushState, shapes, style, globalRadius, smoothing]
-  );
-
-  const handleApplyPreset = useCallback(
-    presetId => {
-      const preset = PRESETS.find(p => p.id === presetId);
-      if (!preset) return;
-      const newShapes = preset.build();
-      const newRadius = preset.radius ?? globalRadius;
-      setShapes(newShapes);
-      setGlobalRadius(newRadius);
-      setSelectedIds([]);
-      saveToHistory(newShapes, undefined, newRadius);
-    },
-    [globalRadius, saveToHistory]
+    [pushState, shapes, style, globalRadius, blend]
   );
 
   const handleAddShape = useCallback(() => {
@@ -339,26 +320,24 @@ export default function ShapeMagic({ toolSelector }) {
 
   const controlsProps = {
     shapes,
-    bridges,
-    cornerRadii,
     selectedIds,
     style,
     globalRadius,
-    smoothing,
+    blend,
+    detail,
     snapToGrid,
     showGrid,
     gridSize,
-    presets: PRESETS,
     onAddShape: handleAddShape,
     onDeleteShapes: handleDeleteShapes,
     onDuplicateShapes: handleDuplicateShapes,
     onStyleChange: setStyle,
     onGlobalRadiusChange: setGlobalRadius,
-    onSmoothingChange: setSmoothing,
+    onBlendChange: setBlend,
+    onDetailChange: setDetail,
     onShapeUpdate: handleShapeUpdate,
     onAlignShapes: handleAlignShapes,
     onDistributeShapes: handleDistributeShapes,
-    onApplyPreset: handleApplyPreset,
     onToggleSnap: setSnapToGrid,
     onToggleGrid: setShowGrid,
     onGridSizeChange: setGridSize,
@@ -400,10 +379,7 @@ export default function ShapeMagic({ toolSelector }) {
         <Canvas
           ref={canvasRef}
           shapes={shapes}
-          bridges={bridges}
-          cornerRadii={cornerRadii}
-          globalRadius={globalRadius}
-          smoothing={smoothing}
+          fusedPath={fusedPath}
           style={style}
           selectedIds={selectedIds}
           onShapeUpdate={handleShapeUpdate}
@@ -413,8 +389,6 @@ export default function ShapeMagic({ toolSelector }) {
           snapToGrid={snapToGrid}
           gridSize={gridSize}
           showGrid={showGrid}
-          showBridgeDebug={showBridgeDebug}
-          onShowBridgeDebugChange={setShowBridgeDebug}
         />
 
         <Flex

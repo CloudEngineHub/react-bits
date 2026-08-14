@@ -65,18 +65,19 @@
   flex-shrink: 0;
   margin-top: 16px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
-  transition: border-color 0.2s ease, background 0.2s ease;
+  border: 1px solid transparent;
+  background: var(--surface-ghost);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.2),
+    var(--surface-ghost-highlight);
+  transition: background 0.2s ease;
   text-decoration: none;
 }
 
 .showcase-submit-btn:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(18, 15, 23, 0.55);
+  background: var(--surface-ghost-hover);
 }
 
 /* ─── Grid ─────────────────────────────────────────────────────────────────── */
@@ -159,5 +160,15 @@
 
   .showcase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .showcase-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .showcase-submit-btn {
+    margin-top: 0;
   }
 }

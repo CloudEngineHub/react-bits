@@ -5,7 +5,7 @@ import ProCard from '../common/ProCard';
 import ProCardMobile from '../common/ProCardMobile';
 import SponsorsCard from '../common/SponsorsCard';
 
-export default function SidebarLayout({ children }) {
+export default function SidebarLayout({ children, hideProCard = false }) {
   return (
     <main className="app-container">
       <Navbar showDocs />
@@ -16,12 +16,12 @@ export default function SidebarLayout({ children }) {
 
         <aside className="right-panel">
           <Box className="right-panel-inner">
-            <ProCard />
+            {!hideProCard && <ProCard />}
             <SponsorsCard />
           </Box>
         </aside>
       </section>
-      <ProCardMobile />
+      {!hideProCard && <ProCardMobile />}
     </main>
   );
 }

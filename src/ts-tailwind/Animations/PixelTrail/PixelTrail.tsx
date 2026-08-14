@@ -1,5 +1,5 @@
 import { shaderMaterial, useTrailTexture } from '@react-three/drei';
-import { Canvas, CanvasProps, ThreeEvent, useThree } from '@react-three/fiber';
+import { Canvas, type CanvasProps, type ThreeEvent, useThree } from '@react-three/fiber';
 import React, { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 

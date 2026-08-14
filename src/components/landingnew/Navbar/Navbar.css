@@ -20,12 +20,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 8px 0 20px;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   border: 1px solid transparent;
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  transition: max-width 0.5s ease, background 0.5s ease, border-color 0.5s ease, padding 0.5s ease;
+  transition:
+    max-width 0.5s ease,
+    background 0.5s ease,
+    border-color 0.5s ease,
+    padding 0.5s ease;
   pointer-events: auto;
   position: relative;
 }
@@ -36,6 +40,9 @@
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border-color: rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.28),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.08);
 }
 
 .ln-navbar-left {
@@ -77,10 +84,16 @@
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.2),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, opacity 0.2s ease;
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    opacity 0.2s ease;
 }
 
 .ln-navbar-link {
@@ -93,11 +106,17 @@
   letter-spacing: 0.04em;
   padding: 6px 10px;
   border-radius: 12px;
-  transition: color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    transform var(--dur-press) var(--ease-out);
 }
 
 .ln-navbar-link:hover {
   color: var(--text-primary);
+}
+
+.ln-navbar-link:active {
+  transform: scale(0.96);
 }
 
 .ln-navbar-link-active {
@@ -120,19 +139,24 @@
   align-items: center;
   gap: 8px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  border: 1px solid transparent;
+  background: var(--surface-ghost);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
+  box-shadow: var(--surface-ghost-highlight);
+  transition:
+    background var(--transition-fast),
+    transform var(--dur-press) var(--ease-out);
   user-select: none;
   -webkit-user-select: none;
 }
 
 .ln-navbar-browse:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(18, 15, 23, 0.55);
+  background: var(--surface-ghost-hover);
+}
+
+.ln-navbar-browse:active {
+  transform: scale(0.97);
 }
 
 .ln-navbar-soon {
@@ -156,13 +180,24 @@
   align-items: center;
   border-radius: 10px;
   border: 5px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(125deg, var(--pro-dark, #7c3aed), var(--pro-base, #a855f7), var(--pro-light, #d946ef), var(--pro-base, #a855f7), var(--pro-dark, #7c3aed));
+  background: linear-gradient(
+    125deg,
+    var(--pro-dark, #7c3aed),
+    var(--pro-base, #a855f7),
+    var(--pro-light, #d946ef),
+    var(--pro-base, #a855f7),
+    var(--pro-dark, #7c3aed)
+  );
   background-size: 400% 100%;
   animation: ln-pro-flow 3s ease infinite;
-  box-shadow: 0 0 16px rgba(var(--pro-glow, 168, 85, 247), 0.5), 0 0 40px rgba(var(--pro-glow, 168, 85, 247), 0.2);
+  box-shadow:
+    0 0 16px rgba(var(--pro-glow, 168, 85, 247), 0.5),
+    0 0 40px rgba(var(--pro-glow, 168, 85, 247), 0.2);
   overflow: hidden;
   isolation: isolate;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    box-shadow 0.3s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -179,22 +214,34 @@
 }
 
 .ln-navbar-pro:hover {
-  box-shadow: 0 0 24px rgba(var(--pro-glow, 168, 85, 247), 0.7), 0 0 56px rgba(var(--pro-glow, 168, 85, 247), 0.35);
+  box-shadow:
+    0 0 24px rgba(var(--pro-glow, 168, 85, 247), 0.7),
+    0 0 56px rgba(var(--pro-glow, 168, 85, 247), 0.35);
 }
 
 .ln-navbar-pro:active {
-  transform: translateY(0);
+  transform: scale(0.97);
 }
 
 @keyframes ln-pro-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes ln-pro-shine {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .ln-navbar-github {
@@ -207,17 +254,22 @@
   height: 36px;
   padding: 0 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  border: 1px solid transparent;
+  background: var(--surface-ghost);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
+  box-shadow: var(--surface-ghost-highlight);
+  transition:
+    background var(--transition-fast),
+    transform var(--dur-press) var(--ease-out);
 }
 
 .ln-navbar-github:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(18, 15, 23, 0.55);
+  background: var(--surface-ghost-hover);
+}
+
+.ln-navbar-github:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 768px) {
@@ -263,18 +315,18 @@
   width: 36px;
   height: 36px;
   padding: 9px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
   border-radius: 10px;
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
+  background: var(--surface-ghost);
+  box-shadow: var(--surface-ghost-highlight);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: background var(--transition-fast);
 }
 
 .ln-navbar-hamburger:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(18, 15, 23, 0.55);
+  background: var(--surface-ghost-hover);
 }
 
 .ln-navbar-hamburger span {
@@ -283,7 +335,9 @@
   height: 1.5px;
   background: #fff;
   border-radius: 1px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .ln-navbar-hamburger.open span:nth-child(1) {
@@ -350,12 +404,19 @@
 }
 
 @keyframes ln-menu-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
+/* Horizontal padding is deliberately small: the label and the links each carry
+   their own 14px inset, so this lands their text on the 16px gutter the navbar
+   logo sits on, while the link hover surface still bleeds wider than the text. */
 .ln-navbar-mobile-section {
-  padding: 12px 16px 4px;
+  padding: 12px 2px 4px;
 }
 
 .ln-navbar-mobile-label {
@@ -416,7 +477,9 @@
   color: rgba(255, 255, 255, 0.7);
   padding: 12px 14px;
   border-radius: 10px;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .ln-navbar-mobile-link::after {
@@ -425,7 +488,9 @@
   color: inherit;
   opacity: 0;
   transform: translateX(-6px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .ln-navbar-mobile-link:hover {
@@ -450,7 +515,9 @@
   box-shadow: 0 0 24px rgba(168, 85, 247, 0.22);
   text-decoration: none;
   color: #fff;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 .ln-navbar-mobile-pro:active {
@@ -507,7 +574,10 @@
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    transition: background 0.5s ease, border-color 0.5s ease, padding 0.5s ease;
+    transition:
+      background 0.5s ease,
+      border-color 0.5s ease,
+      padding 0.5s ease;
     pointer-events: auto;
     position: relative;
   }
@@ -531,7 +601,7 @@
 .ln-navbar.ln-navbar-docs .ln-navbar-inner {
   max-width: 100%;
   border-radius: 0;
-  height: 60px;
+  height: var(--docs-header-height);
   padding: 0 2em;
   background: var(--bg-body);
   border-color: transparent;
@@ -559,18 +629,25 @@
   height: 36px;
   padding: 0 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
+  border: 1px solid transparent;
+  background: var(--surface-ghost);
+  box-shadow: var(--surface-ghost-highlight);
+  backdrop-filter: var(--surface-ghost-blur);
+  -webkit-backdrop-filter: var(--surface-ghost-blur);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--dur-press) var(--ease-out);
 }
 
 .ln-navbar-icon-btn:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(18, 15, 23, 0.55);
+  background: var(--surface-ghost-hover);
   color: #fff;
+}
+
+.ln-navbar-icon-btn:active {
+  transform: scale(0.97);
 }
 
 .ln-navbar-kbd {
@@ -650,8 +727,8 @@
   gap: 4px;
   padding: 3px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--surface-ghost-track);
+  border: 1px solid transparent;
 }
 
 .ln-navbar-toggle-item {
@@ -669,18 +746,26 @@
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform var(--dur-press) var(--ease-out);
 }
 
 .ln-navbar-toggle-item:hover {
   color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-ghost-track);
+}
+
+.ln-navbar-toggle-item:active {
+  transform: scale(0.96);
 }
 
 .ln-navbar-toggle-item.active {
   color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--surface-ghost);
+  box-shadow: var(--surface-ghost-highlight);
 }
 
 .ln-navbar-prefs-divider {
@@ -698,7 +783,9 @@
   color: rgba(255, 255, 255, 0.7);
   padding: 8px;
   border-radius: 8px;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .ln-navbar-prefs-fav:hover {
@@ -722,5 +809,26 @@
   .ln-navbar-search-text,
   .ln-navbar-search-btn .ln-navbar-kbd {
     display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ln-navbar-pro,
+  .ln-navbar-pro::before {
+    animation: none;
+  }
+
+  .ln-navbar-browse:active,
+  .ln-navbar-github:active,
+  .ln-navbar-icon-btn:active,
+  .ln-navbar-pro:active,
+  .ln-navbar-link:active,
+  .ln-navbar-toggle-item:active,
+  .ln-navbar-mobile-pro:active {
+    transform: none;
+  }
+
+  .ln-navbar-mobile-menu,
+  .ln-navbar-prefs-menu {
+    animation: ln-menu-fade-in 0.15s var(--ease-out);
   }
 }

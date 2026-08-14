@@ -10,7 +10,7 @@
 	<br>
   <strong>The largest & most creative library of animated React components.</strong>
   <br />
-  <sub>Stand out with 140+ free, customizable animations for text, backgrounds, and UI.</sub>
+  <sub>Stand out with 165+ free, customizable animations for text, backgrounds, and UI.</sub>
 	<br>
 	<br>
   <a href="https://github.com/davidhdev/react-bits/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/davidhdev/react-bits"></a>
@@ -36,7 +36,7 @@ React Bits helps you **ship stunning interfaces faster**. Instead of spending ho
 
 ## 🚀 Features
 
-- **140+ components** — text animations, UI elements, and backgrounds, growing weekly
+- **165+ components** — text animations, UI elements, and backgrounds, growing weekly
 - **Minimal dependencies** — lightweight and tree-shakeable
 - **Fully customizable** — tweak everything via props or edit the source directly
 - **4 variants per component** — JS-CSS, JS-TW, TS-CSS, TS-TW (everyone's happy)
@@ -84,14 +84,6 @@ React Bits is proudly supported by these amazing sponsors:
     <img src="public/assets/sponsors/shadcnblocks.svg" alt="shadcnblocks.com" style="height: 50px;">
   </picture>
 </a>
-&nbsp;&nbsp;&nbsp;
-<a href="https://shadcnstudio.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=diamond&ref=reactbits" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcnstudio.svg">
-    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcnstudio-lightmode.svg">
-    <img src="public/assets/sponsors/shadcnstudio.svg" alt="shadcn studio" style="height: 50px;">
-  </picture>
-</a>
 
 ### Silver
 
@@ -115,9 +107,11 @@ Please read the [contribution guide](https://github.com/DavidHDev/react-bits/blo
 
 ## 🙌 Contributors
 
-<a href="https://github.com/davidhdev/react-bits/graphs/contributors">
+<!-- <a href="https://github.com/davidhdev/react-bits/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=davidhdev/react-bits" />
-</a>
+</a> -->
+
+![Contributors](https://contrib-circles.vercel.app/davidhdev/react-bits?padding=16&borders=none&transparent=true)
 
 ## 👤 Maintainer
 
