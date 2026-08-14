@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import React, { useMemo } from 'react';
-import { Canvas, useThree, CanvasProps, ThreeEvent } from '@react-three/fiber';
+import { Canvas, useThree, type CanvasProps, type ThreeEvent } from '@react-three/fiber';
 import { shaderMaterial, useTrailTexture } from '@react-three/drei';
 import * as THREE from 'three';
 

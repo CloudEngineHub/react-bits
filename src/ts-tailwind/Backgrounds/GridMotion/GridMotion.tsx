@@ -1,4 +1,4 @@
-import { useEffect, useRef, FC, ReactNode } from 'react';
+import { useEffect, useRef, type FC, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 
 interface GridMotionProps {

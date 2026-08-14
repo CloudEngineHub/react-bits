@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { JSX } from 'react';
+import { type JSX } from 'react';
 import './PixelCard.css';
 
 class Pixel {
