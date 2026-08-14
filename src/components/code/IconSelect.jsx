@@ -6,10 +6,14 @@ const TRIGGER_STYLE = {
   cursor: 'pointer',
   fontSize: '14px',
   h: 10,
-  bg: colors.bgBody,
-  border: `1px solid ${colors.borderSecondary}`,
+  bg: 'var(--surface-ghost-track)',
+  border: '1px solid transparent',
   rounded: '10px',
   px: 3,
+  transition: 'background-color var(--transition-base), transform var(--dur-press) var(--ease-out)',
+  _hover: { bg: 'var(--surface-ghost-hover)' },
+  _active: { transform: 'scale(0.98)' },
+  '&[data-state="open"]': { bg: 'var(--surface-ghost)', boxShadow: 'var(--surface-ghost-highlight)' }
 };
 
 const CONTENT_STYLE = {
@@ -17,7 +21,7 @@ const CONTENT_STYLE = {
   border: `1px solid ${colors.borderSecondary}`,
   borderRadius: '10px',
   px: 2,
-  py: 2,
+  py: 2
 };
 
 const ITEM_STYLE = {
@@ -28,7 +32,7 @@ const ITEM_STYLE = {
   display: 'flex',
   alignItems: 'center',
   gap: 2,
-  _highlighted: { bg: colors.bgHover },
+  _highlighted: { bg: colors.bgHover }
 };
 
 const IconSelect = ({
@@ -39,12 +43,9 @@ const IconSelect = ({
   labelMap,
   colorMap,
   width = '150px',
-  closeOnSelect = false,
+  closeOnSelect = false
 }) => {
-  const collection = useMemo(
-    () => createListCollection({ items: collectionItems }),
-    [collectionItems]
-  );
+  const collection = useMemo(() => createListCollection({ items: collectionItems }), [collectionItems]);
 
   return (
     <Select.Root

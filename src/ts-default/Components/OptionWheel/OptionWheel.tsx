@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, CSSProperties } from 'react';
+import { useRef, useState, useCallback, useEffect, type CSSProperties } from 'react';
 import './OptionWheel.css';
 
 type Side = 'left' | 'right';
@@ -170,7 +170,9 @@ const OptionWheel = ({
   }, []);
 
   const startLoop = useCallback(() => {
-    if (rafRef.current != null) return;
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current);
+    }
     lastRef.current = performance.now();
     rafRef.current = requestAnimationFrame(runFrame);
   }, [runFrame]);
@@ -299,6 +301,7 @@ const OptionWheel = ({
   useEffect(
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
       audioRef.current?.pause();
     },
     []

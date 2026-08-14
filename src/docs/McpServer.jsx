@@ -2,29 +2,32 @@ import { useState } from 'react';
 import DocsButtonBar from './DocsButtonBar';
 import CodeBlock from './CodeBlock';
 import MethodSelector from './MethodSelector';
+import CopyPageButton from './CopyPageButton';
 import useScrollToTop from '../hooks/useScrollToTop';
 import claude from '../assets/icons/claude.svg';
 import vscode from '../assets/icons/vscode.svg';
 import cursor from '../assets/icons/cursor.svg';
 
-const IMG_STYLE = { width: '40px', height: '40px' };
+const IMG_STYLE = { width: '18px', height: '18px' };
 
 const CLIENTS = [
   { key: 'claude', icon: <img src={claude} alt="Claude Code Logo" style={IMG_STYLE} />, label: 'Claude Code' },
   { key: 'cursor', icon: <img src={cursor} alt="Cursor Logo" style={IMG_STYLE} />, label: 'Cursor' },
-  { key: 'vscode', icon: <img src={vscode} alt="VS Code Logo" style={IMG_STYLE} />, label: 'VS Code' },
+  { key: 'vscode', icon: <img src={vscode} alt="VS Code Logo" style={IMG_STYLE} />, label: 'VS Code' }
 ];
 
 const EXAMPLE_PROMPTS = [
   'Show me all the available backgrounds from the React Bits registry',
   'Add the Dither background from React Bits to the page, make it purple',
-  'Add a new section which fades in on scroll using FadeContent from React Bits',
+  'Add a new section which fades in on scroll using FadeContent from React Bits'
 ];
 
 const PromptList = () => (
   <ul className="docs-list">
-    {EXAMPLE_PROMPTS.map((prompt) => (
-      <li key={prompt} className="docs-list-item dim">{prompt}</li>
+    {EXAMPLE_PROMPTS.map(prompt => (
+      <li key={prompt} className="docs-list-item dim">
+        {prompt}
+      </li>
     ))}
   </ul>
 );
@@ -35,7 +38,9 @@ const ClientInstructions = ({ client }) => {
   return (
     <>
       <p className="docs-paragraph short">Run this in your project:</p>
-      <CodeBlock showLineNumbers>{initCommand}</CodeBlock>
+      <CodeBlock language="bash" showLineNumbers>
+        {initCommand}
+      </CodeBlock>
 
       {client === 'claude' && (
         <>
@@ -74,10 +79,18 @@ const McpServer = () => {
 
   return (
     <section className="docs-section">
-      <h3 className="docs-category-title">MCP Server</h3>
+      <div className="docs-page-header">
+        <h1 className="docs-title">MCP Server</h1>
+        <CopyPageButton />
+      </div>
 
-      <p className="docs-paragraph">
-        <a style={{ textDecoration: 'underline' }} href="https://modelcontextprotocol.io/" target="_blank" rel="noreferrer">
+      <p className="docs-lead">
+        <a
+          style={{ textDecoration: 'underline' }}
+          href="https://modelcontextprotocol.io/"
+          target="_blank"
+          rel="noreferrer"
+        >
           Model Context Protocol (MCP)
         </a>{' '}
         is an open standard that enables AI assistants to securely connect to external data sources and tools.
@@ -88,15 +101,13 @@ const McpServer = () => {
         language.
       </p>
 
-      <hr className="docs-separator" />
-
-      <h3 className="docs-category-title">Quick Start</h3>
+      <h2 className="docs-section-title">Quick Start</h2>
 
       <p className="docs-paragraph">
         Registries are configured in your project&apos;s <span className="docs-highlight">components.json</span> file,
         where you should first add the <span className="docs-highlight">@react-bits</span> registry:
       </p>
-      <CodeBlock showLineNumbers>{`{
+      <CodeBlock language="json" showLineNumbers>{`{
   "registries": {
     "@react-bits": "https://reactbits.dev/r/{name}.json"
   }
@@ -106,13 +117,11 @@ const McpServer = () => {
         Then, from the options below, select your client & set up the shadcn MCP server.
       </p>
 
-      <MethodSelector methods={CLIENTS} selected={selectedClient} onSelect={setSelectedClient} />
+      <MethodSelector methods={CLIENTS} selected={selectedClient} onSelect={setSelectedClient} ariaLabel="MCP client" />
 
       <ClientInstructions client={selectedClient} />
 
-      <hr className="docs-separator" />
-
-      <h3 className="docs-category-title">Learn more</h3>
+      <h2 className="docs-section-title">Learn more</h2>
 
       <p className="docs-paragraph dim" style={{ marginBottom: '16px' }}>
         To learn more about using the shadcn MCP server, including manual setup for different clients, please visit the

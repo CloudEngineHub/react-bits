@@ -5,8 +5,8 @@
 .ln-test-section {
   position: relative;
   width: 100%;
-  padding: 60px 0 80px 0;
-  background: #120F17;
+  padding: 80px 0 100px 0;
+  background: #120f17;
   z-index: 4;
   overflow: hidden;
 }
@@ -94,13 +94,21 @@
 }
 
 @keyframes testScrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-33.333%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-33.333%);
+  }
 }
 
 @keyframes testScrollDown {
-  0% { transform: translateY(-33.333%); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(-33.333%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* ─── Card ─── */
@@ -115,13 +123,21 @@
     0 2px 16px rgba(0, 0, 0, 0.2),
     inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
   text-decoration: none;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    transform var(--dur-press) var(--ease-out);
   flex-shrink: 0;
 }
 
-.ln-test-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .ln-test-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.ln-test-card:active {
+  transform: scale(0.98);
 }
 
 .ln-test-card-head {
@@ -197,5 +213,17 @@
   .ln-test-grid > :nth-child(2),
   .ln-test-grid > :nth-child(3) {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-test-col-scroll--up,
+  .ln-test-col-scroll--down {
+    animation: none;
+  }
+
+  .ln-test-card:hover,
+  .ln-test-card:active {
+    transform: none;
   }
 }

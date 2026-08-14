@@ -209,10 +209,18 @@ export default function MagicRings({
     mount.addEventListener('mouseleave', onMouseLeave);
     mount.addEventListener('click', onClick);
 
-    let frameId: number;
+    let frameId = 0;
+    let isVisible = false;
+    let isPageVisible = !document.hidden;
+    let elapsed = 0;
+    let lastT = 0;
     const animate = (t: number) => {
       frameId = requestAnimationFrame(animate);
       const p = propsRef.current!;
+
+      const dt = lastT === 0 ? 0 : Math.min(t - lastT, 100);
+      lastT = t;
+      elapsed += dt * 0.001 * p.speed;
 
       smoothMouseRef.current[0] += (mouseRef.current[0] - smoothMouseRef.current[0]) * 0.08;
       smoothMouseRef.current[1] += (mouseRef.current[1] - smoothMouseRef.current[1]) * 0.08;
@@ -220,7 +228,7 @@ export default function MagicRings({
       burstRef.current *= 0.95;
       if (burstRef.current < 0.001) burstRef.current = 0;
 
-      uniforms.uTime.value = t * 0.001 * p.speed;
+      uniforms.uTime.value = elapsed;
       uniforms.uAttenuation.value = p.attenuation;
       uniforms.uColor.value.set(p.color);
       uniforms.uColorTwo.value.set(p.colorTwo);
@@ -244,10 +252,42 @@ export default function MagicRings({
 
       renderer.render(scene, camera);
     };
-    frameId = requestAnimationFrame(animate);
+    frameId = 0;
+
+    const tryStart = () => {
+      if (isVisible && isPageVisible && frameId === 0) {
+        lastT = 0;
+        frameId = requestAnimationFrame(animate);
+      }
+    };
+    const tryStop = () => {
+      if (frameId !== 0) {
+        cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        isVisible ? tryStart() : tryStop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(mount);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      isPageVisible ? tryStart() : tryStop();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    tryStart();
 
     return () => {
-      cancelAnimationFrame(frameId);
+      tryStop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', resize);
       ro.disconnect();
       mount.removeEventListener('mousemove', onMouseMove);

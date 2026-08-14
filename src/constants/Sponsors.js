@@ -5,12 +5,6 @@ export const diamondSponsors = [
     name: 'shadcnblocks.com',
     imageUrl: '/assets/sponsors/shadcnblocks.svg',
     url: 'https://www.shadcnblocks.com/'
-  },
-  {
-    id: 2,
-    name: 'shadcn studio',
-    imageUrl: '/assets/sponsors/shadcnstudio.svg',
-    url: 'https://shadcnstudio.com/'
   }
 ];
 

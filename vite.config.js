@@ -14,6 +14,7 @@ export default defineConfig({
     hmr: true
   },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': '/src',
       '@utils': path.resolve(__dirname, 'src/utils'),

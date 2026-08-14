@@ -375,11 +375,43 @@ const ShapeGrid = ({
 
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', handleMouseLeave);
-    requestRef.current = requestAnimationFrame(updateAnimation);
+    let isVisible = false;
+    let isPageVisible = !document.hidden;
+
+    const tryStart = () => {
+      if (isVisible && isPageVisible && !requestRef.current) {
+        requestRef.current = requestAnimationFrame(updateAnimation);
+      }
+    };
+    const tryStop = () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+        requestRef.current = null;
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        isVisible ? tryStart() : tryStop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      isPageVisible ? tryStart() : tryStop();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    tryStart();
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      tryStop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
     };

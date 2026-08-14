@@ -4,11 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Logo } from '../../common/SVGComponents';
 import { useStars } from '../../../hooks/useStars';
 import { GITHUB_URL } from '../../../constants/Site';
+import { proLinkProps } from '../../../utils/pro';
 import { FaGithub } from 'react-icons/fa6';
 import { LuSearch, LuHeart, LuUser } from 'react-icons/lu';
 import { useSearch } from '../../context/SearchContext/useSearch';
 import { useOptions } from '../../context/OptionsContext/useOptions';
 import { CATEGORIES } from '../../../constants/Categories';
+import { PRO_SECTIONS } from '../../../constants/Pro';
 import { TOOLS } from '../../../constants/Tools';
 import jsIcon from '../../../assets/icons/js.svg';
 import tsIcon from '../../../assets/icons/ts.svg';
@@ -18,9 +20,9 @@ import './Navbar.css';
 
 const NAV_LINKS = [
   { label: 'Docs', to: '/get-started/introduction', match: '/get-started' },
-  { label: 'Showcase', to: '/showcase', match: '/showcase' },
   { label: 'Tools', to: '/tools', match: '/tools' },
-  { label: 'Sponsors', to: '/sponsors', match: '/sponsors' },
+  { label: 'Pro', to: '/pro', match: '/pro' },
+  { label: 'Sponsors', to: '/sponsors', match: '/sponsors' }
 ];
 
 const Navbar = ({ showDocs }) => {
@@ -36,7 +38,7 @@ const Navbar = ({ showDocs }) => {
   const { languagePreset, setLanguagePreset, stylePreset, setStylePreset } = useOptions();
   const location = useLocation();
 
-  const isActive = useCallback((match) => location.pathname.startsWith(match), [location.pathname]);
+  const isActive = useCallback(match => location.pathname.startsWith(match), [location.pathname]);
 
   useEffect(() => {
     if (menuOpen) {
@@ -44,7 +46,9 @@ const Navbar = ({ showDocs }) => {
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [menuOpen]);
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const Navbar = ({ showDocs }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const positionHighlight = useCallback((el) => {
+  const positionHighlight = useCallback(el => {
     const highlight = highlightRef.current;
     const container = linksRef.current;
     if (!highlight || !container || !el) return;
@@ -71,9 +75,12 @@ const Navbar = ({ showDocs }) => {
     return container.querySelector('.ln-navbar-link-active');
   }, []);
 
-  const handleLinkHover = useCallback((e) => {
-    positionHighlight(e.currentTarget);
-  }, [positionHighlight]);
+  const handleLinkHover = useCallback(
+    e => {
+      positionHighlight(e.currentTarget);
+    },
+    [positionHighlight]
+  );
 
   const handleLinksLeave = useCallback(() => {
     const activeEl = getActiveEl();
@@ -93,8 +100,8 @@ const Navbar = ({ showDocs }) => {
     });
   }, [location.pathname, positionHighlight, getActiveEl]);
 
-  const formattedStars = useMemo(() =>
-    stars >= 1000 ? `${(stars / 1000).toFixed(1).replace(/\.0$/, '')}k` : stars,
+  const formattedStars = useMemo(
+    () => (stars >= 1000 ? `${(stars / 1000).toFixed(1).replace(/\.0$/, '')}k` : stars),
     [stars]
   );
 
@@ -120,7 +127,12 @@ const Navbar = ({ showDocs }) => {
           <nav className="ln-navbar-links" ref={linksRef} onMouseLeave={handleLinksLeave}>
             <div className="ln-navbar-link-highlight" ref={highlightRef} />
             {NAV_LINKS.map(({ label, to, match }) => (
-              <Link key={to} className={`ln-navbar-link${isActive(match) ? ' ln-navbar-link-active' : ''}`} to={to} onMouseEnter={handleLinkHover}>
+              <Link
+                key={to}
+                className={`ln-navbar-link${isActive(match) ? ' ln-navbar-link-active' : ''}`}
+                to={to}
+                onMouseEnter={handleLinkHover}
+              >
                 {label}
               </Link>
             ))}
@@ -136,11 +148,7 @@ const Navbar = ({ showDocs }) => {
                 <kbd className="ln-navbar-kbd">/</kbd>
               </button>
 
-              <div
-                className="ln-navbar-prefs-wrapper"
-                onMouseEnter={handlePrefsEnter}
-                onMouseLeave={handlePrefsLeave}
-              >
+              <div className="ln-navbar-prefs-wrapper" onMouseEnter={handlePrefsEnter} onMouseLeave={handlePrefsLeave}>
                 <button className="ln-navbar-icon-btn ln-navbar-prefs-trigger" aria-label="Preferences">
                   <LuUser size={16} />
                 </button>
@@ -149,19 +157,31 @@ const Navbar = ({ showDocs }) => {
                   <div className="ln-navbar-prefs-menu">
                     <span className="ln-navbar-prefs-label">Language</span>
                     <div className="ln-navbar-toggle-group">
-                      <button className={`ln-navbar-toggle-item${languagePreset === 'JS' ? ' active' : ''}`} onClick={() => setLanguagePreset('JS')}>
+                      <button
+                        className={`ln-navbar-toggle-item${languagePreset === 'JS' ? ' active' : ''}`}
+                        onClick={() => setLanguagePreset('JS')}
+                      >
                         <img src={jsIcon} alt="JS" width={18} height={18} />
                       </button>
-                      <button className={`ln-navbar-toggle-item${languagePreset === 'TS' ? ' active' : ''}`} onClick={() => setLanguagePreset('TS')}>
+                      <button
+                        className={`ln-navbar-toggle-item${languagePreset === 'TS' ? ' active' : ''}`}
+                        onClick={() => setLanguagePreset('TS')}
+                      >
                         <img src={tsIcon} alt="TS" width={18} height={18} />
                       </button>
                     </div>
                     <span className="ln-navbar-prefs-label">Styling</span>
                     <div className="ln-navbar-toggle-group">
-                      <button className={`ln-navbar-toggle-item${stylePreset === 'CSS' ? ' active' : ''}`} onClick={() => setStylePreset('CSS')}>
+                      <button
+                        className={`ln-navbar-toggle-item${stylePreset === 'CSS' ? ' active' : ''}`}
+                        onClick={() => setStylePreset('CSS')}
+                      >
                         <img src={cssIcon} alt="CSS" width={18} height={18} />
                       </button>
-                      <button className={`ln-navbar-toggle-item${stylePreset === 'TW' ? ' active' : ''}`} onClick={() => setStylePreset('TW')}>
+                      <button
+                        className={`ln-navbar-toggle-item${stylePreset === 'TW' ? ' active' : ''}`}
+                        onClick={() => setStylePreset('TW')}
+                      >
                         <img src={twIcon} alt="TW" width={18} height={18} />
                       </button>
                     </div>
@@ -179,9 +199,7 @@ const Navbar = ({ showDocs }) => {
           {!showDocs && (
             <>
               <a
-                href="https://pro.reactbits.dev"
-                target="_blank"
-                rel="noopener noreferrer"
+                {...proLinkProps('/', 'navbar')}
                 className="ln-navbar-pro"
                 onMouseMove={e => {
                   const rect = e.currentTarget.getBoundingClientRect();
@@ -197,12 +215,7 @@ const Navbar = ({ showDocs }) => {
             </>
           )}
 
-          <a
-            className="ln-navbar-github"
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a className="ln-navbar-github" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
             <FaGithub size={16} color="#fff" />
             <span>{formattedStars}</span>
           </a>
@@ -212,7 +225,9 @@ const Navbar = ({ showDocs }) => {
             onClick={() => setMenuOpen(o => !o)}
             aria-label="Menu"
           >
-            <span /><span /><span />
+            <span />
+            <span />
+            <span />
           </button>
         </div>
 
@@ -241,44 +256,72 @@ const Navbar = ({ showDocs }) => {
           </div>
         )}
 
-        {menuOpen && showDocs && createPortal(
-          <>
-            <div className="ln-navbar-mobile-backdrop" onClick={() => setMenuOpen(false)} />
-            <div className="ln-navbar-mobile-menu ln-navbar-mobile-menu-docs">
-              <div className="ln-navbar-mobile-scroll">
-                {CATEGORIES.map((cat, i) => {
-                  const slug = str => str.replace(/\s+/g, '-').toLowerCase();
-                  return (
-                    <div className="ln-navbar-mobile-section" key={cat.name}>
-                      <span className="ln-navbar-mobile-label">{cat.name}</span>
-                      {cat.subcategories.map(sub => (
-                        <Link
-                          key={sub}
-                          className="ln-navbar-mobile-link"
-                          to={`/${slug(cat.name)}/${slug(sub)}`}
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          {sub}
-                        </Link>
-                      ))}
-                      {i === 0 && (
-                        <>
-                          <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>Tools</span>
-                          {TOOLS.map(tool => (
-                            <Link key={tool.id} className="ln-navbar-mobile-link" to={tool.path} onClick={() => setMenuOpen(false)}>
-                              {tool.label}
+        {menuOpen &&
+          showDocs &&
+          createPortal(
+            <>
+              <div className="ln-navbar-mobile-backdrop" onClick={() => setMenuOpen(false)} />
+              <div className="ln-navbar-mobile-menu ln-navbar-mobile-menu-docs">
+                <div className="ln-navbar-mobile-scroll">
+                  {CATEGORIES.map((cat, i) => {
+                    const slug = str => str.replace(/\s+/g, '-').toLowerCase();
+                    return (
+                      <div className="ln-navbar-mobile-section" key={cat.name}>
+                        <span className="ln-navbar-mobile-label">{cat.name}</span>
+                        {cat.subcategories.map(sub => (
+                          <Link
+                            key={sub}
+                            className="ln-navbar-mobile-link"
+                            to={`/${slug(cat.name)}/${slug(sub)}`}
+                            onClick={() => setMenuOpen(false)}
+                          >
+                            {sub}
+                          </Link>
+                        ))}
+                        {i === 0 && (
+                          <>
+                            {/* Mirrors the desktop sidebar, where Pro sits directly
+                                below Get Started and above Tools. */}
+                            <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>
+                              Pro
+                            </span>
+                            <Link className="ln-navbar-mobile-link" to="/pro" onClick={() => setMenuOpen(false)}>
+                              Overview
                             </Link>
-                          ))}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
+                            {PRO_SECTIONS.map(section => (
+                              <Link
+                                key={section.slug}
+                                className="ln-navbar-mobile-link"
+                                to={`/pro/${section.slug}`}
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {section.label}
+                              </Link>
+                            ))}
+
+                            <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>
+                              Tools
+                            </span>
+                            {TOOLS.map(tool => (
+                              <Link
+                                key={tool.id}
+                                className="ln-navbar-mobile-link"
+                                to={tool.path}
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {tool.label}
+                              </Link>
+                            ))}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </>,
-          document.body
-        )}
+            </>,
+            document.body
+          )}
       </div>
     </header>
   );

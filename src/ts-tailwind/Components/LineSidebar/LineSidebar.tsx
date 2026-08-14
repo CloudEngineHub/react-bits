@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, CSSProperties } from 'react';
+import { useRef, useState, useCallback, useEffect, type CSSProperties } from 'react';
 
 type Falloff = 'linear' | 'smooth' | 'sharp';
 
@@ -107,7 +107,9 @@ const LineSidebar = ({
   }, []);
 
   const startLoop = useCallback(() => {
-    if (rafRef.current != null) return;
+    if (rafRef.current != null) {
+      cancelAnimationFrame(rafRef.current);
+    }
     lastRef.current = performance.now();
     rafRef.current = requestAnimationFrame(runFrame);
   }, [runFrame]);
@@ -152,6 +154,7 @@ const LineSidebar = ({
   useEffect(
     () => () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     },
     []
   );

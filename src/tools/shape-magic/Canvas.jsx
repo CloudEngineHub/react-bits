@@ -1,16 +1,13 @@
 import { useRef, useState, useCallback, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
-import { Eye, EyeOff, Maximize2 } from 'lucide-react';
-import { getBridgePathAt, getRoundedRectPath, getFillSpec, getFxSpec, computeShapesBBox } from './svgRenderers';
+import { Maximize2 } from 'lucide-react';
+import { getFillSpec, getFxSpec } from './svgRenderers';
 
 const Canvas = forwardRef(
   (
     {
       shapes,
-      bridges,
-      cornerRadii,
-      globalRadius,
-      smoothing = 0.6,
+      fusedPath,
       style,
       selectedIds,
       onShapeUpdate,
@@ -19,9 +16,7 @@ const Canvas = forwardRef(
       onAltDragDuplicate,
       snapToGrid,
       gridSize,
-      showGrid = true,
-      showBridgeDebug = false,
-      onShowBridgeDebugChange
+      showGrid = true
     },
     ref
   ) => {
@@ -471,7 +466,11 @@ const Canvas = forwardRef(
       return () => container.removeEventListener('wheel', handleWheel);
     }, [handleWheel]);
 
-    const shapesBBox = useMemo(() => computeShapesBBox(shapes), [shapes]);
+    // gradient span = the fused silhouette's bounds (includes the blend bulge)
+    const shapesBBox = useMemo(
+      () => ({ x: fusedPath.minX, y: fusedPath.minY, w: fusedPath.width, h: fusedPath.height }),
+      [fusedPath]
+    );
     const fillSpec = useMemo(() => getFillSpec(style, shapesBBox, 'canvas'), [style, shapesBBox]);
     const fxSpec = useMemo(() => getFxSpec(style, 'canvas'), [style]);
 
@@ -634,25 +633,13 @@ const Canvas = forwardRef(
             )}
           </defs>
           <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-            <g
+            {/* the fused liquid skin — one path for the whole group */}
+            <path
+              d={fusedPath.d}
               fill={fillSpec.paint}
               fillOpacity={style.opacity ?? 1}
               filter={fxSpec ? `url(#${fxSpec.id})` : undefined}
-            >
-              {shapes.map(shape => {
-                const corners = cornerRadii[shape.id] || {
-                  tl: globalRadius,
-                  tr: globalRadius,
-                  br: globalRadius,
-                  bl: globalRadius
-                };
-                return <path key={shape.id} d={getRoundedRectPath(shape.x, shape.y, shape.w, shape.h, corners)} />;
-              })}
-
-              {bridges.map(bridge => (
-                <path key={bridge.id} d={getBridgePathAt(bridge.x, bridge.y, bridge.r, bridge.rotation, smoothing)} />
-              ))}
-            </g>
+            />
 
             {shapes.map(shape => {
               const isSelected = selectedIds.includes(shape.id);
@@ -672,11 +659,6 @@ const Canvas = forwardRef(
               );
             })}
 
-            {showBridgeDebug &&
-              bridges.map(bridge => (
-                <circle key={`dbg-${bridge.id}`} cx={bridge.x} cy={bridge.y} r={3 / zoom} fill="#ff0" />
-              ))}
-
             {shapes.map(shape => renderResizeHandles(shape))}
 
             {marquee && marquee.w > 0 && marquee.h > 0 && (
@@ -695,25 +677,6 @@ const Canvas = forwardRef(
         </svg>
 
         <Flex position="absolute" bottom={4} left={4} gap={2}>
-          <Flex
-            as="button"
-            align="center"
-            gap={1.5}
-            bg={showBridgeDebug ? 'rgba(168, 85, 247, 0.15)' : 'rgba(13, 7, 22, 0.9)'}
-            border={showBridgeDebug ? '1px solid var(--color-primary)' : '1px solid var(--border-primary)'}
-            borderRadius="6px"
-            px={2.5}
-            py={1.5}
-            cursor="pointer"
-            onClick={() => onShowBridgeDebugChange?.(!showBridgeDebug)}
-            transition="all 0.15s"
-            _hover={{ borderColor: 'var(--color-primary)' }}
-          >
-            <Icon as={showBridgeDebug ? Eye : EyeOff} boxSize={3.5} color="var(--text-muted)" />
-            <Text fontSize="11px" color="var(--text-muted)" fontWeight={500}>
-              Bridges
-            </Text>
-          </Flex>
           <Flex
             as="button"
             align="center"

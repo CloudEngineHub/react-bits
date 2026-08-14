@@ -26,6 +26,11 @@ const staticPages = [
   { loc: '/favorites', priority: '0.5', changefreq: 'monthly' }
 ];
 
+// Slugs are parsed from Pro.js so the sitemap follows the sections that are
+// actually routed, rather than a second hand-maintained list.
+const proPath = path.join(__dirname, '../src/constants/Pro.js');
+const proSlugs = [...fs.readFileSync(proPath, 'utf-8').matchAll(/^\s{4}slug:\s*['"]([^'"]+)['"]/gm)].map(m => m[1]);
+
 function generateSitemap() {
   const today = new Date().toISOString().split('T')[0];
   
@@ -37,6 +42,22 @@ function generateSitemap() {
       lastmod: today,
       changefreq: page.changefreq,
       priority: page.priority
+    });
+  });
+
+  urls.push({
+    loc: `${BASE_URL}/pro`,
+    lastmod: today,
+    changefreq: 'weekly',
+    priority: '0.9'
+  });
+
+  proSlugs.forEach(slug => {
+    urls.push({
+      loc: `${BASE_URL}/pro/${slug}`,
+      lastmod: today,
+      changefreq: 'weekly',
+      priority: '0.8'
     });
   });
 

@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useEffect, MutableRefObject } from 'react';
+import { type FC, useRef, useState, useEffect, type MutableRefObject } from 'react';
 import { mat4, quat, vec2, vec3 } from 'gl-matrix';
 
 const discVertShaderSource = `#version 300 es
@@ -1045,7 +1045,8 @@ class InfiniteGridMenu {
 
 const defaultItems: MenuItem[] = [
   {
-    image: 'https://picsum.photos/900/900?grayscale',
+    image:
+      'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?q=80&w=600&h=600&fit=crop&sat=-100&auto=format',
     link: 'https://google.com/',
     title: '',
     description: ''

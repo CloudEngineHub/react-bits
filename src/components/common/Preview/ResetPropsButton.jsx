@@ -20,16 +20,17 @@ const ResetPropsButton = ({ onReset, hasChanges }) => {
           alignItems="center"
           justifyContent="center"
           gap={2}
-          bg={colors.bgElevated}
-          border={`1px solid ${colors.borderPrimary}`}
+          bg="var(--surface-ghost-track)"
+          border="1px solid transparent"
           borderRadius="10px"
           px={3}
           h={8}
           cursor="pointer"
           color="#fff"
           fontSize="xs"
-          _hover={{ bg: colors.bgHover }}
-          transition="all 0.2s"
+          _hover={{ bg: 'var(--surface-ghost-hover)' }}
+          _active={{ transform: 'scale(0.97)' }}
+          transition="transform var(--dur-press) var(--ease-out), background-color var(--dur-menu) var(--ease-out)"
         >
           <Icon as={RotateCcw} boxSize={3.5} />
           Reset

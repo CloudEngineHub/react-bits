@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { AiFillHeart } from 'react-icons/ai';
 import ReactBitsLogo from '../../../assets/logos/react-bits-logo.svg';
+import { proLinkProps } from '../../../utils/pro';
 import './Footer.css';
 
 const Footer = () => (
@@ -48,8 +49,12 @@ const Footer = () => (
 
           <div className="ln-footer-col">
             <span className="ln-footer-col-title">Pro</span>
-            <a href="https://pro.reactbits.dev" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
-              React Bits Pro
+            <Link to="/pro" className="ln-footer-link">What&apos;s in Pro</Link>
+            <Link to="/pro/components" className="ln-footer-link">Pro Components</Link>
+            <Link to="/pro/blocks" className="ln-footer-link">Pro Blocks</Link>
+            <Link to="/pro/templates" className="ln-footer-link">Pro Templates</Link>
+            <a {...proLinkProps('/', 'footer')} className="ln-footer-link">
+              Get React Bits Pro
             </a>
           </div>
         </nav>

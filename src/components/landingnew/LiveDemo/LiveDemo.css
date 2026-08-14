@@ -36,10 +36,18 @@
   gap: 16px;
 }
 
-.ln-demo-card--span-8 { grid-column: span 8; }
-.ln-demo-card--span-7 { grid-column: span 7; }
-.ln-demo-card--span-5 { grid-column: span 5; }
-.ln-demo-card--span-4 { grid-column: span 4; }
+.ln-demo-card--span-8 {
+  grid-column: span 8;
+}
+.ln-demo-card--span-7 {
+  grid-column: span 7;
+}
+.ln-demo-card--span-5 {
+  grid-column: span 5;
+}
+.ln-demo-card--span-4 {
+  grid-column: span 4;
+}
 
 /* ─── Card ─── */
 
@@ -54,7 +62,9 @@
   box-shadow:
     0 4px 32px rgba(0, 0, 0, 0.3),
     inset 0 0.5px 0 rgba(255, 255, 255, 0.05);
-  transition: border-color 0.3s ease, translate 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    translate 0.3s ease;
   height: 240px;
 }
 
@@ -62,9 +72,16 @@
   height: 340px;
 }
 
-.ln-demo-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  translate: 0 -2px;
+@media (hover: hover) and (pointer: fine) {
+  .ln-demo-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    translate: 0 -2px;
+  }
+}
+
+.ln-demo-card:active {
+  translate: 0 0;
+  transform: scale(0.99);
 }
 
 /* ─── Link wrapper ─── */
@@ -111,7 +128,7 @@
 .ln-demo-card-name {
   font-family: 'Geist Mono', monospace;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* ─── Centered component wrapper ─── */
@@ -199,5 +216,13 @@
 
   .ln-demo-card {
     height: 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-demo-card:hover,
+  .ln-demo-card:active {
+    translate: none;
+    transform: none;
   }
 }

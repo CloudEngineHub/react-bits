@@ -47,12 +47,13 @@ const FAV_BTN_STYLE = {
   w: '28px',
   h: '28px',
   minW: 'unset',
-  bg: 'rgba(0,0,0,0.35)',
-  backdropFilter: 'blur(8px)',
-  border: '1px solid rgba(255,255,255,0.08)',
-  transition: 'all 0.2s ease',
+  bg: 'rgba(0,0,0,0.4)',
+  backdropFilter: 'var(--surface-ghost-blur)',
+  border: '1px solid transparent',
+  boxShadow: 'var(--surface-ghost-highlight)',
+  transition: 'opacity 0.2s ease, background-color 0.2s ease, transform 0.2s ease',
   _focus: { opacity: 1, pointerEvents: 'auto' },
-  _hover: { bg: 'rgba(0,0,0,0.55)', transform: 'scale(1.1)' }
+  _hover: { bg: 'rgba(0,0,0,0.6)', transform: 'scale(1.1)' }
 };
 
 const PILL_BTN_STYLE = {
@@ -60,14 +61,15 @@ const PILL_BTN_STYLE = {
   h: '36px',
   borderRadius: '10px',
   cursor: 'pointer',
-  border: '1px solid rgba(255, 255, 255, 0.08)',
-  transition: 'border-color 0.2s ease, background 0.2s ease',
+  border: '1px solid transparent',
+  transition: 'background var(--transition-base), transform var(--dur-press) var(--ease-out)',
   color: '#fff',
   fontSize: '13px',
   fontWeight: 500,
-  bg: 'rgba(18, 15, 23, 0.45)',
-  backdropFilter: 'blur(32px) saturate(1.3)',
-  _hover: { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }
+  bg: 'var(--surface-ghost-track)',
+  backdropFilter: 'var(--surface-ghost-blur)',
+  _hover: { background: 'var(--surface-ghost-hover)' },
+  _active: { transform: 'scale(0.97)' }
 };
 
 const slug = str => (str || '').replace(/\s+/g, '-').toLowerCase();
@@ -134,13 +136,11 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
       .map(mapToItem);
 
     if (sorting === 'alphabetical') {
-      // New components are sorted to the top (in NEW list order), then the rest alphabetically.
+      // New components are sorted to the top, then everything is alphabetical within each group.
       arr = arr.sort((a, b) => {
-        const aNew = NEW.indexOf(a.title);
-        const bNew = NEW.indexOf(b.title);
-        if (aNew !== -1 && bNew !== -1) return aNew - bNew;
-        if (aNew !== -1) return -1;
-        if (bNew !== -1) return 1;
+        const aNew = NEW.includes(a.title);
+        const bNew = NEW.includes(b.title);
+        if (aNew !== bNew) return aNew ? -1 : 1;
         return a.title.localeCompare(b.title);
       });
     }
@@ -310,9 +310,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               placeholder="Search..."
               h="36px"
               borderRadius="10px"
-              bg="rgba(18, 15, 23, 0.45)"
-              border="1px solid rgba(255, 255, 255, 0.08)"
-              backdropFilter="blur(32px) saturate(1.3)"
+              bg="var(--surface-ghost-track)"
+              border="1px solid transparent"
+              backdropFilter="var(--surface-ghost-blur)"
+              transition="background var(--transition-base)"
               color="#fff"
               fontSize="13px"
               fontWeight={500}
@@ -328,9 +329,13 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                 }
               }}
               pointerEvents={controlsDisabled ? 'none' : 'auto'}
-              _focus={{ borderColor: 'rgba(255,255,255,0.15)', boxShadow: 'none', outline: 'none' }}
-              _focusVisible={{ boxShadow: 'none', outline: 'none', borderColor: 'rgba(255,255,255,0.15)' }}
-              _hover={{ borderColor: 'rgba(255,255,255,0.15)' }}
+              _focus={{ bg: 'var(--surface-ghost)', boxShadow: 'var(--surface-ghost-highlight)', outline: 'none' }}
+              _focusVisible={{
+                bg: 'var(--surface-ghost)',
+                boxShadow: 'var(--surface-ghost-highlight)',
+                outline: 'none'
+              }}
+              _hover={{ bg: 'var(--surface-ghost-hover)' }}
               _placeholder={{ color: 'rgba(255,255,255,0.3)', fontWeight: 500 }}
             />
           </InputGroup>
@@ -347,19 +352,21 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
             <Select.Control>
               <Select.Trigger
                 fontSize="13px"
-                bg="rgba(18, 15, 23, 0.45)"
-                border="1px solid rgba(255, 255, 255, 0.08)"
-                backdropFilter="blur(32px) saturate(1.3)"
+                bg="var(--surface-ghost-track)"
+                border="1px solid transparent"
+                backdropFilter="var(--surface-ghost-blur)"
                 rounded="10px"
                 h="36px"
                 fontWeight={500}
                 cursor={controlsDisabled ? 'default' : 'pointer'}
-                transition="border-color 0.2s ease, background 0.2s ease"
-                _hover={
-                  controlsDisabled
-                    ? undefined
-                    : { borderColor: 'rgba(255,255,255,0.15)', background: 'rgba(18, 15, 23, 0.55)' }
-                }
+                transition="background 0.2s ease"
+                _hover={controlsDisabled ? undefined : { background: 'var(--surface-ghost-hover)' }}
+                css={{
+                  '&[data-state="open"]': {
+                    background: 'var(--surface-ghost)',
+                    boxShadow: 'var(--surface-ghost-highlight)'
+                  }
+                }}
                 w="full"
               >
                 <Select.ValueText color={controlsDisabled ? 'rgba(255,255,255,0.3)' : '#fff'} pl={2}>
@@ -380,7 +387,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                   w={{ base: '100%', md: '180px' }}
                   px={1.5}
                   py={1.5}
-                  boxShadow="0 8px 32px rgba(0,0,0,0.4)"
+                  boxShadow="0 16px 28px -10px rgba(0,0,0,0.5)"
                 >
                   {categories.items.map(cat => (
                     <Select.Item
@@ -419,14 +426,14 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
               onClick={clearFilters}
               h="36px"
               w="36px"
-              bg="rgba(18, 15, 23, 0.45)"
-              border="1px solid rgba(255, 255, 255, 0.08)"
-              backdropFilter="blur(32px) saturate(1.3)"
+              bg="var(--surface-ghost-track)"
+              border="1px solid transparent"
+              backdropFilter="var(--surface-ghost-blur)"
               opacity={0}
               style={{ transformOrigin: '50% 50%' }}
               pointerEvents={showClear ? 'auto' : 'none'}
               tabIndex={showClear ? 0 : -1}
-              _hover={{ borderColor: 'rgba(255,255,255,0.15)', bg: 'rgba(18, 15, 23, 0.55)' }}
+              _hover={{ bg: 'var(--surface-ghost-hover)' }}
               _focus={{ boxShadow: 'none', outline: 'none' }}
               _focusVisible={{ boxShadow: 'none', outline: 'none' }}
             >
@@ -507,21 +514,27 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                               data-item-key={item.key}
                               display="block"
                               role="group"
-                              bg={colors.bgElevated}
-                              border="1px solid rgba(255,255,255,0.04)"
+                              className="browse-card"
+                              bg="var(--surface-ghost-track)"
+                              border="1px solid transparent"
+                              boxShadow="var(--surface-ghost-highlight)"
                               borderRadius={`${CARD_RADIUS}px`}
                               p="6px"
                               textDecoration="none"
                               overflow="hidden"
-                              transition="border-color 0.2s ease"
-                              _hover={{ textDecoration: 'none', borderColor: 'rgba(255,255,255,0.1)' }}
                               onMouseEnter={() => setHoveredKey(item.key)}
                               onMouseLeave={() => setHoveredKey(prev => (prev === item.key ? null : prev))}
                             >
-                              <Box position="relative" borderRadius="0px" overflow="hidden">
+                              <Box
+                                className="browse-card-media"
+                                position="relative"
+                                overflow="hidden"
+                                borderRadius="12px"
+                              >
                                 <LazyCardMedia
                                   key={item.videoUrl || item.key}
                                   videoUrl={item.videoUrl}
+                                  title={item.title}
                                   playing={hoveredKey === item.key}
                                 />
 
@@ -537,12 +550,14 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                     fontSize="10px"
                                     fontWeight={600}
                                     lineHeight={1}
+                                    letterSpacing="0.06em"
                                     textTransform="uppercase"
                                     fontFamily="'Geist Mono', monospace"
-                                    color="#d8aeff"
-                                    border="1px solid var(--color-primary)"
-                                    bg="rgba(169, 85, 247, 0.4)"
-                                    backdropFilter="blur(8px)"
+                                    color="#e2c9ff"
+                                    border="1px solid transparent"
+                                    bg="rgba(168, 85, 247, 0.32)"
+                                    boxShadow="var(--surface-ghost-highlight)"
+                                    backdropFilter="var(--surface-ghost-blur)"
                                     pointerEvents="none"
                                   >
                                     New
@@ -610,17 +625,26 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   </IconButton>
                                 ) : null}
                               </Box>
-                              <Box px={2} pt={3} pb={1.5}>
+                              <Box px={2.5} pt={3} pb={2}>
                                 <Text
+                                  className="browse-card-title"
                                   color="#fff"
-                                  fontSize="14px"
-                                  fontWeight={500}
-                                  lineHeight="1.3"
-                                  letterSpacing="-0.2px"
+                                  fontSize="14.5px"
+                                  fontWeight={600}
+                                  lineHeight="1.25"
+                                  letterSpacing="-0.25px"
                                 >
                                   {item.title}
                                 </Text>
-                                <Text color={colors.textMuted} fontWeight={400} fontSize="12px" mt={0.5}>
+                                <Text
+                                  color="rgba(255,255,255,0.42)"
+                                  fontWeight={500}
+                                  fontSize="11px"
+                                  letterSpacing="0.05em"
+                                  textTransform="uppercase"
+                                  fontFamily="'Geist Mono', monospace"
+                                  mt="5px"
+                                >
                                   {item.categoryLabel}
                                 </Text>
                               </Box>
@@ -657,10 +681,11 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   );
 };
 
-const LazyCardMedia = ({ videoUrl, playing }) => {
+const LazyCardMedia = ({ videoUrl, playing, title }) => {
   const videoRef = useRef(null);
+  const [failed, setFailed] = useState(false);
 
-  const show = !!videoUrl;
+  const show = !!videoUrl && !failed;
 
   const base = useMemo(() => (videoUrl ? videoUrl.replace(/\.(webm|mp4)$/i, '') : ''), [videoUrl]);
   const webm = base ? `${base}.webm` : '';
@@ -705,7 +730,7 @@ const LazyCardMedia = ({ videoUrl, playing }) => {
   };
 
   return (
-    <Box h="190px" bg={colors.bgBody} borderRadius={`12px`} overflow="hidden">
+    <Box className="browse-card-well" h="190px" borderRadius="12px" overflow="hidden">
       {show ? (
         <video
           ref={videoRef}
@@ -714,20 +739,27 @@ const LazyCardMedia = ({ videoUrl, playing }) => {
           playsInline
           preload="metadata"
           onLoadedMetadata={handleLoadedMetadata}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            pointerEvents: 'none',
-            mixBlendMode: 'screen'
-          }}
+          className="browse-card-video"
         >
           {/* Let the browser choose the best supported source */}
           <source src={webm} type="video/webm" />
-          <source src={mp4} type="video/mp4" />
+          <source src={mp4} type="video/mp4" onError={() => setFailed(true)} />
         </video>
-      ) : null}
+      ) : (
+        <Flex className="browse-card-empty" h="100%" align="center" justify="center" aria-hidden="true">
+          <Text
+            fontFamily="'Geist Mono', monospace"
+            fontSize="12px"
+            fontWeight={500}
+            letterSpacing="-0.2px"
+            color="rgba(255,255,255,0.3)"
+            px={4}
+            textAlign="center"
+          >
+            {`<${(title || '').replace(/\s+/g, '')} />`}
+          </Text>
+        </Flex>
+      )}
     </Box>
   );
 };

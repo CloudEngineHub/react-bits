@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useRef, useState, useMemo, PropsWithChildren } from 'react';
+import React, { type CSSProperties, useEffect, useRef, useState, useMemo, type PropsWithChildren } from 'react';
 
 import './GradualBlur.css';
 

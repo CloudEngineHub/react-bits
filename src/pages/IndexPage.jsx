@@ -7,7 +7,7 @@ const IndexPage = () => {
   return (
     <Box>
       <title>{`React Bits - Component Index`}</title>
-      <ComponentList title="Index" list={componentMetadata} hasFavoriteButton sorting="alphabetical" />
+      <ComponentList title="Browse All" list={componentMetadata} hasFavoriteButton sorting="alphabetical" />
       <BackToTopButton />
     </Box>
   );

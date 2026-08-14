@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import TabsFooter from './TabsFooter';
+import CategoryProFooter from './Pro/CategoryProFooter';
 
 import { Tabs, Icon, Flex, Tooltip, Box, Menu, Portal } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
-import { RotateCcw, Clipboard, Check, MoreHorizontal, Palette } from 'lucide-react';
+import { RotateCcw, MoreHorizontal, Palette } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
@@ -14,18 +15,28 @@ import { colors } from '../../constants/colors';
 import PropTable from './Preview/PropTable';
 import CodeExample, { injectPropsIntoCode } from '../code/CodeExample';
 import OpenInStudioButton, { buildStudioUrl } from './Preview/OpenInStudioButton';
+import CopyForAIMenu, { AIMenuItem } from './CopyForAIMenu';
+import { useAIExportActions } from '../../hooks/useAIExportActions';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
-  border: `1px solid ${colors.borderSecondary}`,
+  border: '1px solid transparent',
   borderRadius: '10px',
   fontSize: '14px',
   h: 10,
   px: 4,
-  color: '#ffffff',
+  color: 'rgba(255, 255, 255, 0.75)',
+  bg: 'var(--surface-ghost-track)',
   justifyContent: 'center',
-  _hover: { bg: colors.bgHover },
-  _selected: { bg: colors.bgElevated, color: colors.accent }
+  transition:
+    'transform var(--dur-press) var(--ease-out), background-color var(--dur-menu) var(--ease-out), color var(--dur-menu) var(--ease-out)',
+  _hover: { bg: 'var(--surface-ghost-hover)', color: '#ffffff' },
+  _active: { transform: 'scale(0.97)' },
+  _selected: {
+    bg: 'var(--surface-ghost)',
+    color: colors.accent,
+    boxShadow: 'var(--surface-ghost-highlight)'
+  }
 };
 
 /**
@@ -112,6 +123,9 @@ ${css}
 2. Copy the component source into the appropriate directory in the project.
 ${css ? '3. Import the CSS file alongside the component.\n' : ''}${css ? '4' : '3'}. Import and render the component using the usage example above as a starting point.
 ${css ? '5' : '4'}. Adjust props as needed for the specific use case — refer to the props table for all available options.
+
+### More from React Bits
+The full library index, including everything reactbits.dev offers, is at https://reactbits.dev/llms.txt — fetch it if this component is not the right fit or the project needs more pieces.
 `;
 
   return prompt;
@@ -119,7 +133,14 @@ ${css ? '5' : '4'}. Adjust props as needed for the specific use case — refer t
 
 const TabsLayout = ({ children, className }) => {
   const { category, subcategory } = useParams();
-  const { hasChanges, resetProps, props: currentProps, defaultProps, demoOnlyProps, computedProps } = useComponentPropsContext();
+  const {
+    hasChanges,
+    resetProps,
+    props: currentProps,
+    defaultProps,
+    demoOnlyProps,
+    computedProps
+  } = useComponentPropsContext();
 
   const { favoriteKey, componentName } = useMemo(() => {
     if (!category || !subcategory) return null;
@@ -169,12 +190,8 @@ const TabsLayout = ({ children, className }) => {
   });
 
   // Extract codeObject/componentName from CodeExample child and propData from PropTable child
-  const codeExampleProps = contentMap.CodeTab
-    ? findChildProps(contentMap.CodeTab.props.children, CodeExample)
-    : null;
-  const propTableProps = contentMap.PreviewTab
-    ? findChildProps(contentMap.PreviewTab.props.children, PropTable)
-    : null;
+  const codeExampleProps = contentMap.CodeTab ? findChildProps(contentMap.CodeTab.props.children, CodeExample) : null;
+  const propTableProps = contentMap.PreviewTab ? findChildProps(contentMap.PreviewTab.props.children, PropTable) : null;
   const studioButtonProps = contentMap.PreviewTab
     ? findChildProps(contentMap.PreviewTab.props.children, OpenInStudioButton)
     : null;
@@ -187,29 +204,43 @@ const TabsLayout = ({ children, className }) => {
   }, [studioButtonProps, navigate]);
 
   const { languagePreset, stylePreset } = useOptions();
-  const [copied, setCopied] = useState(false);
 
-  const handleCopyPrompt = useCallback(() => {
-    if (!codeExampleProps) return;
+  const aiExport = useMemo(() => {
+    if (!codeExampleProps) return null;
     const { codeObject, componentName: compName } = codeExampleProps;
     const mergedProps = { ...currentProps, ...computedProps };
-    const dynamicUsage = codeObject.usage && compName
-      ? injectPropsIntoCode(codeObject.usage, mergedProps, defaultProps || {}, compName, demoOnlyProps)
-      : codeObject.usage;
-    const promptCodeObject = { ...codeObject, usage: dynamicUsage };
-    const prompt = buildPrompt(
-      compName,
-      promptCodeObject,
-      propTableProps?.data || [],
-      languagePreset,
-      stylePreset
-    );
-    navigator.clipboard.writeText(prompt).then(() => {
-      setCopied(true);
-      toast.success('Prompt copied to clipboard');
-      setTimeout(() => setCopied(false), 2000);
-    });
-  }, [codeExampleProps, propTableProps, languagePreset, stylePreset, currentProps, defaultProps, demoOnlyProps, computedProps]);
+    const dynamicUsage =
+      codeObject.usage && compName
+        ? injectPropsIntoCode(codeObject.usage, mergedProps, defaultProps || {}, compName, demoOnlyProps)
+        : codeObject.usage;
+    const { source, css } = getActiveCode(codeObject, languagePreset, stylePreset);
+
+    return {
+      componentName: compName,
+      fullPrompt: buildPrompt(
+        compName,
+        { ...codeObject, usage: dynamicUsage },
+        propTableProps?.data || [],
+        languagePreset,
+        stylePreset
+      ),
+      configuredUsage: dynamicUsage,
+      componentSource: source,
+      componentCss: css,
+      dependencies: codeObject.dependencies || ''
+    };
+  }, [
+    codeExampleProps,
+    propTableProps,
+    languagePreset,
+    stylePreset,
+    currentProps,
+    defaultProps,
+    demoOnlyProps,
+    computedProps
+  ]);
+
+  const aiActions = useAIExportActions({ category, subcategory, ...(aiExport || {}) });
 
   const showFavorite = favoriteKey && category !== 'get-started';
   const hasOverflowActions = hasChanges || showFavorite || Boolean(codeExampleProps) || Boolean(studioButtonProps);
@@ -230,12 +261,7 @@ const TabsLayout = ({ children, className }) => {
           </Flex>
 
           {/* Desktop: full action buttons */}
-          <Flex
-            alignItems="center"
-            gap={2}
-            flexShrink={0}
-            display={{ base: 'none', md: 'flex' }}
-          >
+          <Flex alignItems="center" gap={2} flexShrink={0} display={{ base: 'none', md: 'flex' }}>
             {hasChanges && (
               <Box
                 as="button"
@@ -266,9 +292,9 @@ const TabsLayout = ({ children, className }) => {
                     gap={2}
                     {...TAB_STYLE_PROPS}
                     w={10}
-                    bg={isSaved ? 'rgba(168, 85, 247, 0.15)' : undefined}
-                    border={isSaved ? '1px solid rgba(168, 85, 247, 0.25)' : TAB_STYLE_PROPS.border}
-                    _hover={isSaved ? { bg: 'rgba(168, 85, 247, 0.2)' } : TAB_STYLE_PROPS._hover}
+                    bg={isSaved ? 'rgba(168, 85, 247, 0.18)' : TAB_STYLE_PROPS.bg}
+                    boxShadow={isSaved ? 'var(--surface-ghost-highlight)' : undefined}
+                    _hover={isSaved ? { bg: 'rgba(168, 85, 247, 0.26)' } : TAB_STYLE_PROPS._hover}
                   >
                     <Icon as={isSaved ? RiHeartFill : RiHeartLine} color={isSaved ? '#c084fc' : '#fff'} boxSize={4} />
                   </Box>
@@ -297,21 +323,7 @@ const TabsLayout = ({ children, className }) => {
               </Tooltip.Root>
             )}
 
-            {codeExampleProps && (
-              <Box
-                as="button"
-                aria-label="Copy AI prompt"
-                onClick={handleCopyPrompt}
-                display="flex"
-                cursor="pointer"
-                alignItems="center"
-                gap={2}
-                {...TAB_STYLE_PROPS}
-              >
-                {copied ? <Check size={14} color={colors.accent} /> : <Clipboard size={14} color="#fff" />}
-                {copied ? 'Copied!' : 'Copy Prompt'}
-              </Box>
-            )}
+            {aiExport && <CopyForAIMenu {...aiActions} triggerProps={TAB_STYLE_PROPS} />}
           </Flex>
 
           {/* Mobile: overflow menu */}
@@ -407,28 +419,17 @@ const TabsLayout = ({ children, className }) => {
                           {isSaved ? 'Remove from favorites' : 'Add to favorites'}
                         </Menu.Item>
                       )}
-                      {codeExampleProps && (
-                        <Menu.Item
-                          value="copy-prompt"
-                          onSelect={handleCopyPrompt}
-                          display="flex"
-                          alignItems="center"
-                          gap={3}
-                          px={3}
-                          py={2}
-                          fontSize="14px"
-                          color="#fff"
-                          borderRadius="8px"
-                          cursor="pointer"
-                          _hover={{ bg: colors.bgHover }}
-                        >
-                          {copied ? (
-                            <Check size={16} color={colors.accent} />
-                          ) : (
-                            <Clipboard size={16} color="#fff" />
-                          )}
-                          {copied ? 'Copied!' : 'Copy AI prompt'}
-                        </Menu.Item>
+                      {aiExport && (
+                        <>
+                          <Menu.Separator borderColor={colors.borderPrimary} my={1} />
+                          {aiActions.copyItems.map(item => (
+                            <AIMenuItem key={item.key} item={item} done={aiActions.done} />
+                          ))}
+                          <Menu.Separator borderColor={colors.borderPrimary} my={1} />
+                          {aiActions.openItems.map(item => (
+                            <AIMenuItem key={item.key} item={item} done={aiActions.done} />
+                          ))}
+                        </>
                       )}
                       {studioButtonProps && (
                         <Menu.Item
@@ -463,6 +464,8 @@ const TabsLayout = ({ children, className }) => {
       <Tabs.Content pt={0} value="code">
         {contentMap.CodeTab}
       </Tabs.Content>
+
+      <CategoryProFooter category={category} />
 
       <TabsFooter />
     </Tabs.Root>

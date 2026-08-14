@@ -9,7 +9,10 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', 'G-1GF5NXTV27');
+      gtag('config', 'G-1GF5NXTV27', {
+        // Keeps the session intact when users cross over to the Pro app.
+        linker: { domains: ['reactbits.dev', 'pro.reactbits.dev'] }
+      });
     </script>
 
     <!-- Basic Meta Tags -->
@@ -55,7 +58,7 @@
       property="og:description"
       content="An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces."
     />
-    <meta property="og:image" content="https://reactbits.dev/og-pic.png" />
+    <meta property="og:image" content="https://reactbits.dev/og.png" />
     <meta property="og:image:alt" content="The React Bits landing page design, showcasing the logo and a subtitle!" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -72,7 +75,7 @@
       name="twitter:description"
       content="An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces."
     />
-    <meta name="twitter:image" content="https://reactbits.dev/og-pic.png" />
+    <meta name="twitter:image" content="https://reactbits.dev/og.png" />
     <meta name="twitter:image:alt" content="The React Bits landing page design, showcasing the logo and a subtitle!" />
 
     <!-- Robots Meta Tag (canonical is set per-route by usePageSEO) -->
@@ -86,7 +89,7 @@
         "name": "React Bits",
         "url": "https://reactbits.dev",
         "description": "An open source collection of high quality, animated, interactive & fully customizable React components for building stunning, memorable user interfaces.",
-        "image": "https://reactbits.dev/og-pic.png",
+        "image": "https://reactbits.dev/og.png",
         "sameAs": [
           "https://github.com/DavidHDev/react-bits",
           "https://x.com/davidhdev"

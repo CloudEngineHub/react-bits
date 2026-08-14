@@ -4,6 +4,9 @@ import './styles.css';
 
 import { Provider } from './components/setup/provider';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { initInputModeTracking } from './utils/inputMode';
+
+initInputModeTracking();
 
 ReactDOM.createRoot(document.createElement('div')).render(
   // eslint-disable-next-line react/no-children-prop
