@@ -27,6 +27,121 @@ const CLI_TOOLS = ['shadcn', 'jsrepo'];
 const CLI_ICON_MAP = { jsrepo: jsrepoIcon, shadcn: shadcnIcon };
 const CLI_LABEL_MAP = { shadcn: 'shadcn', jsrepo: 'jsrepo' };
 
+const CliCodeSection = ({
+  command,
+  codeRef,
+  scrollMeta,
+  dragging,
+  trackRef,
+  onScroll,
+  onScrollbarMouseDown,
+  onCopy,
+  copied,
+}) => (
+  <div className="code-wrapper" style={{ position: 'relative' }}>
+    <Code ref={codeRef} whiteSpace="pre" w="100%" onScroll={onScroll}>
+      {command}
+    </Code>
+    {scrollMeta.show && (
+      <div
+        className={`cli-custom-scrollbar${dragging ? ' dragging' : ''}`}
+        aria-hidden
+        ref={trackRef}
+        onMouseDown={onScrollbarMouseDown}
+      >
+        <div
+          className="cli-custom-scrollbar-thumb"
+          style={{ width: scrollMeta.w, transform: `translateX(${scrollMeta.l}px)` }}
+        />
+      </div>
+    )}
+    <Button
+      position="absolute"
+      h={10}
+      top="50%"
+      transform="translateY(-50%)"
+      right=".6em"
+      borderRadius="12px"
+      fontWeight={500}
+      bg={copied ? colors.primary : colors.bgBody}
+      border={`1px solid ${colors.borderSecondary}`}
+      color={copied ? 'black' : 'white'}
+      _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
+      _active={{ bg: colors.primary }}
+      transition="background-color 0.3s ease"
+      onClick={onCopy}
+      aria-label="Copy installation command"
+    >
+      <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
+    </Button>
+  </div>
+);
+
+const CliModeSwitch = ({ mode, hasManual, setMode, cliLib, setCliLib }) => (
+  <Flex className="mode-switch" data-mode-switch w="100%" align="center" gap={0}>
+    <HStack>
+      <button data-active={mode === 'cli'} onClick={() => setMode('cli')} className="cli-toggle-button">
+        CLI
+      </button>
+      {hasManual ? (
+        <button
+          data-active={mode === 'manual'}
+          onClick={() => hasManual && setMode('manual')}
+          className={`cli-toggle-button${!hasManual ? ' disabled' : ''}`}
+          disabled={!hasManual}
+          aria-disabled={!hasManual}
+        >
+          Manual
+        </button>
+      ) : (
+        <Tooltip.Root openDelay={200} positioning={{ placement: 'right' }}>
+          <Tooltip.Trigger asChild>
+            <span style={{ display: 'inline-block' }}>
+              <button
+                data-active={false}
+                className="cli-toggle-button disabled"
+                disabled
+                aria-disabled="true"
+                type="button"
+              >
+                Manual
+              </button>
+            </span>
+          </Tooltip.Trigger>
+          <Tooltip.Positioner>
+            <Tooltip.Content
+              bg={colors.bgElevated}
+              border={`1px solid ${colors.borderSecondary}`}
+              color="#c9c9c9"
+              fontSize="12px"
+              px={2}
+              whiteSpace="nowrap"
+              py={2}
+              borderRadius="8px"
+              textAlign="center"
+            >
+              No dependencies, head to the &quot;Code&quot; section
+            </Tooltip.Content>
+          </Tooltip.Positioner>
+        </Tooltip.Root>
+      )}
+    </HStack>
+    {mode === 'cli' && (
+      <Box ml="auto">
+        <IconSelect
+          collection={CLI_TOOLS}
+          value={cliLib}
+          onChange={setCliLib}
+          iconMap={CLI_ICON_MAP}
+          labelMap={CLI_LABEL_MAP}
+          width="125px"
+          closeOnSelect
+        />
+      </Box>
+    )}
+  </Flex>
+);
+
 const CliInstallation = ({ deps }) => {
   const { category, subcategory } = useActiveRoute();
   const { languagePreset, stylePreset } = useOptions() || {};
@@ -178,57 +293,22 @@ const CliInstallation = ({ deps }) => {
     </div>
   );
 
-  const CopyButton = (
-    <Button
-      position="absolute"
-      h={10}
-      top="50%"
-      transform="translateY(-50%)"
-      right=".6em"
-      borderRadius="12px"
-      fontWeight={500}
-      bg={copied ? colors.primary : colors.bgBody}
-      border={`1px solid ${colors.borderSecondary}`}
-      color={copied ? 'black' : 'white'}
-      _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
-      _active={{ bg: colors.primary }}
-      transition="background-color 0.3s ease"
-      onClick={handleCopy}
-      aria-label="Copy installation command"
-    >
-      <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
-    </Button>
-  );
-
   const manualSection = hasManual && (
     <VStack align="stretch" gap={0} fontFamily="mono" className="cli-install-section manual-mode">
       <div className="cli-row" data-row="manual">
         {renderPkgButtons()}
       </div>
-      <div className="code-wrapper" style={{ position: 'relative' }}>
-        <Code
-          ref={mode === 'manual' ? codeRef : undefined}
-          whiteSpace="pre"
-          w="100%"
-          onScroll={mode === 'manual' ? updateScrollMeta : undefined}
-        >
-          {commands.manual[pkg]}
-        </Code>
-        {scrollMeta.show && mode === 'manual' && (
-          <div
-            className={`cli-custom-scrollbar${dragging ? ' dragging' : ''}`}
-            aria-hidden
-            ref={trackRef}
-            onMouseDown={handleScrollbarMouseDown}
-          >
-            <div
-              className="cli-custom-scrollbar-thumb"
-              style={{ width: scrollMeta.w, transform: `translateX(${scrollMeta.l}px)` }}
-            />
-          </div>
-        )}
-        {CopyButton}
-      </div>
+      <CliCodeSection
+        command={commands.manual[pkg]}
+        codeRef={mode === 'manual' ? codeRef : undefined}
+        scrollMeta={scrollMeta}
+        dragging={dragging}
+        trackRef={trackRef}
+        onScroll={mode === 'manual' ? updateScrollMeta : undefined}
+        onScrollbarMouseDown={handleScrollbarMouseDown}
+        onCopy={handleCopy}
+        copied={copied}
+      />
     </VStack>
   );
 
@@ -237,32 +317,21 @@ const CliInstallation = ({ deps }) => {
       <div className="cli-row" data-row="cli">
         {renderPkgButtons()}
       </div>
-      <div className="code-wrapper" style={{ position: 'relative' }}>
-        <Code
-          ref={mode === 'cli' ? codeRef : undefined}
-          whiteSpace="pre"
-          w="100%"
-          onScroll={mode === 'cli' ? updateScrollMeta : undefined}
-        >
-          {cliLib === 'jsrepo'
+      <CliCodeSection
+        command={
+          cliLib === 'jsrepo'
             ? commands.jsrepo[pkg === 'npm' ? 'npx' : pkg]
-            : commands.shadcn[pkg === 'npm' ? 'npx' : pkg]}
-        </Code>
-        {scrollMeta.show && mode === 'cli' && (
-          <div
-            className={`cli-custom-scrollbar${dragging ? ' dragging' : ''}`}
-            aria-hidden
-            ref={trackRef}
-            onMouseDown={handleScrollbarMouseDown}
-          >
-            <div
-              className="cli-custom-scrollbar-thumb"
-              style={{ width: scrollMeta.w, transform: `translateX(${scrollMeta.l}px)` }}
-            />
-          </div>
-        )}
-        {CopyButton}
-      </div>
+            : commands.shadcn[pkg === 'npm' ? 'npx' : pkg]
+        }
+        codeRef={mode === 'cli' ? codeRef : undefined}
+        scrollMeta={scrollMeta}
+        dragging={dragging}
+        trackRef={trackRef}
+        onScroll={mode === 'cli' ? updateScrollMeta : undefined}
+        onScrollbarMouseDown={handleScrollbarMouseDown}
+        onCopy={handleCopy}
+        copied={copied}
+      />
     </VStack>
   );
 
@@ -270,68 +339,13 @@ const CliInstallation = ({ deps }) => {
     <div className="cli-install">
       <Text className="demo-title">Install</Text>
       <Stack my={2}>
-        <Flex className="mode-switch" data-mode-switch w="100%" align="center" gap={0}>
-          <HStack>
-            <button data-active={mode === 'cli'} onClick={() => setMode('cli')} className="cli-toggle-button">
-              CLI
-            </button>
-            {hasManual ? (
-              <button
-                data-active={mode === 'manual'}
-                onClick={() => hasManual && setMode('manual')}
-                className={`cli-toggle-button${!hasManual ? ' disabled' : ''}`}
-                disabled={!hasManual}
-                aria-disabled={!hasManual}
-              >
-                Manual
-              </button>
-            ) : (
-              <Tooltip.Root openDelay={200} positioning={{ placement: 'right' }}>
-                <Tooltip.Trigger asChild>
-                  <span style={{ display: 'inline-block' }}>
-                    <button
-                      data-active={false}
-                      className="cli-toggle-button disabled"
-                      disabled
-                      aria-disabled="true"
-                      type="button"
-                    >
-                      Manual
-                    </button>
-                  </span>
-                </Tooltip.Trigger>
-                <Tooltip.Positioner>
-                  <Tooltip.Content
-                    bg={colors.bgElevated}
-                    border={`1px solid ${colors.borderSecondary}`}
-                    color="#c9c9c9"
-                    fontSize="12px"
-                    px={2}
-                    whiteSpace="nowrap"
-                    py={2}
-                    borderRadius="8px"
-                    textAlign="center"
-                  >
-                    No dependencies, head to the &quot;Code&quot; section
-                  </Tooltip.Content>
-                </Tooltip.Positioner>
-              </Tooltip.Root>
-            )}
-          </HStack>
-          {mode === 'cli' && (
-            <Box ml="auto">
-              <IconSelect
-                collection={CLI_TOOLS}
-                value={cliLib}
-                onChange={setCliLib}
-                iconMap={CLI_ICON_MAP}
-                labelMap={CLI_LABEL_MAP}
-                width="125px"
-                closeOnSelect
-              />
-            </Box>
-          )}
-        </Flex>
+        <CliModeSwitch
+          mode={mode}
+          hasManual={hasManual}
+          setMode={setMode}
+          cliLib={cliLib}
+          setCliLib={setCliLib}
+        />
         {hasManual && mode === 'manual' ? manualSection : cliSection}
       </Stack>
     </div>
