@@ -109,9 +109,6 @@ const ProCard = () => {
             <span>Explore Pro</span>
             <LuArrowRight size={14} />
           </div>
-          <div className="pro-card-promo">
-            <span className="pro-card-promo-text">☀️ Summer Sale - 30% off: SUNBITS30</span>
-          </div>
         </div>
       </div>
     </a>
