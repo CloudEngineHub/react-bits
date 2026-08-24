@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { LuArrowRight, LuArrowUpRight } from 'react-icons/lu';
 
 import MoltenMetal from '@/content/Backgrounds/MoltenMetal/MoltenMetal';
-import { PRO_PROMO } from '../../../constants/Pro';
 import { proUrl, trackProClick } from '../../../utils/pro';
 
 /**
@@ -45,8 +44,6 @@ const ProCta = ({ title, description, placement, secondary, trackParams, showSha
           </Link>
         )}
       </div>
-
-      {PRO_PROMO && <p className="pro-cta-promo">{PRO_PROMO.label}</p>}
     </div>
   </section>
 );
