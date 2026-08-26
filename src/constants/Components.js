@@ -42,6 +42,7 @@ const animations = {
   'magic-rings': () => import('../demo/Animations/MagicRingsDemo'),
   'strands': () => import('../demo/Animations/StrandsDemo'),
   'cursor-grid': () => import('../demo/Animations/CursorGridDemo'),
+  'glow-cursor': () => import('../demo/Animations/GlowCursorDemo'),
 };
 
 const textAnimations = {
@@ -160,6 +161,7 @@ const backgrounds = {
   'pixel-blast': () => import('../demo/Backgrounds/PixelBlastDemo.jsx'),
   'liquid-ether': () => import('../demo/Backgrounds/LiquidEtherDemo.jsx'),
   'color-bends': () => import('../demo/Backgrounds/ColorBendsDemo.jsx'),
+  'crt-warp': () => import('../demo/Backgrounds/CRTWarpDemo.jsx'),
   'line-waves': () => import('../demo/Backgrounds/LineWavesDemo.jsx'),
   'grid-scan': () => import('../demo/Backgrounds/GridScanDemo.jsx'),
   'floating-lines': () => import('../demo/Backgrounds/FloatingLinesDemo.jsx'),

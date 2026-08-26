@@ -1,4 +1,4 @@
-import { FiExternalLink } from 'react-icons/fi';
+import { LuArrowRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 import {
   diamondSponsors,
@@ -44,45 +44,48 @@ const SponsorsCard = () => {
     <div className="right-card sc-card">
       <div className="sc-header">
         <span className="sc-title">Sponsors</span>
-        <Link to="/sponsors#sponsor-plans" className="sc-become-link">
-          Become a sponsor <FiExternalLink size={10} />
-        </Link>
+        <span className="sc-reach">500K+ developers monthly</span>
       </div>
 
-      {hasDiamondSponsors && (
-        <div className="sc-tier">
-          <span className="sc-tier-label">Diamond</span>
-          <div className="sc-tier-grid sc-tier-diamond">
-            {diamondSponsors.map(s => (
-              <SponsorLogo key={s.id} sponsor={s} tier="diamond" className="sc-sponsor-diamond" />
-            ))}
+      <div className="sc-body">
+        {hasDiamondSponsors && (
+          <div className="sc-tier">
+            <span className="sc-tier-label">Diamond</span>
+            <div className="sc-tier-grid sc-tier-diamond">
+              {diamondSponsors.map(s => (
+                <SponsorLogo key={s.id} sponsor={s} tier="diamond" className="sc-sponsor-diamond" />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {hasPlatinumSponsors && (
-        <div className="sc-tier">
-          <span className="sc-tier-label">Platinum</span>
-          <div className="sc-tier-grid sc-tier-platinum">
-            {platinumSponsors.map(s => (
-              <SponsorLogo key={s.id} sponsor={s} tier="platinum" className="sc-sponsor-platinum" />
-            ))}
+        {hasPlatinumSponsors && (
+          <div className="sc-tier">
+            <span className="sc-tier-label">Platinum</span>
+            <div className="sc-tier-grid sc-tier-platinum">
+              {platinumSponsors.map(s => (
+                <SponsorLogo key={s.id} sponsor={s} tier="platinum" className="sc-sponsor-platinum" />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {hasSilverSponsors && (
-        <div className="sc-tier">
-          <span className="sc-tier-label">Silver</span>
-          <div className="sc-tier-grid sc-tier-silver">
-            {silverSponsors.map(s => (
-              <SponsorLogo key={s.id} sponsor={s} tier="silver" className="sc-sponsor-silver" />
-            ))}
+        {hasSilverSponsors && (
+          <div className="sc-tier">
+            <span className="sc-tier-label">Silver</span>
+            <div className="sc-tier-grid sc-tier-silver">
+              {silverSponsors.map(s => (
+                <SponsorLogo key={s.id} sponsor={s} tier="silver" className="sc-sponsor-silver" />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      <p className="sc-reach">500k+ devs monthly &middot; Limited spots</p>
+      <Link to="/sponsors#sponsor-plans" className="sc-become-link">
+        <span>Become a sponsor</span>
+        <LuArrowRight size={14} />
+      </Link>
     </div>
   );
 };

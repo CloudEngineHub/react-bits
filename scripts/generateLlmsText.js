@@ -223,8 +223,8 @@ function buildProOverview(manifest) {
       `It currently ships ${plural(c.components ?? 0, 'animated component')}, ` +
       `${c.blocks ?? 0} landing page blocks across ${c.blockCategories ?? 0} categories, ` +
       `${c.appUi ?? 0} application UI screens across ${c.appUiCategories ?? 0} categories, ` +
-      `${plural(c.templates ?? 0, 'full Next.js template')} and ` +
-      `${c.agentKit ?? 0} agent kit skills, prompts and recipes — ${c.total ?? 0} pieces in total. ` +
+      `${plural(c.templates ?? 0, 'full Next.js template')} — ${c.total ?? 0} UI assets in total — plus ` +
+      `${c.agentKit ?? 0} Agent Kit skills, prompts and recipes. ` +
       `One-time payment, source code delivery, no subscription.`,
     '',
     'Entry points:',
@@ -351,12 +351,12 @@ function buildProAgentKit(manifest) {
   const extra = skill
     ? [
         '',
-        `Separately, [${skill.name}](${skill.href}) teaches an agent to install and use Pro correctly; ` +
+        `[${skill.name}](${skill.href}) is the twentieth Agent Kit item and teaches an agent to install and use Pro correctly; ` +
           `it ships with the ${TIER_NAMES[skill.tier] || 'Starter'} tier.`
       ]
     : [];
 
-  return section(`Pro Agent Kit (${entries.length})`, [
+  return section(`Pro Agent Kit (${manifest.counts?.agentKit ?? entries.length + (skill ? 1 : 0)})`, [
     'Design-direction skills, prompts and recipes written for coding agents. Each one encodes a specific visual ' +
       'style along with the anti-patterns that break it, so an agent can hold a direction across a whole build. ' +
       `${tierNote((manifest.agentKit || []).filter(a => a.tier !== 'free'))}`,

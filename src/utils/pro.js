@@ -42,17 +42,43 @@ export const trackProClick = (placement, params = {}) => {
 };
 
 /**
+ * Records that a Pro surface was actually seen, rather than merely rendered
+ * somewhere below the fold. Click-through rate is only useful when its
+ * denominator is a real, viewable impression.
+ *
+ * @param {string} placement Placement id, matches the click event.
+ * @param {Record<string, unknown>} [params] Extra context (category, item...).
+ */
+export const trackProImpression = (placement, params = {}) => {
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+
+  window.gtag('event', 'pro_impression', {
+    placement,
+    page_path: window.location?.pathname,
+    ...params
+  });
+};
+
+/**
  * Convenience spread for anchors pointing at the Pro app. Handles the href,
  * target/rel and the GA4 event in one place.
  *
  * @example <a {...proLinkProps('/blocks', 'sidebar')}>Blocks</a>
  */
-export const proLinkProps = (path, placement, { params, extra } = {}) => ({
-  href: proUrl(path, placement, extra),
-  target: '_blank',
-  rel: 'noopener noreferrer',
-  onClick: () => trackProClick(placement, params)
-});
+export const proLinkProps = (path, placement, { params, extra, sameTab = false } = {}) => {
+  const href = proUrl(path, placement, extra);
+  const destination = new URL(href);
+
+  return {
+    href,
+    ...(sameTab ? {} : { target: '_blank', rel: 'noopener noreferrer' }),
+    onClick: () =>
+      trackProClick(placement, {
+        destination: `${destination.pathname}${destination.search}${destination.hash}`,
+        ...params
+      })
+  };
+};
 
 /**
  * Local preview assets live under `public/assets/pro/<kind>/`, generated at a

@@ -105,6 +105,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/animations/gradual-blur',
     tags: []
   },
+  'Animations/GlowCursor': {
+    videoUrl: '/assets/video/glowcursor.webm',
+    description: 'Shader-powered light trail that smoothly follows the pointer with customizable glow, color, taper and pulse.',
+    category: 'Animations',
+    name: 'GlowCursor',
+    docsUrl: 'https://reactbits.dev/animations/glow-cursor',
+    tags: []
+  },
   'Animations/GhostCursor': {
     videoUrl: '/assets/video/ghostcursor.webm',
     description: 'Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect.',
@@ -982,6 +990,14 @@ export const componentMetadata = {
     category: 'Backgrounds',
     name: 'ColorBends',
     docsUrl: 'https://reactbits.dev/backgrounds/color-bends',
+    tags: []
+  },
+  'Backgrounds/CRTWarp': {
+    videoUrl: '/assets/video/crtwarp.webm',
+    description: 'Full-canvas CRT plasma with curved distortion, scanlines, bloom and pointer interaction.',
+    category: 'Backgrounds',
+    name: 'CRTWarp',
+    docsUrl: 'https://reactbits.dev/backgrounds/crt-warp',
     tags: []
   },
   'Backgrounds/DarkVeil': {

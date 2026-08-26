@@ -8,7 +8,6 @@
   flex-direction: column;
   align-items: center;
   padding: 0 24px;
-  font-family: 'Geist Mono', monospace;
   pointer-events: none;
 }
 
@@ -102,7 +101,6 @@
   color: var(--text-primary);
   font-size: 13px;
   font-weight: 500;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 6px 10px;
   border-radius: 12px;
@@ -162,6 +160,8 @@
 .ln-navbar-soon {
   font-size: 9px;
   font-weight: 600;
+  text-transform: uppercase;
+  font-family: monospace;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.08);
@@ -171,8 +171,10 @@
 
 .ln-navbar-pro {
   position: relative;
+  flex-shrink: 0;
   font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
   color: var(--pro-fg, #fff);
   height: 36px;
   padding: 0 20px;
@@ -301,8 +303,28 @@
     border-radius: 8px;
   }
 
+  .ln-navbar-pro-docs {
+    display: none;
+  }
+
   .ln-navbar-github {
     display: none;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 769px) {
+  .ln-navbar-pro-docs {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
+  .ln-navbar:not(.ln-navbar-docs) .ln-navbar-browse {
+    display: none;
+  }
+
+  .ln-navbar:not(.ln-navbar-docs) .ln-navbar-right {
+    gap: 8px;
   }
 }
 
@@ -424,7 +446,6 @@
   font-size: 11px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0 14px;
   margin-bottom: 4px;
@@ -450,7 +471,45 @@
   overflow-y: auto;
   flex: 1;
   min-height: 0;
-  padding-bottom: 2em;
+  padding: 6px 12px 24px;
+}
+
+.ln-navbar-mobile-filter {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  margin: 0 2px 6px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9px;
+  background: rgba(18, 15, 23, 0.94);
+  color: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.ln-navbar-mobile-filter:focus-within {
+  border-color: rgba(190, 142, 255, 0.34);
+  color: rgba(218, 190, 255, 0.75);
+}
+
+.ln-navbar-mobile-filter input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font: inherit;
+  font-size: 13px;
+}
+
+.ln-navbar-mobile-filter input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
 }
 
 @keyframes ln-menu-slide-in {
@@ -469,10 +528,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: 'Geist Mono', monospace;
   font-size: 13px;
   font-weight: 500;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.7);
   padding: 12px 14px;
@@ -501,6 +558,69 @@
 .ln-navbar-mobile-link:hover::after {
   opacity: 1;
   transform: translateX(0);
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-section {
+  padding: 10px 2px 4px;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-subsection {
+  margin-top: 14px;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-label {
+  padding: 0 10px;
+  margin-bottom: 5px;
+  font-size: 10px;
+  letter-spacing: 0.055em;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-label-pro {
+  color: #c7a0ff;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-left: 10px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-link {
+  min-height: 32px;
+  justify-content: flex-start;
+  padding: 6px 9px;
+  border-radius: 7px;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-link::after {
+  display: none;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-link-active {
+  background: rgba(255, 255, 255, 0.055);
+  color: #fff;
+}
+
+.ln-navbar-mobile-empty {
+  margin: 24px 0;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 13px;
+  text-align: center;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-pro-link {
+  gap: 8px;
+}
+
+.ln-navbar-mobile-menu-docs .ln-navbar-mobile-pro-link svg {
+  flex-shrink: 0;
+  color: #a987dc;
 }
 
 .ln-navbar-mobile-pro {
@@ -658,7 +778,6 @@
   height: 18px;
   font-size: 10px;
   font-weight: 700;
-  font-family: 'Geist Mono', monospace;
   color: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
@@ -712,7 +831,6 @@
   font-size: 11px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.4);
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
 }
@@ -740,7 +858,6 @@
   height: 32px;
   font-size: 12px;
   font-weight: 500;
-  font-family: 'Geist Mono', monospace;
   color: rgba(255, 255, 255, 0.45);
   border-radius: 8px;
   border: 1px solid transparent;

@@ -34,16 +34,6 @@
   color: #fff;
 }
 
-.docs-section-title::before {
-  content: '';
-  display: block;
-  width: 2.25rem;
-  height: 2px;
-  margin-bottom: 1rem;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--color-primary), rgba(168, 85, 247, 0));
-}
-
 .docs-subtitle {
   margin: var(--docs-gap-sub) 0 0.4rem;
   font-size: 1.0625rem;

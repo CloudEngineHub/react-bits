@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { LuArrowRight, LuArrowUpRight } from 'react-icons/lu';
 
 import MoltenMetal from '@/content/Backgrounds/MoltenMetal/MoltenMetal';
-import { proUrl, trackProClick } from '../../../utils/pro';
+import { proLinkProps } from '../../../utils/pro';
 
 /**
  * Closing CTA for the on-domain Pro pages.
@@ -11,7 +11,7 @@ import { proUrl, trackProClick } from '../../../utils/pro';
  * dark card, shader wash, mono buttons) so the Pro pages close on the same
  * note as the rest of the site rather than a plain outlined panel.
  */
-const ProCta = ({ title, description, placement, secondary, trackParams, showShader = true }) => (
+const ProCta = ({ title, description, placement, secondary, trackParams, showShader = true, showArrows = true }) => (
   <section className="pro-cta">
     <div className="pro-cta-border" aria-hidden="true" />
 
@@ -28,19 +28,16 @@ const ProCta = ({ title, description, placement, secondary, trackParams, showSha
       <div className="pro-cta-actions">
         <a
           className="pro-cta-btn pro-cta-btn-primary"
-          href={proUrl('/', placement)}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackProClick(placement, trackParams)}
+          {...proLinkProps('/#pricing', placement, { params: trackParams, sameTab: true })}
         >
           Get React Bits Pro
-          <LuArrowUpRight size={15} />
+          {showArrows && <LuArrowUpRight size={15} />}
         </a>
 
         {secondary && (
           <Link className="pro-cta-btn pro-cta-btn-secondary" to={secondary.to}>
             {secondary.label}
-            <LuArrowRight size={15} />
+            {showArrows && <LuArrowRight size={15} />}
           </Link>
         )}
       </div>

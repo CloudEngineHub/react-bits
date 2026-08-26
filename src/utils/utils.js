@@ -38,7 +38,7 @@ export const getStarsCount = async () => {
 export const decodeLabel = label =>
   label
     .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => (word.toLowerCase() === 'crt' ? 'CRT' : word.charAt(0).toUpperCase() + word.slice(1)))
     .join(' ');
 
 export const forceChakraDarkTheme = () => {

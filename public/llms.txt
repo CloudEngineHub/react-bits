@@ -80,6 +80,7 @@ Notes:
 - [Fade Content](https://www.reactbits.dev/animations/fade-content): Simple directional fade / slide entrance / exit wrapper with threshold-based activation. CLI: `FadeContent`.
 - [Ghost Cursor](https://www.reactbits.dev/animations/ghost-cursor): Semi-transparent ghost cursor that smoothly follows the real cursor with a trailing effect. CLI: `GhostCursor`.
 - [Glare Hover](https://www.reactbits.dev/animations/glare-hover): Adds a realistic moving glare highlight on hover over any element. CLI: `GlareHover`.
+- [Glow Cursor](https://www.reactbits.dev/animations/glow-cursor): Shader-powered light trail that smoothly follows the pointer with customizable glow, color, taper and pulse. CLI: `GlowCursor`.
 - [Gradual Blur](https://www.reactbits.dev/animations/gradual-blur): Progressively un-blurs content based on scroll or trigger creating a cinematic reveal. CLI: `GradualBlur`.
 - [Halftone Reveal](https://www.reactbits.dev/animations/halftone-reveal): Print-style halftone dot matrix that resolves into sharp content around the cursor. CLI: `HalftoneReveal`.
 - [Image Trail](https://www.reactbits.dev/animations/image-trail): Cursor-based image trail with several built-in variants. CLI: `ImageTrail`.
@@ -161,6 +162,7 @@ Notes:
 - [Ballpit](https://www.reactbits.dev/backgrounds/ballpit): Physics ball pit simulation with bouncing colorful spheres. CLI: `Ballpit`.
 - [Beams](https://www.reactbits.dev/backgrounds/beams): Crossing animated ribbons with customizable properties. CLI: `Beams`.
 - [Color Bends](https://www.reactbits.dev/backgrounds/color-bends): Vibrant color bends with smooth flowing animation. CLI: `ColorBends`.
+- [CRT Warp](https://www.reactbits.dev/backgrounds/crt-warp): Full-canvas CRT plasma with curved distortion, scanlines, bloom and pointer interaction. CLI: `CRTWarp`.
 - [Dark Veil](https://www.reactbits.dev/backgrounds/dark-veil): Subtle dark background with a smooth animation and postprocessing. CLI: `DarkVeil`.
 - [Dither](https://www.reactbits.dev/backgrounds/dither): Retro dithered noise shader background. CLI: `Dither`.
 - [Dot Field](https://www.reactbits.dev/backgrounds/dot-field): Interactive dot grid with cursor bulge, glow, sparkle, and wave effects. CLI: `DotField`.
@@ -230,7 +232,7 @@ Notes:
 
 ## React Bits Pro
 
-> React Bits Pro is the paid companion library at https://pro.reactbits.dev, by the same author. It currently ships 134 animated components, 238 landing page blocks across 21 categories, 300 application UI screens across 38 categories, 11 full Next.js templates and 19 agent kit skills, prompts and recipes — 683 pieces in total. One-time payment, source code delivery, no subscription.
+> React Bits Pro is the paid companion library at https://pro.reactbits.dev, by the same author. It currently ships 134 animated components, 238 landing page blocks across 21 categories, 300 application UI screens across 38 categories, 11 full Next.js templates — 683 UI assets in total — plus 20 Agent Kit skills, prompts and recipes. One-time payment, source code delivery, no subscription.
 
 Entry points:
 
@@ -487,7 +489,7 @@ Complete Next.js projects, not fragments. Every template is deployable as-is. In
 - [AI App](https://pro.reactbits.dev/docs/templates/ai-app-template): Minimal landing page with scroll-driven set pieces, a WebGL hero, and a pinned phone walkthrough. Live preview: https://rbp-ai-app-template.vercel.app/.
 - [Security](https://pro.reactbits.dev/docs/templates/security-template): Dark-first editorial landing page with a WebGL curtain reveal, ASCII art, and chamfered UI. Live preview: https://rbp-security-template.vercel.app/.
 
-## Pro Agent Kit (19)
+## Pro Agent Kit (20)
 
 Design-direction skills, prompts and recipes written for coding agents. Each one encodes a specific visual style along with the anti-patterns that break it, so an agent can hold a direction across a whole build. Included in the Pro tier and above.
 
@@ -511,7 +513,7 @@ Design-direction skills, prompts and recipes written for coding agents. Each one
 - [Product Launch Page](https://pro.reactbits.dev/docs/agent-kit/recipes/product-launch): A tested block arrangement that assembles a full product-launch page from React Bits Pro blocks (announcement hero through waitlist capture) in one prompt. Recipe.
 - [SaaS Homepage](https://pro.reactbits.dev/docs/agent-kit/recipes/saas-homepage): A tested 13-block arrangement that assembles a complete self-serve B2B SaaS homepage (navigation through footer) from React Bits Pro blocks in one prompt. Recipe.
 
-Separately, [React Bits Pro Skill](https://pro.reactbits.dev/docs/agent-kit/agent-skill) teaches an agent to install and use Pro correctly; it ships with the Starter tier.
+[React Bits Pro Skill](https://pro.reactbits.dev/docs/agent-kit/agent-skill) is the twentieth Agent Kit item and teaches an agent to install and use Pro correctly; it ships with the Starter tier.
 
 ## Development
 

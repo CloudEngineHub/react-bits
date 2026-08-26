@@ -1,17 +1,17 @@
-import { useRef, useState, useLayoutEffect, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
-import { useReducedMotion } from 'motion/react';
+import { useRef, useState, useCallback, useMemo, memo, useEffect, Fragment } from 'react';
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
-import { ArrowRight, MenuIcon, SearchIcon, Sparkles, XIcon, HeartIcon } from 'lucide-react';
+import { ArrowRight, SearchIcon, XIcon, HeartIcon } from 'lucide-react';
 
 import { TOOLS } from '../../constants/Tools';
 import { PRO_SECTIONS } from '../../constants/Pro';
 import { colors } from '../../constants/colors';
 
-import { useSearch } from '../context/SearchContext/useSearch';
 import { useTransition } from '../../hooks/useTransition';
 import { CATEGORIES, NEW, UPDATED } from '../../constants/Categories';
 import { componentMap } from '../../constants/Components';
+import { componentMetadata } from '../../constants/Information';
 import { getSavedComponents } from '../../utils/favorites';
 
 import Logo from '../../assets/logos/react-bits-logo.svg';
@@ -29,20 +29,11 @@ const ICON_BUTTON_STYLES = {
 
 const ARROW_ICON_PROPS = { boxSize: 4, transform: 'rotate(-45deg)' };
 
-const LINE_STYLES = {
-  position: 'absolute',
-  left: '0',
-  w: '2px',
-  h: '16px',
-  rounded: '1px',
-  transition: 'transform var(--dur-menu) var(--ease-out), opacity var(--dur-menu) var(--ease-out)',
-  pointerEvents: 'none'
-};
-
-const REDUCED_LINE_TRANSITION = 'opacity var(--dur-menu) var(--ease-out)';
-
 const BOTTOM_ENTER_PX = 8;
 const BOTTOM_EXIT_PX = 48;
+const PREVIEW_WIDTH = 304;
+const PREVIEW_HEIGHT = 226;
+const PREVIEW_DELAY = 260;
 
 // ─── Utility Functions ───────────────────────────────────────────────────────
 const scrollToTop = () => window.scrollTo(0, 0);
@@ -52,6 +43,9 @@ const toPascal = str =>
     .split('-')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join('');
+const COMPONENT_METADATA_BY_PATH = new Map(
+  Object.values(componentMetadata).map(metadata => [new URL(metadata.docsUrl).pathname, metadata])
+);
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 const useFavoritesSync = () => {
@@ -76,8 +70,8 @@ const useFavoritesSync = () => {
   return savedSet;
 };
 
-const useScrolledToBottom = ref => {
-  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+const useScrollEdges = ref => {
+  const [edges, setEdges] = useState({ isAtTop: true, isAtBottom: false });
 
   useEffect(() => {
     const el = ref.current;
@@ -85,7 +79,10 @@ const useScrolledToBottom = ref => {
 
     const handleScroll = () => {
       const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
-      setIsScrolledToBottom(prev => (prev ? remaining <= BOTTOM_EXIT_PX : remaining <= BOTTOM_ENTER_PX));
+      setEdges(previous => ({
+        isAtTop: el.scrollTop <= 2,
+        isAtBottom: previous.isAtBottom ? remaining <= BOTTOM_EXIT_PX : remaining <= BOTTOM_ENTER_PX
+      }));
     };
 
     el.addEventListener('scroll', handleScroll, { passive: true });
@@ -93,65 +90,44 @@ const useScrolledToBottom = ref => {
     return () => el.removeEventListener('scroll', handleScroll);
   }, [ref]);
 
-  return isScrolledToBottom;
+  return edges;
 };
 
+const SidebarHoverPreview = ({ preview, x, y, reduceMotion }) => (
+  <AnimatePresence>
+    {preview && (
+      <motion.aside
+        className="sidebar-hover-preview"
+        style={{ x, y }}
+        initial={{ opacity: 0, scale: 0.97 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.98 }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        aria-hidden="true"
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={preview.key}
+            initial={{ opacity: 0, scale: 0.985 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.99 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.15 }}
+          >
+            <div className="sidebar-hover-preview-media">
+              <video autoPlay loop muted playsInline preload="metadata">
+                <source src={`${preview.videoBase}.webm`} type="video/webm" />
+                <source src={`${preview.videoBase}.mp4`} type="video/mp4" />
+              </video>
+            </div>
+            <div className="sidebar-hover-preview-title">{preview.title}</div>
+          </motion.div>
+        </AnimatePresence>
+      </motion.aside>
+    )}
+  </AnimatePresence>
+);
+
 // ─── Sub-components ──────────────────────────────────────────────────────────
-const ActiveLine = ({ position, isVisible, reduce }) => (
-  <Box
-    {...LINE_STYLES}
-    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
-    bg={colors.accent}
-    zIndex={2}
-    transform={isVisible && position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
-    opacity={isVisible ? 1 : 0}
-  />
-);
-
-const HoverLine = ({ position, isVisible, reduce }) => (
-  <Box
-    {...LINE_STYLES}
-    transition={reduce ? REDUCED_LINE_TRANSITION : LINE_STYLES.transition}
-    bg={colors.accentMuted}
-    zIndex={1}
-    transform={position !== null ? `translateY(${position - 8}px)` : 'translateY(-100px)'}
-    opacity={isVisible ? 1 : 0}
-  />
-);
-
-const MobileHeader = ({ onSearchClick, onSponsorsClick, onMenuClick }) => (
-  <Box
-    display={{ md: 'none' }}
-    position="fixed"
-    top="60px"
-    left={0}
-    zIndex="overlay"
-    w="100%"
-    bg={colors.bgBody}
-    p="1em"
-  >
-    <Flex align="center" justify="space-between" gap="1em">
-      <Link to="/">
-        <Image src={Logo} h="22px" alt="React Bits logo" />
-      </Link>
-      <Flex gap={2}>
-        <IconButton px={3} {...ICON_BUTTON_STYLES} aria-label="Sponsors" onClick={onSponsorsClick}>
-          <Icon boxSize={3.5} as={Sparkles} color="#fff" />
-          <Text color="#fff" fontSize="12px">
-            Sponsors
-          </Text>
-        </IconButton>
-        <IconButton {...ICON_BUTTON_STYLES} aria-label="Search" onClick={onSearchClick}>
-          <Icon as={SearchIcon} color="#fff" />
-        </IconButton>
-        <IconButton {...ICON_BUTTON_STYLES} aria-label="Open Menu" onClick={onMenuClick}>
-          <Icon as={MenuIcon} color="#fff" />
-        </IconButton>
-      </Flex>
-    </Flex>
-  </Box>
-);
-
 // ─── Pro Configuration ───────────────────────────────────────────────────────
 const ProLinks = ({ onClose }) => (
   <>
@@ -166,10 +142,7 @@ const ProLinks = ({ onClose }) => (
       </Link>
       {PRO_SECTIONS.map(section => (
         <Link key={section.slug} to={`/pro/${section.slug}`} onClick={onClose}>
-          <Flex alignItems="center" gap="8px">
-            <Icon as={section.icon} boxSize={4} color={colors.accent} />
-            <span>{section.label}</span>
-          </Flex>
+          <span>{section.label}</span>
         </Link>
       ))}
     </Flex>
@@ -267,8 +240,6 @@ const MainDrawer = ({ isOpen, onClose, categories, location, pendingActivePath, 
                   pendingActivePath={pendingActivePath}
                   handleClick={onClose}
                   handleTransitionNavigation={onNavigation}
-                  onItemMouseEnter={() => {}}
-                  onItemMouseLeave={() => {}}
                   itemRefs={{}}
                   isTransitioning={isTransitioning}
                   isFirstCategory={i === 0}
@@ -332,12 +303,14 @@ const Category = memo(
     handleTransitionNavigation,
     location,
     pendingActivePath,
-    onItemMouseEnter,
-    onItemMouseLeave,
     itemRefs,
     isTransitioning,
     isFirstCategory,
-    savedSet
+    savedSet,
+    showFavorites,
+    onPreviewEnter,
+    onPreviewMove,
+    onPreviewLeave
   }) => {
     const items = useMemo(
       () =>
@@ -362,7 +335,7 @@ const Category = memo(
         <Text className="category-name" mb={2} mt={isFirstCategory ? 0 : 4}>
           {category.name}
         </Text>
-        <Stack spacing={0.5} pl={4} borderLeft="1px solid #2F293A" position="relative">
+        <Stack className="sidebar-link-stack" spacing={0.5} pl={4} borderLeft="1px solid #2F293A" position="relative">
           {items.map(({ sub, path, isActive, isNew, isUpdated, isFavorited }) => (
             <Link
               key={path}
@@ -375,8 +348,11 @@ const Category = memo(
                 e.preventDefault();
                 handleTransitionNavigation ? handleTransitionNavigation(path, sub) : handleClick();
               }}
-              onMouseEnter={e => onItemMouseEnter(path, e)}
-              onMouseLeave={onItemMouseLeave}
+              onMouseEnter={event => onPreviewEnter?.(category.name, sub, event)}
+              onMouseMove={event => onPreviewMove?.(event)}
+              onMouseLeave={onPreviewLeave}
+              onFocus={event => onPreviewEnter?.(category.name, sub, event)}
+              onBlur={onPreviewLeave}
             >
               {sub}
               {isNew && <span className="new-tag">New</span>}
@@ -384,6 +360,18 @@ const Category = memo(
               {isFavorited && <Icon as={HeartIcon} color={colors.accent} boxSize={3} style={{ marginLeft: 6 }} />}
             </Link>
           ))}
+          {showFavorites && (
+            <Link
+              ref={el => {
+                if (itemRefs.current) itemRefs.current['/favorites'] = el;
+              }}
+              to="/favorites"
+              className={`sidebar-item ${location.pathname === '/favorites' ? 'active-sidebar-item' : ''}`}
+              onClick={handleClick}
+            >
+              Favorites
+            </Link>
+          )}
         </Stack>
       </Box>
     );
@@ -397,44 +385,75 @@ const Sidebar = () => {
   // State
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [isSponsorsOpen, setSponsorsOpen] = useState(false);
-  const [linePosition, setLinePosition] = useState(null);
-  const [isLineVisible, setIsLineVisible] = useState(false);
-  const [hoverLinePosition, setHoverLinePosition] = useState(null);
-  const [isHoverLineVisible, setIsHoverLineVisible] = useState(false);
   const [pendingActivePath, setPendingActivePath] = useState(null);
+  const [sidebarFilter, setSidebarFilter] = useState('');
+  const [sidebarPreview, setSidebarPreview] = useState(null);
 
   // Refs
-  const sidebarRef = useRef(null);
   const sidebarContainerRef = useRef(null);
   const itemRefs = useRef({});
-  const hoverTimeoutRef = useRef(null);
-  const hoverDelayTimeoutRef = useRef(null);
+  const previewShowTimerRef = useRef(null);
+  const previewHideTimerRef = useRef(null);
 
   // Hooks
   const location = useLocation();
   const navigate = useNavigate();
-  const { toggleSearch } = useSearch();
+  const reduceMotion = useReducedMotion();
+  const previewX = useMotionValue(260);
+  const previewY = useMotionValue(100);
+  const smoothPreviewX = useSpring(previewX, { stiffness: 420, damping: 38, mass: 0.72 });
+  const smoothPreviewY = useSpring(previewY, { stiffness: 360, damping: 34, mass: 0.78 });
   const { startTransition, isTransitioning } = useTransition();
   const savedSet = useFavoritesSync();
-  const isScrolledToBottom = useScrolledToBottom(sidebarContainerRef);
-  const reduceMotion = useReducedMotion();
+  const { isAtTop: isSidebarAtTop, isAtBottom: isSidebarAtBottom } = useScrollEdges(sidebarContainerRef);
+  const sidebarFilterQuery = sidebarFilter.trim().toLowerCase();
+  const sidebarCategories = useMemo(
+    () =>
+      CATEGORIES.map((category, index) => ({
+        ...category,
+        index,
+        subcategories:
+          sidebarFilterQuery && !category.name.toLowerCase().includes(sidebarFilterQuery)
+            ? category.subcategories.filter(item => item.toLowerCase().includes(sidebarFilterQuery))
+            : category.subcategories
+      })),
+    [sidebarFilterQuery]
+  );
+  const sidebarProSections = useMemo(
+    () =>
+      sidebarFilterQuery && !'pro'.includes(sidebarFilterQuery)
+        ? PRO_SECTIONS.filter(section => section.label.toLowerCase().includes(sidebarFilterQuery))
+        : PRO_SECTIONS,
+    [sidebarFilterQuery]
+  );
+  const sidebarTools = useMemo(
+    () =>
+      sidebarFilterQuery && !'tools'.includes(sidebarFilterQuery)
+        ? TOOLS.filter(tool => tool.label.toLowerCase().includes(sidebarFilterQuery))
+        : TOOLS,
+    [sidebarFilterQuery]
+  );
+  const showSidebarFavorites = !sidebarFilterQuery || 'favorites saved'.includes(sidebarFilterQuery);
+  const sidebarHasResults =
+    showSidebarFavorites ||
+    sidebarProSections.length > 0 ||
+    sidebarTools.length > 0 ||
+    sidebarCategories.some(category => category.subcategories.length > 0);
+  const firstVisibleCategory = sidebarCategories.find(
+    category => category.subcategories.length > 0 || (category.index === 0 && showSidebarFavorites)
+  )?.name;
 
   // Helpers
   const findActiveElement = useCallback(() => {
     const activePath = pendingActivePath || location.pathname;
+    const directMatch = itemRefs.current[activePath];
+    if (directMatch) return directMatch;
     for (const category of CATEGORIES) {
       const activeItem = category.subcategories.find(sub => activePath === `/${slug(category.name)}/${slug(sub)}`);
       if (activeItem) return itemRefs.current[`/${slug(category.name)}/${slug(activeItem)}`];
     }
     return null;
   }, [location.pathname, pendingActivePath]);
-
-  const updateLinePosition = useCallback(el => {
-    if (!el || !sidebarRef.current?.offsetParent) return null;
-    const sidebarRect = sidebarRef.current.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-    return elRect.top - sidebarRect.top + elRect.height / 2;
-  }, []);
 
   const scrollActiveItemIntoView = useCallback(() => {
     const activeEl = findActiveElement();
@@ -457,11 +476,6 @@ const Sidebar = () => {
   // Handlers
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
-  const handleSearchClick = useCallback(() => {
-    closeDrawer();
-    toggleSearch();
-  }, [closeDrawer, toggleSearch]);
-
   const createNavigationHandler = useCallback(
     shouldCloseDrawer => async (path, subcategory) => {
       if (isTransitioning || location.pathname === path) return;
@@ -482,54 +496,87 @@ const Sidebar = () => {
 
   const handleMobileNavigation = useMemo(() => createNavigationHandler(true), [createNavigationHandler]);
 
-  const onItemEnter = useCallback(
-    (path, e) => {
-      clearTimeout(hoverTimeoutRef.current);
-      clearTimeout(hoverDelayTimeoutRef.current);
+  const updatePreviewPosition = useCallback(
+    event => {
+      const itemRect = event.currentTarget.getBoundingClientRect();
+      const sidebarRect = event.currentTarget.closest('nav')?.getBoundingClientRect();
+      const pointerX = event.clientX || itemRect.left + itemRect.width / 2;
+      const pointerY = event.clientY || itemRect.top + itemRect.height / 2;
+      const sidebarLeft = sidebarRect?.left ?? 16;
+      const sidebarWidth = sidebarRect?.width ?? 228;
+      const sidebarRight = sidebarRect?.right ?? sidebarLeft + sidebarWidth;
+      const pointerProgress = Math.max(0, Math.min(1, (pointerX - sidebarLeft) / sidebarWidth));
+      const horizontalDrift = (pointerProgress - 0.5) * 12;
+      const nextX = Math.min(window.innerWidth - PREVIEW_WIDTH - 16, sidebarRight + 16 + horizontalDrift);
+      const minY = sidebarRect?.top ?? 76;
+      const maxY = Math.max(minY, window.innerHeight - PREVIEW_HEIGHT - 16);
+      const nextY = Math.max(minY, Math.min(maxY, pointerY - PREVIEW_HEIGHT / 2));
 
-      const pos = updateLinePosition(e.currentTarget);
-      if (pos !== null) setHoverLinePosition(pos);
-
-      hoverDelayTimeoutRef.current = setTimeout(() => setIsHoverLineVisible(true), 200);
+      previewX.set(nextX);
+      previewY.set(nextY);
     },
-    [updateLinePosition]
+    [previewX, previewY]
   );
 
-  const onItemLeave = useCallback(() => {
-    clearTimeout(hoverDelayTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => setIsHoverLineVisible(false), 100);
+  const handlePreviewEnter = useCallback(
+    (categoryName, componentName, event) => {
+      if (categoryName === 'Get Started') return;
+
+      const key = `/${slug(categoryName)}/${slug(componentName)}`;
+      const metadata = COMPONENT_METADATA_BY_PATH.get(key);
+      if (!metadata?.videoUrl) return;
+
+      clearTimeout(previewShowTimerRef.current);
+      clearTimeout(previewHideTimerRef.current);
+      updatePreviewPosition(event);
+
+      const videoBase = metadata.videoUrl.replace(/\.(webm|mp4)$/i, '');
+      const delay = sidebarPreview ? 70 : PREVIEW_DELAY;
+      previewShowTimerRef.current = setTimeout(() => {
+        setSidebarPreview({ key, title: componentName, videoBase });
+      }, delay);
+    },
+    [sidebarPreview, updatePreviewPosition]
+  );
+
+  const handlePreviewMove = useCallback(
+    event => {
+      if (!reduceMotion) updatePreviewPosition(event);
+    },
+    [reduceMotion, updatePreviewPosition]
+  );
+
+  const handlePreviewLeave = useCallback(() => {
+    clearTimeout(previewShowTimerRef.current);
+    clearTimeout(previewHideTimerRef.current);
+    previewHideTimerRef.current = setTimeout(() => setSidebarPreview(null), 90);
   }, []);
 
   // Effects
-  useLayoutEffect(() => {
-    const activeEl = findActiveElement();
-    if (!activeEl) {
-      setIsLineVisible(false);
-      return;
-    }
-    const pos = updateLinePosition(activeEl);
-    setLinePosition(pos);
-    setIsLineVisible(pos !== null);
-  }, [findActiveElement, updateLinePosition]);
-
   useEffect(() => {
     const timer = setTimeout(scrollActiveItemIntoView, 100);
     return () => clearTimeout(timer);
   }, [location.pathname, scrollActiveItemIntoView]);
-
-  useEffect(
-    () => () => {
-      clearTimeout(hoverTimeoutRef.current);
-      clearTimeout(hoverDelayTimeoutRef.current);
-    },
-    []
-  );
 
   useEffect(() => {
     if (pendingActivePath && location.pathname === pendingActivePath) {
       setPendingActivePath(null);
     }
   }, [location.pathname, pendingActivePath]);
+
+  useEffect(() => {
+    setSidebarPreview(null);
+    clearTimeout(previewShowTimerRef.current);
+    clearTimeout(previewHideTimerRef.current);
+  }, [location.pathname, sidebarFilter]);
+
+  useEffect(
+    () => () => {
+      clearTimeout(previewShowTimerRef.current);
+      clearTimeout(previewHideTimerRef.current);
+    },
+    []
+  );
 
   return (
     <>
@@ -547,95 +594,125 @@ const Sidebar = () => {
 
       <Box
         as="nav"
-        ref={sidebarContainerRef}
         position="fixed"
-        top="0"
-        left="2em"
-        h="100vh"
-        w={{ base: 0, md: 'fit-content' }}
-        maxW="200px"
-        p={5}
-        overflowY="auto"
-        className={`sidebar ${isScrolledToBottom ? 'sidebar-no-fade' : ''}`}
+        top="calc(var(--docs-header-height) + 16px)"
+        left="16px"
+        h="calc(100vh - var(--docs-header-height) - 32px)"
+        w={{ base: 0, md: '228px' }}
+        maxW="228px"
+        p={0}
+        overflow="hidden"
+        className="sidebar"
       >
-        <Box ref={sidebarRef} position="relative">
-          <ActiveLine position={linePosition} isVisible={isLineVisible} reduce={reduceMotion} />
-          <HoverLine position={hoverLinePosition} isVisible={isHoverLineVisible} reduce={reduceMotion} />
+        <label className="sidebar-filter">
+          <SearchIcon size={13} aria-hidden="true" />
+          <input
+            value={sidebarFilter}
+            onChange={event => setSidebarFilter(event.target.value)}
+            placeholder="Filter..."
+            aria-label="Filter sidebar navigation"
+          />
+        </label>
 
-          <VStack align="stretch" spacing={4}>
-            {CATEGORIES.map((cat, i) => (
-              <Fragment key={cat.name}>
-                <Category
-                  key={cat.name}
-                  category={cat}
-                  location={location}
-                  pendingActivePath={pendingActivePath}
-                  handleClick={scrollToTop}
-                  handleTransitionNavigation={handleTransitionNavigation}
-                  onItemMouseEnter={onItemEnter}
-                  onItemMouseLeave={onItemLeave}
-                  itemRefs={itemRefs}
-                  isTransitioning={isTransitioning}
-                  isFirstCategory={i === 0}
-                  savedSet={savedSet}
-                />
-                {/* Pro Section - after Get Started */}
-                {i === 0 && (
-                  <Box>
-                    <Text className="category-name sidebar-pro-name" mb={2} mt={4}>
-                      Pro
-                    </Text>
-                    <Stack spacing={0.5} pl={4} borderLeft={`1px solid ${colors.borderSecondary}`} position="relative">
-                      {PRO_SECTIONS.map(section => {
-                        const path = `/pro/${section.slug}`;
-                        return (
-                          <Link
-                            key={section.slug}
-                            ref={el => {
-                              if (itemRefs.current) itemRefs.current[path] = el;
-                            }}
-                            to={path}
-                            className={`sidebar-item ${location.pathname === path ? 'active-sidebar-item' : ''}`}
-                            onClick={scrollToTop}
-                            onMouseEnter={e => onItemEnter(path, e)}
-                            onMouseLeave={onItemLeave}
-                          >
-                            <Flex alignItems="center" gap="6px">
-                              <Icon as={section.icon} boxSize={3.5} color={colors.accent} />
+        <Box
+          className={`sidebar-scroll-shell ${isSidebarAtTop ? 'is-at-top' : ''} ${isSidebarAtBottom ? 'is-at-bottom' : ''}`}
+        >
+          <Box ref={sidebarContainerRef} className="sidebar-scroll">
+            <VStack align="stretch" spacing={4}>
+              {sidebarCategories.map(cat => (
+                <Fragment key={cat.name}>
+                  {(cat.subcategories.length > 0 || (cat.index === 0 && showSidebarFavorites)) && (
+                    <Category
+                      key={cat.name}
+                      category={cat}
+                      location={location}
+                      pendingActivePath={pendingActivePath}
+                      handleClick={scrollToTop}
+                      handleTransitionNavigation={handleTransitionNavigation}
+                      itemRefs={itemRefs}
+                      isTransitioning={isTransitioning}
+                      isFirstCategory={cat.name === firstVisibleCategory}
+                      savedSet={savedSet}
+                      showFavorites={cat.index === 0 && showSidebarFavorites}
+                      onPreviewEnter={handlePreviewEnter}
+                      onPreviewMove={handlePreviewMove}
+                      onPreviewLeave={handlePreviewLeave}
+                    />
+                  )}
+
+                  {/* Pro Section - after Get Started */}
+                  {cat.index === 0 && sidebarProSections.length > 0 && (
+                    <Box>
+                      <Text className="category-name sidebar-pro-name" mb={2} mt={4}>
+                        Pro
+                      </Text>
+                      <Stack
+                        className="sidebar-link-stack"
+                        spacing={0.5}
+                        pl={4}
+                        borderLeft={`1px solid ${colors.borderSecondary}`}
+                        position="relative"
+                      >
+                        {sidebarProSections.map(section => {
+                          const path = `/pro/${section.slug}`;
+                          return (
+                            <Link
+                              key={section.slug}
+                              ref={el => {
+                                if (itemRefs.current) itemRefs.current[path] = el;
+                              }}
+                              to={path}
+                              className={`sidebar-item ${location.pathname === path ? 'active-sidebar-item' : ''}`}
+                              onClick={scrollToTop}
+                            >
                               <span>{section.label}</span>
-                            </Flex>
-                          </Link>
-                        );
-                      })}
-                    </Stack>
-                  </Box>
-                )}
+                            </Link>
+                          );
+                        })}
+                      </Stack>
+                    </Box>
+                  )}
 
-                {/* Tools Section - after Pro */}
-                {i === 0 && (
-                  <Box>
-                    <Text className="category-name" mb={2} mt={4}>
-                      Tools
-                    </Text>
-                    <Stack spacing={0.5} pl={4} borderLeft={`1px solid ${colors.borderSecondary}`} position="relative">
-                      {TOOLS.map(tool => (
-                        <Link
-                          key={tool.id}
-                          to={tool.path}
-                          className={`sidebar-item ${location.pathname === tool.path ? 'active-sidebar-item' : ''}`}
-                          onClick={scrollToTop}
-                        >
-                          <span>{tool.label}</span>
-                        </Link>
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
-              </Fragment>
-            ))}
-          </VStack>
+                  {/* Tools Section - after Pro */}
+                  {cat.index === 0 && sidebarTools.length > 0 && (
+                    <Box>
+                      <Text className="category-name" mb={2} mt={4}>
+                        Tools
+                      </Text>
+                      <Stack
+                        className="sidebar-link-stack"
+                        spacing={0.5}
+                        pl={4}
+                        borderLeft={`1px solid ${colors.borderSecondary}`}
+                        position="relative"
+                      >
+                        {sidebarTools.map(tool => (
+                          <Link
+                            key={tool.id}
+                            to={tool.path}
+                            className={`sidebar-item ${location.pathname === tool.path ? 'active-sidebar-item' : ''}`}
+                            onClick={scrollToTop}
+                          >
+                            <span>{tool.label}</span>
+                          </Link>
+                        ))}
+                      </Stack>
+                    </Box>
+                  )}
+                </Fragment>
+              ))}
+              {!sidebarHasResults && <Text className="sidebar-filter-empty">No matching pages</Text>}
+            </VStack>
+          </Box>
         </Box>
       </Box>
+
+      <SidebarHoverPreview
+        preview={sidebarPreview}
+        x={reduceMotion ? previewX : smoothPreviewX}
+        y={reduceMotion ? previewY : smoothPreviewY}
+        reduceMotion={reduceMotion}
+      />
     </>
   );
 };

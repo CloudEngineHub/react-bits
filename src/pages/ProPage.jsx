@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LuArrowRight, LuArrowUpRight, LuPlus } from 'react-icons/lu';
+import { LuArrowRight, LuArrowUpRight, LuCheck, LuPlus } from 'react-icons/lu';
 
 import Navbar from '../components/landingnew/Navbar/Navbar';
 import Footer from '../components/landingnew/Footer/Footer';
@@ -9,8 +9,9 @@ import ProCta from '../components/common/Pro/ProCta';
 import ProReel from '../components/common/Pro/ProReel';
 import ColorBends from '../content/Backgrounds/ColorBends/ColorBends';
 import { PRO_SECTIONS, PRO_FAQ, PRO_TESTIMONIALS, PRO_FREE_COPY } from '../constants/Pro';
-import { proUrl, trackProClick, proAgentKitPreview } from '../utils/pro';
+import { proUrl, proLinkProps, trackProClick, proAgentKitPreview } from '../utils/pro';
 import useProManifest from '../hooks/useProManifest';
+import useProImpression from '../hooks/useProImpression';
 import usePageSEO from '../hooks/usePageSEO';
 import useScrollToTop from '../hooks/useScrollToTop';
 
@@ -19,10 +20,28 @@ const HERO_PLACEMENT = 'pro-hub-hero';
 // The hero pill rotates through what Pro actually ships, so the first thing a
 // visitor reads isn't a single headline number they might not care about.
 const TAG_ITEMS = [
-  { label: '300 App UI Blocks', href: '/docs/app-ui' },
+  { label: 'Application UI', href: '/docs/app-ui' },
   { label: 'Landing Builder', href: '/builder' },
-  { label: '34 Components', href: '/docs/components' },
+  { label: 'Animated Components', href: '/docs/components' },
   { label: 'Agent Kit', href: '/docs/agent-kit' }
+];
+
+const COMPARISON = [
+  {
+    label: 'React Bits',
+    title: 'Add a standout moment.',
+    description: 'The open-source library for adding individual animated components and effects to any project.',
+    points: ['Free forever', 'Four code variants', 'Source you own'],
+    action: { label: 'Browse free components', to: '/get-started/index' }
+  },
+  {
+    label: 'React Bits Pro',
+    title: 'Build the complete experience.',
+    description:
+      'The full toolkit for shipping the marketing site, the product behind it and the agent workflow around both.',
+    points: ['Complete page and app UI', 'Templates and Agent Kit', 'Lifetime access available'],
+    featured: true
+  }
 ];
 
 const TAG_INTERVAL = 3200;
@@ -87,10 +106,10 @@ const ProTag = () => {
   return (
     <a
       className="prox-tag"
-      href={proUrl(item.href, `${HERO_PLACEMENT}-tag`)}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => trackProClick(`${HERO_PLACEMENT}-tag`, { item: item.label })}
+      {...proLinkProps(item.href, `${HERO_PLACEMENT}-tag`, {
+        params: { item: item.label },
+        sameTab: true
+      })}
     >
       {inner}
     </a>
@@ -111,6 +130,8 @@ const ProPage = () => {
   });
 
   const [openFaq, setOpenFaq] = useState(null);
+  const heroImpressionRef = useProImpression(HERO_PLACEMENT);
+  const comparisonImpressionRef = useProImpression('pro-hub-comparison');
 
   const { manifest } = useProManifest();
   const counts = manifest?.counts;
@@ -127,7 +148,7 @@ const ProPage = () => {
       <Navbar showDocs />
 
       <main className="prox">
-        <section className="prox-hero">
+        <section className="prox-hero" ref={heroImpressionRef}>
           <div className="prox-hero-bg" aria-hidden="true">
             <ColorBends rotation={90} speed={0.2} frequency={1} noise={0.15} intensity={1.5} colors={['#A855F7']} />
           </div>
@@ -142,29 +163,24 @@ const ProPage = () => {
             </h1>
 
             <p className="prox-hero-desc">
-              React Bits stays free forever. Pro adds 134 more components, built to the same standard, plus page blocks,
-              app UI blocks, templates and an agent kit.
+              React Bits stays free forever. Pro takes you from individual effects to complete pages, product UI,
+              templates and an Agent Kit—all delivered as source you own.
             </p>
 
             <div className="prox-actions">
               <a
                 className="prox-btn prox-btn-primary"
-                href={proUrl('/', HERO_PLACEMENT)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackProClick(HERO_PLACEMENT)}
+                {...proLinkProps('/#pricing', HERO_PLACEMENT, { sameTab: true })}
               >
                 Get React Bits Pro
-                <LuArrowUpRight size={14} />
               </a>
               <Link className="prox-btn prox-btn-ghost" to="/pro/components">
                 Browse the catalogue
-                <LuArrowRight size={14} />
               </Link>
             </div>
 
             <ul className="prox-proof">
-              <li>{counts?.total ?? 683} pieces</li>
+              <li>{counts?.total ? `${counts.total} UI assets + Agent Kit` : 'Complete UI library + Agent Kit'}</li>
               <li aria-hidden="true" className="prox-proof-sep" />
               <li>Lifetime option</li>
               <li aria-hidden="true" className="prox-proof-sep" />
@@ -205,12 +221,59 @@ const ProPage = () => {
           </div>
         </section>
 
+        <section className="prox-section prox-section-alt" ref={comparisonImpressionRef}>
+          <div className="prox-inner">
+            <header className="prox-head prox-head-centered">
+              <h2 className="prox-title">Start free. Go Pro when the project grows.</h2>
+              <p className="prox-sub">
+                The free library and Pro are designed to work together. The difference is how much of the product you
+                want ready before you start.
+              </p>
+            </header>
+
+            <div className="prox-compare">
+              {COMPARISON.map(item => (
+                <article className={`prox-compare-card${item.featured ? ' is-featured' : ''}`} key={item.label}>
+                  <span className="prox-compare-label">{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <ul>
+                    {item.points.map(point => (
+                      <li key={point}>
+                        <LuCheck size={14} />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {item.action ? (
+                    <Link className="prox-compare-action" to={item.action.to}>
+                      {item.action.label}
+                      <LuArrowRight size={14} />
+                    </Link>
+                  ) : (
+                    <a
+                      className="prox-compare-action is-primary"
+                      {...proLinkProps('/#pricing', 'pro-hub-comparison', { sameTab: true })}
+                    >
+                      See plans and pricing
+                      <LuArrowRight size={14} />
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {(freeTemplate || freeSkill) && (
-          <section className="prox-section prox-section-alt">
+          <section className="prox-section">
             <div className="prox-inner">
               <header className="prox-head">
-                <h2 className="prox-title">Judge it before you buy</h2>
-                <p className="prox-sub">We also have some freebies on Pro, try one of our templates and skills.</p>
+                <h2 className="prox-title">Try the quality before you buy</h2>
+                <p className="prox-sub">
+                  Download a complete template and install an Agent Kit skill for free. No checkout required.
+                </p>
               </header>
 
               <div className="prox-free">
@@ -244,7 +307,6 @@ const ProPage = () => {
                         onClick={() => trackProClick('pro-hub-free-template', { item: freeTemplate.slug })}
                       >
                         Download it
-                        <LuArrowUpRight size={13} />
                       </a>
                       {freeTemplate.livePreviewUrl && (
                         <a
@@ -280,7 +342,6 @@ const ProPage = () => {
                         onClick={() => trackProClick('pro-hub-free-skill', { item: freeSkill.slug })}
                       >
                         Install it
-                        <LuArrowUpRight size={13} />
                       </a>
                       <Link className="prox-btn prox-btn-sm prox-btn-ghost" to="/pro/agent-kit">
                         See all skills
@@ -345,7 +406,8 @@ const ProPage = () => {
             title="Own the whole library."
             description="Every file is yours to edit, and lifetime access includes every future update."
             placement={CTA_PLACEMENT}
-            secondary={{ to: '/pro/templates', label: 'See the templates' }}
+            secondary={{ to: 'https://pro.reactbits.dev/docs/introduction', label: 'Explore the library' }}
+            showArrows={false}
           />
         </div>
       </main>

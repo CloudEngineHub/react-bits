@@ -21,22 +21,31 @@ const Footer = () => (
       <div className="ln-footer-top">
         <div className="ln-footer-brand">
           <img src={ReactBitsLogo} alt="React Bits" className="ln-footer-logo" />
-          <p className="ln-footer-tagline">
-            Animated UI components for React.
-          </p>
+          <p className="ln-footer-tagline">Animated UI components for React.</p>
         </div>
 
         <nav className="ln-footer-nav">
           <div className="ln-footer-col">
             <span className="ln-footer-col-title">Product</span>
-            <Link to="/get-started/introduction" className="ln-footer-link">Docs</Link>
-            <Link to="/showcase" className="ln-footer-link">Showcase</Link>
-            <Link to="/sponsors" className="ln-footer-link">Sponsors</Link>
+            <Link to="/get-started/introduction" className="ln-footer-link">
+              Docs
+            </Link>
+            <Link to="/showcase" className="ln-footer-link">
+              Showcase
+            </Link>
+            <Link to="/sponsors" className="ln-footer-link">
+              Sponsors
+            </Link>
           </div>
 
           <div className="ln-footer-col">
             <span className="ln-footer-col-title">Community</span>
-            <a href="https://github.com/DavidHDev/react-bits" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
+            <a
+              href="https://github.com/DavidHDev/react-bits"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ln-footer-link"
+            >
               GitHub
             </a>
             <a href="https://vue-bits.dev/" target="_blank" rel="noopener noreferrer" className="ln-footer-link">
@@ -49,11 +58,19 @@ const Footer = () => (
 
           <div className="ln-footer-col">
             <span className="ln-footer-col-title">Pro</span>
-            <Link to="/pro" className="ln-footer-link">What&apos;s in Pro</Link>
-            <Link to="/pro/components" className="ln-footer-link">Pro Components</Link>
-            <Link to="/pro/blocks" className="ln-footer-link">Pro Blocks</Link>
-            <Link to="/pro/templates" className="ln-footer-link">Pro Templates</Link>
-            <a {...proLinkProps('/', 'footer')} className="ln-footer-link">
+            <Link to="/pro" className="ln-footer-link">
+              What&apos;s in Pro
+            </Link>
+            <Link to="/pro/components" className="ln-footer-link">
+              Pro Components
+            </Link>
+            <Link to="/pro/blocks" className="ln-footer-link">
+              Pro Blocks
+            </Link>
+            <Link to="/pro/templates" className="ln-footer-link">
+              Pro Templates
+            </Link>
+            <a {...proLinkProps('/#pricing', 'footer', { sameTab: true })} className="ln-footer-link">
               Get React Bits Pro
             </a>
           </div>

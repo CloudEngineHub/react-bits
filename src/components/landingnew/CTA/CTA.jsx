@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { FiArrowRight } from 'react-icons/fi';
-import { FaGithub } from 'react-icons/fa6';
 import MoltenMetal from '@/content/Backgrounds/MoltenMetal/MoltenMetal';
+import useProImpression from '../../../hooks/useProImpression';
+import { proLinkProps } from '../../../utils/pro';
 import './CTA.css';
 
 const CTA = () => {
   const prefersReducedMotion = useReducedMotion();
+  const impressionRef = useProImpression('landing-final-cta');
 
   return (
-    <section className="ln-cta-section">
+    <section className="ln-cta-section" ref={impressionRef}>
       <div className="ln-cta-glow" />
 
       <motion.div
@@ -27,24 +29,23 @@ const CTA = () => {
                 <MoltenMetal opacity={0.4} mouseInteraction={false} />
               </div>
             )}
-            <h2 className="ln-cta-headline">Stop building from scratch.</h2>
+            <h2 className="ln-cta-headline">Build something people remember.</h2>
 
             <p className="ln-cta-sub">
-              Beautiful, animated React components you can drop into any project. Open source. Always free.
+              Start with the free library. When you need the complete page, product UI and tools to ship it, React Bits
+              Pro is ready.
             </p>
 
             <div className="ln-cta-buttons">
-              <Link to="/get-started/index" className="ln-cta-btn ln-cta-btn--primary">
-                Browse Components <FiArrowRight size={15} />
-              </Link>
               <a
-                href="https://github.com/DavidHDev/react-bits"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ln-cta-btn ln-cta-btn--secondary"
+                {...proLinkProps('/#pricing', 'landing-final-cta', { sameTab: true })}
+                className="ln-cta-btn ln-cta-btn--primary"
               >
-                <FaGithub size={15} /> Star on GitHub
+                Get React Bits Pro <FiArrowRight size={15} />
               </a>
+              <Link to="/get-started/index" className="ln-cta-btn ln-cta-btn--secondary">
+                Browse free components
+              </Link>
             </div>
           </div>
         </div>

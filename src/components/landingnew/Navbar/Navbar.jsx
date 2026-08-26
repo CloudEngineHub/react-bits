@@ -5,6 +5,7 @@ import { Logo } from '../../common/SVGComponents';
 import { useStars } from '../../../hooks/useStars';
 import { GITHUB_URL } from '../../../constants/Site';
 import { proLinkProps } from '../../../utils/pro';
+import useProImpression from '../../../hooks/useProImpression';
 import { FaGithub } from 'react-icons/fa6';
 import { LuSearch, LuHeart, LuUser } from 'react-icons/lu';
 import { useSearch } from '../../context/SearchContext/useSearch';
@@ -18,8 +19,11 @@ import cssIcon from '../../../assets/icons/css.svg';
 import twIcon from '../../../assets/icons/tw.svg';
 import './Navbar.css';
 
+const slugify = value => value.replace(/\s+/g, '-').toLowerCase();
+const DOCS_MATCHES = CATEGORIES.map(category => `/${slugify(category.name)}`);
+
 const NAV_LINKS = [
-  { label: 'Docs', to: '/get-started/introduction', match: '/get-started' },
+  { label: 'Docs', to: '/get-started/introduction', match: DOCS_MATCHES },
   { label: 'Tools', to: '/tools', match: '/tools' },
   { label: 'Pro', to: '/pro', match: '/pro' },
   { label: 'Sponsors', to: '/sponsors', match: '/sponsors' }
@@ -30,6 +34,7 @@ const Navbar = ({ showDocs }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
+  const [mobileFilter, setMobileFilter] = useState('');
   const linksRef = useRef(null);
   const highlightRef = useRef(null);
   const prefsTimeoutRef = useRef(null);
@@ -37,8 +42,48 @@ const Navbar = ({ showDocs }) => {
   const { toggleSearch } = useSearch();
   const { languagePreset, setLanguagePreset, stylePreset, setStylePreset } = useOptions();
   const location = useLocation();
+  const docsCategory = location.pathname.split('/').filter(Boolean)[0] || 'unknown';
+  const showDocsProCta = showDocs && !location.pathname.startsWith('/pro');
+  const docsProRef = useProImpression('docs-navbar', { category: docsCategory }, showDocsProCta);
+  const landingProRef = useProImpression('navbar', { surface: 'marketing' }, !showDocs);
+  const mobileFilterQuery = mobileFilter.trim().toLowerCase();
+  const mobileCategories = useMemo(
+    () =>
+      CATEGORIES.map((category, index) => ({
+        ...category,
+        index,
+        subcategories:
+          mobileFilterQuery && !category.name.toLowerCase().includes(mobileFilterQuery)
+            ? category.subcategories.filter(item => item.toLowerCase().includes(mobileFilterQuery))
+            : category.subcategories
+      })),
+    [mobileFilterQuery]
+  );
+  const mobileProSections = useMemo(
+    () =>
+      mobileFilterQuery
+        ? PRO_SECTIONS.filter(section => section.label.toLowerCase().includes(mobileFilterQuery))
+        : PRO_SECTIONS,
+    [mobileFilterQuery]
+  );
+  const mobileTools = useMemo(
+    () => (mobileFilterQuery ? TOOLS.filter(tool => tool.label.toLowerCase().includes(mobileFilterQuery)) : TOOLS),
+    [mobileFilterQuery]
+  );
+  const showMobileFavorites = !mobileFilterQuery || 'favorites saved'.includes(mobileFilterQuery);
+  const mobileHasResults =
+    showMobileFavorites ||
+    mobileProSections.length > 0 ||
+    mobileTools.length > 0 ||
+    mobileCategories.some(category => category.subcategories.length > 0);
 
-  const isActive = useCallback(match => location.pathname.startsWith(match), [location.pathname]);
+  const isActive = useCallback(
+    match => {
+      const matches = Array.isArray(match) ? match : [match];
+      return matches.some(path => location.pathname === path || location.pathname.startsWith(`${path}/`));
+    },
+    [location.pathname]
+  );
 
   useEffect(() => {
     if (menuOpen) {
@@ -50,6 +95,10 @@ const Navbar = ({ showDocs }) => {
       document.body.style.overflow = '';
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen && mobileFilter) setMobileFilter('');
+  }, [menuOpen, mobileFilter]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -193,13 +242,27 @@ const Navbar = ({ showDocs }) => {
                   </div>
                 )}
               </div>
+
+              {showDocsProCta && (
+                <a
+                  ref={docsProRef}
+                  {...proLinkProps('/#pricing', 'docs-navbar', {
+                    params: { category: docsCategory },
+                    sameTab: true
+                  })}
+                  className="ln-navbar-pro ln-navbar-pro-docs"
+                >
+                  Get React Bits Pro
+                </a>
+              )}
             </>
           )}
 
           {!showDocs && (
             <>
               <a
-                {...proLinkProps('/', 'navbar')}
+                ref={landingProRef}
+                {...proLinkProps('/', 'navbar', { sameTab: true })}
                 className="ln-navbar-pro"
                 onMouseMove={e => {
                   const rect = e.currentTarget.getBoundingClientRect();
@@ -207,10 +270,10 @@ const Navbar = ({ showDocs }) => {
                   e.currentTarget.style.setProperty('--pro-mx', `${x}%`);
                 }}
               >
-                GET PRO
+                Get React Bits Pro
               </a>
               <span className="ln-navbar-browse">
-                COMMUNITY <span className="ln-navbar-soon">SOON</span>
+                Community <span className="ln-navbar-soon">Soon</span>
               </span>
             </>
           )}
@@ -263,60 +326,100 @@ const Navbar = ({ showDocs }) => {
               <div className="ln-navbar-mobile-backdrop" onClick={() => setMenuOpen(false)} />
               <div className="ln-navbar-mobile-menu ln-navbar-mobile-menu-docs">
                 <div className="ln-navbar-mobile-scroll">
-                  {CATEGORIES.map((cat, i) => {
-                    const slug = str => str.replace(/\s+/g, '-').toLowerCase();
+                  <label className="ln-navbar-mobile-filter">
+                    <LuSearch size={14} aria-hidden="true" />
+                    <input
+                      value={mobileFilter}
+                      onChange={event => setMobileFilter(event.target.value)}
+                      placeholder="Filter navigation..."
+                      aria-label="Filter navigation"
+                    />
+                  </label>
+
+                  {mobileCategories.map(cat => {
                     return (
                       <div className="ln-navbar-mobile-section" key={cat.name}>
-                        <span className="ln-navbar-mobile-label">{cat.name}</span>
-                        {cat.subcategories.map(sub => (
-                          <Link
-                            key={sub}
-                            className="ln-navbar-mobile-link"
-                            to={`/${slug(cat.name)}/${slug(sub)}`}
-                            onClick={() => setMenuOpen(false)}
-                          >
-                            {sub}
-                          </Link>
-                        ))}
-                        {i === 0 && (
+                        {(cat.subcategories.length > 0 || (cat.index === 0 && showMobileFavorites)) && (
+                          <>
+                            <span className="ln-navbar-mobile-label">{cat.name}</span>
+                            <div className="ln-navbar-mobile-group">
+                              {cat.subcategories.map(sub => {
+                                const path = `/${slugify(cat.name)}/${slugify(sub)}`;
+                                return (
+                                  <Link
+                                    key={sub}
+                                    className={`ln-navbar-mobile-link${location.pathname === path ? ' ln-navbar-mobile-link-active' : ''}`}
+                                    to={path}
+                                    onClick={() => setMenuOpen(false)}
+                                  >
+                                    {sub}
+                                  </Link>
+                                );
+                              })}
+                              {cat.index === 0 && showMobileFavorites && (
+                                <Link
+                                  className={`ln-navbar-mobile-link${location.pathname === '/favorites' ? ' ln-navbar-mobile-link-active' : ''}`}
+                                  to="/favorites"
+                                  onClick={() => setMenuOpen(false)}
+                                >
+                                  Favorites
+                                </Link>
+                              )}
+                            </div>
+                          </>
+                        )}
+
+                        {cat.index === 0 && (
                           <>
                             {/* Mirrors the desktop sidebar, where Pro sits directly
                                 below Get Started and above Tools. */}
-                            <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>
-                              Pro
-                            </span>
-                            <Link className="ln-navbar-mobile-link" to="/pro" onClick={() => setMenuOpen(false)}>
-                              Overview
-                            </Link>
-                            {PRO_SECTIONS.map(section => (
-                              <Link
-                                key={section.slug}
-                                className="ln-navbar-mobile-link"
-                                to={`/pro/${section.slug}`}
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                {section.label}
-                              </Link>
-                            ))}
+                            {mobileProSections.length > 0 && (
+                              <div className="ln-navbar-mobile-subsection">
+                                <span className="ln-navbar-mobile-label ln-navbar-mobile-label-pro">Pro</span>
+                                <div className="ln-navbar-mobile-group">
+                                  {mobileProSections.map(section => {
+                                    const path = `/pro/${section.slug}`;
+                                    const SectionIcon = section.icon;
+                                    return (
+                                      <Link
+                                        key={section.slug}
+                                        className={`ln-navbar-mobile-link ln-navbar-mobile-pro-link${location.pathname === path ? ' ln-navbar-mobile-link-active' : ''}`}
+                                        to={path}
+                                        onClick={() => setMenuOpen(false)}
+                                      >
+                                        <SectionIcon size={14} aria-hidden="true" />
+                                        <span>{section.label}</span>
+                                      </Link>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
 
-                            <span className="ln-navbar-mobile-label" style={{ marginTop: 12 }}>
-                              Tools
-                            </span>
-                            {TOOLS.map(tool => (
-                              <Link
-                                key={tool.id}
-                                className="ln-navbar-mobile-link"
-                                to={tool.path}
-                                onClick={() => setMenuOpen(false)}
-                              >
-                                {tool.label}
-                              </Link>
-                            ))}
+                            {mobileTools.length > 0 && (
+                              <div className="ln-navbar-mobile-subsection">
+                                <span className="ln-navbar-mobile-label">Tools</span>
+                                <div className="ln-navbar-mobile-group">
+                                  {mobileTools.map(tool => (
+                                    <Link
+                                      key={tool.id}
+                                      className={`ln-navbar-mobile-link${location.pathname === tool.path ? ' ln-navbar-mobile-link-active' : ''}`}
+                                      to={tool.path}
+                                      onClick={() => setMenuOpen(false)}
+                                    >
+                                      {tool.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </>
                         )}
                       </div>
                     );
                   })}
+
+                  {!mobileHasResults && <p className="ln-navbar-mobile-empty">No matching pages</p>}
                 </div>
               </div>
             </>,

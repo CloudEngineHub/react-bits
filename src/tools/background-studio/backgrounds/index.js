@@ -1,5 +1,73 @@
 export const BACKGROUNDS = [
   {
+    id: 'crt-warp',
+    label: 'CRT Warp',
+    component: () => import('../../../content/Backgrounds/CRTWarp/CRTWarp.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/crt-warp"',
+    props: [
+      { name: 'color', type: 'color', default: '#c755f7', label: 'Phosphor Color' },
+      { name: 'backgroundColor', type: 'color', default: '#05010a', label: 'Background' },
+      { name: 'speed', type: 'number', default: 0.5, min: 0, max: 2, step: 0.05, label: 'Speed' },
+      { name: 'curvature', type: 'number', default: 0.25, min: 0, max: 1, step: 0.01, label: 'Curvature' },
+      {
+        name: 'scanlineStrength',
+        type: 'number',
+        default: 0.25,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Scanline Strength'
+      },
+      {
+        name: 'scanlineFrequency',
+        type: 'number',
+        default: 200,
+        min: 40,
+        max: 500,
+        step: 5,
+        label: 'Scanline Density'
+      },
+      {
+        name: 'waveAmplitude',
+        type: 'number',
+        default: 0.3,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Wave Amount'
+      },
+      {
+        name: 'waveFrequency',
+        type: 'number',
+        default: 2.5,
+        min: 0.5,
+        max: 6,
+        step: 0.1,
+        label: 'Wave Density'
+      },
+      { name: 'bloom', type: 'number', default: 1.5, min: 0, max: 3, step: 0.05, label: 'Bloom' },
+      { name: 'bloomRadius', type: 'number', default: 1, min: 0.1, max: 3, step: 0.05, label: 'Bloom Radius' },
+      { name: 'noise', type: 'number', default: 0.1, min: 0, max: 0.25, step: 0.005, label: 'Noise' },
+      { name: 'vignette', type: 'number', default: 0, min: 0, max: 1, step: 0.01, label: 'Vignette' },
+      { name: 'brightness', type: 'number', default: 1.25, min: 0.25, max: 2.5, step: 0.05, label: 'Brightness' },
+      { name: 'pixelation', type: 'select', default: 1, options: [1, 2, 4, 8], label: 'Pixel Size' },
+      { name: 'rgbShift', type: 'number', default: 0.015, min: 0, max: 0.03, step: 0.001, label: 'RGB Shift' },
+      { name: 'mouseReact', type: 'boolean', default: true, label: 'Pointer Warp' },
+      {
+        name: 'mouseStrength',
+        type: 'number',
+        default: 0.5,
+        min: 0,
+        max: 1.5,
+        step: 0.01,
+        label: 'Pointer Strength'
+      },
+      { name: 'dpr', type: 'select', default: 1, options: [0.75, 1, 1.5], label: 'Render Quality' },
+      { name: 'fps', type: 'select', default: 30, options: [24, 30, 45, 60], label: 'Frame Rate' },
+      { name: 'paused', type: 'boolean', default: false, label: 'Pause' }
+    ]
+  },
+  {
     id: 'molten-metal',
     label: 'Molten Metal',
     component: () => import('../../../content/Backgrounds/MoltenMetal/MoltenMetal.jsx'),

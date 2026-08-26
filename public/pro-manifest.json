@@ -12,7 +12,7 @@
     "format": "webp",
     "note": "Paths are relative to baseUrl. Join with a single slash. Component previews ship in light and dark; treat a null `preview` as 'no capture yet' and fall back to a text card."
   },
-  "summary": "134 components · 238 blocks · 300 app UI · 11 templates · 19 agent skills",
+  "summary": "134 Components · 238 Blocks · 300 App UI · 11 Templates · 20 Agent Skills",
   "counts": {
     "components": 134,
     "blocks": 238,
@@ -20,7 +20,7 @@
     "appUi": 300,
     "appUiCategories": 38,
     "templates": 11,
-    "agentKit": 19,
+    "agentKit": 20,
     "total": 683
   },
   "groups": {

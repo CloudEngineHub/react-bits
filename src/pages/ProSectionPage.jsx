@@ -20,6 +20,9 @@ const ALL = 'All';
 
 const KIND_ORDER = ['skill', 'prompt', 'recipe'];
 const KIND_LABELS = { skill: 'Skills', prompt: 'Prompts', recipe: 'Recipes' };
+const COMBINED_COMPONENT_GROUPS = {
+  Animations: ['3D & Shaders', 'Cursor Effects']
+};
 
 /**
  * Blocks and App UI arrive grouped by category. Flattening to one card per
@@ -52,7 +55,10 @@ const getFilterConfig = (section, items, manifest) => {
   if (section.groupKey) {
     const declared = manifest?.groups?.[section.groupKey] || [];
     const present = declared.filter(group => items.some(item => (item.group || item.category) === group));
-    return { key: 'group', options: present, labels: null };
+    const combined = Object.entries(COMBINED_COMPONENT_GROUPS)
+      .filter(([, groups]) => groups.every(group => present.includes(group)))
+      .map(([label]) => label);
+    return { key: 'group', options: [...combined, ...present], labels: null };
   }
 
   return null;
@@ -103,6 +109,8 @@ const ProSectionPage = () => {
 
   const visible = useMemo(() => {
     if (filter === ALL || !filterConfig) return items;
+    const combinedGroups = filterConfig.key === 'group' ? COMBINED_COMPONENT_GROUPS[filter] : null;
+    if (combinedGroups) return items.filter(item => combinedGroups.includes(getFilterValue(item, filterConfig.key)));
     return items.filter(item => getFilterValue(item, filterConfig.key) === filter);
   }, [items, filter, filterConfig]);
 
@@ -112,6 +120,11 @@ const ProSectionPage = () => {
     for (const item of items) {
       const value = getFilterValue(item, filterConfig.key);
       if (value) tally[value] = (tally[value] || 0) + 1;
+    }
+    if (filterConfig.key === 'group') {
+      for (const [label, groups] of Object.entries(COMBINED_COMPONENT_GROUPS)) {
+        tally[label] = items.filter(item => groups.includes(getFilterValue(item, filterConfig.key))).length;
+      }
     }
     return tally;
   }, [items, filterConfig]);

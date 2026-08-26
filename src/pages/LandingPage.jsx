@@ -4,6 +4,7 @@ import Hero from '@/components/landingnew/Hero/Hero';
 import Features from '@/components/landingnew/Features/Features';
 import Testimonials from '@/components/landingnew/Testimonials/Testimonials';
 import LiveDemo from '@/components/landingnew/LiveDemo/LiveDemo';
+import ProSpotlight from '@/components/landingnew/ProSpotlight/ProSpotlight';
 import QuickStart from '@/components/landingnew/QuickStart/QuickStart';
 import Ownership from '@/components/landingnew/Ownership/Ownership';
 import Sponsors from '@/components/landingnew/Sponsors/Sponsors';
@@ -63,6 +64,7 @@ const LandingPage = () => {
         <Hero />
         <Features />
         <LiveDemo />
+        <ProSpotlight />
         <QuickStart />
         <Ownership />
         <Testimonials />

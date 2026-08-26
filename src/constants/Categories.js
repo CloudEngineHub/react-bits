@@ -1,5 +1,7 @@
 // Highlighted sidebar items
 export const NEW = [
+  'CRT Warp',
+  'Glow Cursor',
   'Scroll Expand',
   'Masked Heading',
   'Elastic Mesh',
@@ -81,6 +83,7 @@ export const CATEGORIES = [
   {
     name: 'Animations',
     subcategories: [
+      'Glow Cursor',
       'Scroll Expand',
       'Elastic Mesh',
       'Ripple Distortion',
@@ -192,6 +195,7 @@ export const CATEGORIES = [
       'Light Rays',
       'Pixel Blast',
       'Color Bends',
+      'CRT Warp',
       'Evil Eye',
       'Line Waves',
       'Radar',

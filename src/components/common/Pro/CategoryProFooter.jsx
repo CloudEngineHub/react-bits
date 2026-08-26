@@ -2,8 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LuArrowRight } from 'react-icons/lu';
 
-import { CATEGORY_PRO_GROUPS } from '../../../constants/Pro';
+import { CATEGORY_PRO_GROUPS, PRO_UPSELLS } from '../../../constants/Pro';
 import { useProManifest } from '../../../hooks/useProManifest';
+import useProImpression from '../../../hooks/useProImpression';
+import { proComponentPreview, trackProClick } from '../../../utils/pro';
 
 /**
  * One quiet line at the bottom of a component page pointing at the Pro
@@ -19,8 +21,10 @@ import { useProManifest } from '../../../hooks/useProManifest';
  */
 const CategoryProFooter = ({ category }) => {
   const config = CATEGORY_PRO_GROUPS[category];
+  const upsell = PRO_UPSELLS[category];
   const sentinelRef = useRef(null);
   const [inView, setInView] = useState(false);
+  const impressionRef = useProImpression('category-footer', { category }, Boolean(config));
 
   const { manifest } = useProManifest({ enabled: inView && Boolean(config) });
 
@@ -48,29 +52,46 @@ const CategoryProFooter = ({ category }) => {
 
   const count = useMemo(() => {
     if (!manifest || !config) return 0;
-    if (!config.group) return manifest.counts?.components ?? manifest.components?.length ?? 0;
-    return (manifest.components || []).filter(item => item.group === config.group).length;
+    const groups = config.groups || (config.group ? [config.group] : null);
+    if (!groups) return manifest.counts?.components ?? manifest.components?.length ?? 0;
+    return (manifest.components || []).filter(item => groups.includes(item.group)).length;
   }, [manifest, config]);
 
   if (!config) return null;
 
-  const to = config.group ? `/pro/components?group=${encodeURIComponent(config.group)}` : '/pro/components';
+  const filter = config.filter || config.group;
+  const to = filter ? `/pro/components?group=${encodeURIComponent(filter)}` : '/pro/components';
 
   return (
     <div className="cat-pro" ref={sentinelRef}>
-      {count > 0 && (
-        <Link className="cat-pro-card" to={to}>
+      <Link
+        className="cat-pro-card"
+        to={to}
+        ref={impressionRef}
+        onClick={() => trackProClick('category-footer', { category, destination: to })}
+      >
+        {upsell?.featured?.[0] && (
+          <span className="cat-pro-preview" aria-hidden="true">
+            <img src={proComponentPreview(upsell.featured[0].slug).poster} alt="" loading="lazy" decoding="async" />
+          </span>
+        )}
+
+        <span className="cat-pro-content">
           <span className="cat-pro-body">
-            <span className="cat-pro-eyebrow">React Bits Pro</span>
             <span className="cat-pro-title">
-              {count} more {config.noun}
+              {count > 0 ? `${count} more ${config.noun}` : `Explore more ${config.noun}`}
+            </span>
+            <span className="cat-pro-copy">Browse the complete Pro collection with editable source.</span>
+          </span>
+
+          <span className="cat-pro-action">
+            <span>View Collection</span>
+            <span className="cat-pro-arrow" aria-hidden="true">
+              <LuArrowRight size={16} />
             </span>
           </span>
-          <span className="cat-pro-arrow" aria-hidden="true">
-            <LuArrowRight size={16} />
-          </span>
-        </Link>
-      )}
+        </span>
+      </Link>
     </div>
   );
 };
