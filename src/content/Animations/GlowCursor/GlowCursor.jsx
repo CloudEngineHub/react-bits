@@ -48,6 +48,18 @@ float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
 }
 
+float filmGrain(vec2 p, float time) {
+  float frame = time * 18.0;
+  float frameIndex = mod(floor(frame), 256.0);
+  float nextFrameIndex = mod(frameIndex + 1.0, 256.0);
+  float blend = fract(frame);
+  blend = blend * blend * (3.0 - 2.0 * blend);
+  vec2 pixel = floor(p);
+  float current = hash(pixel + vec2(frameIndex * 17.0, frameIndex * 31.0));
+  float next = hash(pixel + vec2(nextFrameIndex * 17.0, nextFrameIndex * 31.0));
+  return mix(current, next, blend) * 2.0 - 1.0;
+}
+
 void main() {
   vec2 pixel = vUv * uResolution;
   float denominator = max(uPointCount - 1.0, 1.0);
@@ -73,8 +85,7 @@ void main() {
     float core = exp(-pow(distanceToTrail / max(width, 0.5), 2.0) * 2.5);
     float pulseAmount = min(abs(uPulseSpeed), 1.0);
     float pulse = 1.0 + sin(uTime * uPulseSpeed * 3.0 - progress * 11.0) * 0.16 * pulseAmount;
-    float grain = 1.0 + (hash(pixel * 0.7 + floor(uTime * 30.0)) * 2.0 - 1.0) * uNoiseStrength;
-    float intensity = (core + beam * uGlowIntensity * 0.55) * life * pulse * grain * active;
+    float intensity = (core + beam * uGlowIntensity * 0.55) * life * pulse * active;
     vec3 segmentColor = mix(uColor, uSecondaryColor, progress);
 
     strongest = max(strongest, intensity);
@@ -83,12 +94,15 @@ void main() {
     colorWeight += intensity;
   }
 
+  float grain = filmGrain(pixel, uTime);
+  float noiseAmount = (1.0 - exp(-uNoiseStrength * 2.2)) * 0.4;
   float alpha = clamp(strongest * uOpacity * uFade, 0.0, 1.0);
   if (alpha < 0.0005) discard;
 
   vec3 color = colorSum / max(colorWeight, 0.0001);
   color = mix(color, vec3(1.0), smoothstep(0.25, 0.95, strongestCore) * uHotspot);
   float luminance = sRGB(clamp(strongest * uBrightness, 0.0, 1.0));
+  luminance *= 1.0 + grain * noiseAmount;
   gl_FragColor = vec4(color * luminance, alpha);
 }
 `;

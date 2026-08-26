@@ -691,21 +691,19 @@
 .pro-card {
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: rgba(18, 15, 23, 0.68);
-  border: 1px solid rgba(185, 124, 255, 0.16);
-  box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.18),
-    0 0 28px rgba(151, 83, 255, 0.035);
+  background: rgba(18, 15, 23, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .pro-card:hover {
-  border-color: rgba(195, 143, 255, 0.27);
+  border-color: rgba(195, 143, 255, 0.16);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.22),
-    0 0 34px rgba(151, 83, 255, 0.07);
+    0 18px 42px rgba(0, 0, 0, 0.18),
+    0 0 30px rgba(151, 83, 255, 0.04);
 }
 
 @property --pro-card-beam-angle {
@@ -718,13 +716,11 @@
   position: relative;
   display: block;
   height: 160px;
-  margin: 5px;
+  margin: 6px;
   overflow: hidden;
-  border-radius: calc(var(--radius-lg) - 5px);
+  border-radius: calc(var(--radius-lg) - 6px);
   background: #09080b;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 0 18px rgba(166, 92, 255, 0.1);
+  box-shadow: 0 0 18px rgba(166, 92, 255, 0.08);
 }
 
 .pro-card-preview::before {
@@ -812,7 +808,7 @@
 }
 
 .pro-card-content {
-  padding: 15px 20px 20px;
+  padding: 15px 20px 22px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -851,22 +847,24 @@
 .pro-card-cta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: center;
   align-self: stretch;
-  width: auto;
-  margin: 18px -20px -20px;
-  padding: 15px 20px;
-  border-top: 1px solid rgba(188, 132, 255, 0.17);
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.1), rgba(217, 70, 239, 0.035));
-  color: rgba(226, 207, 255, 0.92);
-  font-size: 12px;
+  margin: 18px -14px -16px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
   font-weight: 600;
-  transition: color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    transform var(--dur-press) var(--ease-out),
+    box-shadow 0.3s ease;
+}
+
+.pro-card-cta::before {
+  border-radius: 5px;
 }
 
 .pro-card:hover .pro-card-cta {
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.16), rgba(217, 70, 239, 0.06));
   color: #fff;
 }
 
@@ -877,22 +875,18 @@
   flex-direction: column;
   gap: 0;
   overflow: hidden;
-  border: 1px solid rgba(185, 124, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
   border-radius: var(--radius-lg) !important;
-  background: rgba(18, 15, 23, 0.68) !important;
-  box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.18),
-    0 0 28px rgba(151, 83, 255, 0.035);
+  background: rgba(18, 15, 23, 0.78) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .sc-card:hover {
-  border-color: rgba(195, 143, 255, 0.24) !important;
-  box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.2),
-    0 0 32px rgba(151, 83, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
 }
 
 .sc-header {
@@ -900,8 +894,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 20px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  padding: 18px 20px 4px;
 }
 
 .sc-title {
@@ -916,10 +909,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 15px 20px;
-  border-top: 1px solid rgba(188, 132, 255, 0.17);
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.07), rgba(217, 70, 239, 0.02));
-  color: rgba(226, 207, 255, 0.82);
+  margin-top: 2px;
+  padding: 10px 20px 18px;
+  color: rgba(226, 207, 255, 0.72);
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
@@ -929,15 +921,14 @@
 }
 
 .sc-become-link:hover {
-  background: linear-gradient(90deg, rgba(124, 58, 237, 0.13), rgba(217, 70, 239, 0.045));
   color: #fff;
 }
 
 .sc-body {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 16px 20px 18px;
+  gap: 18px;
+  padding: 14px 20px 10px;
 }
 
 .sc-tier {
@@ -947,12 +938,7 @@
 }
 
 .sc-tier + .sc-tier {
-  margin-right: -20px;
-  margin-left: -20px;
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  padding-top: 2px;
 }
 
 .sc-tier-label {

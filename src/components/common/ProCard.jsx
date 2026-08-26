@@ -1,6 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import { LuArrowRight } from 'react-icons/lu';
-
 import useProImpression from '../../hooks/useProImpression';
 import { PRO_COUNTS, PRO_UPSELLS } from '../../constants/Pro';
 import { proComponentPreview, proLinkProps } from '../../utils/pro';
@@ -39,9 +37,8 @@ const ProCard = () => {
             </span>
           </div>
 
-          <div className="pro-card-cta">
+          <div className="pro-card-cta ln-navbar-pro">
             <span>Explore React Bits Pro</span>
-            <LuArrowRight size={14} />
           </div>
         </div>
       </article>
