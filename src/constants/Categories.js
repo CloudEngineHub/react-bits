@@ -236,3 +236,8 @@ export const CATEGORIES = [
 export const COMPONENT_COUNT = Math.floor(
   CATEGORIES.filter((c) => c.name !== 'Get Started').reduce((sum, c) => sum + c.subcategories.length, 0) / 5
 ) * 5;
+
+export const TOTAL_COMPONENTS = CATEGORIES.filter(category => category.name !== 'Get Started').reduce(
+  (total, category) => total + category.subcategories.length,
+  0
+);

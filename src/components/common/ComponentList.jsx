@@ -19,7 +19,7 @@ import { FiSearch, FiTrash2, FiX } from 'react-icons/fi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { toast } from 'sonner';
 import { componentMetadata } from '../../constants/Information';
-import { fuzzyMatch } from '../../utils/fuzzy';
+import { rankComponentSearch } from '../../utils/componentSearch';
 import {
   getSavedComponents,
   isComponentSaved,
@@ -30,8 +30,10 @@ import {
 // import Aurora from '../../content/Backgrounds/Aurora/Aurora';
 import { colors } from '../../constants/colors';
 import { NEW } from '../../constants/Categories';
+import usePreviewMediaAllowed from '../../hooks/usePreviewMediaAllowed';
 
 const CARD_RADIUS = 16;
+const EMPTY_SET = new Set();
 
 const FAV_BTN_STYLE = {
   size: 'xs',
@@ -79,10 +81,18 @@ const fromPascal = str =>
     .replace(/_/g, ' ')
     .trim();
 
-const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = false, sorting = 'none', title }) => {
+const ComponentList = ({
+  list,
+  hasDeleteButton = false,
+  hasFavoriteButton = false,
+  sorting = 'none',
+  title,
+  newSinceLastVisit = EMPTY_SET
+}) => {
   const scrollRef = useRef(null);
   const GAP_PX = 16;
   const [hoveredKey, setHoveredKey] = useState(null);
+  const previewMediaAllowed = usePreviewMediaAllowed();
   const clearSlotRef = useRef(null);
   const clearBtnRef = useRef(null);
   const CLEAR_APPEAR_DEBOUNCE_MS = 300;
@@ -124,7 +134,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
         videoUrl: meta?.videoUrl ?? '',
         tags: Array.isArray(meta?.tags) ? meta.tags : [],
         docsUrl: meta?.docsUrl,
-        isNew: NEW.includes(title)
+        isNew: NEW.includes(title),
+        isNewSinceLastVisit: newSinceLastVisit.has(fullKey)
       };
     };
 
@@ -136,8 +147,8 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
       .map(mapToItem);
 
     if (sorting === 'alphabetical') {
-      // New components are sorted to the top, then everything is alphabetical within each group.
       arr = arr.sort((a, b) => {
+        if (a.isNewSinceLastVisit !== b.isNewSinceLastVisit) return a.isNewSinceLastVisit ? -1 : 1;
         const aNew = NEW.includes(a.title);
         const bNew = NEW.includes(b.title);
         if (aNew !== bNew) return aNew ? -1 : 1;
@@ -145,7 +156,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
       });
     }
     return arr;
-  }, [list, sorting]);
+  }, [list, newSinceLastVisit, sorting]);
 
   const categoriesList = useMemo(() => {
     const set = new Set();
@@ -156,6 +167,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
 
   const [selectedCategory, setSelectedCategory] = useState(categories.items[0]);
   const [search, setSearch] = useState('');
+  const [newOnly, setNewOnly] = useState(false);
 
   useEffect(() => {
     setSelectedCategory(prev => (categories.items.includes(prev) ? prev : categories.items[0]));
@@ -178,14 +190,17 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   const filtered = useMemo(() => {
     const term = search.trim();
     const all = selectedCategory === 'All Components';
-    return items.filter(({ title, categoryLabel }) => {
-      const categoryOk = all || categoryLabel === selectedCategory;
-      if (!term) return categoryOk;
-      return categoryOk && fuzzyMatch(title, term);
-    });
-  }, [items, selectedCategory, search]);
+    return items
+      .filter(item => (all || item.categoryLabel === selectedCategory) && (!newOnly || item.isNewSinceLastVisit))
+      .map(item => ({ item, match: term ? rankComponentSearch(item, term) : { score: 1 } }))
+      .filter(({ match }) => Boolean(match))
+      .sort((a, b) => (term ? b.match.score - a.match.score : 0))
+      .map(({ item }) => item);
+  }, [items, newOnly, selectedCategory, search]);
   const controlsDisabled = items.length === 0;
   const hasCategoryFilter = selectedCategory !== categories.items[0];
+  const newSinceLastVisitCount = useMemo(() => items.filter(item => item.isNewSinceLastVisit).length, [items]);
+  const hasActiveFilters = hasCategoryFilter || newOnly || search.trim().length > 0;
 
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   useEffect(() => {
@@ -193,7 +208,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
     return () => clearTimeout(id);
   }, [search]);
 
-  const showClear = !controlsDisabled && (hasCategoryFilter || (debouncedSearch?.trim()?.length ?? 0) > 0);
+  const showClear = !controlsDisabled && (hasCategoryFilter || newOnly || (debouncedSearch?.trim()?.length ?? 0) > 0);
 
   useGSAP(() => {
     const slot = clearSlotRef.current;
@@ -224,6 +239,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
   const clearFilters = () => {
     setSearch('');
     setSelectedCategory(categories.items[0]);
+    setNewOnly(false);
   };
 
   return (
@@ -284,9 +300,33 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
         gap={4}
       >
         {title ? (
-          <h2 className="sub-category" style={{ margin: 0 }}>
-            {title}
-          </h2>
+          <Box>
+            <h2 className="sub-category" style={{ margin: 0 }}>
+              {title}
+            </h2>
+            {hasActiveFilters ? (
+              <Text mt={2} color={colors.textMuted} fontSize="13px" fontWeight={500} aria-live="polite">
+                {filtered.length} {filtered.length === 1 ? 'component' : 'components'} found
+              </Text>
+            ) : null}
+            {newSinceLastVisitCount > 0 ? (
+              <Box
+                as="button"
+                mt={2}
+                color={newOnly ? colors.accent : colors.textMuted}
+                fontSize="13px"
+                fontWeight={500}
+                cursor="pointer"
+                textAlign="left"
+                transition="color var(--transition-base)"
+                onClick={() => setNewOnly(value => !value)}
+                aria-pressed={newOnly}
+                _hover={{ color: colors.accent }}
+              >
+                {newSinceLastVisitCount} new since your last visit
+              </Box>
+            ) : null}
+          </Box>
         ) : null}
 
         <Flex
@@ -535,10 +575,10 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                   key={item.videoUrl || item.key}
                                   videoUrl={item.videoUrl}
                                   title={item.title}
-                                  playing={hoveredKey === item.key}
+                                  playing={previewMediaAllowed && hoveredKey === item.key}
                                 />
 
-                                {item.isNew ? (
+                                {item.isNew || item.isNewSinceLastVisit ? (
                                   <Box
                                     position="absolute"
                                     top="8px"
@@ -560,7 +600,7 @@ const ComponentList = ({ list, hasDeleteButton = false, hasFavoriteButton = fals
                                     backdropFilter="var(--surface-ghost-blur)"
                                     pointerEvents="none"
                                   >
-                                    New
+                                    {item.isNewSinceLastVisit ? 'Since last visit' : 'New'}
                                   </Box>
                                 ) : null}
 

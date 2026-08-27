@@ -53,6 +53,107 @@
   color: #e6e2ee;
 }
 
+.docs-quickstart {
+  margin: 1.75rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  background: var(--surface-ghost-track);
+  box-shadow: var(--surface-ghost-highlight);
+}
+
+.docs-quickstart-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.docs-quickstart-step {
+  min-width: 0;
+  padding: 1.35rem;
+}
+
+.docs-quickstart-step + .docs-quickstart-step {
+  border-left: 1px solid var(--border-primary);
+}
+
+.docs-quickstart-step-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-accent);
+}
+
+.docs-quickstart-index {
+  color: var(--text-dimmed);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.docs-quickstart-step h2 {
+  margin: 1.25rem 0 0.4rem;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.docs-quickstart-step p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.docs-quickstart-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--border-primary);
+}
+
+.docs-quickstart-primary,
+.docs-quickstart-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--dur-press) var(--ease-out);
+}
+
+.docs-quickstart-primary {
+  gap: 0.5rem;
+  padding: 0 1rem;
+  background: var(--surface-ghost);
+  box-shadow: var(--surface-ghost-highlight);
+}
+
+.docs-quickstart-primary:hover {
+  background: var(--surface-ghost-hover);
+}
+
+.docs-quickstart-secondary {
+  color: var(--text-muted);
+}
+
+.docs-quickstart-secondary:hover {
+  color: var(--text-primary);
+}
+
+.docs-quickstart-primary:active,
+.docs-quickstart-secondary:active {
+  transform: scale(0.98);
+}
+
 .docs-paragraph {
   max-width: 64ch;
   font-size: 0.9375rem;
@@ -661,6 +762,33 @@
 }
 
 @media (max-width: 640px) {
+  .docs-quickstart-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-quickstart-step {
+    padding: 1.15rem;
+  }
+
+  .docs-quickstart-step + .docs-quickstart-step {
+    border-top: 1px solid var(--border-primary);
+    border-left: 0;
+  }
+
+  .docs-quickstart-step h2 {
+    margin-top: 0.85rem;
+  }
+
+  .docs-quickstart-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .docs-quickstart-secondary {
+    min-height: 34px;
+  }
+
   .docs-page-header {
     flex-direction: column;
     gap: 1rem;

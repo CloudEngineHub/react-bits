@@ -8,12 +8,15 @@ const ProCard = () => {
   const { pathname } = useLocation();
   const category = pathname.split('/').filter(Boolean)[0];
   const config = PRO_UPSELLS.default;
+  const isProRoute = pathname.startsWith('/pro');
+  const destination = isProRoute ? '/#pricing' : config.path;
+  const ctaLabel = isProRoute ? 'Get React Bits Pro' : 'Explore React Bits Pro';
   const impressionRef = useProImpression('right-panel-card', { category: category || 'unknown' });
 
   return (
     <a
       ref={impressionRef}
-      {...proLinkProps(config.path, 'right-panel-card', {
+      {...proLinkProps(destination, 'right-panel-card', {
         params: { category: category || 'unknown' },
         sameTab: true
       })}
@@ -38,7 +41,7 @@ const ProCard = () => {
           </div>
 
           <div className="pro-card-cta ln-navbar-pro">
-            <span>Explore React Bits Pro</span>
+            <span>{ctaLabel}</span>
           </div>
         </div>
       </article>

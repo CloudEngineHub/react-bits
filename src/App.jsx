@@ -29,7 +29,7 @@ function AppContent() {
           <Route
             path="/pro/:section"
             element={
-              <SidebarLayout hideProCard>
+              <SidebarLayout>
                 <ProSectionPage />
               </SidebarLayout>
             }

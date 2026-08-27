@@ -95,7 +95,7 @@ body {
       max(
         0px,
         (
-            100vw - 2 * var(--app-gutter, 32px) - var(--content-inset-left, 0px) - var(--content-inset-right, 0px) -
+            100% - 2 * var(--app-gutter, 32px) - var(--content-inset-left, 0px) - var(--content-inset-right, 0px) -
               var(--content-col-max, 1080px)
           ) /
           2
@@ -105,4 +105,10 @@ body {
 
 .back-to-top:hover {
   background: var(--surface-ghost-hover) !important;
+}
+
+@media only screen and (max-width: 1000px) {
+  .back-to-top {
+    bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+  }
 }

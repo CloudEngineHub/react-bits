@@ -10,7 +10,7 @@ import { FaGithub } from 'react-icons/fa6';
 import { LuSearch, LuHeart, LuUser } from 'react-icons/lu';
 import { useSearch } from '../../context/SearchContext/useSearch';
 import { useOptions } from '../../context/OptionsContext/useOptions';
-import { CATEGORIES } from '../../../constants/Categories';
+import { CATEGORIES, TOTAL_COMPONENTS } from '../../../constants/Categories';
 import { PRO_SECTIONS } from '../../../constants/Pro';
 import { TOOLS } from '../../../constants/Tools';
 import jsIcon from '../../../assets/icons/js.svg';
@@ -62,7 +62,9 @@ const Navbar = ({ showDocs }) => {
   const mobileProSections = useMemo(
     () =>
       mobileFilterQuery
-        ? PRO_SECTIONS.filter(section => section.label.toLowerCase().includes(mobileFilterQuery))
+        ? PRO_SECTIONS.filter(section =>
+            `${section.sidebarLabel || ''} ${section.label}`.toLowerCase().includes(mobileFilterQuery)
+          )
         : PRO_SECTIONS,
     [mobileFilterQuery]
   );
@@ -331,7 +333,7 @@ const Navbar = ({ showDocs }) => {
                     <input
                       value={mobileFilter}
                       onChange={event => setMobileFilter(event.target.value)}
-                      placeholder="Filter navigation..."
+                      placeholder={`Filter ${TOTAL_COMPONENTS} components...`}
                       aria-label="Filter navigation"
                     />
                   </label>
@@ -375,7 +377,7 @@ const Navbar = ({ showDocs }) => {
                                 below Get Started and above Tools. */}
                             {mobileProSections.length > 0 && (
                               <div className="ln-navbar-mobile-subsection">
-                                <span className="ln-navbar-mobile-label ln-navbar-mobile-label-pro">Pro</span>
+                                <span className="ln-navbar-mobile-label ln-navbar-mobile-label-pro">Explore Pro</span>
                                 <div className="ln-navbar-mobile-group">
                                   {mobileProSections.map(section => {
                                     const path = `/pro/${section.slug}`;
@@ -388,7 +390,10 @@ const Navbar = ({ showDocs }) => {
                                         onClick={() => setMenuOpen(false)}
                                       >
                                         <SectionIcon size={14} aria-hidden="true" />
-                                        <span>{section.label}</span>
+                                        <span>{section.sidebarLabel || section.label}</span>
+                                        {section.freeCount && (
+                                          <span className="ln-navbar-mobile-free-tag">{section.freeCount} Free</span>
+                                        )}
                                       </Link>
                                     );
                                   })}

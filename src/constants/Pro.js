@@ -105,6 +105,7 @@ export const PRO_SECTIONS = [
     pageTitle: 'Templates',
     icon: LayoutTemplate,
     manifestKey: 'templates',
+    freeCount: 1,
     countKey: 'templates',
     countNoun: 'templates',
     tagline: 'Complete sites, ready to deploy',
@@ -118,11 +119,13 @@ export const PRO_SECTIONS = [
   {
     slug: 'agent-kit',
     label: 'Agent Kit',
+    sidebarLabel: 'Skills',
     /* "Agent Kit items" reads more naturally beside the numeric count. */
     countLabel: 'Agent Kit Items',
     pageTitle: 'Agent Kit',
     icon: Bot,
     manifestKey: 'agentKit',
+    freeCount: 1,
     countKey: 'agentKit',
     countNoun: 'skills, prompts & recipes',
     tagline: 'Give your AI agent real design taste',

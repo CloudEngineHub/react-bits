@@ -35,8 +35,10 @@ const CopyForAIMenu = ({ triggerProps, copyItems, openItems, done }) => {
           display="flex"
           cursor="pointer"
           alignItems="center"
-          gap={2}
           {...triggerProps}
+          gap={1.5}
+          pl={4}
+          pr={2.5}
         >
           {done && <Check size={14} color={colors.accent} />}
           {done ? 'Copied!' : 'Copy for AI'}

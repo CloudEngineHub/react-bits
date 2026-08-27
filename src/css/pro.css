@@ -670,7 +670,7 @@ a.pro-item-overlay-pill-ghost:hover {
 .sidebar-pro-name {
   display: block;
   width: fit-content;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: -0.5px;
   user-select: none;
@@ -1744,24 +1744,12 @@ a.pro-item-overlay-pill-ghost:hover {
 .cat-pro {
   position: relative;
   min-height: 20px;
-  margin: 64px 0 0;
-  padding-top: 32px;
+  margin: 0;
+  padding-top: 0;
 }
 
 .cat-pro::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.07) 14%,
-    rgba(255, 255, 255, 0.07) 86%,
-    transparent
-  );
-  content: '';
+  content: none;
 }
 
 .cat-pro-card {
@@ -1883,8 +1871,8 @@ a.pro-item-overlay-pill-ghost:hover {
 
 @media (max-width: 720px) {
   .cat-pro {
-    margin-top: 48px;
-    padding-top: 24px;
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .cat-pro-card {

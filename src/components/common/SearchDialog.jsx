@@ -3,7 +3,8 @@ import { FiSearch, FiLayers, FiImage, FiType, FiCircle, FiFile, FiArrowUpRight }
 import { AiOutlineEnter } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../constants/Categories';
-import { fuzzyMatch } from '../../utils/fuzzy';
+import { componentMetadata } from '../../constants/Information';
+import { getComponentMatchLabel, rankComponentSearch } from '../../utils/componentSearch';
 import { searchPro } from '../../utils/proSearch';
 import { proUrl, trackProClick } from '../../utils/pro';
 import { useProManifest } from '../../hooks/useProManifest';
@@ -22,23 +23,43 @@ const readFreeOnly = () => {
   }
 };
 
-const matchesSearch = (value, query) =>
-  fuzzyMatch(value, query) || fuzzyMatch(value.replace(/\s+/g, ''), query.replace(/\s+/g, ''));
+const metadataByPath = new Map(
+  Object.values(componentMetadata).map(metadata => [new URL(metadata.docsUrl).pathname, metadata])
+);
+
+const slug = value => value.replace(/\s+/g, '-').toLowerCase();
 
 function searchComponents(query) {
   if (!query || query.trim() === '') return [];
   const results = [];
   CATEGORIES.forEach(category => {
     const { name: categoryName, subcategories } = category;
-    if (matchesSearch(categoryName, query)) {
-      subcategories.forEach(component => results.push({ categoryName, componentName: component }));
-    } else {
-      subcategories.forEach(component => {
-        if (matchesSearch(component, query)) results.push({ categoryName, componentName: component });
-      });
-    }
+    if (categoryName === 'Get Started') return;
+
+    subcategories.forEach(componentName => {
+      const path = `/${slug(categoryName)}/${slug(componentName)}`;
+      const metadata = metadataByPath.get(path);
+      const match = rankComponentSearch(
+        {
+          title: componentName,
+          categoryLabel: categoryName,
+          description: metadata?.description,
+          tags: metadata?.tags
+        },
+        query
+      );
+
+      if (match) {
+        results.push({
+          categoryName,
+          componentName,
+          matchLabel: getComponentMatchLabel(categoryName, match.type),
+          score: match.score
+        });
+      }
+    });
   });
-  return results;
+  return results.sort((a, b) => b.score - a.score || a.componentName.localeCompare(b.componentName)).slice(0, 8);
 }
 
 const Result = ({ children, dataIndex, onMouseEnter, onClick }) => (
@@ -75,7 +96,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
     const t = setTimeout(() => {
       setSearchValue(inputValue);
       setSelectedIndex(-1);
-    }, 500);
+    }, 180);
     return () => clearTimeout(t);
   }, [inputValue]);
 
@@ -245,7 +266,7 @@ const SearchDialog = ({ isOpen, onClose }) => {
                           </div>
                           <div className="search-result-text">
                             <span className="search-result-name">{r.componentName}</span>
-                            <span className="search-result-category">in {r.categoryName}</span>
+                            <span className="search-result-category">{r.matchLabel}</span>
                           </div>
                           <div className="search-result-enter">
                             <AiOutlineEnter size={16} />

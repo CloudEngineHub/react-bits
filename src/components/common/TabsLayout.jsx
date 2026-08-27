@@ -4,6 +4,7 @@ import CategoryProFooter from './Pro/CategoryProFooter';
 
 import { Tabs, Icon, Flex, Tooltip, Box, Menu, Portal } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
+import { PiShareFat } from 'react-icons/pi';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
 import { RotateCcw, MoreHorizontal, Palette } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ import CodeExample, { injectPropsIntoCode } from '../code/CodeExample';
 import OpenInStudioButton, { buildStudioUrl } from './Preview/OpenInStudioButton';
 import CopyForAIMenu, { AIMenuItem } from './CopyForAIMenu';
 import { useAIExportActions } from '../../hooks/useAIExportActions';
+import ComponentPager from './ComponentPager';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
@@ -242,6 +244,15 @@ const TabsLayout = ({ children, className }) => {
 
   const aiActions = useAIExportActions({ category, subcategory, ...(aiExport || {}) });
 
+  const copyShareLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Share link copied');
+    } catch {
+      toast.error('Could not copy the link');
+    }
+  }, []);
+
   const showFavorite = favoriteKey && category !== 'get-started';
   const hasOverflowActions = hasChanges || showFavorite || Boolean(codeExampleProps) || Boolean(studioButtonProps);
 
@@ -318,6 +329,47 @@ const TabsLayout = ({ children, className }) => {
                     pointerEvents="none"
                   >
                     {isSaved ? 'Remove from Favorites' : 'Add to Favorites'}
+                  </Tooltip.Content>
+                </Tooltip.Positioner>
+              </Tooltip.Root>
+            )}
+
+            {showFavorite && (
+              <Tooltip.Root openDelay={250} closeDelay={100} positioning={{ placement: 'left', gutter: 8 }}>
+                <Tooltip.Trigger asChild>
+                  <Box
+                    as="button"
+                    aria-label="Copy share link"
+                    onClick={copyShareLink}
+                    display="flex"
+                    cursor="pointer"
+                    alignItems="center"
+                    justifyContent="center"
+                    {...TAB_STYLE_PROPS}
+                    w={10}
+                  >
+                    <Icon as={PiShareFat} boxSize={4} color="#fff" />
+                  </Box>
+                </Tooltip.Trigger>
+                <Tooltip.Positioner>
+                  <Tooltip.Content
+                    bg={colors.bgBody}
+                    border={`1px solid ${colors.borderPrimary}`}
+                    color={colors.accent}
+                    fontSize="12px"
+                    fontWeight="500"
+                    lineHeight="0"
+                    px={4}
+                    whiteSpace="nowrap"
+                    h={10}
+                    borderRadius="10px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    textAlign="center"
+                    pointerEvents="none"
+                  >
+                    Copy share link
                   </Tooltip.Content>
                 </Tooltip.Positioner>
               </Tooltip.Root>
@@ -419,6 +471,24 @@ const TabsLayout = ({ children, className }) => {
                           {isSaved ? 'Remove from favorites' : 'Add to favorites'}
                         </Menu.Item>
                       )}
+                      {showFavorite && (
+                        <Menu.Item
+                          value="share"
+                          onSelect={copyShareLink}
+                          display="flex"
+                          alignItems="center"
+                          gap={3}
+                          px={3}
+                          py={2}
+                          fontSize="14px"
+                          color="#fff"
+                          borderRadius="8px"
+                          cursor="pointer"
+                          _hover={{ bg: colors.bgHover }}
+                        >
+                          <Icon as={PiShareFat} boxSize={4} color="#fff" /> Copy share link
+                        </Menu.Item>
+                      )}
                       {aiExport && (
                         <>
                           <Menu.Separator borderColor={colors.borderPrimary} my={1} />
@@ -464,6 +534,8 @@ const TabsLayout = ({ children, className }) => {
       <Tabs.Content pt={0} value="code">
         {contentMap.CodeTab}
       </Tabs.Content>
+
+      {category !== 'get-started' && <ComponentPager category={category} subcategory={subcategory} />}
 
       <CategoryProFooter category={category} />
 

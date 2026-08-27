@@ -1,6 +1,26 @@
 import useScrollToTop from '../hooks/useScrollToTop';
 import DocsButtonBar from './DocsButtonBar';
 import CopyPageButton from './CopyPageButton';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Search, SlidersHorizontal, TerminalSquare } from 'lucide-react';
+
+const QUICK_START_STEPS = [
+  {
+    icon: Search,
+    title: 'Choose a component',
+    description: 'Browse by category or search for the interaction you need.'
+  },
+  {
+    icon: SlidersHorizontal,
+    title: 'Make it yours',
+    description: 'Tune the preview and send settings to your usage code.'
+  },
+  {
+    icon: TerminalSquare,
+    title: 'Add it to your project',
+    description: 'Copy the source or install your chosen variant with the CLI.'
+  }
+];
 
 const Introduction = () => {
   useScrollToTop();
@@ -13,16 +33,36 @@ const Introduction = () => {
       </div>
 
       <p className="docs-lead">
-        React Bits is an open-source collection of carefully designed UI components that aim to enhance your React web
-        applications.
+        Pick a component, tune it in the preview, then copy or install the exact variant for your stack.
       </p>
+
+      <div className="docs-quickstart">
+        <div className="docs-quickstart-steps">
+          {QUICK_START_STEPS.map(({ icon: StepIcon, title, description }, index) => (
+            <div className="docs-quickstart-step" key={title}>
+              <div className="docs-quickstart-step-heading">
+                <span className="docs-quickstart-index">0{index + 1}</span>
+                <StepIcon size={17} aria-hidden="true" />
+              </div>
+              <h2>{title}</h2>
+              <p>{description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="docs-quickstart-actions">
+          <Link to="/get-started/index" className="docs-quickstart-primary">
+            Browse components
+            <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+          <Link to="/get-started/installation" className="docs-quickstart-secondary">
+            Installation guide
+          </Link>
+        </div>
+      </div>
+
       <p className="docs-paragraph">
-        This is not your typical component library, which means you won&apos;t find a set of generic buttons, inputs, or
-        other common UI elements here.
-      </p>
-      <p className="docs-paragraph">
-        Basically, these components are here to help you stand out and make a statement visually by adding a touch of
-        creativity to your projects.
+        React Bits is an open-source collection of expressive UI components for adding motion and personality without
+        adopting an entire design system.
       </p>
 
       <h2 className="docs-section-title">Mission</h2>

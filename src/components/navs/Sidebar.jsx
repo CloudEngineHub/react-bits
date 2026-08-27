@@ -2,17 +2,17 @@ import { useRef, useState, useCallback, useMemo, memo, useEffect, Fragment } fro
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Flex, VStack, Text, Stack, Icon, IconButton, Drawer, Image, Separator } from '@chakra-ui/react';
-import { ArrowRight, SearchIcon, XIcon, HeartIcon } from 'lucide-react';
+import { ArrowRight, SearchIcon, XIcon } from 'lucide-react';
 
 import { TOOLS } from '../../constants/Tools';
 import { PRO_SECTIONS } from '../../constants/Pro';
 import { colors } from '../../constants/colors';
 
 import { useTransition } from '../../hooks/useTransition';
-import { CATEGORIES, NEW, UPDATED } from '../../constants/Categories';
+import usePreviewMediaAllowed from '../../hooks/usePreviewMediaAllowed';
+import { CATEGORIES, NEW, TOTAL_COMPONENTS, UPDATED } from '../../constants/Categories';
 import { componentMap } from '../../constants/Components';
 import { componentMetadata } from '../../constants/Information';
-import { getSavedComponents } from '../../utils/favorites';
 
 import Logo from '../../assets/logos/react-bits-logo.svg';
 import SponsorsCard from '../common/SponsorsCard';
@@ -34,41 +34,43 @@ const BOTTOM_EXIT_PX = 48;
 const PREVIEW_WIDTH = 304;
 const PREVIEW_HEIGHT = 226;
 const PREVIEW_DELAY = 260;
+const PREVIEW_CYCLE_MS = 2400;
+
+const PRO_PREVIEW_ITEMS = {
+  components: [
+    { label: 'Aurora Beam', src: '/assets/pro/components/aurora-beam-poster.webp' },
+    { label: 'Reel Gallery', src: '/assets/pro/components/reel-gallery.webp' },
+    { label: 'Glass Tiles', src: '/assets/pro/components/glass-tiles-poster.webp' },
+    { label: 'Particle Image', src: '/assets/pro/components/particle-image-poster.webp' }
+  ],
+  blocks: [
+    { label: 'Hero sections', src: '/assets/pro/blocks/hero-7.webp', crop: 'zoom' },
+    { label: 'Pricing sections', src: '/assets/pro/blocks/pricing-1.webp', crop: 'zoom' },
+    { label: 'Feature sections', src: '/assets/pro/blocks/features-10.webp', crop: 'zoom' }
+  ],
+  'app-ui': [
+    { label: 'AI Chat', src: '/assets/pro/app-ui/ai-chat-8.webp', crop: 'deep' },
+    { label: 'Dashboards', src: '/assets/pro/app-ui/dashboard-1.webp', crop: 'deep' },
+    { label: 'Data tables', src: '/assets/pro/app-ui/data-table-1.webp', crop: 'deep' }
+  ],
+  templates: [
+    { label: 'Finance template', src: 'https://cdn.reactbits.dev/finance-preview.mp4', type: 'video' },
+    { label: 'AI SaaS template', src: 'https://cdn.reactbits.dev/ai-saas-preview.mp4', type: 'video' },
+    { label: 'Security template', src: 'https://cdn.reactbits.dev/security-preview.mp4', type: 'video' }
+  ],
+  'agent-kit': [
+    { label: 'Terminal Dark', src: '/assets/pro/agent-kit/skill-terminal-dark.webp' },
+    { label: 'Swiss Grid', src: '/assets/pro/agent-kit/skill-swiss-grid.webp' },
+    { label: 'Developer Tool', src: '/assets/pro/agent-kit/prompt-developer-tool.webp' }
+  ]
+};
 
 // ─── Utility Functions ───────────────────────────────────────────────────────
 const scrollToTop = () => window.scrollTo(0, 0);
 const slug = str => str.replace(/\s+/g, '-').toLowerCase();
-const toPascal = str =>
-  str
-    .split('-')
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join('');
 const COMPONENT_METADATA_BY_PATH = new Map(
   Object.values(componentMetadata).map(metadata => [new URL(metadata.docsUrl).pathname, metadata])
 );
-
-// ─── Custom Hooks ────────────────────────────────────────────────────────────
-const useFavoritesSync = () => {
-  const [savedSet, setSavedSet] = useState(() => new Set(getSavedComponents()));
-
-  useEffect(() => {
-    const updateSaved = () => setSavedSet(new Set(getSavedComponents()));
-    const onStorage = e => {
-      if (!e || e.key === 'savedComponents') updateSaved();
-    };
-
-    window.addEventListener('favorites:updated', updateSaved);
-    window.addEventListener('storage', onStorage);
-    updateSaved();
-
-    return () => {
-      window.removeEventListener('favorites:updated', updateSaved);
-      window.removeEventListener('storage', onStorage);
-    };
-  }, []);
-
-  return savedSet;
-};
 
 const useScrollEdges = ref => {
   const [edges, setEdges] = useState({ isAtTop: true, isAtBottom: false });
@@ -93,46 +95,94 @@ const useScrollEdges = ref => {
   return edges;
 };
 
-const SidebarHoverPreview = ({ preview, x, y, reduceMotion }) => (
-  <AnimatePresence>
-    {preview && (
-      <motion.aside
-        className="sidebar-hover-preview"
-        style={{ x, y }}
-        initial={{ opacity: 0, scale: 0.97 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.98 }}
-        transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        aria-hidden="true"
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={preview.key}
-            initial={{ opacity: 0, scale: 0.985 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.99 }}
-            transition={reduceMotion ? { duration: 0 } : { duration: 0.15 }}
-          >
-            <div className="sidebar-hover-preview-media">
-              <video autoPlay loop muted playsInline preload="metadata">
-                <source src={`${preview.videoBase}.webm`} type="video/webm" />
-                <source src={`${preview.videoBase}.mp4`} type="video/mp4" />
-              </video>
-            </div>
-            <div className="sidebar-hover-preview-title">{preview.title}</div>
-          </motion.div>
-        </AnimatePresence>
-      </motion.aside>
-    )}
-  </AnimatePresence>
-);
+const SidebarHoverPreview = ({ preview, x, y, reduceMotion }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const items = preview?.items || [];
+  const previewKey = preview?.key;
+  const itemCount = items.length;
+
+  useEffect(() => {
+    if (!previewKey || itemCount < 2 || reduceMotion) return undefined;
+
+    const timeout = window.setTimeout(() => {
+      setActiveIndex(current => (current + 1) % itemCount);
+    }, PREVIEW_CYCLE_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [previewKey, itemCount, reduceMotion, activeIndex]);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [previewKey]);
+
+  const activeItem = items[activeIndex];
+
+  return (
+    <AnimatePresence>
+      {preview && activeItem && (
+        <motion.aside
+          className="sidebar-hover-preview"
+          style={{ x, y }}
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          aria-hidden="true"
+        >
+          <div className="sidebar-hover-preview-media">
+            <AnimatePresence mode="sync" initial={false}>
+              <motion.div
+                key={`${preview.key}-${activeIndex}`}
+                className="sidebar-hover-preview-frame"
+                initial={{ opacity: 0, filter: 'blur(9px)', scale: 1.025 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                exit={{ opacity: 0, filter: 'blur(7px)', scale: 0.985 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {activeItem.type === 'video' ? (
+                  <video src={activeItem.src} autoPlay loop muted playsInline preload="metadata" />
+                ) : activeItem.videoBase ? (
+                  <video autoPlay loop muted playsInline preload="metadata">
+                    <source src={`${activeItem.videoBase}.webm`} type="video/webm" />
+                    <source src={`${activeItem.videoBase}.mp4`} type="video/mp4" />
+                  </video>
+                ) : (
+                  <img
+                    src={activeItem.src}
+                    alt=""
+                    className={activeItem.crop ? `sidebar-hover-preview-crop-${activeItem.crop}` : undefined}
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="sidebar-hover-preview-caption">
+            <span className="sidebar-hover-preview-title">{preview.title}</span>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={`${preview.key}-label-${activeIndex}`}
+                className="sidebar-hover-preview-item"
+                initial={{ opacity: 0, filter: 'blur(4px)', y: 2 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                exit={{ opacity: 0, filter: 'blur(4px)', y: -2 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.3 }}
+              >
+                {activeItem.label}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+        </motion.aside>
+      )}
+    </AnimatePresence>
+  );
+};
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 // ─── Pro Configuration ───────────────────────────────────────────────────────
 const ProLinks = ({ onClose }) => (
   <>
     <Text className="sidebar-pro-name" mb={3}>
-      Pro
+      Explore Pro
     </Text>
     <Flex direction="column" gap={2}>
       <Link to="/pro" onClick={onClose}>
@@ -141,8 +191,12 @@ const ProLinks = ({ onClose }) => (
         </Flex>
       </Link>
       {PRO_SECTIONS.map(section => (
-        <Link key={section.slug} to={`/pro/${section.slug}`} onClick={onClose}>
-          <span>{section.label}</span>
+        <Link key={section.slug} to={`/pro/${section.slug}`} onClick={onClose} className="sidebar-pro-link">
+          <Flex alignItems="center" gap="7px">
+            <Icon as={section.icon} boxSize={4} className="sidebar-pro-icon" />
+            <span>{section.sidebarLabel || section.label}</span>
+            {section.freeCount && <span className="sidebar-pro-free-tag">{section.freeCount} Free</span>}
+          </Flex>
         </Link>
       ))}
     </Flex>
@@ -306,7 +360,6 @@ const Category = memo(
     itemRefs,
     isTransitioning,
     isFirstCategory,
-    savedSet,
     showFavorites,
     onPreviewEnter,
     onPreviewMove,
@@ -317,17 +370,15 @@ const Category = memo(
         category.subcategories.map(sub => {
           const path = `/${slug(category.name)}/${slug(sub)}`;
           const activePath = pendingActivePath || location.pathname;
-          const favoriteKey = `${toPascal(slug(category.name))}/${toPascal(slug(sub))}`;
           return {
             sub,
             path,
             isActive: activePath === path,
             isNew: NEW.includes(sub),
-            isUpdated: UPDATED.includes(sub),
-            isFavorited: savedSet?.has?.(favoriteKey)
+            isUpdated: UPDATED.includes(sub)
           };
         }),
-      [category.name, category.subcategories, location.pathname, pendingActivePath, savedSet]
+      [category.name, category.subcategories, location.pathname, pendingActivePath]
     );
 
     return (
@@ -336,7 +387,7 @@ const Category = memo(
           {category.name}
         </Text>
         <Stack className="sidebar-link-stack" spacing={0.5} pl={4} borderLeft="1px solid #2F293A" position="relative">
-          {items.map(({ sub, path, isActive, isNew, isUpdated, isFavorited }) => (
+          {items.map(({ sub, path, isActive, isNew, isUpdated }) => (
             <Link
               key={path}
               ref={el => {
@@ -357,7 +408,6 @@ const Category = memo(
               {sub}
               {isNew && <span className="new-tag">New</span>}
               {isUpdated && <span className="updated-tag">Updated</span>}
-              {isFavorited && <Icon as={HeartIcon} color={colors.accent} boxSize={3} style={{ marginLeft: 6 }} />}
             </Link>
           ))}
           {showFavorites && (
@@ -399,12 +449,12 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
+  const previewMediaAllowed = usePreviewMediaAllowed();
   const previewX = useMotionValue(260);
   const previewY = useMotionValue(100);
   const smoothPreviewX = useSpring(previewX, { stiffness: 420, damping: 38, mass: 0.72 });
   const smoothPreviewY = useSpring(previewY, { stiffness: 360, damping: 34, mass: 0.78 });
   const { startTransition, isTransitioning } = useTransition();
-  const savedSet = useFavoritesSync();
   const { isAtTop: isSidebarAtTop, isAtBottom: isSidebarAtBottom } = useScrollEdges(sidebarContainerRef);
   const sidebarFilterQuery = sidebarFilter.trim().toLowerCase();
   const sidebarCategories = useMemo(
@@ -422,7 +472,9 @@ const Sidebar = () => {
   const sidebarProSections = useMemo(
     () =>
       sidebarFilterQuery && !'pro'.includes(sidebarFilterQuery)
-        ? PRO_SECTIONS.filter(section => section.label.toLowerCase().includes(sidebarFilterQuery))
+        ? PRO_SECTIONS.filter(section =>
+            `${section.sidebarLabel || ''} ${section.label}`.toLowerCase().includes(sidebarFilterQuery)
+          )
         : PRO_SECTIONS,
     [sidebarFilterQuery]
   );
@@ -520,7 +572,7 @@ const Sidebar = () => {
 
   const handlePreviewEnter = useCallback(
     (categoryName, componentName, event) => {
-      if (categoryName === 'Get Started') return;
+      if (!previewMediaAllowed || categoryName === 'Get Started') return;
 
       const key = `/${slug(categoryName)}/${slug(componentName)}`;
       const metadata = COMPONENT_METADATA_BY_PATH.get(key);
@@ -533,17 +585,38 @@ const Sidebar = () => {
       const videoBase = metadata.videoUrl.replace(/\.(webm|mp4)$/i, '');
       const delay = sidebarPreview ? 70 : PREVIEW_DELAY;
       previewShowTimerRef.current = setTimeout(() => {
-        setSidebarPreview({ key, title: componentName, videoBase });
+        setSidebarPreview({
+          key,
+          title: componentName,
+          items: [{ label: categoryName, videoBase }]
+        });
       }, delay);
     },
-    [sidebarPreview, updatePreviewPosition]
+    [previewMediaAllowed, sidebarPreview, updatePreviewPosition]
+  );
+
+  const handleProPreviewEnter = useCallback(
+    (section, event) => {
+      const items = PRO_PREVIEW_ITEMS[section.slug];
+      if (!previewMediaAllowed || !items?.length) return;
+
+      clearTimeout(previewShowTimerRef.current);
+      clearTimeout(previewHideTimerRef.current);
+      updatePreviewPosition(event);
+
+      const delay = sidebarPreview ? 70 : PREVIEW_DELAY;
+      previewShowTimerRef.current = setTimeout(() => {
+        setSidebarPreview({ key: `pro-${section.slug}`, title: section.sidebarLabel || section.label, items });
+      }, delay);
+    },
+    [previewMediaAllowed, sidebarPreview, updatePreviewPosition]
   );
 
   const handlePreviewMove = useCallback(
     event => {
-      if (!reduceMotion) updatePreviewPosition(event);
+      if (previewMediaAllowed && !reduceMotion) updatePreviewPosition(event);
     },
-    [reduceMotion, updatePreviewPosition]
+    [previewMediaAllowed, reduceMotion, updatePreviewPosition]
   );
 
   const handlePreviewLeave = useCallback(() => {
@@ -569,6 +642,10 @@ const Sidebar = () => {
     clearTimeout(previewShowTimerRef.current);
     clearTimeout(previewHideTimerRef.current);
   }, [location.pathname, sidebarFilter]);
+
+  useEffect(() => {
+    if (!previewMediaAllowed) setSidebarPreview(null);
+  }, [previewMediaAllowed]);
 
   useEffect(
     () => () => {
@@ -609,7 +686,7 @@ const Sidebar = () => {
           <input
             value={sidebarFilter}
             onChange={event => setSidebarFilter(event.target.value)}
-            placeholder="Filter..."
+            placeholder={`Filter ${TOTAL_COMPONENTS} components...`}
             aria-label="Filter sidebar navigation"
           />
         </label>
@@ -632,7 +709,6 @@ const Sidebar = () => {
                       itemRefs={itemRefs}
                       isTransitioning={isTransitioning}
                       isFirstCategory={cat.name === firstVisibleCategory}
-                      savedSet={savedSet}
                       showFavorites={cat.index === 0 && showSidebarFavorites}
                       onPreviewEnter={handlePreviewEnter}
                       onPreviewMove={handlePreviewMove}
@@ -644,7 +720,7 @@ const Sidebar = () => {
                   {cat.index === 0 && sidebarProSections.length > 0 && (
                     <Box>
                       <Text className="category-name sidebar-pro-name" mb={2} mt={4}>
-                        Pro
+                        Explore Pro
                       </Text>
                       <Stack
                         className="sidebar-link-stack"
@@ -662,10 +738,17 @@ const Sidebar = () => {
                                 if (itemRefs.current) itemRefs.current[path] = el;
                               }}
                               to={path}
-                              className={`sidebar-item ${location.pathname === path ? 'active-sidebar-item' : ''}`}
+                              className={`sidebar-item sidebar-pro-link ${location.pathname === path ? 'active-sidebar-item' : ''}`}
                               onClick={scrollToTop}
+                              onMouseEnter={event => handleProPreviewEnter(section, event)}
+                              onMouseMove={handlePreviewMove}
+                              onMouseLeave={handlePreviewLeave}
+                              onFocus={event => handleProPreviewEnter(section, event)}
+                              onBlur={handlePreviewLeave}
                             >
-                              <span>{section.label}</span>
+                              <Icon as={section.icon} boxSize={3.5} className="sidebar-pro-icon" />
+                              <span>{section.sidebarLabel || section.label}</span>
+                              {section.freeCount && <span className="sidebar-pro-free-tag">{section.freeCount} Free</span>}
                             </Link>
                           );
                         })}
@@ -707,12 +790,14 @@ const Sidebar = () => {
         </Box>
       </Box>
 
-      <SidebarHoverPreview
-        preview={sidebarPreview}
-        x={reduceMotion ? previewX : smoothPreviewX}
-        y={reduceMotion ? previewY : smoothPreviewY}
-        reduceMotion={reduceMotion}
-      />
+      {previewMediaAllowed && (
+        <SidebarHoverPreview
+          preview={sidebarPreview}
+          x={reduceMotion ? previewX : smoothPreviewX}
+          y={reduceMotion ? previewY : smoothPreviewY}
+          reduceMotion={reduceMotion}
+        />
+      )}
     </>
   );
 };
