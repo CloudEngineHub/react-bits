@@ -87,8 +87,8 @@ const MagnetDemo = () => {
               <a href="https://github.com/DavidHDev/react-bits" target="_blank" rel="noreferrer">
                 <Flex
                   fontSize="lg"
-                  color="#fff"
-                  border="1px solid #5227FF"
+                  color="var(--text-primary)"
+                  border="1px solid var(--border-primary)"
                   borderRadius="15px"
                   p={4}
                   align="center"

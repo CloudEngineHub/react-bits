@@ -293,9 +293,9 @@ const GlassSurfaceDemo = () => {
                     top="3em"
                     transform="translate(-50%, -50%)"
                     fontSize="2.6rem"
-                    fontWeight={900}
+                    fontWeight={600}
                     zIndex={0}
-                    color="#2F293A"
+                    color="#999"
                   >
                     Try scrolling.
                   </Text>
@@ -304,15 +304,15 @@ const GlassSurfaceDemo = () => {
 
                   {[
                     {
-                      src: 'https://images.unsplash.com/photo-1500673587002-1d2548cfba1b?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      src: 'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MzZ8fHxlbnwwfHx8fHw%3D',
                       text: 'The Summer Of Glass'
                     },
                     {
-                      src: 'https://images.unsplash.com/photo-1594576547505-1be67997401e?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      src: 'https://images.unsplash.com/photo-1776394254711-4a0d7345269a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjF8fHxlbnwwfHx8fHw%3D',
                       text: 'Can Hold Any Content'
                     },
                     {
-                      src: 'https://images.unsplash.com/photo-1543127172-4b33cb699e35?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      src: 'https://images.unsplash.com/photo-1781155451576-ae65c8816d31?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NDZ8fHxlbnwwfHx8fHw%3D',
                       text: 'Has Built-In Fallback'
                     }
                   ].map((item, index) => (
@@ -324,12 +324,29 @@ const GlassSurfaceDemo = () => {
                         left="50%"
                         transform="translate(-50%, -50%)"
                         color="white"
-                        fontWeight={900}
+                        fontWeight={600}
                         textAlign="center"
                         lineHeight="100%"
                         fontSize="3rem"
                         minW="300px"
                         zIndex={5}
+                        mixBlendMode="overlay"
+                      >
+                        {item.text}
+                      </Text>
+                      <Text
+                        position="absolute"
+                        top="50%"
+                        left="50%"
+                        transform="translate(-50%, -50%)"
+                        color="white"
+                        fontWeight={600}
+                        textAlign="center"
+                        lineHeight="100%"
+                        fontSize="3rem"
+                        minW="300px"
+                        zIndex={5}
+                        opacity={0.5}
                         mixBlendMode="overlay"
                       >
                         {item.text}

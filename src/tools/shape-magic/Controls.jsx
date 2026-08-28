@@ -198,10 +198,10 @@ const ExportButton = ({ icon: IconComponent, label, active, onClick, flex, prima
     transition="all 0.15s"
     _hover={{ borderColor: primary ? 'none' : 'var(--color-primary)', bg: primary ? '#b96dfa' : undefined }}
   >
-    <Icon as={IconComponent} boxSize={3.5} color={primary ? 'var(--text-primary)' : 'var(--text-muted)'} />
+    <Icon as={IconComponent} boxSize={3.5} color={primary ? '#fff' : 'var(--text-muted)'} />
     <Text
       fontSize="11px"
-      color={primary ? 'var(--text-primary)' : 'var(--text-muted)'}
+      color={primary ? '#fff' : 'var(--text-muted)'}
       fontWeight={primary ? 600 : 500}
     >
       {label}

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import Customize from '../../components/common/Preview/Customize';
@@ -16,6 +16,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 import useForceRerender from '../../hooks/useForceRerender';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import StrokeText from '../../content/TextAnimations/StrokeText/StrokeText';
 import { strokeText } from '../../constants/code/TextAnimations/strokeTextCode';
@@ -76,6 +77,10 @@ const StrokeTextDemo = () => {
     letterSpacing,
     reverse
   } = props;
+  const renderedFillColor = useColorModeValue(
+    fillColor === DEFAULT_PROPS.fillColor ? '#000000' : fillColor,
+    fillColor
+  );
 
   const updateAndReplay = (name, value) => {
     updateProp(name, value);
@@ -195,7 +200,7 @@ const StrokeTextDemo = () => {
                 key={key}
                 text={text}
                 strokeColor={strokeColor}
-                fillColor={fillColor}
+                fillColor={renderedFillColor}
                 strokeWidth={strokeWidth}
                 drawDuration={drawDuration}
                 fillDelay={fillDelay}
@@ -228,7 +233,7 @@ const StrokeTextDemo = () => {
             />
             <PreviewColorPickerCustom
               title="Fill"
-              color={fillColor}
+              color={renderedFillColor}
               onChange={value => updateAndReplay('fillColor', value)}
             />
 

@@ -1,4 +1,4 @@
-import { type FC, useRef, useState, useEffect, type MutableRefObject } from 'react';
+import { type CSSProperties, type FC, useRef, useState, useEffect, type MutableRefObject } from 'react';
 import { mat4, quat, vec2, vec3 } from 'gl-matrix';
 import './InfiniteMenu.css';
 
@@ -762,7 +762,7 @@ class InfiniteGridMenu {
   private init(onInit?: InitCallback): void {
     const gl = this.canvas.getContext('webgl2', {
       antialias: true,
-      alpha: false
+      alpha: true
     });
     if (!gl) {
       throw new Error('No WebGL 2 context!');
@@ -1061,9 +1061,10 @@ const defaultItems: MenuItem[] = [
 interface InfiniteMenuProps {
   items?: MenuItem[];
   scale?: number;
+  backgroundColor?: string;
 }
 
-const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
+const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, backgroundColor = '#000000' }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null) as MutableRefObject<HTMLCanvasElement | null>;
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const [isMoving, setIsMoving] = useState<boolean>(false);
@@ -1113,7 +1114,15 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0 }) => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        backgroundColor,
+        '--infinite-menu-background': backgroundColor
+      } as CSSProperties}
+    >
       <canvas id="infinite-grid-menu-canvas" ref={canvasRef} />
 
       {activeItem && (

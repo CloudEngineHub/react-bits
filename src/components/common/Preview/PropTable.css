@@ -3,12 +3,19 @@
 }
 
 .prop-table-frame {
-  --prop-inset-background: transparent;
+  --prop-inset-background: var(--bg-body);
   padding: 4px;
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   background: var(--surface-ghost-track);
   box-shadow: var(--surface-ghost-highlight);
+}
+
+:root[data-theme='light'] .prop-table-frame {
+  --prop-inset-background: #ffffff;
+  border-color: var(--border-subtle);
+  background: #fafafa;
+  box-shadow: none;
 }
 
 .prop-table-heading {
@@ -21,7 +28,7 @@
 
 .prop-table-heading h2 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--section-heading);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -39,7 +46,7 @@
 
 .prop-table-surface {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--inset-border);
   border-radius: calc(var(--radius-lg) - 5px);
   background: var(--prop-inset-background);
 }
@@ -84,7 +91,7 @@
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  border-bottom: 1px solid var(--inset-border);
   white-space: nowrap;
 }
 
@@ -93,13 +100,13 @@
 }
 
 .prop-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.022);
+  background: var(--row-hover);
 }
 
 .prop-table tbody td {
   padding: 0.9rem 1rem;
   color: var(--text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  border-bottom: 1px solid var(--inset-divider);
   font-size: 0.8125rem;
   line-height: 1.5;
   vertical-align: middle;
@@ -111,7 +118,7 @@
 
 .prop-type {
   font-family: 'Geist Mono', monospace;
-  color: rgba(215, 205, 226, 0.68) !important;
+  color: var(--code-type) !important;
   font-size: 0.75rem !important;
   overflow-wrap: anywhere;
 }
@@ -126,7 +133,7 @@
 }
 
 .prop-name {
-  color: rgba(216, 180, 254, 0.9);
+  color: var(--code-name);
   overflow-wrap: anywhere;
 }
 
@@ -135,9 +142,9 @@
   max-width: 100%;
   padding: 0.2rem 0.45rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.055);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.045);
-  color: rgba(220, 214, 229, 0.86);
+  background: var(--code-chip);
+  box-shadow: inset 0 0 0 1px var(--inset-divider);
+  color: var(--code-value);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -151,7 +158,7 @@
 
 .prop-cards-surface {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--inset-border);
   border-radius: calc(var(--radius-lg) - 5px);
   background: var(--prop-inset-background);
 }
@@ -161,7 +168,7 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  border-bottom: 1px solid var(--inset-divider);
   transition: background-color var(--transition-fast);
 }
 
@@ -175,7 +182,7 @@
 }
 
 .prop-card:hover {
-  background: rgba(255, 255, 255, 0.022);
+  background: var(--row-hover);
 }
 
 .prop-card-header {
@@ -187,7 +194,7 @@
 
 .prop-card-type {
   font-family: 'Geist Mono', monospace;
-  color: rgba(215, 205, 226, 0.62);
+  color: var(--code-type);
   font-size: 0.6875rem;
   line-height: 1.4;
   text-align: right;

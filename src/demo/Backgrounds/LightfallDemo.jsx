@@ -56,7 +56,8 @@ const LightfallDemo = () => {
     backgroundGlow,
     mouseInteraction,
     mouseStrength,
-    mouseRadius
+    mouseRadius,
+    lightMode
   } = props;
 
   const colors = [color1, color2, color3];
@@ -192,7 +193,7 @@ const LightfallDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} hasChanges={hasChanges} resetProps={resetProps}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden" bg="#000">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden" bg={backgroundColor}>
             <Lightfall
               colors={colors}
               backgroundColor={backgroundColor}
@@ -208,6 +209,7 @@ const LightfallDemo = () => {
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
               mouseRadius={mouseRadius}
+              lightMode={lightMode}
             />
 
             <BackgroundContent pillText="New Background" headline="Let the light rain down" />

@@ -5,6 +5,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -35,15 +36,22 @@ const DEFAULT_PROPS = {
   mouseInfluence: 0.1
 };
 
+const LIGHT_PROPS = {
+  color: '#7c3aed',
+  backgroundColor: '#ffffff',
+  brightness: 1.25
+};
+
 const RadarDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
   const {
     speed, scale, ringCount, spokeCount, ringThickness, spokeThickness,
     sweepSpeed, sweepWidth, sweepLobes,
     color, backgroundColor,
     falloff, brightness,
-    enableMouseInteraction, mouseInfluence
-  } = props;
+    enableMouseInteraction, mouseInfluence, lightMode
+  } = themedProps;
 
   const propData = useMemo(
     () => [
@@ -142,7 +150,7 @@ const RadarDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={themedProps} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
@@ -162,6 +170,7 @@ const RadarDemo = () => {
               brightness={brightness}
               enableMouseInteraction={enableMouseInteraction}
               mouseInfluence={mouseInfluence}
+              lightMode={lightMode}
             />
           </Box>
 

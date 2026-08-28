@@ -148,9 +148,9 @@ const ScrollStackDemo = () => {
             <RefreshButton onClick={handleRefresh} />
             <Text
               textAlign="center"
-              color="#2F293A"
+              color="var(--text-dimmed)"
               fontSize="clamp(2rem, 4vw, 3rem)"
-              fontWeight={900}
+              fontWeight={600}
               position="absolute"
               top="25%"
               transform="translate(-50%, -50%)"

@@ -13,6 +13,7 @@ import BackgroundContent from '../../components/common/Preview/BackgroundContent
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import { beams } from '../../constants/code/Backgrounds/beamsCode';
@@ -23,15 +24,38 @@ const DEFAULT_PROPS = {
   beamHeight: 30,
   beamNumber: 20,
   lightColor: '#ffffff',
+  beamColor: '#000000',
+  backgroundColor: '#000000',
   speed: 2,
   noiseIntensity: 1.75,
   scale: 0.2,
   rotation: 30
 };
 
+const LIGHT_PROPS = {
+  lightMode: true,
+  lightColor: '#a855f7',
+  beamColor: '#7c3aed',
+  backgroundColor: '#ffffff',
+  noiseIntensity: 0.35
+};
+
 const BeamsDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { beamWidth, beamHeight, beamNumber, lightColor, speed, noiseIntensity, scale, rotation } = props;
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
+  const {
+    beamWidth,
+    beamHeight,
+    beamNumber,
+    lightColor,
+    beamColor,
+    backgroundColor,
+    speed,
+    noiseIntensity,
+    scale,
+    rotation,
+    lightMode
+  } = themedProps;
 
   const propData = useMemo(
     () => [
@@ -58,6 +82,18 @@ const BeamsDemo = () => {
         type: 'string',
         default: "'#ffffff'",
         description: 'Color of the directional light.'
+      },
+      {
+        name: 'beamColor',
+        type: 'string',
+        default: "'#000000'",
+        description: 'Base material color of the beams.'
+      },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        default: "'#000000'",
+        description: 'Canvas background color.'
       },
       {
         name: 'speed',
@@ -88,7 +124,12 @@ const BeamsDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={themedProps}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden" p={0}>
@@ -97,10 +138,13 @@ const BeamsDemo = () => {
               beamHeight={beamHeight}
               beamNumber={beamNumber}
               lightColor={lightColor}
+              beamColor={beamColor}
+              backgroundColor={backgroundColor}
               speed={speed}
               noiseIntensity={noiseIntensity}
               scale={scale}
               rotation={rotation}
+              lightMode={lightMode}
             />
 
             {/* For Demo Purposes Only */}
@@ -110,12 +154,25 @@ const BeamsDemo = () => {
           <Flex justify="flex-end" mt={2} mb={-2}>
             <OpenInStudioButton
               backgroundId="beams"
-              currentProps={{ beamWidth, beamHeight, beamNumber, lightColor, speed, noiseIntensity, scale, rotation }}
+              currentProps={{
+                beamWidth,
+                beamHeight,
+                beamNumber,
+                lightColor,
+                beamColor,
+                backgroundColor,
+                speed,
+                noiseIntensity,
+                scale,
+                rotation
+              }}
               defaultProps={{
                 beamWidth: 2,
                 beamHeight: 15,
                 beamNumber: 12,
                 lightColor: '#ffffff',
+                beamColor: '#000000',
+                backgroundColor: '#000000',
                 speed: 2,
                 noiseIntensity: 1.75,
                 scale: 0.2,
@@ -126,6 +183,16 @@ const BeamsDemo = () => {
 
           <Customize>
             <PreviewColorPickerCustom title="Color" color={lightColor} onChange={val => updateProp('lightColor', val)} />
+            <PreviewColorPickerCustom
+              title="Beam Color"
+              color={beamColor}
+              onChange={val => updateProp('beamColor', val)}
+            />
+            <PreviewColorPickerCustom
+              title="Background"
+              color={backgroundColor}
+              onChange={val => updateProp('backgroundColor', val)}
+            />
             <PreviewSlider
               title="Beam Width"
               min={0.1}

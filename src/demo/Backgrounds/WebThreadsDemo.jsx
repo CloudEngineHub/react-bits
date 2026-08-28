@@ -67,7 +67,9 @@ const WebThreadsDemo = () => {
     grain,
     grainIntensity,
     mouseInteraction,
-    mouseStrength
+    mouseStrength,
+    backgroundColor,
+    lightMode
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -237,6 +239,8 @@ const WebThreadsDemo = () => {
               grainIntensity={grainIntensity}
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
+              backgroundColor={backgroundColor}
+              lightMode={lightMode}
             />
             <BackgroundContent pillText="New Background" headline="Luminous threads woven to a glowing pinch." />
           </Box>

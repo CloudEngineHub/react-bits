@@ -70,6 +70,7 @@ uniform float uOpacity;
 uniform float uMouseEnabled;
 uniform float uMouseStrength;
 uniform float uMouseRadius;
+uniform float uLightMode;
 
 varying vec2 vUv;
 
@@ -124,7 +125,9 @@ void mainImage(out vec4 o, vec2 C) {
   C = c0;
 
   vec2 P = vec2(2.0, 1.0) * uv0 - (r / r.x) * vec2(0.0, 1.0);
-  vec4 O = vec4(uBgColor * 90.0 * uBgGlow / (1e3 * dot(P, P) + 6.0), 0.0);
+  vec4 O = uLightMode > 0.5
+    ? vec4(0.0)
+    : vec4(uBgColor * 90.0 * uBgGlow / (1e3 * dot(P, P) + 6.0), 0.0);
 
   float mGlow = 0.0;
   if (uMouseEnabled > 0.5) {
@@ -155,7 +158,17 @@ void mainImage(out vec4 o, vec2 C) {
   }
 
   vec3 colr = sqrt(tanhv(max(O.rgb * uGlow - vec3(0.04, 0.08, 0.02), 0.0)));
-  o = vec4(colr, uOpacity);
+if (uLightMode > 0.5) {
+  float peak = max(colr.r, max(colr.g, colr.b));
+  float coverage = smoothstep(0.035, 0.58, peak) * uOpacity;
+  vec3 chroma = clamp(colr / max(peak, 1e-4), 0.0, 1.0);
+  chroma = pow(chroma, vec3(1.35));
+  float chromaPeak = max(chroma.r, max(chroma.g, chroma.b));
+  chroma /= max(chromaPeak, 1e-4);
+  o = vec4(mix(vec3(1.0), chroma, coverage * 0.94), 1.0);
+} else {
+    o = vec4(colr, uOpacity);
+  }
 }
 
 void main() {
@@ -185,6 +198,7 @@ const Lightfall = ({
   mouseStrength = 0.5,
   mouseRadius = 1,
   mouseDampening = 0.15,
+  lightMode = false,
   mixBlendMode
 }) => {
   const containerRef = useRef(null);
@@ -243,7 +257,8 @@ const Lightfall = ({
       uOpacity: { value: opacity },
       uMouseEnabled: { value: mouseInteraction ? 1 : 0 },
       uMouseStrength: { value: mouseStrength },
-      uMouseRadius: { value: mouseRadius }
+      uMouseRadius: { value: mouseRadius },
+      uLightMode: { value: lightMode ? 1 : 0 }
     };
 
     const program = new Program(gl, { vertex, fragment, uniforms });
@@ -344,7 +359,8 @@ const Lightfall = ({
     mouseInteraction,
     mouseStrength,
     mouseRadius,
-    mouseDampening
+    mouseDampening,
+    lightMode
   ]);
 
   return (

@@ -16,6 +16,7 @@ import FluidGlass from '../../content/Components/FluidGlass/FluidGlass';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   mode: 'lens',
@@ -32,6 +33,8 @@ const FluidGlassDemo = () => {
   const [key, forceRerender] = useForceRerender();
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { mode, scale, ior, thickness, transmission, roughness, chromaticAberration, anisotropy } = props;
+  const backgroundColor = useColorModeValue('#ffffff', '#120F17');
+  const textColor = useColorModeValue('#ffffff', '#ffffff');
 
   const modeOptions = [
     { value: 'lens', label: 'Lens' },
@@ -107,6 +110,18 @@ const FluidGlassDemo = () => {
         type: 'object',
         default: '{}',
         description: 'Props specific to cube mode including material properties and interaction settings'
+      },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        default: '"#120F17"',
+        description: 'Background color rendered behind the glass scene.'
+      },
+      {
+        name: 'textColor',
+        type: 'string',
+        default: '"#ffffff"',
+        description: 'Color used for the scene title and navigation labels.'
       }
     ],
     []
@@ -116,10 +131,12 @@ const FluidGlassDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
+          <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden" bg={backgroundColor}>
             <FluidGlass
               key={key}
               mode={mode}
+              backgroundColor={backgroundColor}
+              textColor={textColor}
               lensProps={mode === 'lens' ? getModeProps() : {}}
               barProps={mode === 'bar' ? getModeProps() : {}}
               cubeProps={mode === 'cube' ? getModeProps() : {}}

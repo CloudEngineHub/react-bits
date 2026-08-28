@@ -58,6 +58,7 @@
 .announcement-modal-card {
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
   border-radius: 22px;
   background: #0e0b13;
   overflow: hidden;
@@ -193,7 +194,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-family: 'Geist', sans-serif;
   font-size: 13px;
   font-weight: 500;
   padding: 11px 18px;
@@ -255,4 +256,76 @@
   }
 }
 
+/* ── Light theme ── */
+:root[data-theme='light'] .announcement-modal-backdrop {
+  background: rgba(24, 24, 27, 0.28);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 
+:root[data-theme='light'] .announcement-modal-border {
+  background: conic-gradient(
+    from var(--announcement-angle),
+    transparent 0%,
+    rgba(24, 24, 27, 0.08) 10%,
+    transparent 20%,
+    transparent 50%,
+    rgba(24, 24, 27, 0.18) 60%,
+    transparent 70%
+  );
+}
+
+:root[data-theme='light'] .announcement-modal-card {
+  border: 1px solid rgba(24, 24, 27, 0.09);
+  background: #fff;
+  box-shadow:
+    0 24px 70px rgba(24, 24, 27, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme='light'] .announcement-modal-image {
+  border: 1px solid rgba(24, 24, 27, 0.08);
+}
+
+:root[data-theme='light'] .announcement-modal-close,
+:root[data-theme='light'] .announcement-modal-sound {
+  border-color: rgba(24, 24, 27, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  color: #3f3f46;
+  box-shadow: 0 4px 16px rgba(24, 24, 27, 0.08);
+}
+
+:root[data-theme='light'] .announcement-modal-close:hover,
+:root[data-theme='light'] .announcement-modal-sound:hover {
+  border-color: rgba(24, 24, 27, 0.2);
+  background: rgba(255, 255, 255, 0.94);
+  color: #18181b;
+}
+
+:root[data-theme='light'] .announcement-modal-close:focus-visible,
+:root[data-theme='light'] .announcement-modal-sound:focus-visible,
+:root[data-theme='light'] .announcement-modal-btn:focus-visible {
+  outline-color: #71717a;
+}
+
+:root[data-theme='light'] .announcement-modal-title {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .announcement-modal-description {
+  color: #52525b;
+}
+
+:root[data-theme='light'] .announcement-modal-description strong {
+  color: #27272a;
+}
+
+:root[data-theme='light'] .announcement-modal-btn--primary {
+  border-color: #18181b;
+  background: #18181b;
+  color: #fff;
+}
+
+:root[data-theme='light'] .announcement-modal-btn--primary:hover {
+  filter: brightness(1.15);
+}

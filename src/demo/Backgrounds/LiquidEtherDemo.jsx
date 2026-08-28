@@ -52,7 +52,9 @@ const LiquidEtherDemo = () => {
     isBounce,
     autoDemo,
     autoSpeed,
-    autoIntensity
+    autoIntensity,
+    backgroundColor,
+    lightMode
   } = props;
   const userColors = [color0, color1, color2].filter(Boolean);
   const [key] = useForceRerender();
@@ -196,6 +198,8 @@ const LiquidEtherDemo = () => {
               autoDemo={autoDemo}
               autoSpeed={autoSpeed}
               autoIntensity={autoIntensity}
+              backgroundColor={backgroundColor}
+              lightMode={lightMode}
               autoResumeDelay={500}
             />
 

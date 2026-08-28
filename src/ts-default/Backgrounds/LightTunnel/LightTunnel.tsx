@@ -33,6 +33,7 @@ export interface LightTunnelProps {
   opacity?: number;
   mouseInteraction?: boolean;
   mouseStrength?: number;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -79,6 +80,7 @@ uniform vec3 uTunnelColor;
 uniform float uTunnelOpacity;
 uniform float uGrain;
 uniform float uGrainIntensity;
+uniform float uLightMode;
 out vec4 fragColor;
 
 void mainImage(out vec4 o, in vec2 fragCoord) {
@@ -160,7 +162,13 @@ void mainImage(out vec4 o, in vec2 fragCoord) {
 void main() {
   vec4 o = vec4(0.0);
   mainImage(o, gl_FragCoord.xy);
-  fragColor = o;
+  if (uLightMode > 0.5) {
+    float peak = max(o.r, max(o.g, o.b));
+    vec3 chroma = pow(clamp(o.rgb / max(peak, 0.0001), 0.0, 1.0), vec3(1.16));
+    fragColor = vec4(mix(vec3(1.0), chroma, o.a * 0.95), 1.0);
+  } else {
+    fragColor = o;
+  }
 }
 `;
 
@@ -200,6 +208,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
   opacity = 1.0,
   mouseInteraction = true,
   mouseStrength = 0.1,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -258,7 +267,8 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
         uTunnelColor: { value: new Float32Array([0.32156863, 0.15294118, 1]) },
         uTunnelOpacity: { value: 0.0 },
         uGrain: { value: 1.0 },
-        uGrainIntensity: { value: 0.05 }
+        uGrainIntensity: { value: 0.05 },
+        uLightMode: { value: 0.0 }
       }
     });
 
@@ -392,6 +402,7 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
     u.uGrain.value = grain ? 1.0 : 0.0;
     u.uGrainIntensity.value = grainIntensity;
     u.uOpacity.value = opacity;
+    u.uLightMode.value = lightMode ? 1.0 : 0.0;
     const cable = hexToRgb(cableColor);
     const cableU = u.uCableColor.value as Float32Array;
     cableU[0] = cable[0];
@@ -436,7 +447,8 @@ const LightTunnel: React.FC<LightTunnelProps> = ({
     grainIntensity,
     opacity,
     mouseInteraction,
-    mouseStrength
+    mouseStrength,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`light-tunnel-container ${className}`.trim()} />;

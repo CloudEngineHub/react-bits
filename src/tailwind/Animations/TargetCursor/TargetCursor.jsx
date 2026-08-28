@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
 
 // A position: fixed element is positioned relative to the viewport UNLESS an
@@ -369,14 +370,14 @@ const TargetCursor = ({
     }
   }, [spinDuration, isMobile]);
 
-  if (isMobile) {
+  if (isMobile || typeof document === 'undefined') {
     return null;
   }
 
-  return (
+  return createPortal(
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 w-0 h-0 pointer-events-none z-[9999]"
+      className="fixed top-0 left-0 w-0 h-0 pointer-events-none z-[2147483647]"
       style={{ willChange: 'transform' }}
     >
       <div
@@ -400,7 +401,8 @@ const TargetCursor = ({
         className="target-cursor-corner absolute top-1/2 left-1/2 w-3 h-3 border-[3px] -translate-x-[150%] translate-y-1/2 border-r-0 border-t-0"
         style={{ willChange: 'transform', borderColor: cursorColor }}
       />
-    </div>
+    </div>,
+    document.body
   );
 };
 

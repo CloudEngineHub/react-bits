@@ -29,7 +29,7 @@ const DEFAULT_PROPS = {
 
 const DarkVeilDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount } = props;
+  const { hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, lightMode } = props;
   const [key] = useForceRerender();
 
   const propData = useMemo(
@@ -93,6 +93,7 @@ const DarkVeilDemo = () => {
               speed={speed}
               scanlineFrequency={scanlineFrequency}
               warpAmount={warpAmount}
+              lightMode={lightMode}
             />
 
             {/* For Demo Purposes Only */}

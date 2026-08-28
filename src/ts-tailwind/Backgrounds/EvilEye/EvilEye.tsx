@@ -12,6 +12,7 @@ interface EvilEyeProps {
   pupilFollow?: number;
   flameSpeed?: number;
   backgroundColor?: string;
+  lightMode?: boolean;
 }
 
 function hexToVec3(hex: string): [number, number, number] {
@@ -100,6 +101,7 @@ uniform float uPupilFollow;
 uniform float uFlameSpeed;
 uniform vec3 uEyeColor;
 uniform vec3 uBgColor;
+uniform bool uLightMode;
 
 void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - uResolution.xy) / uResolution.y;
@@ -159,8 +161,17 @@ void main() {
   outerBgGlow = pow(outerBgGlow, 0.5);
   outerBgGlow *= 0.15;
 
-  vec3 color = uEyeColor * uIntensity * clamp(max(innerRing + innerEye, outerEyeGlow + outerBgGlow) - pupil, 0.0, 3.0);
-  color += uBgColor;
+  vec3 eyeEnergy = uEyeColor * uIntensity * clamp(max(innerRing + innerEye, outerEyeGlow + outerBgGlow) - pupil, 0.0, 3.0);
+  vec3 color;
+  if (uLightMode) {
+    vec3 mapped = vec3(1.0) - exp(-max(eyeEnergy, vec3(0.0)) * 1.3);
+    float energy = clamp(max(mapped.r, max(mapped.g, mapped.b)), 0.0, 1.0);
+    vec3 hue = mapped / max(energy, 0.0001);
+    hue = pow(clamp(hue, 0.0, 1.0), vec3(1.2));
+    color = mix(uBgColor, hue, smoothstep(0.02, 0.82, energy) * 0.96);
+  } else {
+    color = eyeEnergy + uBgColor;
+  }
 
   gl_FragColor = vec4(color, 1.0);
 }
@@ -176,7 +187,8 @@ export default function EvilEye({
   noiseScale = 1.0,
   pupilFollow = 1.0,
   flameSpeed = 1.0,
-  backgroundColor = '#000000'
+  backgroundColor = '#000000',
+  lightMode = false
 }: EvilEyeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -245,7 +257,8 @@ export default function EvilEye({
         uPupilFollow: { value: pupilFollow },
         uFlameSpeed: { value: flameSpeed },
         uEyeColor: { value: hexToVec3(eyeColor) },
-        uBgColor: { value: hexToVec3(backgroundColor) }
+        uBgColor: { value: hexToVec3(backgroundColor) },
+        uLightMode: { value: lightMode }
       }
     });
 
@@ -272,7 +285,7 @@ export default function EvilEye({
       container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [eyeColor, intensity, pupilSize, irisWidth, glowIntensity, scale, noiseScale, pupilFollow, flameSpeed, backgroundColor]);
+  }, [eyeColor, intensity, pupilSize, irisWidth, glowIntensity, scale, noiseScale, pupilFollow, flameSpeed, backgroundColor, lightMode]);
 
   return <div ref={containerRef} className="w-full h-full" />;
 }

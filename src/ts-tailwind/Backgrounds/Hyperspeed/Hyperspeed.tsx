@@ -55,6 +55,7 @@ interface HyperspeedOptions {
 
 interface HyperspeedProps {
   effectOptions?: Partial<HyperspeedOptions>;
+  lightMode?: boolean;
 }
 
 const defaultOptions: HyperspeedOptions = {
@@ -1270,7 +1271,7 @@ class App {
 
 const DEFAULT_EFFECT_OPTIONS: Partial<HyperspeedOptions> = {};
 
-const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
+const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false }) => {
   const hyperspeed = useRef<HTMLDivElement>(null);
   const appRef = useRef<App | null>(null);
 
@@ -1307,7 +1308,7 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
         appRef.current.dispose();
       }
     };
-  }, [effectOptions]);
+  }, [effectOptions, lightMode]);
 
   return <div id="lights" className="w-full h-full" ref={hyperspeed}></div>;
 };

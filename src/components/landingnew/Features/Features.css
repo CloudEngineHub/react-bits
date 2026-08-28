@@ -19,11 +19,11 @@
 /* ─── Title ─── */
 
 .ln-features-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -2px;
   color: #fff;
   margin: 0 0 40px;
 }
@@ -53,7 +53,7 @@
   backdrop-filter: blur(32px) saturate(1.3);
   -webkit-backdrop-filter: blur(32px) saturate(1.3);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   box-shadow:
@@ -75,20 +75,24 @@
 /* ─── Card Visual ─── */
 
 .ln-features-card-visual {
-  height: 180px;
-  width: 100%;
+  height: 172px;
+  width: calc(100% - 16px);
+  margin: 8px 8px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.018);
 }
 
 /* ─── Card Body ─── */
 
 .ln-features-card-body {
-  padding: 18px 22px 22px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 18px 22px 20px;
+  border-top: 0;
 }
 
 .ln-features-card-body h3 {
@@ -454,7 +458,7 @@
 .ln-feat-aichat {
   width: 100%;
   height: 100%;
-  padding: 14px;
+  padding: 10px;
   box-sizing: border-box;
 }
 
@@ -573,7 +577,7 @@
 .ln-feat-aichat-code-block {
   display: flex;
   flex-direction: column;
-  padding: 8px 0;
+  padding: 6px 0 12px;
   flex: 1;
   min-height: 0;
 }
@@ -582,11 +586,11 @@
   display: flex;
   align-items: center;
   gap: 0;
-  padding: 3px 12px;
+  padding: 2px 12px;
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
-  line-height: 1.6;
-  min-height: 22px;
+  line-height: 1.5;
+  min-height: 21px;
   white-space: pre;
 }
 
@@ -653,8 +657,9 @@
 }
 
 .ln-feat-stars-count {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 52px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.45);
   letter-spacing: -0.03em;
   line-height: 1.15;
@@ -728,5 +733,175 @@
 
   .ln-feat-pill:active {
     transform: none;
+  }
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-features-section {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-features-title {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-features-card {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .ln-features-card-visual {
+  border-color: rgba(24, 24, 27, 0.07);
+  background: #fafafa;
+}
+
+:root[data-theme='light'] .ln-features-card-body {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-features-card-body h3 {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-features-card-body p {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-feat-pill {
+  border-color: rgba(24, 24, 27, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  color: #52525b;
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.03);
+}
+
+:root[data-theme='light'] .ln-feat-pill:hover {
+  border-color: rgba(24, 24, 27, 0.14);
+  background: #fff;
+  color: #18181b;
+  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.05);
+}
+
+:root[data-theme='light'] .ln-feat-tool-box {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  color: #52525b;
+  box-shadow:
+    0 8px 24px rgba(24, 24, 27, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme='light'] .ln-feat-tool-box--left,
+:root[data-theme='light'] .ln-feat-tool-box--right {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-feat-orbit-center,
+:root[data-theme='light'] .ln-feat-orbit-node {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: rgba(255, 255, 255, 0.94);
+  color: #52525b;
+  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.055);
+}
+
+:root[data-theme='light'] .ln-feat-orbit-center img {
+  filter: invert(1);
+  opacity: 0.68;
+}
+
+:root[data-theme='light'] .ln-feat-orbit-ring {
+  border-color: rgba(24, 24, 27, 0.09);
+}
+
+:root[data-theme='light'] .ln-feat-vrow {
+  border-color: rgba(24, 24, 27, 0.08);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+:root[data-theme='light'] .ln-feat-vrow-dot {
+  background: #a1a1aa !important;
+}
+
+:root[data-theme='light'] .ln-feat-vrow-label {
+  color: #3f3f46;
+}
+
+:root[data-theme='light'] .ln-feat-vrow-bar {
+  background: #e4e4e7;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-inner {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme='light'] .ln-feat-aichat-head,
+:root[data-theme='light'] .ln-feat-aichat-prompt-row {
+  border-color: rgba(24, 24, 27, 0.07);
+}
+
+:root[data-theme='light'] .ln-feat-aichat-dots span {
+  background: #d4d4d8;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-title,
+:root[data-theme='light'] .ln-feat-aichat-chevron,
+:root[data-theme='light'] .ln-feat-aichat-ln {
+  color: #a1a1aa;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-prompt {
+  color: #3f3f46;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-cursor,
+:root[data-theme='light'] .ln-feat-aichat-thinking span {
+  background: #71717a;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-kw,
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-punc {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-comp,
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-tag {
+  color: #3f3f46;
+}
+
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-attr,
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-str,
+:root[data-theme='light'] .ln-feat-aichat-code-line .ac-num {
+  color: #52525b;
+}
+
+:root[data-theme='light'] .ln-feat-stars-label {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-feat-stars-count {
+  color: #27272a;
+  background: linear-gradient(to bottom, #27272a 28%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+:root[data-theme='light'] .ln-feat-stars-chart stop:first-child {
+  stop-color: #71717a;
+  stop-opacity: 0.1;
+}
+
+:root[data-theme='light'] .ln-feat-stars-chart stop:last-child {
+  stop-color: #a1a1aa;
+}
+
+:root[data-theme='light'] .ln-feat-stars-chart path:last-of-type {
+  stroke: #71717a;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme='light'] .ln-features-card:hover {
+    border-color: #d4d4d8;
   }
 }

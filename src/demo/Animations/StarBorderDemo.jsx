@@ -14,6 +14,7 @@ import Customize from '../../components/common/Preview/Customize';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   thickness: 1,
@@ -30,6 +31,9 @@ const colorOptions = [
 const StarBorderDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { thickness, speed, color } = props;
+  const backgroundColor = useColorModeValue('#ffffff', '#000000');
+  const textColor = useColorModeValue('#18181b', '#ffffff');
+  const borderColor = useColorModeValue('#e4e4e7', '#222222');
 
   const propData = useMemo(
     () => [
@@ -62,6 +66,24 @@ const StarBorderDemo = () => {
         type: 'number',
         default: '3',
         description: 'Controls the thickness of the star border effect.'
+      },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        default: "'#000000'",
+        description: 'Background color of the button surface.'
+      },
+      {
+        name: 'textColor',
+        type: 'string',
+        default: "'#ffffff'",
+        description: 'Text color of the button content.'
+      },
+      {
+        name: 'borderColor',
+        type: 'string',
+        default: "'#222222'",
+        description: 'Static border color around the button surface.'
       }
     ],
     []
@@ -79,7 +101,15 @@ const StarBorderDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400}>
-            <StarBorder className="star-border-demo" color={color} thickness={thickness} speed={`${speed}s`}>
+            <StarBorder
+              className="star-border-demo"
+              color={color}
+              thickness={thickness}
+              speed={`${speed}s`}
+              backgroundColor={backgroundColor}
+              textColor={textColor}
+              borderColor={borderColor}
+            >
               <Text mx={0} fontSize={'1em'}>
                 Star Border
               </Text>

@@ -31,7 +31,7 @@ const DEFAULT_PROPS = {
 
 const PlasmaWaveDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { color1, color2, speed1, speed2, focalLength, bend1, bend2, dir2, rotationDeg } = props;
+  const { color1, color2, speed1, speed2, focalLength, bend1, bend2, dir2, rotationDeg, lightMode } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -123,6 +123,7 @@ const PlasmaWaveDemo = () => {
               bend2={bend2}
               dir2={dir2}
               rotationDeg={rotationDeg}
+              lightMode={lightMode}
             />
 
             <BackgroundContent pillText="New Background" headline="Raymarched plasma waves powered by OGL" />

@@ -1,5 +1,5 @@
 .skeleton-pulse {
-  background: linear-gradient(110deg, #1b1722 8%, #251f31 18%, #1b1722 33%);
+  background: linear-gradient(110deg, var(--skeleton-base) 8%, var(--skeleton-shine) 18%, var(--skeleton-base) 33%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s linear infinite;
   position: relative;
@@ -19,7 +19,7 @@
 @media (prefers-reduced-motion: reduce) {
   .skeleton-pulse {
     animation: none;
-    background: #1f1a29;
+    background: var(--skeleton-base);
   }
 }
 

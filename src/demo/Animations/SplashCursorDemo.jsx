@@ -157,7 +157,7 @@ const SplashCursorDemo = () => {
               position={'relative'}
               zIndex={10}
             >
-              <Text fontSize={'3rem'} textAlign="center" color="#2F293A" fontWeight={900} userSelect={'none'}>
+              <Text className="demo-instruction" fontSize={'3rem'} textAlign="center" fontWeight={600} userSelect={'none'}>
                 Move Your Cursor
               </Text>
             </Flex>

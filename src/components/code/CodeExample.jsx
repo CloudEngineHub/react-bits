@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { getLanguage } from '../../utils/utils';
 import { useComponentPropsContext } from '../../hooks/useComponentPropsContext';
 import { formatPropValue } from '../../utils/codeGeneration';
-import { colors } from '../../constants/colors';
 import CliInstallation from './CliInstallation';
-import CodeHighlighter from './CodeHighlighter';
+import CodeHighlighter, { CodeCopyButton } from './CodeHighlighter';
 import CodeOptions, { CSS, Tailwind, TSCSS, TSTailwind } from './CodeOptions';
+import CodeSection from './CodeSection';
 
 const SKIP_KEYS = new Set(['tailwind', 'css', 'tsTailwind', 'tsCode', 'dependencies']);
 
@@ -115,10 +115,9 @@ const CodeExample = ({ codeObject, componentName }) => {
 
   const renderCssSection = () =>
     css && (
-      <>
-        <h2 className="demo-title">CSS</h2>
-        <CodeHighlighter snippetId="css" language="css" codeString={css} />
-      </>
+      <CodeSection title="CSS" actions={<CodeCopyButton codeString={css} />}>
+        <CodeHighlighter snippetId="css" language="css" codeString={css} showCopyButton={false} />
+      </CodeSection>
     );
 
   return (
@@ -126,12 +125,18 @@ const CodeExample = ({ codeObject, componentName }) => {
       <CliInstallation deps={dependencies} />
 
       {dynamicUsage && (
-        <div>
-          <h2 className="demo-title">
-            Usage {hasChanges && <span style={{ color: colors.accent, fontSize: '12px' }}>(with your settings)</span>}
-          </h2>
-          <CodeHighlighter snippetId="usage" language="jsx" codeString={dynamicUsage} />
-        </div>
+        <CodeSection
+          title="Usage"
+          note={hasChanges ? 'With your settings' : null}
+          actions={<CodeCopyButton codeString={dynamicUsage} />}
+        >
+          <CodeHighlighter
+            snippetId="usage"
+            language="jsx"
+            codeString={dynamicUsage}
+            showCopyButton={false}
+          />
+        </CodeSection>
       )}
 
       {Object.entries(codeObject).map(([name, snippet]) => {
@@ -141,27 +146,36 @@ const CodeExample = ({ codeObject, componentName }) => {
         if (name === 'code' || name === 'tsCode') {
           return (
             <div key={name}>
-              <h2 className="demo-title">{name}</h2>
               <CodeOptions>
                 {tailwind && (
                   <Tailwind>
-                    <CodeHighlighter snippetId="code" language="jsx" codeString={tailwind} />
+                    <CodeHighlighter
+                      snippetId="code"
+                      language="jsx"
+                      codeString={tailwind}
+                      showCopyButton={false}
+                    />
                   </Tailwind>
                 )}
                 {code && (
                   <CSS>
-                    <CodeHighlighter snippetId="code" language="jsx" codeString={code} />
+                    <CodeHighlighter snippetId="code" language="jsx" codeString={code} showCopyButton={false} />
                     {css && renderCssSection()}
                   </CSS>
                 )}
                 {tsTailwind && (
                   <TSTailwind>
-                    <CodeHighlighter snippetId="code" language="tsx" codeString={tsTailwind} />
+                    <CodeHighlighter
+                      snippetId="code"
+                      language="tsx"
+                      codeString={tsTailwind}
+                      showCopyButton={false}
+                    />
                   </TSTailwind>
                 )}
                 {tsCode && (
                   <TSCSS>
-                    <CodeHighlighter snippetId="code" language="tsx" codeString={tsCode} />
+                    <CodeHighlighter snippetId="code" language="tsx" codeString={tsCode} showCopyButton={false} />
                     {renderCssSection()}
                   </TSCSS>
                 )}
@@ -171,10 +185,14 @@ const CodeExample = ({ codeObject, componentName }) => {
         }
 
         return (
-          <div key={name}>
-            <h2 className="demo-title">{name}</h2>
-            <CodeHighlighter snippetId={name} language={getLanguage(name)} codeString={snippet} />
-          </div>
+          <CodeSection key={name} title={name} actions={<CodeCopyButton codeString={snippet} />}>
+            <CodeHighlighter
+              snippetId={name}
+              language={getLanguage(name)}
+              codeString={snippet}
+              showCopyButton={false}
+            />
+          </CodeSection>
         );
       })}
     </>

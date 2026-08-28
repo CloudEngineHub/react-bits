@@ -95,7 +95,7 @@ const DockDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" minH={400}>
-            <Text fontSize="2rem" fontWeight={900} color="#2F293A">
+            <Text fontSize="2rem" fontWeight={600} color="var(--text-dimmed)">
               Try it out!
             </Text>
             <Dock

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 
 import CodeExample from '../../components/code/CodeExample';
@@ -14,6 +14,7 @@ import RefreshButton from '../../components/common/Preview/RefreshButton';
 import useComponentProps from '../../hooks/useComponentProps';
 import useForceRerender from '../../hooks/useForceRerender';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import FoldText from '../../content/TextAnimations/FoldText/FoldText';
 import { foldText } from '../../constants/code/TextAnimations/foldTextCode';
@@ -77,6 +78,7 @@ const FoldTextDemo = () => {
     fontWeight,
     color
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
 
   const propData = useMemo(
     () => [
@@ -202,7 +204,7 @@ const FoldTextDemo = () => {
                 trigger={trigger}
                 fontSize={fontSize}
                 fontWeight={fontWeight}
-                color={color}
+                color={renderedColor}
               />
             </Box>
           </Box>
@@ -244,7 +246,7 @@ const FoldTextDemo = () => {
 
             <PreviewColorPickerCustom
               title="Text Color"
-              color={color}
+              color={renderedColor}
               onChange={value => updateAndReplay('color', value)}
             />
 

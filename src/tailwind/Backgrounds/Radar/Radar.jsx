@@ -36,6 +36,7 @@ uniform float uSweepWidth;
 uniform float uSweepLobes;
 uniform vec3 uColor;
 uniform vec3 uBgColor;
+uniform bool uLightMode;
 uniform float uFalloff;
 uniform float uBrightness;
 uniform vec2 uMouse;
@@ -76,10 +77,20 @@ void main() {
   float fade = smoothstep(1.05, 0.85, dist) * pow(max(1.0 - dist, 0.0), uFalloff);
 
   float intensity = max((ringGlow + spokeGlow + sweepBeam) * fade * uBrightness, 0.0);
-  vec3 col = uColor * intensity + uBgColor;
-
-  float alpha = clamp(length(col), 0.0, 1.0);
-  gl_FragColor = vec4(col, alpha);
+  vec3 signal = uColor * intensity;
+  vec3 col;
+  if (uLightMode) {
+    vec3 mapped = vec3(1.0) - exp(-max(signal, vec3(0.0)) * 1.45);
+    float energy = clamp(max(mapped.r, max(mapped.g, mapped.b)), 0.0, 1.0);
+    vec3 hue = mapped / max(energy, 0.0001);
+    hue = pow(clamp(hue, 0.0, 1.0), vec3(1.2));
+    col = mix(uBgColor, hue, smoothstep(0.015, 0.8, energy) * 0.96);
+    gl_FragColor = vec4(col, 1.0);
+  } else {
+    col = signal + uBgColor;
+    float alpha = clamp(length(col), 0.0, 1.0);
+    gl_FragColor = vec4(col, alpha);
+  }
 }
 `;
 
@@ -98,7 +109,8 @@ export default function Radar({
   falloff = 2.0,
   brightness = 1.0,
   enableMouseInteraction = true,
-  mouseInfluence = 0.1
+  mouseInfluence = 0.1,
+  lightMode = false
 }) {
   const containerRef = useRef(null);
 
@@ -152,6 +164,7 @@ export default function Radar({
         uSweepLobes: { value: sweepLobes },
         uColor: { value: hexToVec3(color) },
         uBgColor: { value: hexToVec3(backgroundColor) },
+        uLightMode: { value: lightMode },
         uFalloff: { value: falloff },
         uBrightness: { value: brightness },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
@@ -198,7 +211,7 @@ export default function Radar({
       container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [speed, scale, ringCount, spokeCount, ringThickness, spokeThickness, sweepSpeed, sweepWidth, sweepLobes, color, backgroundColor, falloff, brightness, enableMouseInteraction, mouseInfluence]);
+  }, [speed, scale, ringCount, spokeCount, ringThickness, spokeThickness, sweepSpeed, sweepWidth, sweepLobes, color, backgroundColor, falloff, brightness, enableMouseInteraction, mouseInfluence, lightMode]);
 
   return <div ref={containerRef} className="w-full h-full" />;
 }

@@ -47,7 +47,9 @@ const GridScanDemo = () => {
     scanGlow,
     scanSoftness,
     enableWebcam,
-    showPreview
+    showPreview,
+    lightMode,
+    backgroundColor
   } = props;
 
   const propData = useMemo(
@@ -117,6 +119,8 @@ const GridScanDemo = () => {
               scanSoftness={scanSoftness}
               enableWebcam={enableWebcam}
               showPreview={showPreview}
+              lightMode={lightMode}
+              backgroundColor={backgroundColor}
             />
 
             <BackgroundContent pillText="New Background" headline="Hold on, scanning for Angular users." />

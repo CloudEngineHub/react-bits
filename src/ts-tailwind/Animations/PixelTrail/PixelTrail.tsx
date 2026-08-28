@@ -134,6 +134,7 @@ function Scene({ gridSize, trailSize, maxAge, interpolate, easingFunction, pixel
       <planeGeometry args={[2, 2]} />
       <primitive
         object={dotMaterial}
+        attach="material"
         gridSize={gridSize}
         resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
         mouseTrail={trail}
@@ -163,6 +164,7 @@ export default function PixelTrail({
       {gooeyFilter && <GooeyFilter id={gooeyFilter.id} strength={gooeyFilter.strength} />}
       <Canvas
         {...canvasProps}
+        dpr={canvasProps.dpr ?? [1, 1.25]}
         gl={glProps}
         className={`absolute z-1 ${className}`}
         style={gooeyFilter ? { filter: `url(#${gooeyFilter.id})` } : undefined}

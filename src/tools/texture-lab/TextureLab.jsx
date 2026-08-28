@@ -826,7 +826,7 @@ export default function TextureLab({ toolSelector }) {
             </Flex>
 
             <Flex align="center" justify="space-between" px={4} pb={3} borderBottom="1px solid var(--border-primary)">
-              <Text fontSize="16px" fontWeight={700} color="#fff">
+              <Text fontSize="16px" fontWeight={700} color="var(--text-primary)">
                 Controls
               </Text>
               <Flex

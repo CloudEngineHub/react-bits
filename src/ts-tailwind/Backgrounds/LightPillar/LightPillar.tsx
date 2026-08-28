@@ -15,6 +15,7 @@ interface LightPillarProps {
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
   pillarRotation?: number;
   quality?: 'low' | 'medium' | 'high';
+  lightMode?: boolean;
 }
 
 const LightPillar: React.FC<LightPillarProps> = ({
@@ -30,7 +31,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
   noiseIntensity = 0.5,
   mixBlendMode = 'screen',
   pillarRotation = 0,
-  quality = 'high'
+  quality = 'high',
+  lightMode = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -123,7 +125,9 @@ const LightPillar: React.FC<LightPillarProps> = ({
       }
     `;
 
-    const fragmentShader = `
+const fragmentShader = `
+      precision ${settings.precision} float;
+
       uniform float uTime;
       uniform vec2 uResolution;
       uniform vec2 uMouse;
@@ -135,114 +139,81 @@ const LightPillar: React.FC<LightPillarProps> = ({
       uniform float uPillarWidth;
       uniform float uPillarHeight;
       uniform float uNoiseIntensity;
-      uniform float uPillarRotation;
+      uniform float uLightMode;
       uniform float uRotCos;
       uniform float uRotSin;
       uniform float uPillarRotCos;
       uniform float uPillarRotSin;
-      uniform float uWaveSin[4];
-      uniform float uWaveCos[4];
+      uniform float uWaveSin;
+      uniform float uWaveCos;
       varying vec2 vUv;
 
-      const float PI = 3.141592653589793;
-      const float EPSILON = 0.001;
-      const float E = 2.71828182845904523536;
-
-      float noise(vec2 coord) {
-        vec2 r = (E * sin(E * coord));
-        return fract(r.x * r.y * (1.0 + coord.x));
-      }
+      const float STEP_MULT = ${settings.stepMultiplier.toFixed(1)};
+      const int MAX_ITER = ${settings.iterations};
+      const int WAVE_ITER = ${settings.waveIterations};
 
       void main() {
-        vec2 fragCoord = vUv * uResolution;
-        vec2 uv = (fragCoord * 2.0 - uResolution) / uResolution.y;
-        
-        // Apply 2D rotation to UV coordinates using pre-computed values
-        uv = vec2(
-          uv.x * uPillarRotCos - uv.y * uPillarRotSin,
-          uv.x * uPillarRotSin + uv.y * uPillarRotCos
-        );
+        vec2 uv = (vUv * 2.0 - 1.0) * vec2(uResolution.x / uResolution.y, 1.0);
+        uv = vec2(uPillarRotCos * uv.x - uPillarRotSin * uv.y, uPillarRotSin * uv.x + uPillarRotCos * uv.y);
 
-        vec3 origin = vec3(0.0, 0.0, -10.0);
-        vec3 direction = normalize(vec3(uv, 1.0));
+        vec3 ro = vec3(0.0, 0.0, -10.0);
+        vec3 rd = normalize(vec3(uv, 1.0));
 
-        float maxDepth = 50.0;
-        float depth = 0.1;
-
-        // Use pre-computed rotation values (or mouse-based)
-        float rotCos = uRotCos;
-        float rotSin = uRotSin;
-        if(uInteractive && length(uMouse) > 0.0) {
-          float mouseAngle = uMouse.x * PI * 2.0;
-          rotCos = cos(mouseAngle);
-          rotSin = sin(mouseAngle);
+        float rotC = uRotCos;
+        float rotS = uRotSin;
+        if(uInteractive && (uMouse.x != 0.0 || uMouse.y != 0.0)) {
+          float a = uMouse.x * 6.283185;
+          rotC = cos(a);
+          rotS = sin(a);
         }
 
-        vec3 color = vec3(0.0);
+        vec3 col = vec3(0.0);
+        float t = 0.1;
         
-        const int ITERATIONS = ${settings.iterations};
-        const int WAVE_ITERATIONS = ${settings.waveIterations};
-        const float STEP_MULT = ${settings.stepMultiplier.toFixed(1)};
-        
-        for(int i = 0; i < ITERATIONS; i++) {
-          vec3 pos = origin + direction * depth;
-          
-          // Inline rotation: pos.xz *= rotMat
-          float newX = pos.x * rotCos - pos.z * rotSin;
-          float newZ = pos.x * rotSin + pos.z * rotCos;
-          pos.x = newX;
-          pos.z = newZ;
+        for(int i = 0; i < MAX_ITER; i++) {
+          vec3 p = ro + rd * t;
+          p.xz = vec2(rotC * p.x - rotS * p.z, rotS * p.x + rotC * p.z);
 
-          // Apply vertical scaling and wave deformation
-          vec3 deformed = pos;
-          deformed.y *= uPillarHeight;
-          deformed = deformed + vec3(0.0, uTime, 0.0);
+          vec3 q = p;
+          q.y = p.y * uPillarHeight + uTime;
           
-          // Inlined wave deformation
-          float frequency = 1.0;
-          float amplitude = 1.0;
-          for(int j = 0; j < WAVE_ITERATIONS; j++) {
-            // Inline rotation: deformed.xz *= rot(0.4) using pre-computed
-            float wx = deformed.x * uWaveCos[j] - deformed.z * uWaveSin[j];
-            float wz = deformed.x * uWaveSin[j] + deformed.z * uWaveCos[j];
-            deformed.x = wx;
-            deformed.z = wz;
-            
-            float phase = uTime * float(j) * 2.0;
-            vec3 oscillation = cos(deformed.zxy * frequency - phase);
-            deformed += oscillation * amplitude;
-            frequency *= 2.0;
-            amplitude *= 0.5;
+          float freq = 1.0;
+          float amp = 1.0;
+          for(int j = 0; j < WAVE_ITER; j++) {
+            q.xz = vec2(uWaveCos * q.x - uWaveSin * q.z, uWaveSin * q.x + uWaveCos * q.z);
+            q += cos(q.zxy * freq - uTime * float(j) * 2.0) * amp;
+            freq *= 2.0;
+            amp *= 0.5;
           }
           
-          // Calculate distance field using cosine pattern
-          vec2 cosinePair = cos(deformed.xz);
-          float fieldDistance = length(cosinePair) - 0.2;
-          
-          // Radial boundary constraint (inlined blendMax)
-          float radialBound = length(pos.xz) - uPillarWidth;
+          float d = length(cos(q.xz)) - 0.2;
+          float bound = length(p.xz) - uPillarWidth;
           float k = 4.0;
-          float h = max(k - abs(-radialBound - (-fieldDistance)), 0.0);
-          fieldDistance = -(min(-radialBound, -fieldDistance) - h * h * 0.25 / k);
-          
-          fieldDistance = abs(fieldDistance) * 0.15 + 0.01;
+          float h = max(k - abs(d - bound), 0.0);
+          d = max(d, bound) + h * h * 0.0625 / k;
+          d = abs(d) * 0.15 + 0.01;
 
-          vec3 gradient = mix(uBottomColor, uTopColor, smoothstep(15.0, -15.0, pos.y));
-          color += gradient / fieldDistance;
+          float grad = clamp((15.0 - p.y) / 30.0, 0.0, 1.0);
+          col += mix(uBottomColor, uTopColor, grad) / d;
 
-          if(fieldDistance < EPSILON || depth > maxDepth) break;
-          depth += fieldDistance * STEP_MULT;
+          t += d * STEP_MULT;
+          if(t > 50.0) break;
         }
 
-        // Normalize by pillar width to maintain consistent glow regardless of size
-        float widthNormalization = uPillarWidth / 3.0;
-        color = tanh(color * uGlowAmount / widthNormalization);
+        float widthNorm = uPillarWidth / 3.0;
+        col = tanh(col * uGlowAmount / widthNorm);
         
-        // Add noise postprocessing
-        float rnd = noise(gl_FragCoord.xy);
-        color -= rnd / 15.0 * uNoiseIntensity;
+        col -= fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) / 15.0 * uNoiseIntensity;
         
-        gl_FragColor = vec4(color * uIntensity, 1.0);
+        vec3 result = clamp(col * uIntensity, 0.0, 1.0);
+        if (uLightMode > 0.5) {
+          float energy = max(result.r, max(result.g, result.b));
+          vec3 hue = result / max(energy, 0.001);
+          float coverage = smoothstep(0.025, 0.95, energy);
+          hue = pow(clamp(hue, 0.0, 1.0), vec3(1.25));
+          result = mix(vec3(1.0), hue, coverage * 0.94);
+        }
+        gl_FragColor = vec4(result, 1.0);
       }
     `;
 
@@ -281,7 +252,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
         uPillarRotCos: { value: pillarRotCos },
         uPillarRotSin: { value: pillarRotSin },
         uWaveSin: { value: waveSinValues },
-        uWaveCos: { value: waveCosValues }
+        uWaveCos: { value: waveCosValues },
+        uLightMode: { value: lightMode ? 1 : 0 }
       },
       transparent: true,
       depthWrite: false,
@@ -443,6 +415,11 @@ const LightPillar: React.FC<LightPillarProps> = ({
     if (!materialRef.current) return;
     materialRef.current.uniforms.uNoiseIntensity.value = noiseIntensity;
   }, [noiseIntensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uLightMode.value = lightMode ? 1 : 0;
+  }, [lightMode]);
 
   useEffect(() => {
     if (!materialRef.current) return;

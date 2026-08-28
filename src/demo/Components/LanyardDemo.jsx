@@ -105,10 +105,10 @@ const LanyardDemo = () => {
             h={500}
             p={0}
             overflow="hidden"
-            bg="linear-gradient(180deg, #2F293A 0%, #120F17 100%)"
+            bg="linear-gradient(180deg, var(--bg-hover) 0%, var(--bg-body) 100%)"
           >
             <RefreshButton onClick={forceRerender} />
-            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#2F293A">
+            <Text position="absolute" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={600} color="var(--text-dimmed)">
               Drag It!
             </Text>
             <Lanyard key={key} position={[0, 0, cameraDistance]} gravity={stopGravity ? [0, 0, 0] : [0, -40, 0]} />

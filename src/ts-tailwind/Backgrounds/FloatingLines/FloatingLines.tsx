@@ -54,6 +54,8 @@ uniform vec2 parallaxOffset;
 
 uniform vec3 lineGradient[8];
 uniform int lineGradientCount;
+uniform vec3 backgroundColor;
+uniform bool lightMode;
 
 const vec3 BLACK = vec3(0.0);
 const vec3 PINK  = vec3(233.0, 71.0, 245.0) / 255.0;
@@ -191,7 +193,19 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     }
   }
 
-  fragColor = vec4(col, 1.0);
+if (lightMode) {
+  vec3 energy = max(col, vec3(0.0));
+  float peak = max(energy.r, max(energy.g, energy.b));
+  float coverage = smoothstep(0.018, 0.5, peak);
+  vec3 chroma = clamp(energy / max(peak, 0.0001), 0.0, 1.0);
+  chroma = pow(chroma, vec3(1.35));
+  float chromaPeak = max(chroma.r, max(chroma.g, chroma.b));
+  chroma /= max(chromaPeak, 0.0001);
+  vec3 ink = mix(chroma, clamp(chroma * 0.82, 0.0, 1.0), smoothstep(0.5, 1.0, coverage));
+  fragColor = vec4(mix(vec3(1.0), ink, coverage * 0.94), 1.0);
+} else {
+    fragColor = vec4(col, 1.0);
+  }
 }
 
 void main() {
@@ -225,6 +239,8 @@ type FloatingLinesProps = {
   parallax?: boolean;
   parallaxStrength?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
+  backgroundColor?: string;
+  lightMode?: boolean;
 };
 
 function hexToVec3(hex: string): Vector3 {
@@ -266,7 +282,9 @@ export default function FloatingLines({
   mouseDamping = 0.05,
   parallax = true,
   parallaxStrength = 0.2,
-  mixBlendMode = 'screen'
+  mixBlendMode = 'screen',
+  backgroundColor = '#000000',
+  lightMode = false
 }: FloatingLinesProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const targetMouseRef = useRef<Vector2>(new Vector2(-1000, -1000));
@@ -363,7 +381,9 @@ export default function FloatingLines({
       lineGradient: {
         value: Array.from({ length: MAX_GRADIENT_STOPS }, () => new Vector3(1, 1, 1))
       },
-      lineGradientCount: { value: 0 }
+      lineGradientCount: { value: 0 },
+      backgroundColor: { value: hexToVec3(backgroundColor) },
+      lightMode: { value: lightMode }
     };
 
     if (linesGradient && linesGradient.length > 0) {
@@ -497,7 +517,9 @@ export default function FloatingLines({
     bendStrength,
     mouseDamping,
     parallax,
-    parallaxStrength
+    parallaxStrength,
+    backgroundColor,
+    lightMode
   ]);
 
   return (
@@ -505,7 +527,7 @@ export default function FloatingLines({
       ref={containerRef}
       className="relative w-full h-full overflow-hidden floating-lines-container"
       style={{
-        mixBlendMode: mixBlendMode
+        mixBlendMode: lightMode ? 'normal' : mixBlendMode
       }}
     />
   );

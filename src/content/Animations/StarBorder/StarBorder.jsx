@@ -6,6 +6,9 @@ const StarBorder = ({
   color = 'white',
   speed = '6s',
   thickness = 1,
+  backgroundColor = '#000000',
+  textColor = '#ffffff',
+  borderColor = '#222222',
   children,
   ...rest
 }) => {
@@ -32,7 +35,9 @@ const StarBorder = ({
           animationDuration: speed
         }}
       ></div>
-      <div className="inner-content">{children}</div>
+      <div className="inner-content" style={{ background: backgroundColor, color: textColor, borderColor }}>
+        {children}
+      </div>
     </Component>
   );
 };

@@ -228,13 +228,14 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
   return (
     <div
       ref={containerRef}
-      className={`h-[400px] w-[300px] relative overflow-hidden grid place-items-center aspect-[4/5] border border-[#27272a] rounded-[25px] isolate transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
+      className={`group h-[400px] w-[300px] relative overflow-hidden grid place-items-center aspect-[4/5] border border-[var(--pixel-card-border,#27272a)] bg-[var(--pixel-card-background,transparent)] rounded-[25px] isolate transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onFocus={finalNoFocus ? undefined : onFocus}
       onBlur={finalNoFocus ? undefined : onBlur}
       tabIndex={finalNoFocus ? -1 : 0}
     >
+      <div className="absolute inset-0 m-auto aspect-square bg-[radial-gradient(circle,var(--pixel-card-active-color,#09090b),transparent_85%)] opacity-0 transition-opacity duration-800 ease-[cubic-bezier(0.5,1,0.89,1)] group-hover:opacity-100 group-focus-within:opacity-100" />
       <canvas className="w-full h-full block" ref={canvasRef} />
       {children}
     </div>

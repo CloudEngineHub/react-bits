@@ -41,6 +41,7 @@ uniform vec3 uColor3;
 uniform vec2 uMouse;
 uniform float uMouseInfluence;
 uniform bool uEnableMouse;
+uniform float uLightMode;
 
 #define HALF_PI 1.5707963
 
@@ -127,7 +128,19 @@ void main() {
   vec3 col = (rChannel * uColor1 + gChannel * uColor2 + bChannel * uColor3) * uBrightness;
   float alpha = clamp(length(col), 0.0, 1.0);
 
-  gl_FragColor = vec4(col, alpha);
+  if (uLightMode > 0.5) {
+    vec3 weights = pow(max(vec3(rChannel, gChannel, bChannel), vec3(0.0)), vec3(3.0));
+    float weightSum = max(weights.r + weights.g + weights.b, 0.0001);
+    vec3 chroma = (weights.r * uColor1 + weights.g * uColor2 + weights.b * uColor3) / weightSum;
+    float neutral = min(chroma.r, min(chroma.g, chroma.b));
+    chroma = max(chroma - vec3(neutral * 0.92), vec3(0.0));
+    float peak = max(chroma.r, max(chroma.g, chroma.b));
+    chroma = pow(clamp(chroma / max(peak, 0.0001), 0.0, 1.0), vec3(1.08));
+    float ink = clamp(max(rChannel, max(gChannel, bChannel)) * uBrightness * 1.15, 0.0, 0.92);
+    gl_FragColor = vec4(mix(vec3(1.0), chroma, ink), 1.0);
+  } else {
+    gl_FragColor = vec4(col, alpha);
+  }
 }
 `;
 
@@ -144,7 +157,8 @@ export default function LineWaves({
   color2 = '#ffffff',
   color3 = '#ffffff',
   enableMouseInteraction = true,
-  mouseInfluence = 2.0
+  mouseInfluence = 2.0,
+  lightMode = false
 }) {
   const containerRef = useRef(null);
 
@@ -201,7 +215,8 @@ export default function LineWaves({
         uColor3: { value: hexToVec3(color3) },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseInfluence: { value: mouseInfluence },
-        uEnableMouse: { value: enableMouseInteraction }
+        uEnableMouse: { value: enableMouseInteraction },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -243,7 +258,7 @@ export default function LineWaves({
       container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [speed, innerLineCount, outerLineCount, warpIntensity, rotation, edgeFadeWidth, colorCycleSpeed, brightness, color1, color2, color3, enableMouseInteraction, mouseInfluence]);
+  }, [speed, innerLineCount, outerLineCount, warpIntensity, rotation, edgeFadeWidth, colorCycleSpeed, brightness, color1, color2, color3, enableMouseInteraction, mouseInfluence, lightMode]);
 
   return <div ref={containerRef} className="line-waves-container" />;
 }

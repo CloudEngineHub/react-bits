@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import ModelViewer from '../../content/Components/ModelViewer/ModelViewer';
 import { modelViewer } from '../../constants/code/Components/modelViewerCode';
@@ -33,6 +34,8 @@ const DEFAULT_PROPS = {
 const ModelViewerDemo = () => {
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [key, forceRerender] = useForceRerender();
+  const overlayTextColor = useColorModeValue('#18181b', '#ffffff');
+  const overlayTextShadow = useColorModeValue('0 0 12px rgba(255, 255, 255, 0.9)', '0 0 10px rgba(255, 255, 255, 0.8)');
 
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const {
@@ -165,10 +168,10 @@ const ModelViewerDemo = () => {
                 transform="translate(-50%, -50%)"
                 fontSize="3rem"
                 whiteSpace="nowrap"
-                fontWeight="900"
-                color="white"
+                fontWeight="600"
+                color={overlayTextColor}
                 textAlign="center"
-                textShadow="0 0 10px rgba(255, 255, 255, 0.8)"
+                textShadow={overlayTextShadow}
                 zIndex={1}
                 display={{ base: 'none', md: 'block' }}
               >

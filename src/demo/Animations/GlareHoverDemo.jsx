@@ -15,6 +15,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import { glareHover } from '../../constants/code/Animations/glareHoverCode';
 import GlareHover from '../../content/Animations/GlareHover/GlareHover';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   glareColor: '#ffffff',
@@ -27,6 +28,10 @@ const DEFAULT_PROPS = {
 const GlareHoverDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { glareColor, glareOpacity, glareSize, transitionDuration, playOnce } = props;
+  const renderedGlareColor = useColorModeValue(
+    glareColor === DEFAULT_PROPS.glareColor ? '#18181b' : glareColor,
+    glareColor
+  );
 
   const propData = useMemo(
     () => [
@@ -124,25 +129,25 @@ const GlareHoverDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} overflow="hidden">
             <GlareHover
-              background="#120F17"
-              borderColor="#2F293A"
+              background="var(--bg-card)"
+              borderColor="var(--border-subtle)"
               borderRadius="20px"
               width="400px"
               height="300px"
-              glareColor={glareColor}
+              glareColor={renderedGlareColor}
               glareOpacity={glareOpacity}
               glareSize={glareSize}
               transitionDuration={transitionDuration}
               playOnce={playOnce}
             >
-              <Text textAlign="center" fontSize="3rem" fontWeight="900" color="#2F293A" m={0}>
+              <Text className="demo-instruction" textAlign="center" fontSize="3rem" fontWeight="600" m={0}>
                 Hover Me
               </Text>
             </GlareHover>
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Glare Color" color={glareColor} onChange={val => updateProp('glareColor', val)} />
+            <PreviewColorPickerCustom title="Glare Color" color={renderedGlareColor} onChange={val => updateProp('glareColor', val)} />
 
             <PreviewSlider
               title="Glare Opacity"

@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { Maximize2 } from 'lucide-react';
+import { useColorMode } from '../../components/setup/color-mode';
 import { getFillSpec, getFxSpec } from './svgRenderers';
 
 const Canvas = forwardRef(
@@ -20,6 +21,7 @@ const Canvas = forwardRef(
     },
     ref
   ) => {
+    const { resolvedTheme } = useColorMode();
     const containerRef = useRef(null);
     const hasCenteredRef = useRef(false);
     const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -473,6 +475,11 @@ const Canvas = forwardRef(
     );
     const fillSpec = useMemo(() => getFillSpec(style, shapesBBox, 'canvas'), [style, shapesBBox]);
     const fxSpec = useMemo(() => getFxSpec(style, 'canvas'), [style]);
+    const needsEditorOutline =
+      resolvedTheme === 'light' &&
+      style.fillType === 'solid' &&
+      ['#fff', '#ffffff', 'white'].includes(style.fill?.toLowerCase()) &&
+      !style.strokeEnabled;
 
     const renderResizeHandles = shape => {
       if (!selectedIds.includes(shape.id)) return null;
@@ -638,6 +645,8 @@ const Canvas = forwardRef(
               d={fusedPath.d}
               fill={fillSpec.paint}
               fillOpacity={style.opacity ?? 1}
+              stroke={needsEditorOutline ? 'rgba(24, 24, 27, 0.18)' : 'none'}
+              strokeWidth={needsEditorOutline ? 1.25 / zoom : undefined}
               filter={fxSpec ? `url(#${fxSpec.id})` : undefined}
             />
 
@@ -681,7 +690,7 @@ const Canvas = forwardRef(
             as="button"
             align="center"
             gap={1.5}
-            bg="rgba(13, 7, 22, 0.9)"
+            bg="var(--tool-overlay-bg)"
             border="1px solid var(--border-primary)"
             borderRadius="6px"
             px={2.5}
@@ -702,7 +711,7 @@ const Canvas = forwardRef(
           position="absolute"
           bottom={4}
           right={4}
-          bg="rgba(13, 7, 22, 0.9)"
+          bg="var(--tool-overlay-bg)"
           border="1px solid var(--border-primary)"
           borderRadius="6px"
           px={3}

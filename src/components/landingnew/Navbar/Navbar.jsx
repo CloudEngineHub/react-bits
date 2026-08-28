@@ -7,7 +7,8 @@ import { GITHUB_URL } from '../../../constants/Site';
 import { proLinkProps } from '../../../utils/pro';
 import useProImpression from '../../../hooks/useProImpression';
 import { FaGithub } from 'react-icons/fa6';
-import { LuSearch, LuHeart, LuUser } from 'react-icons/lu';
+import { LuSearch, LuSettings2, LuSun, LuMoon } from 'react-icons/lu';
+import { useColorMode } from '../../setup/color-mode';
 import { useSearch } from '../../context/SearchContext/useSearch';
 import { useOptions } from '../../context/OptionsContext/useOptions';
 import { CATEGORIES, TOTAL_COMPONENTS } from '../../../constants/Categories';
@@ -41,6 +42,8 @@ const Navbar = ({ showDocs }) => {
 
   const { toggleSearch } = useSearch();
   const { languagePreset, setLanguagePreset, stylePreset, setStylePreset } = useOptions();
+  const { resolvedTheme, toggleColorMode } = useColorMode();
+  const isLightTheme = resolvedTheme === 'light';
   const location = useLocation();
   const docsCategory = location.pathname.split('/').filter(Boolean)[0] || 'unknown';
   const showDocsProCta = showDocs && !location.pathname.startsWith('/pro');
@@ -200,8 +203,14 @@ const Navbar = ({ showDocs }) => {
               </button>
 
               <div className="ln-navbar-prefs-wrapper" onMouseEnter={handlePrefsEnter} onMouseLeave={handlePrefsLeave}>
-                <button className="ln-navbar-icon-btn ln-navbar-prefs-trigger" aria-label="Preferences">
-                  <LuUser size={16} />
+                <button
+                  className="ln-navbar-icon-btn ln-navbar-prefs-trigger"
+                  aria-label="Preferences"
+                  aria-expanded={prefsOpen}
+                  title="Preferences"
+                  onClick={() => setPrefsOpen(true)}
+                >
+                  <LuSettings2 size={16} />
                 </button>
 
                 {prefsOpen && (
@@ -236,54 +245,54 @@ const Navbar = ({ showDocs }) => {
                         <img src={twIcon} alt="TW" width={18} height={18} />
                       </button>
                     </div>
-                    <div className="ln-navbar-prefs-divider" />
-                    <Link to="/favorites" className="ln-navbar-prefs-fav" onClick={() => setPrefsOpen(false)}>
-                      <LuHeart size={13} />
-                      Favorites
-                    </Link>
                   </div>
                 )}
               </div>
 
-              {showDocsProCta && (
-                <a
-                  ref={docsProRef}
-                  {...proLinkProps('/#pricing', 'docs-navbar', {
-                    params: { category: docsCategory },
-                    sameTab: true
-                  })}
-                  className="ln-navbar-pro ln-navbar-pro-docs"
-                >
-                  Get React Bits Pro
-                </a>
-              )}
             </>
+          )}
+
+          <button
+            className="ln-navbar-icon-btn ln-navbar-theme-btn"
+            onClick={toggleColorMode}
+            aria-label={isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'}
+            title={isLightTheme ? 'Dark mode' : 'Light mode'}
+          >
+            {isLightTheme ? <LuMoon size={16} /> : <LuSun size={16} />}
+          </button>
+
+          <a className="ln-navbar-github" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+            <FaGithub size={16} />
+            <span>{formattedStars}</span>
+          </a>
+
+          {showDocsProCta && (
+            <a
+              ref={docsProRef}
+              {...proLinkProps('/#pricing', 'docs-navbar', {
+                params: { category: docsCategory },
+                sameTab: true
+              })}
+              className="ln-navbar-pro ln-navbar-pro-docs"
+            >
+              Get React Bits Pro
+            </a>
           )}
 
           {!showDocs && (
-            <>
-              <a
-                ref={landingProRef}
-                {...proLinkProps('/', 'navbar', { sameTab: true })}
-                className="ln-navbar-pro"
-                onMouseMove={e => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = ((e.clientX - rect.left) / rect.width) * 100;
-                  e.currentTarget.style.setProperty('--pro-mx', `${x}%`);
-                }}
-              >
-                Get React Bits Pro
-              </a>
-              <span className="ln-navbar-browse">
-                Community <span className="ln-navbar-soon">Soon</span>
-              </span>
-            </>
+            <a
+              ref={landingProRef}
+              {...proLinkProps('/', 'navbar', { sameTab: true })}
+              className="ln-navbar-pro"
+              onMouseMove={e => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                e.currentTarget.style.setProperty('--pro-mx', `${x}%`);
+              }}
+            >
+              Get React Bits Pro
+            </a>
           )}
-
-          <a className="ln-navbar-github" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-            <FaGithub size={16} color="#fff" />
-            <span>{formattedStars}</span>
-          </a>
 
           <button
             className={`ln-navbar-hamburger${menuOpen ? ' open' : ''}`}
@@ -303,9 +312,6 @@ const Navbar = ({ showDocs }) => {
                 {label}
               </Link>
             ))}
-            <span className="ln-navbar-mobile-link">
-              Community <span className="ln-navbar-soon">Soon</span>
-            </span>
             <a
               href={GITHUB_URL}
               target="_blank"

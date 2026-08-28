@@ -16,7 +16,7 @@ void main() {
 `;
 
 const FRAG = /* glsl */ `
-precision mediump float;
+precision highp float;
 uniform float iTime;
 uniform vec2  iResolution;
 uniform vec2  uOffset;
@@ -29,6 +29,7 @@ uniform float uBend1;
 uniform float uBend2;
 uniform vec3  uColor1;
 uniform vec3  uColor2;
+uniform float uLightMode;
 
 const float lt   = 0.3;
 const float pi   = 3.14159;
@@ -77,16 +78,32 @@ void mainImage(out vec4 C, in vec2 U) {
 
   float sqrtD = sqrt(d);
   vec3 raw = max(cos(d * pi2) - s * sqrtD - vec3(k, 0.0), 0.0);
-  raw.gb += 0.1;
-  float maxC = max(raw.r, max(raw.g, raw.b));
-  if (maxC < 0.15) discard;
+  float field = max(raw.r, max(raw.g, raw.b));
+  float outerMask = smoothstep(0.0, 0.055, field);
+  float glowMask = smoothstep(0.012, 0.13, field);
+  float coreMask = smoothstep(0.075, 0.27, field);
+  if (uLightMode < 0.5 && field < 0.15) discard;
+  raw.gb += uLightMode > 0.5 ? 0.1 * glowMask : 0.1;
   raw = raw * 0.4 + raw.brg * 0.6 + raw * raw;
   float lum = dot(raw, vec3(0.299, 0.587, 0.114));
   float w1 = max(0.0, 1.0 - k.x * 2.0);
   float w2 = max(0.0, 1.0 - k.y * 2.0);
   float wt = w1 + w2 + 0.001;
-  vec3 c = (uColor1 * w1 + uColor2 * w2) / wt * lum * 3.5;
-  C = vec4(c, 1.0);
+  vec3 baseColor = (uColor1 * w1 + uColor2 * w2) / wt;
+  vec3 c = baseColor * lum * 3.5;
+  if (uLightMode > 0.5) {
+    float lightW1 = exp(-max(k.x, 0.0) * 4.0);
+    float lightW2 = exp(-max(k.y, 0.0) * 4.0);
+    vec3 lightBase = (uColor1 * lightW1 + uColor2 * lightW2) / (lightW1 + lightW2 + 0.001);
+    float lightLuma = dot(lightBase, vec3(0.299, 0.587, 0.114));
+    vec3 vividColor = clamp(pow(max(mix(vec3(lightLuma), lightBase, 1.35), 0.0), vec3(0.64)) * 1.14, 0.0, 1.0);
+    float colorPresence = clamp(outerMask * 0.34 + glowMask * 1.08 + coreMask * 0.22, 0.0, 1.0);
+    vec3 lightColor = mix(vec3(1.0), vividColor, colorPresence);
+    lightColor = mix(lightColor, vec3(1.0), coreMask * smoothstep(0.16, 0.95, lum) * 0.1);
+    C = vec4(lightColor, 1.0);
+  } else {
+    C = vec4(c, 1.0);
+  }
 }
 
 void main() {
@@ -113,7 +130,8 @@ export default function PlasmaWave(props) {
     dir2 = 1.0,
     bend1 = 1,
     bend2 = 0.5,
-    colors = ['#A855F7', '#06B6D4']
+    colors = ['#A855F7', '#06B6D4'],
+    lightMode = false
   } = props;
 
   const propsRef = useRef(props);
@@ -128,7 +146,7 @@ export default function PlasmaWave(props) {
     const renderer = new Renderer({
       alpha: true,
       dpr: Math.min(window.devicePixelRatio, 1.5),
-      antialias: false,
+      antialias: true,
       depth: false,
       stencil: false,
       premultipliedAlpha: false,
@@ -167,7 +185,8 @@ export default function PlasmaWave(props) {
         uBend1: { value: bend1 },
         uBend2: { value: bend2 },
         uColor1: { value: c1 },
-        uColor2: { value: c2 }
+        uColor2: { value: c2 },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -200,7 +219,8 @@ export default function PlasmaWave(props) {
         dir2: d2 = 1.0,
         bend1: b1 = 1,
         bend2: b2 = 0.5,
-        colors: cols = ['#A855F7', '#06B6D4']
+        colors: cols = ['#A855F7', '#06B6D4'],
+        lightMode: isLight = false
       } = propsRef.current;
 
       uniformOffset[0] = xOff;
@@ -215,6 +235,7 @@ export default function PlasmaWave(props) {
       program.uniforms.uBend2.value = b2;
       program.uniforms.uColor1.value = hexToRgb(cols[0]);
       program.uniforms.uColor2.value = hexToRgb(cols[1]);
+      program.uniforms.uLightMode.value = isLight ? 1 : 0;
 
       renderer.render({ scene, camera });
       animateId = requestAnimationFrame(update);

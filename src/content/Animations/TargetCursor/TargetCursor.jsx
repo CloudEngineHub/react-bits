@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
 import './TargetCursor.css';
 
@@ -399,18 +400,19 @@ const TargetCursor = ({
     }
   }, [spinDuration, isMobile]);
 
-  if (isMobile) {
+  if (isMobile || typeof document === 'undefined') {
     return null;
   }
 
-  return (
+  return createPortal(
     <div ref={cursorRef} className="target-cursor-wrapper">
       <div ref={dotRef} className="target-cursor-dot" style={{ backgroundColor: cursorColor }} />
       <div className="target-cursor-corner corner-tl" style={{ borderColor: cursorColor }} />
       <div className="target-cursor-corner corner-tr" style={{ borderColor: cursorColor }} />
       <div className="target-cursor-corner corner-br" style={{ borderColor: cursorColor }} />
       <div className="target-cursor-corner corner-bl" style={{ borderColor: cursorColor }} />
-    </div>
+    </div>,
+    document.body
   );
 };
 

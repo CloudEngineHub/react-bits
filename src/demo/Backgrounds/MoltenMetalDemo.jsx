@@ -61,7 +61,9 @@ const MoltenMetalDemo = () => {
     grainIntensity,
     mouseInteraction,
     mouseStrength,
-    opacity
+    opacity,
+    backgroundColor,
+    lightMode
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -210,6 +212,8 @@ const MoltenMetalDemo = () => {
               mouseInteraction={mouseInteraction}
               mouseStrength={mouseStrength}
               opacity={opacity}
+              backgroundColor={backgroundColor}
+              lightMode={lightMode}
             />
             <BackgroundContent pillText="New Background" headline="Molten violet caustics that flow like liquid." />
           </Box>

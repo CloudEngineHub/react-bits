@@ -630,7 +630,7 @@ class InfiniteGridMenu {
   }
 
   #init(onInit) {
-    this.gl = this.canvas.getContext('webgl2', { antialias: true, alpha: false });
+    this.gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true });
     const gl = this.gl;
     if (!gl) {
       throw new Error('No WebGL 2 context!');
@@ -910,7 +910,7 @@ const defaultItems = [
   }
 ];
 
-export default function InfiniteMenu({ items = [], scale = 1.0 }) {
+export default function InfiniteMenu({ items = [], scale = 1.0, backgroundColor = '#000000' }) {
   const canvasRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
@@ -959,7 +959,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative h-full w-full" style={{ backgroundColor }}>
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
@@ -1013,6 +1013,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
 
           <div
             onClick={handleButtonClick}
+            style={{ borderColor: backgroundColor }}
             className={`
           absolute
           left-1/2
@@ -1023,7 +1024,6 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
           place-items-center
           bg-[#00ffff]
           border-[5px]
-          border-black
           rounded-full
           cursor-pointer
           transition-all

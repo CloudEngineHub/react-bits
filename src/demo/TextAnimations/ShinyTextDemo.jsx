@@ -16,6 +16,7 @@ import { shinyText } from '../../constants/code/TextAnimations/shinyTextCode';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   speed: 2,
@@ -37,6 +38,11 @@ const DIRECTION_OPTIONS = [
 const ShinyTextDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { speed, delay, color, shineColor, spread, direction, yoyo, pauseOnHover, disabled } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#71717a' : color, color);
+  const renderedShineColor = useColorModeValue(
+    shineColor === DEFAULT_PROPS.shineColor ? '#27272a' : shineColor,
+    shineColor
+  );
 
   const propData = useMemo(
     () => [
@@ -119,8 +125,8 @@ const ShinyTextDemo = () => {
               text="✨ Shiny Text Effect"
               speed={speed}
               delay={delay}
-              color={color}
-              shineColor={shineColor}
+              color={renderedColor}
+              shineColor={renderedShineColor}
               spread={spread}
               direction={direction}
               yoyo={yoyo}
@@ -130,10 +136,14 @@ const ShinyTextDemo = () => {
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Text Color" color={color} onChange={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom
+              title="Text Color"
+              color={renderedColor}
+              onChange={val => updateProp('color', val)}
+            />
             <PreviewColorPickerCustom
               title="Shine Color"
-              color={shineColor}
+              color={renderedShineColor}
               onChange={val => updateProp('shineColor', val)}
             />
 

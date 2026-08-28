@@ -4,11 +4,21 @@ import { TbMenu } from 'react-icons/tb';
 
 import PreviewSwitch from './PreviewSwitch';
 import logo from '../../../assets/logos/react-bits-logo.svg';
+import { useColorModeValue } from '../../setup/color-mode';
 
 const BackgroundContent = ({
   headline = 'Build interfaces that feel alive'
 }) => {
   const [showContent, setShowContent] = useState(true);
+  const glassBackground = useColorModeValue('rgba(255, 255, 255, 0.68)', 'rgba(255, 255, 255, 0.03)');
+  const glassBorder = useColorModeValue('rgba(24, 24, 27, 0.1)', 'rgba(255, 255, 255, 0.08)');
+  const primaryText = useColorModeValue('#18181b', '#ffffff');
+  const secondaryText = useColorModeValue('rgba(24, 24, 27, 0.58)', 'rgba(255,255,255,0.5)');
+  const solidBackground = useColorModeValue('#18181b', '#ffffff');
+  const solidText = useColorModeValue('#ffffff', '#09090b');
+  const tagBackground = useColorModeValue('rgba(255, 255, 255, 0.78)', 'rgba(18, 15, 23, 0.5)');
+  const logoFilter = useColorModeValue('brightness(0)', 'none');
+  const headlineShadow = useColorModeValue('0 2px 20px rgba(255,255,255,0.75)', '0 4px 24px rgba(0,0,0,0.5)');
 
   return (
     <Box userSelect="none">
@@ -41,28 +51,29 @@ const BackgroundContent = ({
               display="flex"
               alignItems="center"
               justifyContent="space-between"
-              bg="rgba(255, 255, 255, 0.03)"
-              border="1px solid rgba(255, 255, 255, 0.08)"
+              bg={glassBackground}
+              border={`1px solid ${glassBorder}`}
+              backdropFilter="blur(18px) saturate(140%)"
               className="bg-content-glass"
             >
               <Box display="flex" alignItems="center" gap={2}>
-                <img src={logo} alt="Logo" style={{ height: '20px', borderRadius: '50px' }} />
+                <img src={logo} alt="Logo" style={{ height: '20px', borderRadius: '50px', filter: logoFilter }} />
               </Box>
 
-              <Box display={{ base: 'flex', md: 'none' }} alignItems="center" color="rgba(255,255,255,0.5)">
+              <Box display={{ base: 'flex', md: 'none' }} alignItems="center" color={secondaryText}>
                 <TbMenu size={18} />
               </Box>
 
               <Box display={{ base: 'none', md: 'flex' }} alignItems="center" gap={5}>
                 {['Features', 'About'].map(item => (
-                  <Text key={item} color="rgba(255,255,255,0.4)" fontSize="13px" fontWeight={500}>{item}</Text>
+                  <Text key={item} color={secondaryText} fontSize="13px" fontWeight={500}>{item}</Text>
                 ))}
                 <Box
                   h="30px"
                   px={4}
                   borderRadius="8px"
-                  bg="white"
-                  color="black"
+                  bg={solidBackground}
+                  color={solidText}
                   fontSize="12px"
                   fontWeight={600}
                   display="flex"
@@ -95,24 +106,25 @@ const BackgroundContent = ({
               py="5px"
               pl="5px"
               borderRadius="50px"
-              border="1px solid rgba(255, 255, 255, 0.08)"
-              bg="rgba(18, 15, 23, 0.5)"
+              border={`1px solid ${glassBorder}`}
+              bg={tagBackground}
+              backdropFilter="blur(18px) saturate(140%)"
               className="bg-content-glass"
             >
               <Box
                 px="10px"
                 py="3px"
                 borderRadius="50px"
-                bg="white"
+                bg={solidBackground}
                 fontSize="11px"
                 fontWeight={600}
-                color="black"
+                color={solidText}
                 textTransform="uppercase"
                 letterSpacing="0.02em"
               >
                 New
               </Box>
-              <Text fontSize="12px" fontWeight={500} color="rgba(255,255,255,0.5)">
+              <Text fontSize="12px" fontWeight={500} color={secondaryText}>
                 Just shipped v2.0
               </Text>
             </Box>
@@ -120,14 +132,14 @@ const BackgroundContent = ({
             {/* Headline */}
             <Text
               mt={6}
-              color="white"
+              color={primaryText}
               fontSize="clamp(1.6rem, 4vw, 2.4rem)"
               lineHeight={1.1}
               textAlign="center"
               letterSpacing="-0.03em"
               fontWeight={600}
               maxW="20ch"
-              textShadow="0 4px 24px rgba(0,0,0,0.5)"
+              textShadow={headlineShadow}
             >
               {headline}
             </Text>
@@ -138,8 +150,8 @@ const BackgroundContent = ({
                 as="span"
                 h="40px"
                 px={5}
-                bg="white"
-                color="black"
+                bg={solidBackground}
+                color={solidText}
                 borderRadius="10px"
                 fontSize="13px"
                 fontWeight={600}
@@ -155,9 +167,10 @@ const BackgroundContent = ({
                 borderRadius="10px"
                 fontSize="13px"
                 fontWeight={500}
-                color="rgba(255,255,255,0.6)"
-                border="1px solid rgba(255,255,255,0.08)"
-                bg="rgba(255,255,255,0.03)"
+                color={secondaryText}
+                border={`1px solid ${glassBorder}`}
+                bg={glassBackground}
+                backdropFilter="blur(18px) saturate(140%)"
                 display="flex"
                 alignItems="center"
                 className="bg-content-glass"

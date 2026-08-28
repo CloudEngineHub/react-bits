@@ -14,6 +14,7 @@ import BackgroundContent from '../../components/common/Preview/BackgroundContent
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import Dither from '../../content/Backgrounds/Dither/Dither';
@@ -31,6 +32,7 @@ function hexToRgbArray(hex) {
 
 const DEFAULT_PROPS = {
   waveColor: [0.5, 0.5, 0.5],
+  backgroundColor: [0, 0, 0],
   mouseRadius: 0.3,
   colorNum: 4,
   waveAmplitude: 0.3,
@@ -40,10 +42,17 @@ const DEFAULT_PROPS = {
   disableAnimation: false
 };
 
+const LIGHT_PROPS = {
+  waveColor: [0.32, 0.3, 0.36],
+  backgroundColor: [1, 1, 1]
+};
+
 const DitherDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
   const {
     waveColor,
+    backgroundColor,
     mouseRadius,
     colorNum,
     waveAmplitude,
@@ -51,7 +60,7 @@ const DitherDemo = () => {
     waveSpeed,
     enableMouseInteraction,
     disableAnimation
-  } = props;
+  } = themedProps;
 
   const propData = useMemo(
     () => [
@@ -78,6 +87,12 @@ const DitherDemo = () => {
         type: '[number, number, number]',
         default: '[0.5, 0.5, 0.5]',
         description: 'Color of the wave, defined as an RGB array.'
+      },
+      {
+        name: 'backgroundColor',
+        type: '[number, number, number]',
+        default: '[0, 0, 0]',
+        description: 'Base canvas color behind the dithered waves.'
       },
       {
         name: 'colorNum',
@@ -114,12 +129,18 @@ const DitherDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider
+      props={themedProps}
+      defaultProps={DEFAULT_PROPS}
+      resetProps={resetProps}
+      hasChanges={hasChanges}
+    >
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <Dither
               waveColor={waveColor}
+              backgroundColor={backgroundColor}
               disableAnimation={disableAnimation}
               enableMouseInteraction={enableMouseInteraction}
               mouseRadius={mouseRadius}
@@ -138,6 +159,7 @@ const DitherDemo = () => {
               backgroundId="dither"
               currentProps={{
                 waveColor,
+                backgroundColor,
                 disableAnimation,
                 enableMouseInteraction,
                 mouseRadius,
@@ -149,6 +171,7 @@ const DitherDemo = () => {
               }}
               defaultProps={{
                 waveColor: [0.32, 0.15, 1.0],
+                backgroundColor: [0, 0, 0],
                 disableAnimation: false,
                 enableMouseInteraction: true,
                 mouseRadius: 1,
@@ -166,6 +189,12 @@ const DitherDemo = () => {
               title="Wave Color"
               color={rgbArrayToHex(waveColor)}
               onChange={hex => updateProp('waveColor', hexToRgbArray(hex))}
+            />
+
+            <PreviewColorPickerCustom
+              title="Background"
+              color={rgbArrayToHex(backgroundColor)}
+              onChange={hex => updateProp('backgroundColor', hexToRgbArray(hex))}
             />
 
             <PreviewSlider

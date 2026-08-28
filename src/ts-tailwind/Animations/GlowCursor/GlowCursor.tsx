@@ -45,6 +45,7 @@ interface GlowCursorConfig {
   idleFade: boolean;
   idleTimeout: number;
   fadeDuration: number;
+  blendMode: BlendMode;
   maxDevicePixelRatio: number;
   enabled: boolean;
 }
@@ -79,6 +80,7 @@ uniform float uBrightness;
 uniform float uOpacity;
 uniform float uPulseSpeed;
 uniform float uNoiseStrength;
+uniform float uNormalBlend;
 uniform float uTime;
 uniform float uFade;
 
@@ -148,7 +150,10 @@ void main() {
   color = mix(color, vec3(1.0), smoothstep(0.25, 0.95, strongestCore) * uHotspot);
   float luminance = sRGB(clamp(strongest * uBrightness, 0.0, 1.0));
   luminance *= 1.0 + grain * noiseAmount;
-  gl_FragColor = vec4(color * luminance, alpha);
+  vec3 additiveColor = color * luminance;
+  float normalAlpha = clamp(strongest * uBrightness * uOpacity * uFade, 0.0, 1.0);
+  vec3 normalColor = mix(color, vec3(1.0), smoothstep(0.45, 1.0, strongestCore) * uHotspot * 0.35);
+  gl_FragColor = vec4(mix(additiveColor, normalColor, uNormalBlend), mix(alpha, normalAlpha, uNormalBlend));
 }
 `;
 
@@ -212,6 +217,7 @@ const GlowCursor = ({
     idleTimeout,
     fadeDuration,
     maxDevicePixelRatio,
+    blendMode,
     enabled
   };
 
@@ -252,6 +258,7 @@ const GlowCursor = ({
         uOpacity: { value: initialConfig.opacity },
         uPulseSpeed: { value: initialConfig.pulseSpeed },
         uNoiseStrength: { value: initialConfig.noiseStrength },
+        uNormalBlend: { value: initialConfig.blendMode === 'normal' ? 1 : 0 },
         uTime: { value: 0 },
         uFade: { value: 0 }
       },
@@ -351,6 +358,7 @@ const GlowCursor = ({
       program.uniforms.uOpacity.value = clamp(config.opacity, 0, 1);
       program.uniforms.uPulseSpeed.value = config.pulseSpeed;
       program.uniforms.uNoiseStrength.value = clamp(config.noiseStrength, 0, 1);
+      program.uniforms.uNormalBlend.value = config.blendMode === 'normal' ? 1 : 0;
       program.uniforms.uTime.value = now * 0.001;
       program.uniforms.uFade.value = fade;
 

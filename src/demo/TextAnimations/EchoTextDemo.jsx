@@ -16,6 +16,7 @@ import RefreshButton from '../../components/common/Preview/RefreshButton';
 import useComponentProps from '../../hooks/useComponentProps';
 import useForceRerender from '../../hooks/useForceRerender';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import EchoText from '../../content/TextAnimations/EchoText/EchoText';
 import { echoText } from '../../constants/code/TextAnimations/echoTextCode';
@@ -85,6 +86,7 @@ const EchoTextDemo = () => {
     fontWeight,
     color
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
 
   const propData = useMemo(
     () => [
@@ -226,7 +228,7 @@ const EchoTextDemo = () => {
               ease={ease}
               fontSize={fontSize}
               fontWeight={fontWeight}
-              color={color}
+              color={renderedColor}
             />
           </Box>
 
@@ -239,7 +241,11 @@ const EchoTextDemo = () => {
               onChange={val => updateProp('text', val)}
             />
 
-            <PreviewColorPickerCustom title="Text Color" color={color} onChange={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom
+              title="Text Color"
+              color={renderedColor}
+              onChange={val => updateProp('color', val)}
+            />
 
             <PreviewColorPickerCustom
               title="Echo Tint"

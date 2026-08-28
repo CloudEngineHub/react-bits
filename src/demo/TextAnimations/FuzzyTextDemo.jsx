@@ -4,6 +4,7 @@ import { Box, Flex, Spacer } from '@chakra-ui/react';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
@@ -47,6 +48,7 @@ const FuzzyTextDemo = () => {
     glitchDuration,
     letterSpacing
   } = props;
+  const textColor = useColorModeValue('#18181b', '#fff');
 
   const propData = useMemo(
     () => [
@@ -189,6 +191,7 @@ const FuzzyTextDemo = () => {
                 glitchDuration={glitchDuration}
                 letterSpacing={letterSpacing}
                 fontSize={140}
+                color={textColor}
               >
                 404
               </FuzzyText>
@@ -208,6 +211,7 @@ const FuzzyTextDemo = () => {
                 letterSpacing={letterSpacing}
                 fontSize={70}
                 fontFamily="Gochi Hand"
+                color={textColor}
               >
                 not found
               </FuzzyText>

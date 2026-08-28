@@ -144,7 +144,7 @@ const CardSwapDemo = () => {
                 mb={4}
                 fontWeight={400}
                 lineHeight={1.1}
-                color="#999"
+                color="var(--text-muted)"
                 pl={{ base: 0, lg: '6rem' }}
               >
                 Just look at it go!
@@ -161,7 +161,7 @@ const CardSwapDemo = () => {
                 pauseOnHover={pauseOnHover}
               >
                 <Card customClass="one" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid var(--border-primary)" bg="var(--bg-card)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaCircle} mr={2} />
                       Smooth
@@ -183,7 +183,7 @@ const CardSwapDemo = () => {
                   </Box>
                 </Card>
                 <Card customClass="two" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid var(--border-primary)" bg="var(--bg-card)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaCode} mr={2} />
                       Reliable
@@ -205,7 +205,7 @@ const CardSwapDemo = () => {
                   </Box>
                 </Card>
                 <Card customClass="three" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <Box borderBottom="1px solid #fff" bg="linear-gradient(to top, #1B1722, #060606)" flexShrink={0}>
+                  <Box borderBottom="1px solid var(--border-primary)" bg="var(--bg-card)" flexShrink={0}>
                     <Text m={2}>
                       <Icon as={FaSliders} mr={2} />
                       Customizable

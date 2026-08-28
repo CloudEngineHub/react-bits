@@ -64,6 +64,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
 }
 
 .icon-btn__label {

@@ -5,6 +5,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import CodeExample from '../../components/code/CodeExample';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import Customize from '../../components/common/Preview/Customize';
@@ -27,9 +28,15 @@ const DEFAULT_PROPS = {
   hoverTrailAmount: 0
 };
 
+const LIGHT_PROPS = {
+  borderColor: '#d4d4d8',
+  hoverColor: '#27272a'
+};
+
 const ShapeGridDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { direction, borderColor, hoverColor, size, speed, shape, hoverTrailAmount } = props;
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
+  const { direction, borderColor, hoverColor, size, speed, shape, hoverTrailAmount } = themedProps;
 
   const propData = useMemo(
     () => [
@@ -65,7 +72,7 @@ const ShapeGridDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={themedProps} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" h={500} className="demo-container" overflow="hidden" p={0}>

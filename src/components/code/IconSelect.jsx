@@ -6,31 +6,39 @@ const TRIGGER_STYLE = {
   cursor: 'pointer',
   fontSize: '14px',
   h: 10,
-  bg: 'var(--surface-ghost-track)',
-  border: '1px solid transparent',
+  bg: 'var(--action-control-bg)',
+  border: '1px solid var(--action-control-border)',
   rounded: '10px',
   px: 3,
   transition: 'background-color var(--transition-base), transform var(--dur-press) var(--ease-out)',
-  _hover: { bg: 'var(--surface-ghost-hover)' },
+  _hover: { bg: 'var(--action-control-hover)' },
   _active: { transform: 'scale(0.98)' },
-  '&[data-state="open"]': { bg: 'var(--surface-ghost)', boxShadow: 'var(--surface-ghost-highlight)' }
+  '&[data-state="open"]': {
+    bg: 'var(--action-control-selected)',
+    borderColor: 'var(--action-control-selected-border)',
+    boxShadow: 'var(--action-control-shadow)'
+  }
 };
 
 const CONTENT_STYLE = {
-  bg: colors.bgBody,
+  bg: 'var(--shell-panel-solid)',
   border: `1px solid ${colors.borderSecondary}`,
   borderRadius: '10px',
-  px: 2,
-  py: 2
+  boxSizing: 'border-box',
+  overflowX: 'hidden',
+  p: 1
 };
 
 const ITEM_STYLE = {
   fontSize: '14px',
-  borderRadius: '8px',
+  borderRadius: '5px',
   cursor: 'pointer',
-  py: 1.5,
+  px: 2,
+  py: 1,
   display: 'flex',
   alignItems: 'center',
+  minWidth: 0,
+  width: '100%',
   gap: 2,
   _highlighted: { bg: colors.bgHover }
 };
@@ -42,8 +50,14 @@ const IconSelect = ({
   iconMap,
   labelMap,
   colorMap,
+  iconClassName = '',
   width = '150px',
-  closeOnSelect = false
+  contentWidth = width,
+  closeOnSelect = false,
+  placement = 'bottom-start',
+  triggerHeight = 10,
+  triggerRadius = '10px',
+  triggerClassName = ''
 }) => {
   const collection = useMemo(() => createListCollection({ items: collectionItems }), [collectionItems]);
 
@@ -55,15 +69,39 @@ const IconSelect = ({
       size="sm"
       width={width}
       closeOnSelect={closeOnSelect}
+      positioning={{ placement }}
     >
       <Select.HiddenSelect />
       <Select.Control>
-        <Select.Trigger {...TRIGGER_STYLE}>
-          <Select.ValueText fontSize="13px" display="flex" alignItems="center" gap={2}>
+        <Select.Trigger
+          {...TRIGGER_STYLE}
+          className={triggerClassName}
+          h={triggerHeight}
+          minH={triggerHeight}
+          rounded={triggerRadius}
+        >
+          <Select.ValueText fontSize="13px" display="flex" alignItems="center" gap={2} whiteSpace="nowrap">
             {value && (
               <>
-                <img src={iconMap[value]} alt={value} style={{ width: '16px', height: '16px' }} />
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#c9c9c9' }}>{labelMap[value]}</span>
+                <img
+                  className={`icon-select-icon ${iconClassName}`.trim()}
+                  src={iconMap[value]}
+                  alt=""
+                  aria-hidden="true"
+                  style={{ width: '16px', height: '16px' }}
+                />
+                <span
+                  style={{
+                    overflow: 'hidden',
+                    fontSize: '14px',
+                    fontWeight: 450,
+                    color: 'var(--text-primary)',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {labelMap[value]}
+                </span>
               </>
             )}
           </Select.ValueText>
@@ -75,16 +113,36 @@ const IconSelect = ({
 
       <Portal>
         <Select.Positioner>
-          <Select.Content {...CONTENT_STYLE} w={width}>
+          <Select.Content {...CONTENT_STYLE} w={contentWidth}>
             {collection.items.map(item => (
               <Select.Item key={item} item={item} {...ITEM_STYLE}>
-                <Flex align="center" gap={2}>
-                  <img src={iconMap[item]} alt={item} style={{ width: '20px', height: '20px' }} />
-                  <Text fontSize="14px" fontWeight={600} color="#c9c9c9">
+                <Flex align="center" gap={2} minW={0}>
+                  <img
+                    className={`icon-select-icon ${iconClassName}`.trim()}
+                    src={iconMap[item]}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                  <Text
+                    flexShrink={0}
+                    fontSize="14px"
+                    fontWeight={450}
+                    color="var(--text-primary)"
+                    minW={0}
+                    whiteSpace="nowrap"
+                  >
                     {labelMap[item]}
                   </Text>
                 </Flex>
-                <Select.ItemIndicator display="flex" alignItems="center" ml="auto" mr={1} pl={3} opacity={0.5}>
+                <Select.ItemIndicator
+                  display="flex"
+                  alignItems="center"
+                  flexShrink={0}
+                  ml={1}
+                  color="var(--text-dimmed)"
+                  opacity={0.65}
+                >
                   {colorMap && <Box boxSize={2} bg={colorMap[item]} borderRadius="full" />}
                 </Select.ItemIndicator>
               </Select.Item>

@@ -49,7 +49,8 @@ const LightPillarDemo = () => {
     noiseIntensity,
     mixBlendMode,
     pillarRotation,
-    quality
+    quality,
+    lightMode
   } = props;
 
   const [key, forceRerender] = useForceRerender();
@@ -173,6 +174,7 @@ const LightPillarDemo = () => {
               mixBlendMode={mixBlendMode}
               pillarRotation={pillarRotation}
               quality={quality}
+              lightMode={lightMode}
             />
             <BackgroundContent pillText="New Background" headline="Ethereal light pillar for your hero sections." />
           </Box>

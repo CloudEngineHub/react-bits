@@ -48,7 +48,8 @@ const LightRaysDemo = () => {
     saturation,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    lightMode
   } = props;
 
   const raysOriginOptions = [
@@ -161,6 +162,7 @@ const LightRaysDemo = () => {
               mouseInfluence={mouseInfluence}
               noiseAmount={noiseAmount}
               distortion={distortion}
+              lightMode={lightMode}
             />
 
             <BackgroundContent pillText="New Background" headline="May these lights guide you on your path" />

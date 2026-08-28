@@ -12,7 +12,9 @@ import PreviewColorPickerCustom from '../../components/common/Preview/PreviewCol
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
-import logo from '../../assets/logos/reactbits-gh-white.svg';
+import { useColorModeValue } from '../../components/setup/color-mode';
+import logoDark from '../../assets/logos/reactbits-gh-white.svg';
+import logoLight from '../../assets/logos/reactbits-gh-black.svg';
 
 import { staggeredMenu } from '../../constants/code/Components/staggeredMenuCode';
 import StaggeredMenu from '@content/Components/StaggeredMenu/StaggeredMenu';
@@ -28,6 +30,11 @@ const StaggeredMenuDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { displaySocials, accentColor, menuButtonColor, position } = props;
   const [menuKey, forceMenuRerender] = useForceRerender();
+  const logo = useColorModeValue(logoLight, logoDark);
+  const renderedMenuButtonColor = useColorModeValue(
+    menuButtonColor === DEFAULT_PROPS.menuButtonColor ? '#18181b' : menuButtonColor,
+    menuButtonColor
+  );
 
   const items = [
     { label: 'Home', ariaLabel: 'Go to Home section', link: '#home' },
@@ -148,10 +155,10 @@ const StaggeredMenuDemo = () => {
               logoUrl={logo}
               items={items}
               socialItems={socialItems}
-              openMenuButtonColor={position === 'left' ? '#fff' : '#000'}
+              openMenuButtonColor="#18181b"
               displaySocials={displaySocials}
               accentColor={accentColor}
-              menuButtonColor={menuButtonColor}
+              menuButtonColor={renderedMenuButtonColor}
               position={position}
             />
           </Box>
@@ -171,7 +178,11 @@ const StaggeredMenuDemo = () => {
               width={110}
             />
             <PreviewColorPickerCustom title="Accent Color" color={accentColor} onChange={val => updateProp('accentColor', val)} />
-            <PreviewColorPickerCustom title="Menu Button Color" color={menuButtonColor} onChange={val => updateProp('menuButtonColor', val)} />
+            <PreviewColorPickerCustom
+              title="Menu Button Color"
+              color={renderedMenuButtonColor}
+              onChange={val => updateProp('menuButtonColor', val)}
+            />
             <PreviewSwitch
               title="Display Socials"
               isChecked={displaySocials}

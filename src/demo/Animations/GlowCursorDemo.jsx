@@ -12,6 +12,7 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PropTable from '../../components/common/Preview/PropTable';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import useComponentProps from '../../hooks/useComponentProps';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import GlowCursor from '../../content/Animations/GlowCursor/GlowCursor';
 import { glowCursor } from '../../constants/code/Animations/glowCursorCode';
@@ -67,6 +68,10 @@ const GlowCursorDemo = () => {
     maxDevicePixelRatio,
     enabled
   } = props;
+  const renderedBlendMode = useColorModeValue(
+    blendMode === DEFAULT_PROPS.blendMode ? 'normal' : blendMode,
+    blendMode
+  );
 
   const propData = useMemo(
     () => [
@@ -181,15 +186,15 @@ const GlowCursorDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
-            <GlowCursor {...props} />
+            <GlowCursor {...props} blendMode={renderedBlendMode} />
             <Text
               position="absolute"
               top="50%"
               left="50%"
               transform="translate(-50%, -50%)"
-              color="#2F293A"
+              className="demo-instruction"
               fontSize="clamp(2rem, 6vw, 3rem)"
-              fontWeight={900}
+              fontWeight={600}
               textAlign="center"
               pointerEvents="none"
               userSelect="none"

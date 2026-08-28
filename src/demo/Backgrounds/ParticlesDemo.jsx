@@ -13,6 +13,7 @@ import PreviewColorPickerCustom from '../../components/common/Preview/PreviewCol
 import Customize from '../../components/common/Preview/Customize';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 import PreviewInput from '@/components/common/Preview/PreviewInput';
@@ -32,8 +33,13 @@ const DEFAULT_PROPS = {
   pixelRatio: 1
 };
 
+const LIGHT_PROPS = {
+  colors: '#52525b'
+};
+
 const ParticlesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
   const {
     colors,
     particleCount,
@@ -44,7 +50,7 @@ const ParticlesDemo = () => {
     alphaParticles,
     disableRotation,
     pixelRatio
-  } = props;
+  } = themedProps;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -128,7 +134,7 @@ const ParticlesDemo = () => {
 
   return (
     <ComponentPropsProvider
-      props={props}
+      props={themedProps}
       defaultProps={DEFAULT_PROPS}
       resetProps={resetProps}
       hasChanges={hasChanges}

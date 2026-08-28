@@ -439,13 +439,13 @@ const StarCard = () => {
 const CARDS = [
   {
     title: `${COMPONENT_COUNT}+ Components`,
-    desc: "Backgrounds, text effects, animations, UI patterns. The stuff you'd build from scratch, already done.",
+    desc: "Backgrounds, text effects, animations, creative UI components. The stuff you'd build from scratch, already done and battle-tested.",
     span: 5,
     visual: <ComponentMarquee />
   },
   {
     title: 'Visual Editors',
-    desc: 'Three free tools to play with components and grab the code.',
+    desc: 'Three free tools to play with components & create stunning assets for your work.',
     span: 3,
     visual: <ToolsFloat />
   },
@@ -457,13 +457,13 @@ const CARDS = [
   },
   {
     title: 'Pick Your Stack',
-    desc: 'JS or TypeScript, CSS or Tailwind. Every component comes in all four flavors.',
+    desc: 'JavaScript or TypeScript, CSS or Tailwind. Every component comes in all four flavors for full flexibility.',
     span: 4,
     visual: <VariantTabs />
   },
   {
     title: 'AI-Ready',
-    desc: 'Works great with Cursor, Copilot, and v0. Describe what you need, drop it in, ship.',
+    desc: 'The docs give you ready-to-use prompts. Works great with Cursor, Copilot, and v0. Describe what you need, drop it in, ship.',
     span: 5,
     visual: <AITerminal />
   },

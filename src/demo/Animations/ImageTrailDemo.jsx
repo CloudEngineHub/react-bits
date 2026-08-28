@@ -65,10 +65,10 @@ const ImageTrailDemo = () => {
             />
 
             <Flex position="absolute" justifyContent="center" flexDirection="column" alignItems="center">
-              <Text fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={900} color="#2F293A" mb={0}>
+              <Text className="demo-instruction" fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={600} mb={0}>
                 Hover Me.
               </Text>
-              <Text fontSize="18px" fontWeight={900} color="#a6a6a6" mt={0}>
+              <Text fontSize="18px" fontWeight={600} color="#a6a6a6" mt={0}>
                 Variant {variant}
               </Text>
             </Flex>

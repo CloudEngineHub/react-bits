@@ -6,6 +6,9 @@ const LetterGlitch = ({
   centerVignette = false,
   outerVignette = true,
   smooth = true,
+  lightMode = false,
+  backgroundColor,
+  className = '',
   characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789'
 }: {
   glitchColors: string[];
@@ -13,6 +16,9 @@ const LetterGlitch = ({
   centerVignette: boolean;
   outerVignette: boolean;
   smooth: boolean;
+  lightMode?: boolean;
+  backgroundColor?: string;
+  className?: string;
   characters: string;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -215,13 +221,30 @@ const LetterGlitch = ({
   }, [glitchSpeed, smooth]);
 
   return (
-    <div className="relative w-full h-full bg-black overflow-hidden">
+    <div
+      className={`relative w-full h-full overflow-hidden ${className}`}
+      style={{ backgroundColor: backgroundColor || (lightMode ? '#ffffff' : '#000000') }}
+    >
       <canvas ref={canvasRef} className="block w-full h-full" />
       {outerVignette && (
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle,_rgba(0,0,0,0)_60%,_rgba(0,0,0,1)_100%)]"></div>
+        <div
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
+          style={{
+            background: lightMode
+              ? 'radial-gradient(circle, rgba(255,255,255,0) 58%, rgba(255,255,255,0.96) 100%)'
+              : 'radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,1) 100%)'
+          }}
+        ></div>
       )}
       {centerVignette && (
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle,_rgba(0,0,0,0.8)_0%,_rgba(0,0,0,0)_60%)]"></div>
+        <div
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
+          style={{
+            background: lightMode
+              ? 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 60%)'
+              : 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)'
+          }}
+        ></div>
       )}
     </div>
   );

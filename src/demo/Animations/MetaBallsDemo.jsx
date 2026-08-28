@@ -15,6 +15,7 @@ import PreviewColorPickerCustom from '../../components/common/Preview/PreviewCol
 
 import { metaBalls } from '../../constants/code/Animations/metaBallsCode';
 import MetaBalls from '../../content/Animations/MetaBalls/MetaBalls';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   color: '#ffffff',
@@ -41,6 +42,11 @@ const MetaBallsDemo = () => {
     hoverSmoothness,
     cursorBallSize
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
+  const renderedCursorBallColor = useColorModeValue(
+    cursorBallColor === DEFAULT_PROPS.cursorBallColor ? '#18181b' : cursorBallColor,
+    cursorBallColor
+  );
 
   const propData = useMemo(
     () => [
@@ -114,8 +120,8 @@ const MetaBallsDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} p={0} overflow="hidden">
             <MetaBalls
-              color={color}
-              cursorBallColor={cursorBallColor}
+              color={renderedColor}
+              cursorBallColor={renderedCursorBallColor}
               cursorBallSize={cursorBallSize}
               ballCount={ballCount}
               animationSize={animationSize}
@@ -127,7 +133,7 @@ const MetaBallsDemo = () => {
           </Box>
 
           <Customize className="preview-options">
-            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); updateProp('cursorBallColor', val); }} />
+            <PreviewColorPickerCustom title="Color" color={renderedColor} onChange={val => { updateProp('color', val); updateProp('cursorBallColor', val); }} />
 
             <PreviewSlider
               title="Ball Count"

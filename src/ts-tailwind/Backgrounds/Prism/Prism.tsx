@@ -17,6 +17,7 @@ type PrismProps = {
   bloom?: number;
   suspendWhenOffscreen?: boolean;
   timeScale?: number;
+  lightMode?: boolean;
 };
 
 const Prism: React.FC<PrismProps> = ({
@@ -34,7 +35,8 @@ const Prism: React.FC<PrismProps> = ({
   inertia = 0.05,
   bloom = 1,
   suspendWhenOffscreen = false,
-  timeScale = 0.5
+  timeScale = 0.5,
+  lightMode = false
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -112,6 +114,7 @@ const Prism: React.FC<PrismProps> = ({
       uniform float uMinAxis;
       uniform float uPxScale;
       uniform float uTimeScale;
+      uniform float uLightMode;
 
       vec4 tanh4(vec4 x){
         vec4 e2x = exp(2.0*x);
@@ -201,7 +204,13 @@ const Prism: React.FC<PrismProps> = ({
           col = clamp(hueRotation(uHueShift) * col, 0.0, 1.0);
         }
 
-        gl_FragColor = vec4(col, o.a);
+        if (uLightMode > 0.5) {
+          float peak = max(col.r, max(col.g, col.b));
+          vec3 chroma = pow(clamp(col / max(peak, 0.0001), 0.0, 1.0), vec3(1.14));
+          gl_FragColor = vec4(mix(vec3(1.0), chroma, o.a * 0.94), 1.0);
+        } else {
+          gl_FragColor = vec4(col, o.a);
+        }
       }
     `;
 
@@ -234,7 +243,8 @@ const Prism: React.FC<PrismProps> = ({
         uPxScale: {
           value: 1 / ((gl.drawingBufferHeight || 1) * 0.1 * SCALE)
         },
-        uTimeScale: { value: TS }
+        uTimeScale: { value: TS },
+        uLightMode: { value: lightMode ? 1.0 : 0.0 }
       }
     });
     const mesh = new Mesh(gl, { geometry, program });
@@ -448,7 +458,8 @@ const Prism: React.FC<PrismProps> = ({
     hoverStrength,
     inertia,
     bloom,
-    suspendWhenOffscreen
+    suspendWhenOffscreen,
+    lightMode
   ]);
 
   return <div className="w-full h-full relative" ref={containerRef} />;

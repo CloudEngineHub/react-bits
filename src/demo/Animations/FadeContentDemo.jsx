@@ -130,12 +130,12 @@ const FadeDemo = () => {
                 fontWeight="bolder"
                 justifyContent="center"
                 alignItems="center"
-                color="#fff"
+                color="var(--text-primary)"
                 h={100}
                 borderRadius="25px"
-                border="1px solid #2F293A"
+                border="1px solid var(--border-subtle)"
                 w={200}
-                bg={'#120F17'}
+                bg="var(--bg-card)"
               >
                 Fade
               </Flex>

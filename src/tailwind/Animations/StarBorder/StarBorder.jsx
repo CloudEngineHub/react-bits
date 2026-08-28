@@ -4,6 +4,9 @@ const StarBorder = ({
   color = 'white',
   speed = '6s',
   thickness = 1,
+  backgroundColor = '#000000',
+  textColor = '#ffffff',
+  borderColor = '#222222',
   children,
   ...rest
 }) => {
@@ -30,7 +33,10 @@ const StarBorder = ({
           animationDuration: speed
         }}
       ></div>
-      <div className="relative z-1 bg-gradient-to-b from-black to-gray-900 border border-gray-800 text-white text-center text-[16px] py-[16px] px-[26px] rounded-[20px]">
+      <div
+        className="relative z-1 border text-center text-[16px] py-[16px] px-[26px] rounded-[20px]"
+        style={{ background: backgroundColor, color: textColor, borderColor }}
+      >
         {children}
       </div>
     </Component>

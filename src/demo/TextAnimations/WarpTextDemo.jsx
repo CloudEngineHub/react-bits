@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import WarpText from '../../content/TextAnimations/WarpText/WarpText';
 import { warpText } from '../../constants/code/TextAnimations/warpTextCode';
@@ -65,6 +66,7 @@ const WarpTextDemo = () => {
     letterSpacing,
     lineHeight
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
 
   const propData = useMemo(
     () => [
@@ -145,7 +147,7 @@ const WarpTextDemo = () => {
           <Box className="demo-container" minH={430} maxH={460} p={0} overflow="hidden" position="relative">
             <WarpText
               text={text}
-              color={color}
+              color={renderedColor}
               warpStrength={warpStrength}
               warpScale={warpScale}
               speed={speed}
@@ -171,7 +173,11 @@ const WarpTextDemo = () => {
               onChange={value => updateProp('text', value)}
             />
 
-            <PreviewColorPickerCustom title="Text Color" color={color} onChange={value => updateProp('color', value)} />
+            <PreviewColorPickerCustom
+              title="Text Color"
+              color={renderedColor}
+              onChange={value => updateProp('color', value)}
+            />
 
             <PreviewSelect
               title="Font"

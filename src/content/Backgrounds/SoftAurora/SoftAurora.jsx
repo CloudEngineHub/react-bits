@@ -42,6 +42,7 @@ uniform float uColorSpeed;
 uniform vec2 uMouse;
 uniform float uMouseInfluence;
 uniform bool uEnableMouse;
+uniform float uLightMode;
 
 #define TAU 6.28318
 
@@ -135,13 +136,34 @@ void main() {
     shift = (uMouse - 0.5) * uMouseInfluence;
   }
 
-  vec3 col = vec3(0.0);
-  col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;
-  col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;
+  float glow1 = auroraGlow(t, shift);
+  float glow2 = auroraGlow(t + uLayerOffset, shift);
+  vec3 gradient1 = cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20));
+  vec3 gradient2 = cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25));
+
+  vec3 col = 0.99 * glow1 * gradient1 * uColor1;
+  col += 0.99 * glow2 * gradient2 * uColor2;
 
   col *= uBrightness;
   float alpha = clamp(length(col), 0.0, 1.0);
-  gl_FragColor = vec4(col, alpha);
+  if (uLightMode > 0.5) {
+    float phase1 = dot(gradient1, vec3(0.299, 0.587, 0.114));
+    float phase2 = dot(gradient2, vec3(0.299, 0.587, 0.114));
+    float weight1 = pow(max(glow1 * (0.62 + 0.38 * phase1), 0.0), 1.35);
+    float weight2 = pow(max(glow2 * (0.62 + 0.38 * phase2), 0.0), 1.35);
+    float weightSum = max(weight1 + weight2, 0.0001);
+
+    vec3 chroma = (weight1 * uColor1 + weight2 * uColor2) / weightSum;
+    float neutral = min(chroma.r, min(chroma.g, chroma.b));
+    chroma = max(chroma - vec3(neutral * 0.78), vec3(0.0));
+    float peak = max(chroma.r, max(chroma.g, chroma.b));
+    chroma = pow(clamp(chroma / max(peak, 0.0001), 0.0, 1.0), vec3(1.08));
+
+    float ink = clamp((weight1 + weight2) * uBrightness * 1.55, 0.0, 0.82);
+    gl_FragColor = vec4(mix(vec3(1.0), chroma, ink), 1.0);
+  } else {
+    gl_FragColor = vec4(col, alpha);
+  }
 }
 `;
 
@@ -159,7 +181,8 @@ export default function SoftAurora({
   layerOffset = 0,
   colorSpeed = 1.0,
   enableMouseInteraction = true,
-  mouseInfluence = 0.25
+  mouseInfluence = 0.25,
+  lightMode = false
 }) {
   const containerRef = useRef(null);
 
@@ -216,7 +239,8 @@ export default function SoftAurora({
         uColorSpeed: { value: colorSpeed },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseInfluence: { value: mouseInfluence },
-        uEnableMouse: { value: enableMouseInteraction }
+        uEnableMouse: { value: enableMouseInteraction },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -258,7 +282,7 @@ export default function SoftAurora({
       container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [speed, scale, brightness, color1, color2, noiseFrequency, noiseAmplitude, bandHeight, bandSpread, octaveDecay, layerOffset, colorSpeed, enableMouseInteraction, mouseInfluence]);
+  }, [speed, scale, brightness, color1, color2, noiseFrequency, noiseAmplitude, bandHeight, bandSpread, octaveDecay, layerOffset, colorSpeed, enableMouseInteraction, mouseInfluence, lightMode]);
 
   return <div ref={containerRef} className="soft-aurora-container" />;
 }

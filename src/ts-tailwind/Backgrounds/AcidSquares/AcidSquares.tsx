@@ -26,6 +26,7 @@ export interface AcidSquaresProps {
   blur?: number;
   grain?: boolean;
   grainIntensity?: number;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -72,6 +73,7 @@ uniform float uEnableMouse;
 uniform float uMouseActive;
 uniform float uGrain;
 uniform float uGrainIntensity;
+uniform float uLightMode;
 out vec4 fragColor;
 
 void main() {
@@ -122,7 +124,13 @@ void main() {
     outRgb = clamp(outRgb + gv, 0.0, 1.0);
     a = clamp(a + gv, 0.0, 1.0);
   }
-  fragColor = vec4(outRgb, a);
+  if (uLightMode > 0.5) {
+    float peak = max(col.r, max(col.g, col.b));
+    vec3 chroma = pow(clamp(col / max(peak, 0.0001), 0.0, 1.0), vec3(1.16));
+    fragColor = vec4(mix(vec3(1.0), chroma, a * 0.94), 1.0);
+  } else {
+    fragColor = vec4(outRgb, a);
+  }
 }
 `;
 
@@ -190,6 +198,7 @@ const AcidSquares: React.FC<AcidSquaresProps> = ({
   blur = 0,
   grain = true,
   grainIntensity = 0.05,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -252,7 +261,8 @@ const AcidSquares: React.FC<AcidSquaresProps> = ({
         uEnableMouse: { value: 1.0 },
         uMouseActive: { value: 0.0 },
         uGrain: { value: 1.0 },
-        uGrainIntensity: { value: 0.05 }
+        uGrainIntensity: { value: 0.05 },
+        uLightMode: { value: 0.0 }
       }
     });
 
@@ -294,13 +304,13 @@ const AcidSquares: React.FC<AcidSquaresProps> = ({
       if (blurRef.current > 0) {
         ensureTargets();
         mu.uGrain.value = 0.0;
-        renderer.render({ scene: mesh, target: rtA });
+        renderer.render({ scene: mesh, target: rtA ?? undefined });
         pu.uRadius.value = blurRef.current * 14.0;
         pu.tMap.value = rtA!.texture;
         pu.uDirection.value[0] = 1;
         pu.uDirection.value[1] = 0;
         pu.uGrain.value = 0.0;
-        renderer.render({ scene: postMesh, target: rtB });
+        renderer.render({ scene: postMesh, target: rtB ?? undefined });
         pu.tMap.value = rtB!.texture;
         pu.uDirection.value[0] = 0;
         pu.uDirection.value[1] = 1;
@@ -445,6 +455,7 @@ const AcidSquares: React.FC<AcidSquaresProps> = ({
     u.uContrast.value = contrast;
     u.uBrightness.value = brightness;
     u.uOpacity.value = opacity;
+    u.uLightMode.value = lightMode ? 1.0 : 0.0;
     u.uSteps.value = stepsFor(detail);
     u.uMouseRadius.value = mouseRadius;
     const c1 = hexToRgb(color1);
@@ -490,7 +501,8 @@ const AcidSquares: React.FC<AcidSquaresProps> = ({
     mouseRadius,
     blur,
     grain,
-    grainIntensity
+    grainIntensity,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`relative h-full w-full overflow-hidden ${className}`.trim()} />;

@@ -11,6 +11,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import { circularGallery } from '../../constants/code/Components/circularGalleryCode';
 import CircularGallery from '../../content/Components/CircularGallery/CircularGallery';
@@ -35,6 +36,7 @@ const DEFAULT_PROPS = {
 const CircularGalleryDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { bend, borderRadius, scrollSpeed, scrollEase, fontUrl } = props;
+  const textColor = useColorModeValue('#71717a', '#ffffff');
 
   const [key, forceRerender] = useForceRerender();
 
@@ -107,6 +109,7 @@ const CircularGalleryDemo = () => {
               borderRadius={borderRadius}
               scrollSpeed={scrollSpeed}
               scrollEase={scrollEase}
+              textColor={textColor}
               fontUrl={fontUrl || undefined}
             />
           </Box>

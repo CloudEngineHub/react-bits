@@ -6,6 +6,7 @@ import { FaArrowRight } from 'react-icons/fa6';
 import { LuRotateCcw, LuMoveHorizontal } from 'react-icons/lu';
 import { useStars } from '@/hooks/useStars';
 import { COMPONENT_COUNT } from '@/constants/Categories';
+import { useColorMode } from '../../setup/color-mode';
 import './Hero.css';
 
 /* ── Color conversion helpers ── */
@@ -626,6 +627,8 @@ function InteractiveCode({ def, values, onChange }) {
 /* ── Hero ── */
 
 const Hero = () => {
+  const { resolvedTheme } = useColorMode();
+  const isLightTheme = resolvedTheme === 'light';
   const [activeSnippet, setActiveSnippet] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -736,13 +739,20 @@ const Hero = () => {
       else weight = 0;
 
       if (weight <= 0) return undefined;
+      if (isLightTheme) {
+        return {
+          color: '#52525b',
+          background: `rgba(39, 39, 42, ${(0.055 * weight).toFixed(4)})`,
+          transition: fading ? 'none' : undefined
+        };
+      }
       return {
         color: chipTint(accentText, weight),
         background: `rgba(255, 255, 255, ${(0.07 * weight).toFixed(4)})`,
         transition: fading ? 'none' : undefined
       };
     },
-    [presetFade, activePreset, accentText]
+    [presetFade, activePreset, accentText, isLightTheme]
   );
 
   const componentCount = COMPONENT_COUNT;
@@ -779,6 +789,7 @@ const Hero = () => {
       <HeroBand
         className="ln-hero-band"
         {...propValues[0]}
+        lightMode={isLightTheme}
         scale={1}
         warpStrength={1}
         yOffset={0.3}

@@ -55,7 +55,7 @@ const BackToTopButton = () => {
       aria-label="Back to top"
       onClick={() => visible && scrollToTop()}
     >
-      <Icon as={FiArrowUp} color="#fff" boxSize={4} />
+      <Icon as={FiArrowUp} color="var(--text-primary)" boxSize={4} />
     </Button>
   );
 };

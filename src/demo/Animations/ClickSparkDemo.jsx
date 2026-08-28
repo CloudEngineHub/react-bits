@@ -17,6 +17,7 @@ import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButt
 
 import { clickSpark } from '../../constants/code/Animations/clickSparkCode';
 import ClickSpark from '../../content/Animations/ClickSpark/ClickSpark';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   sparkColor: '#ffffff',
@@ -30,6 +31,10 @@ const DEFAULT_PROPS = {
 const ClickSparkDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { sparkColor, sparkSize, sparkRadius, sparkCount, duration, extraScale } = props;
+  const renderedSparkColor = useColorModeValue(
+    sparkColor === DEFAULT_PROPS.sparkColor ? '#18181b' : sparkColor,
+    sparkColor
+  );
 
   const [key, forceRerender] = useForceRerender();
 
@@ -94,7 +99,7 @@ const ClickSparkDemo = () => {
           <Box position="relative" className="demo-container" h={400} p={0} overflow="hidden">
             <ClickSpark
               key={key}
-              sparkColor={sparkColor}
+              sparkColor={renderedSparkColor}
               sparkSize={sparkSize}
               sparkRadius={sparkRadius}
               sparkCount={sparkCount}
@@ -104,10 +109,10 @@ const ClickSparkDemo = () => {
 
             <Text
               position="absolute"
-              fontWeight={900}
+              fontWeight={600}
               fontSize="2rem"
               textAlign="center"
-              color="#2F293A"
+              className="demo-instruction"
               userSelect="none"
             >
               Click Around!
@@ -123,7 +128,7 @@ const ClickSparkDemo = () => {
           </Flex>
 
           <Customize>
-            <PreviewColorPickerCustom title="Spark Color" color={sparkColor} onChange={val => { updateProp('sparkColor', val); forceRerender(); }} />
+            <PreviewColorPickerCustom title="Spark Color" color={renderedSparkColor} onChange={val => { updateProp('sparkColor', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Spark Size"

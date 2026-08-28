@@ -148,7 +148,7 @@ const StepperDemo = () => {
               nextButtonText={nextButtonText}
             >
               <Step>
-                <Text color="#5227FF" fontSize="1.2rem" fontWeight={600}>
+                <Text color="var(--text-primary)" fontSize="1.2rem" fontWeight={600}>
                   Welcome to the React Bits stepper!
                 </Text>
                 <p>Check out the next step!</p>
@@ -181,7 +181,7 @@ const StepperDemo = () => {
               </Step>
 
               <Step>
-                <Text color="#5227FF" fontSize="1.2rem" fontWeight={600}>
+                <Text color="var(--text-primary)" fontSize="1.2rem" fontWeight={600}>
                   Final Step
                 </Text>
                 <p>You made it!</p>

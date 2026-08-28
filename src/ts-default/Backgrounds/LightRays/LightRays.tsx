@@ -25,6 +25,7 @@ interface LightRaysProps {
   mouseInfluence?: number;
   noiseAmount?: number;
   distortion?: number;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -80,6 +81,7 @@ interface Uniforms {
   mouseInfluence: { value: number };
   noiseAmount: { value: number };
   distortion: { value: number };
+  lightMode: { value: number };
 }
 
 const LightRays: React.FC<LightRaysProps> = ({
@@ -95,6 +97,7 @@ const LightRays: React.FC<LightRaysProps> = ({
   mouseInfluence = 0.1,
   noiseAmount = 0.0,
   distortion = 0.0,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -185,6 +188,7 @@ uniform vec2  mousePos;
 uniform float mouseInfluence;
 uniform float noiseAmount;
 uniform float distortion;
+uniform float lightMode;
 
 varying vec2 vUv;
 
@@ -253,6 +257,14 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   }
 
   fragColor.rgb *= raysColor;
+
+  if (lightMode > 0.5) {
+    vec3 mapped = vec3(1.0) - exp(-max(fragColor.rgb, vec3(0.0)) * 1.35);
+    float energy = clamp(max(mapped.r, max(mapped.g, mapped.b)), 0.0, 1.0);
+    vec3 hue = mapped / max(energy, 0.0001);
+    vec3 ink = mix(hue * 0.25, hue * 0.72, energy);
+    fragColor = vec4(mix(vec3(1.0), ink, energy), 1.0);
+  }
 }
 
 void main() {
@@ -278,7 +290,8 @@ void main() {
         mousePos: { value: [0.5, 0.5] },
         mouseInfluence: { value: mouseInfluence },
         noiseAmount: { value: noiseAmount },
-        distortion: { value: distortion }
+        distortion: { value: distortion },
+        lightMode: { value: lightMode ? 1.0 : 0.0 }
       };
       uniformsRef.current = uniforms;
 
@@ -390,7 +403,8 @@ void main() {
     followMouse,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    lightMode
   ]);
 
   useEffect(() => {
@@ -409,6 +423,7 @@ void main() {
     u.mouseInfluence.value = mouseInfluence;
     u.noiseAmount.value = noiseAmount;
     u.distortion.value = distortion;
+    u.lightMode.value = lightMode ? 1.0 : 0.0;
 
     const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
     const dpr = renderer.dpr;
@@ -426,7 +441,8 @@ void main() {
     saturation,
     mouseInfluence,
     noiseAmount,
-    distortion
+    distortion,
+    lightMode
   ]);
 
   useEffect(() => {

@@ -15,6 +15,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import { logoLoop } from '../../constants/code/Animations/logoLoopCode';
 import LogoLoop from '../../content/Animations/LogoLoop/LogoLoop';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import {
   SiReact,
@@ -57,6 +58,9 @@ const LogoLoopDemo = () => {
   const [key, forceRerender] = useForceRerender();
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { speed, logoHeight, gap, hoverSpeed, fadeOut, scaleOnHover, direction, useCustomRender } = props;
+  const fadeOutColor = useColorModeValue('#ffffff', '#120F17');
+  const customBorder = useColorModeValue('#d4d4d8', '#8b5cf6');
+  const customBackground = useColorModeValue('rgba(24, 24, 27, 0.035)', 'rgba(139, 92, 246, 0.1)');
 
   const directionOptions = [
     { value: 'left', label: 'Left' },
@@ -175,7 +179,7 @@ const LogoLoopDemo = () => {
               scaleOnHover={scaleOnHover}
               hoverSpeed={hoverSpeed}
               fadeOut={fadeOut}
-              fadeOutColor="#120F17"
+              fadeOutColor={fadeOutColor}
               ariaLabel="Our tech stack"
               renderItem={
                 useCustomRender
@@ -183,9 +187,9 @@ const LogoLoopDemo = () => {
                       <div
                         style={{
                           padding: '8px',
-                          border: '2px solid #8b5cf6',
+                          border: `1px solid ${customBorder}`,
                           borderRadius: '8px',
-                          background: 'rgba(139, 92, 246, 0.1)'
+                          background: customBackground
                         }}
                       >
                         {'node' in item ? (

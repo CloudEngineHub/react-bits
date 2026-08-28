@@ -65,7 +65,7 @@ const PILL_BTN_STYLE = {
   cursor: 'pointer',
   border: '1px solid transparent',
   transition: 'background var(--transition-base), transform var(--dur-press) var(--ease-out)',
-  color: '#fff',
+  color: 'var(--text-primary)',
   fontSize: '13px',
   fontWeight: 500,
   bg: 'var(--surface-ghost-track)',
@@ -340,7 +340,7 @@ const ComponentList = ({
           opacity={controlsDisabled ? 0.5 : 1}
         >
           <InputGroup
-            startElement={<Icon as={FiSearch} color="rgba(255,255,255,0.4)" fontSize="14px" />}
+            startElement={<Icon as={FiSearch} color="var(--text-dimmed)" fontSize="14px" />}
             w={{ base: '100%', md: '180px' }}
             mr={{ base: 0, md: 2 }}
           >
@@ -350,11 +350,11 @@ const ComponentList = ({
               placeholder="Search..."
               h="36px"
               borderRadius="10px"
-              bg="var(--surface-ghost-track)"
-              border="1px solid transparent"
+              bg="var(--action-control-bg)"
+              border="1px solid var(--action-control-border)"
               backdropFilter="var(--surface-ghost-blur)"
-              transition="background var(--transition-base)"
-              color="#fff"
+              transition="background var(--transition-base), border-color var(--transition-base)"
+              color="var(--text-primary)"
               fontSize="13px"
               fontWeight={500}
               disabled={controlsDisabled}
@@ -369,14 +369,20 @@ const ComponentList = ({
                 }
               }}
               pointerEvents={controlsDisabled ? 'none' : 'auto'}
-              _focus={{ bg: 'var(--surface-ghost)', boxShadow: 'var(--surface-ghost-highlight)', outline: 'none' }}
-              _focusVisible={{
-                bg: 'var(--surface-ghost)',
-                boxShadow: 'var(--surface-ghost-highlight)',
+              _focus={{
+                bg: 'var(--action-control-selected)',
+                borderColor: 'var(--action-control-selected-border)',
+                boxShadow: 'var(--action-control-shadow)',
                 outline: 'none'
               }}
-              _hover={{ bg: 'var(--surface-ghost-hover)' }}
-              _placeholder={{ color: 'rgba(255,255,255,0.3)', fontWeight: 500 }}
+              _focusVisible={{
+                bg: 'var(--action-control-selected)',
+                borderColor: 'var(--action-control-selected-border)',
+                boxShadow: 'var(--action-control-shadow)',
+                outline: 'none'
+              }}
+              _hover={{ bg: 'var(--action-control-hover)', borderColor: 'var(--action-control-selected-border)' }}
+              _placeholder={{ color: 'var(--text-dimmed)', fontWeight: 500 }}
             />
           </InputGroup>
 
@@ -392,24 +398,32 @@ const ComponentList = ({
             <Select.Control>
               <Select.Trigger
                 fontSize="13px"
-                bg="var(--surface-ghost-track)"
-                border="1px solid transparent"
+                bg="var(--action-control-bg)"
+                border="1px solid var(--action-control-border)"
                 backdropFilter="var(--surface-ghost-blur)"
                 rounded="10px"
                 h="36px"
                 fontWeight={500}
                 cursor={controlsDisabled ? 'default' : 'pointer'}
-                transition="background 0.2s ease"
-                _hover={controlsDisabled ? undefined : { background: 'var(--surface-ghost-hover)' }}
+                transition="background 0.2s ease, border-color 0.2s ease"
+                _hover={
+                  controlsDisabled
+                    ? undefined
+                    : {
+                        background: 'var(--action-control-hover)',
+                        borderColor: 'var(--action-control-selected-border)'
+                      }
+                }
                 css={{
                   '&[data-state="open"]': {
-                    background: 'var(--surface-ghost)',
-                    boxShadow: 'var(--surface-ghost-highlight)'
+                    background: 'var(--action-control-selected)',
+                    borderColor: 'var(--action-control-selected-border)',
+                    boxShadow: 'var(--action-control-shadow)'
                   }
                 }}
                 w="full"
               >
-                <Select.ValueText color={controlsDisabled ? 'rgba(255,255,255,0.3)' : '#fff'} pl={2}>
+                <Select.ValueText color={controlsDisabled ? 'var(--text-dimmed)' : 'var(--text-primary)'} pl={2}>
                   {selectedCategory}
                 </Select.ValueText>
                 <Select.IndicatorGroup>
@@ -420,14 +434,14 @@ const ComponentList = ({
             <Portal>
               <Select.Positioner>
                 <Select.Content
-                  bg="rgba(18, 15, 23, 0.85)"
+                  bg="var(--shell-panel)"
                   backdropFilter="blur(32px) saturate(1.3)"
-                  border="1px solid rgba(255, 255, 255, 0.08)"
+                  border="1px solid var(--shell-border-strong)"
                   borderRadius="12px"
                   w={{ base: '100%', md: '180px' }}
                   px={1.5}
                   py={1.5}
-                  boxShadow="0 16px 28px -10px rgba(0,0,0,0.5)"
+                  boxShadow="var(--shadow-menu)"
                 >
                   {categories.items.map(cat => (
                     <Select.Item
@@ -438,7 +452,7 @@ const ComponentList = ({
                       py={2}
                       fontSize="13px"
                       cursor="pointer"
-                      _highlighted={{ bg: 'rgba(255,255,255,0.06)' }}
+                      _highlighted={{ bg: 'var(--surface-ghost)' }}
                     >
                       {cat}
                     </Select.Item>
@@ -462,18 +476,18 @@ const ComponentList = ({
               rounded="10px"
               size="sm"
               variant="ghost"
-              color="rgba(255,255,255,0.5)"
+              color="var(--text-muted)"
               onClick={clearFilters}
               h="36px"
               w="36px"
-              bg="var(--surface-ghost-track)"
-              border="1px solid transparent"
+              bg="var(--action-control-bg)"
+              border="1px solid var(--action-control-border)"
               backdropFilter="var(--surface-ghost-blur)"
               opacity={0}
               style={{ transformOrigin: '50% 50%' }}
               pointerEvents={showClear ? 'auto' : 'none'}
               tabIndex={showClear ? 0 : -1}
-              _hover={{ bg: 'var(--surface-ghost-hover)' }}
+              _hover={{ bg: 'var(--action-control-hover)', borderColor: 'var(--action-control-selected-border)' }}
               _focus={{ boxShadow: 'none', outline: 'none' }}
               _focusVisible={{ boxShadow: 'none', outline: 'none' }}
             >
@@ -487,7 +501,7 @@ const ComponentList = ({
         {filtered.length === 0 ? (
           <Box role="status" p={6} mt={'6em'} textAlign="center" position="relative">
             <Box position="relative">
-              <Text color="#fff" fontWeight={500} fontSize="24px" mb={1}>
+              <Text color="var(--text-primary)" fontWeight={500} fontSize="24px" mb={1}>
                 {items.length > 0 ? 'No results...' : 'Nothing here yet...'}
               </Text>
               <Text color={colors.textMuted} fontSize="16px" mb={8}>
@@ -592,10 +606,9 @@ const ComponentList = ({
                                     lineHeight={1}
                                     letterSpacing="0.06em"
                                     textTransform="uppercase"
-                                    fontFamily="'Geist Mono', monospace"
-                                    color="#e2c9ff"
+                                    color="var(--new-badge-text)"
                                     border="1px solid transparent"
-                                    bg="rgba(168, 85, 247, 0.32)"
+                                    bg="var(--new-badge-bg)"
                                     boxShadow="var(--surface-ghost-highlight)"
                                     backdropFilter="var(--surface-ghost-blur)"
                                     pointerEvents="none"
@@ -668,7 +681,7 @@ const ComponentList = ({
                               <Box px={2.5} pt={3} pb={2}>
                                 <Text
                                   className="browse-card-title"
-                                  color="#fff"
+                                  color="var(--text-primary)"
                                   fontSize="14.5px"
                                   fontWeight={600}
                                   lineHeight="1.25"
@@ -677,12 +690,11 @@ const ComponentList = ({
                                   {item.title}
                                 </Text>
                                 <Text
-                                  color="rgba(255,255,255,0.42)"
+                                  color="var(--text-dimmed)"
                                   fontWeight={500}
                                   fontSize="11px"
                                   letterSpacing="0.05em"
                                   textTransform="uppercase"
-                                  fontFamily="'Geist Mono', monospace"
                                   mt="5px"
                                 >
                                   {item.categoryLabel}

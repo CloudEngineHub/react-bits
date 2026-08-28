@@ -29,7 +29,7 @@ const DEFAULT_PROPS = {
 
 const AuroraDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { color1, color2, color3, speed, blend } = props;
+  const { color1, color2, color3, speed, blend, lightMode } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -75,7 +75,7 @@ const AuroraDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
-            <Aurora key={key} blend={blend} speed={speed} colorStops={[color1, color2, color3]} />
+            <Aurora key={key} blend={blend} speed={speed} colorStops={[color1, color2, color3]} lightMode={lightMode} />
 
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Bring the Arctic to you, with one line of code" />

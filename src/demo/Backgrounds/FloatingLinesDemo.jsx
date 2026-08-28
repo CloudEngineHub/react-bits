@@ -33,7 +33,7 @@ const DEFAULT_PROPS = {
 
 const FloatingLinesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { enabledWaves, lineCount, lineDistance, animationSpeed, interactive, bendRadius, bendStrength, gradientStart, gradientMid, gradientEnd } = props;
+  const { enabledWaves, lineCount, lineDistance, animationSpeed, interactive, bendRadius, bendStrength, gradientStart, gradientMid, gradientEnd, backgroundColor, lightMode } = props;
 
   const toggleWave = wave => {
     updateProp(
@@ -152,6 +152,8 @@ const FloatingLinesDemo = () => {
               bendRadius={bendRadius}
               bendStrength={bendStrength}
               linesGradient={[gradientStart, gradientMid, gradientEnd]}
+              backgroundColor={backgroundColor}
+              lightMode={lightMode}
             />
             <BackgroundContent pillText="New Background" headline="Waves are cool! Even cooler with lines!" />
           </Box>

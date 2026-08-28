@@ -16,6 +16,7 @@ import Dependencies from '../../components/code/Dependencies';
 
 import { cubes } from '../../constants/code/Animations/cubesCode';
 import Cubes from '../../content/Animations/Cubes/Cubes';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   borderStyle: '2px dashed #B497CF',
@@ -29,6 +30,12 @@ const DEFAULT_PROPS = {
 const CubesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { borderStyle, gridSize, maxAngle, radius, autoAnimate, rippleOnClick } = props;
+  const renderedBorderStyle = useColorModeValue(
+    borderStyle === DEFAULT_PROPS.borderStyle ? '2px dashed #a1a1aa' : borderStyle,
+    borderStyle
+  );
+  const faceColor = useColorModeValue('#ffffff', '#120F17');
+  const rippleColor = useColorModeValue('#52525b', '#ffffff');
 
   const borderOptions = [
     { value: '2px dotted #fff', label: 'Dotted White' },
@@ -132,7 +139,9 @@ const CubesDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={650} overflow="hidden">
             <Cubes
-              borderStyle={borderStyle}
+              borderStyle={renderedBorderStyle}
+              faceColor={faceColor}
+              rippleColor={rippleColor}
               gridSize={gridSize}
               maxAngle={maxAngle}
               radius={radius}

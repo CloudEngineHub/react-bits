@@ -20,11 +20,11 @@
 /* ─── Title ─── */
 
 .ln-test-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -2px;
   color: #fff;
   margin: 0 0 40px;
 }
@@ -225,5 +225,42 @@
   .ln-test-card:hover,
   .ln-test-card:active {
     transform: none;
+  }
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-test-section {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-test-title {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-test-card {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .ln-test-avatar {
+  border-color: var(--border-subtle);
+}
+
+:root[data-theme='light'] .ln-test-handle {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-test-x-icon {
+  color: #a1a1aa;
+}
+
+:root[data-theme='light'] .ln-test-text {
+  color: #52525b;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme='light'] .ln-test-card:hover {
+    border-color: #d4d4d8;
   }
 }

@@ -24,6 +24,7 @@ interface SilkUniforms {
   uNoiseIntensity: UniformValue<number>;
   uColor: UniformValue<Color>;
   uRotation: UniformValue<number>;
+  uLightMode: UniformValue<number>;
   uTime: UniformValue<number>;
   [uniform: string]: IUniform;
 }
@@ -49,6 +50,7 @@ uniform float uSpeed;
 uniform float uScale;
 uniform float uRotation;
 uniform float uNoiseIntensity;
+uniform float uLightMode;
 
 const float e = 2.71828182845904523536;
 
@@ -79,9 +81,21 @@ void main() {
                                    0.02 * tOffset) +
                            sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
 
-  vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
-  col.a = 1.0;
-  gl_FragColor = col;
+  float grain = rnd / 15.0 * uNoiseIntensity;
+  vec3 result = uColor * pattern - vec3(grain);
+if (uLightMode > 0.5) {
+  float fold = smoothstep(0.28, 0.9, pattern);
+  float specular = smoothstep(0.72, 0.98, pattern);
+  vec3 shadowColor = uColor * 0.72;
+  vec3 bodyColor = min(uColor * 1.18, vec3(1.0));
+  vec3 lightBase = mix(shadowColor, bodyColor, fold);
+  lightBase = mix(lightBase, vec3(1.0), specular * 0.92);
+  float fineNoise = noise(gl_FragCoord.xy * 0.63 + vec2(17.0, 41.0));
+  float grainSignal = (rnd + fineNoise - 1.0);
+  float grainStrength = clamp(uNoiseIntensity * 0.038, 0.0, 0.16);
+  result = lightBase + grainSignal * grainStrength;
+}
+  gl_FragColor = vec4(clamp(result, 0.0, 1.0), 1.0);
 }
 `;
 
@@ -124,9 +138,17 @@ export interface SilkProps {
   color?: string;
   noiseIntensity?: number;
   rotation?: number;
+  lightMode?: boolean;
 }
 
-const Silk: React.FC<SilkProps> = ({ speed = 5, scale = 1, color = '#7B7481', noiseIntensity = 1.5, rotation = 0 }) => {
+const Silk: React.FC<SilkProps> = ({
+  speed = 5,
+  scale = 1,
+  color = '#7B7481',
+  noiseIntensity = 1.5,
+  rotation = 0,
+  lightMode = false
+}) => {
   const meshRef = useRef<Mesh>(null);
 
   const uniforms = useMemo<SilkUniforms>(
@@ -136,6 +158,7 @@ const Silk: React.FC<SilkProps> = ({ speed = 5, scale = 1, color = '#7B7481', no
       uNoiseIntensity: { value: noiseIntensity },
       uColor: { value: new Color(...hexToNormalizedRGB(color)) },
       uRotation: { value: rotation },
+      uLightMode: { value: lightMode ? 1 : 0 },
       uTime: { value: 0 }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,7 +171,8 @@ const Silk: React.FC<SilkProps> = ({ speed = 5, scale = 1, color = '#7B7481', no
     uniforms.uNoiseIntensity.value = noiseIntensity;
     uniforms.uColor.value.setRGB(...hexToNormalizedRGB(color));
     uniforms.uRotation.value = rotation;
-  }, [speed, scale, noiseIntensity, color, rotation, uniforms]);
+    uniforms.uLightMode.value = lightMode ? 1 : 0;
+  }, [speed, scale, noiseIntensity, color, rotation, lightMode, uniforms]);
 
   return (
     <Canvas dpr={[1, 2]} frameloop="always">

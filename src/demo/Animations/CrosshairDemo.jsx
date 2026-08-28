@@ -15,6 +15,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import Crosshair from '../../content/Animations/Crosshair/Crosshair';
 import { crosshair } from '../../constants/code/Animations/crosshairCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_TEXT = 'Target';
 
@@ -26,6 +27,8 @@ const DEFAULT_PROPS = {
 const CrosshairDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { color, targeted } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
+  const instructionColor = useColorModeValue('#d4d4d8', '#2f293a');
 
   const [linkText, setLinkText] = React.useState(DEFAULT_TEXT);
   const linkRef = useRef(null);
@@ -61,18 +64,19 @@ const CrosshairDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box ref={containerRef} position="relative" className="demo-container" minH={300} overflow="hidden">
-            <Crosshair containerRef={targeted ? null : containerRef} color={color} />
+            <Crosshair containerRef={targeted ? null : containerRef} color={renderedColor} />
 
             <Flex direction="column" justifyContent="center" alignItems="center">
               <Text
                 _hover={{ color: 'magenta' }}
                 transition=".3s ease"
                 textAlign="center"
-                fontWeight={900}
+                fontWeight={600}
                 fontSize={{ base: '2rem', md: '4rem' }}
                 as="a"
                 href="https://github.com/DavidHDev/react-bits"
                 ref={linkRef}
+                color={instructionColor}
                 onMouseEnter={() => {
                   setLinkText('Locked');
                 }}
@@ -83,7 +87,7 @@ const CrosshairDemo = () => {
               >
                 {linkText}
               </Text>
-              <Text position="relative" top="-10px" color="#444">
+              <Text className="demo-instruction" position="relative" top="-10px">
                 (hover the text)
               </Text>
             </Flex>
@@ -98,8 +102,9 @@ const CrosshairDemo = () => {
               }}
               aria-hidden="true"
               textAlign="center"
-              fontWeight={900}
+              fontWeight={600}
               fontSize={{ base: '2rem', md: '4rem' }}
+              color={instructionColor}
             >
               {linkText}
             </Text>
@@ -108,7 +113,7 @@ const CrosshairDemo = () => {
           <Customize>
             <PreviewColorPickerCustom
               title="Crosshair Color"
-              color={color}
+              color={renderedColor}
               onChange={val => {
                 updateProp('color', val);
               }}

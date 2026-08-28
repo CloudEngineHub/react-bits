@@ -11,6 +11,7 @@ import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
+import Customize from '../../components/common/Preview/Customize';
 
 import ScrollFloat from '../../content/TextAnimations/ScrollFloat/ScrollFloat';
 import { scrollFloat } from '../../constants/code/TextAnimations/scrollFloatCode';
@@ -124,10 +125,10 @@ const ScrollFloatDemo = () => {
             position="relative"
           >
             <Text
+              className="demo-instruction"
               textAlign="center"
-              color="#2F293A"
               fontSize="clamp(4rem, 6vw, 4rem)"
-              fontWeight={900}
+              fontWeight={600}
               position="absolute"
               top="50%"
               transform="translateY(-50%)"
@@ -141,9 +142,7 @@ const ScrollFloatDemo = () => {
             </Box>
           </Box>
 
-          <div className="preview-options">
-            <h2 className="demo-title-extra">Customize</h2>
-
+          <Customize>
             <PreviewSlider
               title="Stagger"
               min={0.01}
@@ -171,7 +170,7 @@ const ScrollFloatDemo = () => {
               }}
               width={150}
             />
-          </div>
+          </Customize>
 
           <PropTable data={propData} />
           <Dependencies dependencyList={['gsap']} />

@@ -14,6 +14,7 @@ import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButt
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import { dotGrid } from '../../constants/code/Backgrounds/dotGridCode';
@@ -31,10 +32,16 @@ const DEFAULT_PROPS = {
   returnDuration: 1.5
 };
 
+const LIGHT_PROPS = {
+  baseColor: '#d4d4d8',
+  activeColor: '#7c3aed'
+};
+
 const DotGridDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
   const { dotSize, gap, baseColor, activeColor, proximity, shockRadius, shockStrength, resistance, returnDuration } =
-    props;
+    themedProps;
   const [key] = useForceRerender();
 
   const propData = useMemo(
@@ -122,7 +129,7 @@ const DotGridDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={themedProps} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden">

@@ -162,7 +162,15 @@ const ElasticMeshDemo = () => {
               interaction={interaction}
               enabled={enabled}
             />
-            <Text position="absolute" bottom={3} left={0} right={0} textAlign="center" color="#a6a6a6" fontSize="sm">
+            <Text
+              position="absolute"
+              bottom={3}
+              left={0}
+              right={0}
+              textAlign="center"
+              fontSize="sm"
+              className="demo-instruction"
+            >
               {interaction === 'drag' ? 'Click and drag across the sheet.' : 'Move your cursor across the sheet.'}
             </Text>
           </Flex>

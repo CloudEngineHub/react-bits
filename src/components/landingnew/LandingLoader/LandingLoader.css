@@ -83,3 +83,11 @@
     opacity: 0.6;
   }
 }
+
+:root[data-theme='light'] .ln-loader {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-loader-logo path {
+  fill: #27272a;
+}

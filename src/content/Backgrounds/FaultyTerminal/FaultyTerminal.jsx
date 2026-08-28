@@ -37,6 +37,7 @@ uniform float uUseMouse;
 uniform float uPageLoadProgress;
 uniform float uUsePageLoadAnimation;
 uniform float uBrightness;
+uniform float uLightMode;
 
 float time;
 
@@ -204,6 +205,13 @@ void main() {
       col += (rnd - 0.5) * (uDither * 0.003922);
     }
 
+    if (uLightMode > 0.5) {
+      float energy = max(max(col.r, col.g), col.b);
+      float coverage = clamp(smoothstep(0.0, 0.72, energy) * 0.9, 0.0, 0.9);
+      vec3 ink = clamp(col * 0.42, 0.0, 0.76);
+      col = mix(vec3(1.0), ink, coverage);
+    }
+
     gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -228,7 +236,7 @@ export default function FaultyTerminal({
   scanlineIntensity = 0.3,
   glitchAmount = 1,
   flickerAmount = 1,
-  noiseAmp = 0,
+  noiseAmp = 1,
   chromaticAberration = 0,
   dither = 0,
   curvature = 0.2,
@@ -238,6 +246,7 @@ export default function FaultyTerminal({
   dpr = Math.min(window.devicePixelRatio || 1, 2),
   pageLoadAnimation = true,
   brightness = 1,
+  lightMode = false,
   className,
   style,
   ...rest
@@ -272,7 +281,7 @@ export default function FaultyTerminal({
     const renderer = new Renderer({ dpr });
     rendererRef.current = renderer;
     const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(lightMode ? 1 : 0, lightMode ? 1 : 0, lightMode ? 1 : 0, 1);
 
     const geometry = new Triangle(gl);
 
@@ -303,7 +312,8 @@ export default function FaultyTerminal({
         uUseMouse: { value: mouseReact ? 1 : 0 },
         uPageLoadProgress: { value: pageLoadAnimation ? 0 : 1 },
         uUsePageLoadAnimation: { value: pageLoadAnimation ? 1 : 0 },
-        uBrightness: { value: brightness }
+        uBrightness: { value: brightness },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
     programRef.current = program;
@@ -393,6 +403,7 @@ export default function FaultyTerminal({
     mouseStrength,
     pageLoadAnimation,
     brightness,
+    lightMode,
     handleMouseMove
   ]);
 

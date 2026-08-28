@@ -13,6 +13,7 @@ import Dependencies from '../../components/code/Dependencies';
 import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import DepthText from '../../content/TextAnimations/DepthText/DepthText';
 import { depthText } from '../../constants/code/TextAnimations/depthTextCode';
@@ -64,6 +65,10 @@ const DepthTextDemo = () => {
     fontWeight,
     shadow
   } = props;
+  const renderedFaceColor = useColorModeValue(
+    faceColor === DEFAULT_PROPS.faceColor ? '#ffffff' : faceColor,
+    faceColor
+  );
 
   const propData = useMemo(
     () => [
@@ -177,7 +182,7 @@ const DepthTextDemo = () => {
                 text={text}
                 layers={layers}
                 depth={depth}
-                faceColor={faceColor}
+                faceColor={renderedFaceColor}
                 depthColor={depthColor}
                 tilt={tilt}
                 pointerTracking={pointerTracking}
@@ -203,7 +208,7 @@ const DepthTextDemo = () => {
 
             <PreviewColorPickerCustom
               title="Face Color"
-              color={faceColor}
+              color={renderedFaceColor}
               onChange={value => updateProp('faceColor', value)}
             />
 

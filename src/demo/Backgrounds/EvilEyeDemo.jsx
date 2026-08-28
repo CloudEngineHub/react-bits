@@ -34,7 +34,7 @@ const EvilEyeDemo = () => {
   const {
     eyeColor, intensity, pupilSize,
     irisWidth, glowIntensity, scale, noiseScale,
-    pupilFollow, flameSpeed, backgroundColor
+    pupilFollow, flameSpeed, backgroundColor, lightMode
   } = props;
 
   const propData = useMemo(
@@ -119,6 +119,7 @@ const EvilEyeDemo = () => {
               pupilFollow={pupilFollow}
               flameSpeed={flameSpeed}
               backgroundColor={backgroundColor}
+              lightMode={lightMode}
             />
           </Box>
 

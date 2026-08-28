@@ -173,10 +173,13 @@ interface BeamsProps {
   beamHeight?: number;
   beamNumber?: number;
   lightColor?: string;
+  beamColor?: string;
+  backgroundColor?: string;
   speed?: number;
   noiseIntensity?: number;
   scale?: number;
   rotation?: number;
+  lightMode?: boolean;
 }
 
 const Beams: FC<BeamsProps> = ({
@@ -184,10 +187,13 @@ const Beams: FC<BeamsProps> = ({
   beamHeight = 15,
   beamNumber = 12,
   lightColor = '#ffffff',
+  beamColor = '#000000',
+  backgroundColor = '#000000',
   speed = 2,
   noiseIntensity = 1.75,
   scale = 0.2,
-  rotation = 0
+  rotation = 0,
+  lightMode = false
 }) => {
   const meshRef = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(null!);
 
@@ -223,7 +229,7 @@ const Beams: FC<BeamsProps> = ({
     vec3 tangentZ = normalize(nextposZ - curpos);
     return normalize(cross(tangentZ, tangentX));
   }`,
-        fragmentHeader: '',
+        fragmentHeader: 'uniform float uLightMode;',
         vertex: {
           '#include <begin_vertex>': `transformed.z += getPos(transformed.xyz);`,
           '#include <beginnormal_vertex>': `objectNormal = getNormal(position.xyz);`
@@ -231,21 +237,28 @@ const Beams: FC<BeamsProps> = ({
         fragment: {
           '#include <dithering_fragment>': `
     float randomNoise = noise(gl_FragCoord.xy);
-    gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;`
+    gl_FragColor.rgb -= randomNoise / 15. * uNoiseIntensity;
+    if (uLightMode > 0.5) {
+      float energy = max(max(gl_FragColor.r, gl_FragColor.g), gl_FragColor.b);
+      vec3 chroma = clamp(gl_FragColor.rgb / max(energy, 0.0001), 0.0, 1.0);
+      chroma = pow(chroma, vec3(1.2));
+      gl_FragColor.rgb = mix(vec3(1.0), chroma, clamp(energy * 0.98, 0.0, 0.94));
+    }`
         },
         material: { fog: true },
         uniforms: {
-          diffuse: new THREE.Color(...hexToNormalizedRGB('#000000')),
+          diffuse: new THREE.Color(...hexToNormalizedRGB(beamColor)),
           time: { shared: true, mixed: true, linked: true, value: 0 },
           roughness: 0.3,
           metalness: 0.3,
           uSpeed: { shared: true, mixed: true, linked: true, value: speed },
           envMapIntensity: 10,
           uNoiseIntensity: noiseIntensity,
-          uScale: scale
+          uScale: scale,
+          uLightMode: lightMode ? 1 : 0
         }
       }),
-    [speed, noiseIntensity, scale]
+    [beamColor, speed, noiseIntensity, scale, lightMode]
   );
 
   return (
@@ -255,7 +268,7 @@ const Beams: FC<BeamsProps> = ({
         <DirLight color={lightColor} position={[0, 3, 10]} />
       </group>
       <ambientLight intensity={1} />
-      <color attach="background" args={['#000000']} />
+      <color attach="background" args={[backgroundColor]} />
       <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
     </CanvasWrapper>
   );

@@ -15,6 +15,14 @@ import {
 } from '@react-three/drei';
 import { easing } from 'maath';
 
+const IMAGE_URLS = [
+  'https://images.unsplash.com/photo-1783394327207-acf441e37dda?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MzR8fHxlbnwwfHx8fHw%3D',
+  'https://images.unsplash.com/photo-1782977389500-dd7adad33ebe?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MzZ8fHxlbnwwfHx8fHw%3D',
+  'https://images.unsplash.com/photo-1782094002386-7d9ae1f49f50?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NDB8fHxlbnwwfHx8fHw%3D',
+  'https://images.unsplash.com/photo-1781242629922-6f39cc3671cd?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NDR8fHxlbnwwfHx8fHw%3D',
+  'https://images.unsplash.com/photo-1779684474703-5c0519bcf7e8?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NTJ8fHxlbnwwfHx8fHw%3D'
+];
+
 type Mode = 'lens' | 'bar' | 'cube';
 
 interface NavItem {
@@ -29,9 +37,18 @@ interface FluidGlassProps {
   lensProps?: ModeProps;
   barProps?: ModeProps;
   cubeProps?: ModeProps;
+  backgroundColor?: string;
+  textColor?: string;
 }
 
-export default function FluidGlass({ mode = 'lens', lensProps = {}, barProps = {}, cubeProps = {} }: FluidGlassProps) {
+export default function FluidGlass({
+  mode = 'lens',
+  lensProps = {},
+  barProps = {},
+  cubeProps = {},
+  backgroundColor = '#120F17',
+  textColor = '#ffffff'
+}: FluidGlassProps) {
   const Wrapper = mode === 'bar' ? Bar : mode === 'cube' ? Cube : Lens;
   const rawOverrides = mode === 'bar' ? barProps : mode === 'cube' ? cubeProps : lensProps;
 
@@ -45,12 +62,16 @@ export default function FluidGlass({ mode = 'lens', lensProps = {}, barProps = {
   } = rawOverrides;
 
   return (
-    <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }}>
+    <Canvas
+      camera={{ position: [0, 0, 20], fov: 15 }}
+      gl={{ alpha: true, toneMapping: THREE.NoToneMapping }}
+      style={{ backgroundColor }}
+    >
       <ScrollControls damping={0.2} pages={3} distance={0.4}>
-        {mode === 'bar' && <NavItems items={navItems as NavItem[]} />}
-        <Wrapper modeProps={modeProps}>
+        {mode === 'bar' && <NavItems items={navItems as NavItem[]} textColor={textColor} />}
+        <Wrapper modeProps={modeProps} backgroundColor={backgroundColor}>
           <Scroll>
-            <Typography />
+            <Typography textColor={textColor} />
             <Images />
           </Scroll>
           <Scroll html />
@@ -70,7 +91,10 @@ interface ModeWrapperProps extends MeshProps {
   lockToBottom?: boolean;
   followPointer?: boolean;
   modeProps?: ModeProps;
+  backgroundColor?: string;
 }
+
+type ModeComponentProps = Omit<ModeWrapperProps, 'glb' | 'geometryKey'>;
 
 interface ZoomMaterial extends THREE.Material {
   zoom: number;
@@ -87,6 +111,7 @@ const ModeWrapper = memo(function ModeWrapper({
   lockToBottom = false,
   followPointer = true,
   modeProps = {},
+  backgroundColor = '#120F17',
   ...props
 }: ModeWrapperProps) {
   const ref = useRef<THREE.Mesh>(null!);
@@ -116,10 +141,11 @@ const ModeWrapper = memo(function ModeWrapper({
       ref.current.scale.setScalar(Math.min(0.15, desired));
     }
 
+    gl.setClearColor(0x000000, 0);
     gl.setRenderTarget(buffer);
     gl.render(scene, camera);
     gl.setRenderTarget(null);
-    gl.setClearColor(0x5227ff, 1);
+    gl.setClearColor(0x000000, 0);
   });
 
   const { scale, ior, thickness, anisotropy, chromaticAberration, ...extraMat } = modeProps as {
@@ -133,10 +159,19 @@ const ModeWrapper = memo(function ModeWrapper({
 
   return (
     <>
-      {createPortal(children, scene)}
+      {createPortal(
+        <>
+          <mesh position={[0, 0, -5]} scale={[vp.width * 2, vp.height * 2, 1]}>
+            <planeGeometry />
+            <meshBasicMaterial color={backgroundColor} toneMapped={false} />
+          </mesh>
+          {children}
+        </>,
+        scene
+      )}
       <mesh scale={[vp.width, vp.height, 1]}>
         <planeGeometry />
-        <meshBasicMaterial map={buffer.texture} transparent />
+        <meshBasicMaterial map={buffer.texture} transparent toneMapped={false} />
       </mesh>
       <mesh
         ref={ref}
@@ -158,15 +193,15 @@ const ModeWrapper = memo(function ModeWrapper({
   );
 });
 
-function Lens({ modeProps, ...p }: { modeProps?: ModeProps } & MeshProps) {
+function Lens({ modeProps, ...p }: ModeComponentProps) {
   return <ModeWrapper glb="/assets/3d/lens.glb" geometryKey="Cylinder" followPointer modeProps={modeProps} {...p} />;
 }
 
-function Cube({ modeProps, ...p }: { modeProps?: ModeProps } & MeshProps) {
+function Cube({ modeProps, ...p }: ModeComponentProps) {
   return <ModeWrapper glb="/assets/3d/cube.glb" geometryKey="Cube" followPointer modeProps={modeProps} {...p} />;
 }
 
-function Bar({ modeProps = {}, ...p }: { modeProps?: ModeProps } & MeshProps) {
+function Bar({ modeProps = {}, ...p }: ModeComponentProps) {
   const defaultMat = {
     transmission: 1,
     roughness: 0,
@@ -189,7 +224,7 @@ function Bar({ modeProps = {}, ...p }: { modeProps?: ModeProps } & MeshProps) {
   );
 }
 
-function NavItems({ items }: { items: NavItem[] }) {
+function NavItems({ items, textColor }: { items: NavItem[]; textColor: string }) {
   const group = useRef<THREE.Group>(null!);
   const { viewport, camera } = useThree();
 
@@ -234,7 +269,7 @@ function NavItems({ items }: { items: NavItem[] }) {
         <Text
           key={label}
           fontSize={fontSize}
-          color="white"
+          color={textColor}
           anchorX="center"
           anchorY="middle"
           outlineWidth={0}
@@ -271,16 +306,16 @@ function Images() {
 
   return (
     <group ref={group}>
-      <Image position={[-2, 0, 0]} scale={[3, height / 1.1]} url="/assets/demo/cs1.webp" />
-      <Image position={[2, 0, 3]} scale={3} url="/assets/demo/cs2.webp" />
-      <Image position={[-2.05, -height, 6]} scale={[1, 3]} url="/assets/demo/cs3.webp" />
-      <Image position={[-0.6, -height, 9]} scale={[1, 2]} url="/assets/demo/cs1.webp" />
-      <Image position={[0.75, -height, 10.5]} scale={1.5} url="/assets/demo/cs2.webp" />
+      <Image position={[-2, 0, 0]} scale={[3, height / 1.1]} url={IMAGE_URLS[0]} />
+      <Image position={[2, 0, 3]} scale={3} url={IMAGE_URLS[1]} />
+      <Image position={[-2.05, -height, 6]} scale={[1, 3]} url={IMAGE_URLS[2]} />
+      <Image position={[-0.6, -height, 9]} scale={[1, 2]} url={IMAGE_URLS[3]} />
+      <Image position={[0.75, -height, 10.5]} scale={1.5} url={IMAGE_URLS[4]} />
     </group>
   );
 }
 
-function Typography() {
+function Typography({ textColor }: { textColor: string }) {
   const DEVICE = {
     mobile: { fontSize: 0.2 },
     tablet: { fontSize: 0.4 },
@@ -310,7 +345,7 @@ function Typography() {
       outlineBlur="20%"
       outlineColor="#000"
       outlineOpacity={0.5}
-      color="white"
+      color={textColor}
       anchorX="center"
       anchorY="middle"
     >

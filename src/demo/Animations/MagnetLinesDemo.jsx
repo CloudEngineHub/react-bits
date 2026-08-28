@@ -12,6 +12,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import MagnetLines from '../../content/Animations/MagnetLines/MagnetLines';
 import { magnetLines } from '../../constants/code/Animations/magnetLinesCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   rows: 10,
@@ -26,6 +27,10 @@ const DEFAULT_PROPS = {
 const MagnetLinesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { rows, columns, containerSize, lineWidth, lineHeight, baseAngle, lineColor } = props;
+  const renderedLineColor = useColorModeValue(
+    lineColor === DEFAULT_PROPS.lineColor ? '#52525b' : lineColor,
+    lineColor
+  );
 
   const propData = useMemo(
     () => [
@@ -99,7 +104,7 @@ const MagnetLinesDemo = () => {
               lineWidth={lineWidth}
               lineHeight={lineHeight}
               baseAngle={baseAngle}
-              lineColor={lineColor}
+              lineColor={renderedLineColor}
             />
           </Flex>
 
@@ -107,7 +112,7 @@ const MagnetLinesDemo = () => {
             <PreviewSlider title="Rows" min={3} max={20} step={1} value={rows} onChange={v => updateProp('rows', v)} />
             <PreviewSlider title="Columns" min={3} max={20} step={1} value={columns} onChange={v => updateProp('columns', v)} />
             <PreviewSlider title="Base Angle" min={-180} max={180} step={5} value={baseAngle} onChange={v => updateProp('baseAngle', v)} />
-            <PreviewColorPickerCustom title="Line Color" color={lineColor} onChange={v => updateProp('lineColor', v)} />
+            <PreviewColorPickerCustom title="Line Color" color={renderedLineColor} onChange={v => updateProp('lineColor', v)} />
           </Customize>
 
           <PropTable data={propData} />

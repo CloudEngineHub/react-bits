@@ -35,7 +35,8 @@ const GradientBlinds = ({
   spotlightOpacity = 1,
   distortAmount = 0,
   shineDirection = 'left',
-  mixBlendMode = 'lighten'
+  mixBlendMode = 'lighten',
+  lightMode = false
 }) => {
   const containerRef = useRef(null);
   const rafRef = useRef(null);
@@ -103,6 +104,7 @@ uniform vec3  uColor5;
 uniform vec3  uColor6;
 uniform vec3  uColor7;
 uniform int   uColorCount;
+uniform float uLightMode;
 
 varying vec2 vUv;
 
@@ -171,12 +173,35 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
   float dn = d / r;
   float spot = (1.0 - 2.0 * pow(dn, uSpotlightSoftness)) * uSpotlightOpacity;
   vec3 cir = vec3(spot);
-  float stripe = fract(uvMod.x * max(uBlindCount, 1.0));
+  float blindCount = max(uBlindCount, 1.0);
+  float stripePhase = uvMod.x * blindCount;
+  float stripe = fract(stripePhase);
+  float stripeAA = clamp(blindCount * 1.25 / min(iResolution.x, iResolution.y), 0.001, 0.12);
+  float edgeDistance = min(stripe, 1.0 - stripe);
+  float edgeBlend = 1.0 - smoothstep(0.0, stripeAA, edgeDistance);
+  stripe = mix(stripe, 0.5, edgeBlend);
   if (uShineFlip > 0.5) stripe = 1.0 - stripe;
     vec3 ran = vec3(stripe);
+    vec3 revealSignal = cir + base - ran;
 
-    vec3 col = cir + base - ran;
-    col += (rand(gl_FragCoord.xy + iTime) - 0.5) * uNoise;
+    vec3 col;
+    if (uLightMode > 0.5) {
+        float peak = max(base.r, max(base.g, base.b));
+        vec3 pigment = base / max(peak, 0.0001);
+        float neutral = min(pigment.r, min(pigment.g, pigment.b));
+        pigment = max(pigment - vec3(neutral * 0.72), vec3(0.0));
+        pigment /= max(max(pigment.r, max(pigment.g, pigment.b)), 0.0001);
+        pigment = mix(pigment, pigment * pigment, 0.12) * 0.72;
+        vec3 revealed = clamp(revealSignal, 0.0, 1.0);
+        float coverage = max(revealed.r, max(revealed.g, revealed.b));
+        col = mix(vec3(1.0), pigment, coverage);
+        float grain = max(rand(gl_FragCoord.xy + iTime) - 0.5, 0.0);
+        float grainAmount = grain * uNoise * mix(0.12, 0.18, coverage);
+        col = clamp(col - vec3(grainAmount), 0.0, 1.0);
+    } else {
+        col = revealSignal;
+        col += (rand(gl_FragCoord.xy + iTime) - 0.5) * uNoise;
+    }
 
     fragColor = vec4(col, 1.0);
 }
@@ -212,7 +237,8 @@ void main() {
       uColor5: { value: colorArr[5] },
       uColor6: { value: colorArr[6] },
       uColor7: { value: colorArr[7] },
-      uColorCount: { value: colorCount }
+      uColorCount: { value: colorCount },
+      uLightMode: { value: lightMode ? 1 : 0 }
     };
 
     const program = new Program(gl, {
@@ -328,7 +354,8 @@ void main() {
     spotlightSoftness,
     spotlightOpacity,
     distortAmount,
-    shineDirection
+    shineDirection,
+    lightMode
   ]);
 
   return (
@@ -336,7 +363,7 @@ void main() {
       ref={containerRef}
       className={`w-full h-full overflow-hidden relative ${className}`}
       style={{
-        ...(mixBlendMode && {
+        ...(!lightMode && mixBlendMode && {
           mixBlendMode: mixBlendMode
         })
       }}

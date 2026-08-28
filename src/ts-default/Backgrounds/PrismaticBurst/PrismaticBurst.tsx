@@ -16,6 +16,7 @@ export type PrismaticBurstProps = {
   hoverDampness?: number;
   rayCount?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'] | 'none';
+  lightMode?: boolean;
 };
 
 const vertexShader = `#version 300 es
@@ -47,6 +48,7 @@ uniform vec2  uOffset;
 uniform sampler2D uGradient;
 uniform float uNoiseAmount;
 uniform int   uRayCount;
+uniform float uLightMode;
 
 float hash21(vec2 p){
     p = floor(p);
@@ -188,7 +190,19 @@ void main(){
     col *= edgeFade(frag, uResolution, uOffset);
     col *= uIntensity;
 
-    fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+    col = clamp(col, 0.0, 1.0);
+    if (uLightMode > 0.5) {
+        float energy = max(max(col.r, col.g), col.b);
+        vec3 hue = col / max(energy, 0.0001);
+        float neutral = min(hue.r, min(hue.g, hue.b));
+        hue = max(hue - vec3(neutral * 0.68), vec3(0.0));
+        hue /= max(max(hue.r, max(hue.g, hue.b)), 0.0001);
+        vec3 pigment = mix(hue, hue * hue, 0.24) * 0.64;
+        float coverage = smoothstep(0.001, 0.32, energy);
+        coverage = pow(coverage, 0.72) * 0.92;
+        col = mix(vec3(1.0), pigment, coverage);
+    }
+    fragColor = vec4(col, 1.0);
 }`;
 
 const hexToRgb01 = (hex: string): [number, number, number] => {
@@ -226,7 +240,8 @@ const PrismaticBurst = ({
   offset = { x: 0, y: 0 },
   hoverDampness = 0,
   rayCount,
-  mixBlendMode = 'lighten'
+  mixBlendMode = 'lighten',
+  lightMode = false
 }: PrismaticBurstProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const programRef = useRef<Program | null>(null);
@@ -260,7 +275,7 @@ const PrismaticBurst = ({
     gl.canvas.style.inset = '0';
     gl.canvas.style.width = '100%';
     gl.canvas.style.height = '100%';
-    gl.canvas.style.mixBlendMode = mixBlendMode && mixBlendMode !== 'none' ? mixBlendMode : '';
+    gl.canvas.style.mixBlendMode = lightMode ? 'normal' : mixBlendMode && mixBlendMode !== 'none' ? mixBlendMode : '';
     container.appendChild(gl.canvas);
 
     const white = new Uint8Array([255, 255, 255, 255]);
@@ -294,7 +309,8 @@ const PrismaticBurst = ({
         uOffset: { value: [0, 0] as [number, number] },
         uGradient: { value: gradientTex },
         uNoiseAmount: { value: 0.8 },
-        uRayCount: { value: 0 }
+        uRayCount: { value: 0 },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -400,9 +416,13 @@ const PrismaticBurst = ({
   useEffect(() => {
     const canvas = rendererRef.current?.gl?.canvas as HTMLCanvasElement | undefined;
     if (canvas) {
-      canvas.style.mixBlendMode = mixBlendMode && mixBlendMode !== 'none' ? mixBlendMode : '';
+      canvas.style.mixBlendMode = lightMode
+        ? 'normal'
+        : mixBlendMode && mixBlendMode !== 'none'
+          ? mixBlendMode
+          : '';
     }
-  }, [mixBlendMode]);
+  }, [mixBlendMode, lightMode]);
 
   useEffect(() => {
     const program = programRef.current;
@@ -426,6 +446,7 @@ const PrismaticBurst = ({
     const oy = toPx(offset?.y);
     program.uniforms.uOffset.value = [ox, oy];
     program.uniforms.uRayCount.value = Math.max(0, Math.floor(rayCount ?? 0));
+    program.uniforms.uLightMode.value = lightMode ? 1 : 0;
 
     let count = 0;
     if (Array.isArray(colors) && colors.length > 0) {
@@ -456,7 +477,7 @@ const PrismaticBurst = ({
       count = 0;
     }
     program.uniforms.uColorCount.value = count;
-  }, [intensity, speed, animationType, colors, distort, offset, rayCount]);
+  }, [intensity, speed, animationType, colors, distort, offset, rayCount, lightMode]);
 
   return <div className="prismatic-burst-container" ref={containerRef} />;
 };

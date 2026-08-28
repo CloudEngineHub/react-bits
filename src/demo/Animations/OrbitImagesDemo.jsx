@@ -16,6 +16,7 @@ import { ComponentPropsProvider } from '../../components/context/ComponentPropsC
 
 import OrbitImages from '../../content/Animations/OrbitImages/OrbitImages';
 import { orbitImages } from '../../constants/code/Animations/orbitImagesCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const SHAPE_OPTIONS = [
   { label: 'Ellipse', value: 'ellipse' },
@@ -52,6 +53,7 @@ const OrbitImagesDemo = () => {
   const [key, forceRerender] = useForceRerender();
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { shape, radiusX, radiusY, radius, rotation, duration, itemSize, direction, fill, showPath, paused } = props;
+  const pathColor = useColorModeValue('rgba(24,24,27,0.12)', 'rgba(255,255,255,0.15)');
 
   const images = [
     'https://picsum.photos/300/300?grayscale&random=1',
@@ -120,7 +122,7 @@ const OrbitImagesDemo = () => {
               showPath={showPath}
               paused={paused}
               responsive={true}
-              pathColor="rgba(255,255,255,0.15)"
+              pathColor={pathColor}
             />
             <RefreshButton onClick={forceRerender} />
           </Flex>

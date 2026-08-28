@@ -126,7 +126,7 @@ const PixelTransitionDemo = () => {
               once={once}
               className="custom-pixel-card"
             />
-            <Text mt={2} color="#a6a6a6">
+            <Text mt={2} className="demo-instruction">
               Psst, hover the card!
             </Text>
           </Flex>

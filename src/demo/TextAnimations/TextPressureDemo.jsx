@@ -15,6 +15,7 @@ import PreviewInput from '../../components/common/Preview/PreviewInput';
 import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const propData = [
   {
@@ -118,6 +119,10 @@ const DEFAULT_PROPS = {
 const TextPressureDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { text, flex, alpha, stroke, width, weight, italic, textColor, strokeColor } = props;
+  const renderedTextColor = useColorModeValue(
+    textColor === DEFAULT_PROPS.textColor ? '#18181b' : textColor,
+    textColor
+  );
 
   const [key, forceRerender] = useForceRerender();
 
@@ -128,14 +133,12 @@ const TextPressureDemo = () => {
           <Box
             position="relative"
             className="demo-container"
-            bg="#120F17"
-            minH={400}
-            maxH={450}
+            h={430}
             overflow="hidden"
             mb={6}
           >
             <RefreshButton onClick={forceRerender} />
-            <Box w="100%" h="100%">
+            <Box w="100%" h="100%" minH={0}>
               <TextPressure
                 key={key}
                 text={text}
@@ -145,7 +148,7 @@ const TextPressureDemo = () => {
                 width={width}
                 weight={weight}
                 italic={italic}
-                textColor={textColor}
+                textColor={renderedTextColor}
                 strokeColor={strokeColor}
                 minFontSize={36}
               />
@@ -155,7 +158,7 @@ const TextPressureDemo = () => {
           <Customize>
             <PreviewColorPickerCustom
               title="Text Color"
-              color={textColor}
+              color={renderedTextColor}
               onChange={val => {
                 updateProp('textColor', val);
                 forceRerender();

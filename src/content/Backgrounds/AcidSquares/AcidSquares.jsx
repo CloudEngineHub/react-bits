@@ -45,6 +45,7 @@ uniform float uEnableMouse;
 uniform float uMouseActive;
 uniform float uGrain;
 uniform float uGrainIntensity;
+uniform float uLightMode;
 out vec4 fragColor;
 
 void main() {
@@ -95,7 +96,13 @@ void main() {
     outRgb = clamp(outRgb + gv, 0.0, 1.0);
     a = clamp(a + gv, 0.0, 1.0);
   }
-  fragColor = vec4(outRgb, a);
+  if (uLightMode > 0.5) {
+    float peak = max(col.r, max(col.g, col.b));
+    vec3 chroma = pow(clamp(col / max(peak, 0.0001), 0.0, 1.0), vec3(1.16));
+    fragColor = vec4(mix(vec3(1.0), chroma, a * 0.94), 1.0);
+  } else {
+    fragColor = vec4(outRgb, a);
+  }
 }
 `;
 
@@ -158,6 +165,7 @@ const AcidSquares = ({
   blur = 0,
   grain = true,
   grainIntensity = 0.05,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef(null);
@@ -220,7 +228,8 @@ const AcidSquares = ({
         uEnableMouse: { value: 1.0 },
         uMouseActive: { value: 0.0 },
         uGrain: { value: 1.0 },
-        uGrainIntensity: { value: 0.05 }
+        uGrainIntensity: { value: 0.05 },
+        uLightMode: { value: 0.0 }
       }
     });
 
@@ -412,6 +421,7 @@ const AcidSquares = ({
     u.uContrast.value = contrast;
     u.uBrightness.value = brightness;
     u.uOpacity.value = opacity;
+    u.uLightMode.value = lightMode ? 1.0 : 0.0;
     u.uSteps.value = stepsFor(detail);
     u.uMouseRadius.value = mouseRadius;
     const c1 = hexToRgb(color1);
@@ -457,7 +467,8 @@ const AcidSquares = ({
     mouseRadius,
     blur,
     grain,
-    grainIntensity
+    grainIntensity,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`acid-squares-container ${className}`.trim()} />;

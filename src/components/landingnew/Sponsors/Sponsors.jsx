@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight, Gem, Crown, Medal, Plus } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
 import {
   diamondSponsors,
   platinumSponsors,
-  silverSponsors,
-  hasDiamondSponsors,
-  hasSilverSponsors
+  silverSponsors
 } from '../../../constants/Sponsors';
 import './Sponsors.css';
 
@@ -34,27 +32,43 @@ const SponsorCard = ({ sponsor, tier }) => (
     <div className={`ln-sp-card-visual ln-sp-card-visual--${tier}`}>
       <img className="ln-sp-card-logo" src={sponsor.imageUrl} alt={sponsor.name} loading="lazy" />
     </div>
-    <div className="ln-sp-card-info">
-      <span className="ln-sp-card-name">{sponsor.name}</span>
-      <ArrowRight size={13} className="ln-sp-card-arrow" />
-    </div>
+    <ArrowRight size={14} className="ln-sp-card-arrow" aria-hidden="true" />
   </a>
 );
 
 const EmptySlot = ({ tier }) => (
-  <Link to="/sponsors#sponsor-plans" className={`ln-sp-card ln-sp-card--empty ln-sp-card--${tier}`}>
+  <Link
+    to="/sponsors#sponsor-plans"
+    className={`ln-sp-card ln-sp-card--${tier} ln-sp-card--empty`}
+    aria-label={`Become a ${tier} sponsor`}
+  >
     <div className={`ln-sp-card-visual ln-sp-card-visual--${tier}`}>
-      <Plus size={20} className="ln-sp-empty-icon" />
-    </div>
-    <div className="ln-sp-card-info">
-      <span className="ln-sp-card-name ln-sp-empty-name">Available</span>
+      <Plus size={18} className="ln-sp-empty-icon" aria-hidden="true" />
     </div>
   </Link>
 );
 
-const DIAMOND_COLS = 2;
-const PLATINUM_COLS = 3;
-const SILVER_COLS = 5;
+const SponsorTier = ({ label, tier, sponsors, capacity }) => (
+  <motion.div
+    className={`ln-sp-tier ln-sp-tier--${tier}`}
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-60px' }}
+    transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+  >
+    <div className="ln-sp-tier-header">
+      <span className={`ln-sp-tier-label ln-sp-tier-label--${tier}`}>{label}</span>
+    </div>
+    <div className={`ln-sp-grid ln-sp-grid--${tier}`}>
+      {sponsors.map(sponsor => (
+        <SponsorCard key={sponsor.id} sponsor={sponsor} tier={tier} />
+      ))}
+      {Array.from({ length: Math.max(0, capacity - sponsors.length) }, (_, index) => (
+        <EmptySlot key={`${tier}-empty-${index}`} tier={tier} />
+      ))}
+    </div>
+  </motion.div>
+);
 
 const Sponsors = () => (
   <section className="ln-sp-section">
@@ -69,75 +83,11 @@ const Sponsors = () => (
         Sponsors
       </motion.h2>
 
-      {hasDiamondSponsors && (
-        <motion.div
-          className="ln-sp-tier"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, delay: 0.07, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <div className="ln-sp-tier-header">
-            <span className="ln-sp-tier-badge ln-sp-tier-badge--diamond">
-              <Gem size={12} /> Diamond
-            </span>
-          </div>
-          <div className="ln-sp-grid ln-sp-grid--diamond">
-            {diamondSponsors.map(s => (
-              <SponsorCard key={s.id} sponsor={s} tier="diamond" />
-            ))}
-            {Array.from({ length: Math.max(0, DIAMOND_COLS - diamondSponsors.length) }, (_, i) => (
-              <EmptySlot key={`empty-diamond-${i}`} tier="diamond" />
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-      <motion.div
-        className="ln-sp-tier"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.5, delay: 0.14, ease: [0.21, 0.47, 0.32, 0.98] }}
-      >
-        <div className="ln-sp-tier-header">
-          <span className="ln-sp-tier-badge ln-sp-tier-badge--platinum">
-            <Crown size={12} /> Platinum
-          </span>
-        </div>
-        <div className="ln-sp-grid ln-sp-grid--platinum">
-          {platinumSponsors.map(s => (
-            <SponsorCard key={s.id} sponsor={s} tier="platinum" />
-          ))}
-          {Array.from({ length: Math.max(0, PLATINUM_COLS - platinumSponsors.length) }, (_, i) => (
-            <EmptySlot key={`empty-platinum-${i}`} tier="platinum" />
-          ))}
-        </div>
-      </motion.div>
-
-      {hasSilverSponsors && (
-        <motion.div
-          className="ln-sp-tier"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, delay: 0.21, ease: [0.21, 0.47, 0.32, 0.98] }}
-        >
-          <div className="ln-sp-tier-header">
-            <span className="ln-sp-tier-badge ln-sp-tier-badge--silver">
-              <Medal size={12} /> Silver
-            </span>
-          </div>
-          <div className="ln-sp-grid ln-sp-grid--silver">
-            {silverSponsors.map(s => (
-              <SponsorCard key={s.id} sponsor={s} tier="silver" />
-            ))}
-            {Array.from({ length: Math.max(0, SILVER_COLS - silverSponsors.length) }, (_, i) => (
-              <EmptySlot key={`empty-silver-${i}`} tier="silver" />
-            ))}
-          </div>
-        </motion.div>
-      )}
+      <div className="ln-sp-tiers">
+        <SponsorTier label="Diamond" tier="diamond" sponsors={diamondSponsors} capacity={2} />
+        <SponsorTier label="Platinum" tier="platinum" sponsors={platinumSponsors} capacity={3} />
+        <SponsorTier label="Silver" tier="silver" sponsors={silverSponsors} capacity={5} />
+      </div>
 
       <motion.div
         className="ln-sp-footer"

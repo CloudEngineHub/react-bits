@@ -5,6 +5,7 @@ import { FiInfo } from 'react-icons/fi';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -29,6 +30,7 @@ const DEFAULT_PROPS = {
 const DomeGalleryDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { fit, minRadius, maxVerticalRotationDeg, segments, dragDampening, grayscale } = props;
+  const overlayBlurColor = useColorModeValue('#ffffff', '#120F17');
 
   const propData = useMemo(
     () => [
@@ -150,10 +152,11 @@ const DomeGalleryDemo = () => {
               segments={segments}
               dragDampening={dragDampening}
               grayscale={grayscale}
+              overlayBlurColor={overlayBlurColor}
             />
           </Box>
 
-          <Text display="flex" gap="0.4em" mt="1em" color="#B497CF" alignItems="center">
+          <Text display="flex" gap="0.4em" mt="1em" color="var(--text-muted)" alignItems="center">
             <FiInfo />
             Click images to expand
           </Text>

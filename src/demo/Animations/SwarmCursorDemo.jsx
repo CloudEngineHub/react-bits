@@ -16,6 +16,7 @@ import Customize from '../../components/common/Preview/Customize';
 
 import { swarmCursor } from '../../constants/code/Animations/swarmCursorCode';
 import SwarmCursor from '../../content/Animations/SwarmCursor/SwarmCursor';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   color: '#ffffff',
@@ -52,6 +53,13 @@ const SwarmCursorDemo = () => {
     scatterOnClick,
     enabled
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#27272a' : color, color);
+  const renderedAccentColor = useColorModeValue(
+    accentColor === DEFAULT_PROPS.accentColor ? '#52525b' : accentColor,
+    accentColor
+  );
+  const headingColor = useColorModeValue('#27272a', '#ffffff');
+  const helperColor = useColorModeValue('#d4d4d8', 'rgba(255,255,255,0.5)');
 
   const propData = useMemo(
     () => [
@@ -120,8 +128,8 @@ const SwarmCursorDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={450} p={0} overflow="hidden">
             <SwarmCursor
-              color={color}
-              accentColor={accentColor}
+              color={renderedColor}
+              accentColor={renderedAccentColor}
               count={count}
               size={size}
               merge={merge}
@@ -136,10 +144,10 @@ const SwarmCursorDemo = () => {
               enabled={enabled}
             >
               <Flex direction="column" align="center" gap={2} userSelect="none" pointerEvents="none">
-                <Text fontWeight={900} fontSize="2.6rem" color="#ffffff" letterSpacing="-0.02em">
+                <Text fontWeight={600} fontSize="2.6rem" color={headingColor} letterSpacing="-0.02em">
                   Move your cursor
                 </Text>
-                <Text fontSize="1rem" color="rgba(255,255,255,0.5)">
+                <Text fontSize="1rem" color={helperColor}>
                   a living swarm follows — click to scatter it
                 </Text>
               </Flex>
@@ -147,10 +155,10 @@ const SwarmCursorDemo = () => {
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom title="Color" color={renderedColor} onChange={val => updateProp('color', val)} />
             <PreviewColorPickerCustom
               title="Accent Color"
-              color={accentColor}
+              color={renderedAccentColor}
               onChange={val => updateProp('accentColor', val)}
             />
 

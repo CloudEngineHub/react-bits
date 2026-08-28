@@ -7,16 +7,28 @@ import * as React from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
 
 export function ColorModeProvider(props) {
-  return <ThemeProvider attribute="class" disableTransitionOnChange {...props} />;
+  return (
+    <ThemeProvider
+      attribute="data-theme"
+      defaultTheme="dark"
+      enableSystem={false}
+      themes={['dark', 'light']}
+      storageKey="react-bits-theme"
+      disableTransitionOnChange
+      {...props}
+    />
+  );
 }
 
 export function useColorMode() {
-  const { resolvedTheme, setTheme, forcedTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme, forcedTheme } = useTheme();
   const colorMode = forcedTheme || resolvedTheme;
   const toggleColorMode = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
   return {
+    theme,
+    resolvedTheme,
     colorMode: colorMode,
     setColorMode: setTheme,
     toggleColorMode

@@ -19,98 +19,78 @@
 /* ─── Title ─── */
 
 .ln-sp-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -2px;
   color: #fff;
-  margin: 0 0 40px;
+  margin: 0 0 44px;
 }
 
 /* ─── Tier ─── */
 
+.ln-sp-tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .ln-sp-tier {
-  margin-bottom: 16px;
+  min-width: 0;
 }
 
 .ln-sp-tier-header {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-.ln-sp-tier-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
+.ln-sp-tier-label {
+  font-family: 'Geist', sans-serif;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-.ln-sp-tier-badge--diamond {
-  background: rgba(168, 85, 247, 0.1);
-  border: 1px solid rgba(168, 85, 247, 0.2);
-  color: #c084fc;
-}
-
-.ln-sp-tier-badge--platinum {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.ln-sp-tier-badge--silver {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.38);
 }
 
 /* ─── Grid ─── */
 
 .ln-sp-grid {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
 .ln-sp-grid--diamond {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .ln-sp-grid--platinum {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .ln-sp-grid--silver {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 /* ─── Card ─── */
 
 .ln-sp-card {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(18, 15, 23, 0.45);
-  backdrop-filter: blur(32px) saturate(1.3);
-  -webkit-backdrop-filter: blur(32px) saturate(1.3);
-  box-shadow:
-    0 4px 32px rgba(0, 0, 0, 0.25),
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.06);
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: transparent;
+  box-shadow: none;
   text-decoration: none;
   overflow: hidden;
   transition:
-    border-color 0.3s ease,
+    border-color 0.25s ease,
     transform var(--dur-press) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .ln-sp-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
   }
 }
 
@@ -122,9 +102,11 @@
 
 .ln-sp-card-visual {
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -133,19 +115,11 @@
 }
 
 .ln-sp-card-visual--platinum {
-  height: 110px;
+  height: 112px;
 }
 
 .ln-sp-card-visual--silver {
-  height: 90px;
-}
-
-.ln-sp-card-visual--diamond::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 65%);
-  pointer-events: none;
+  height: 96px;
 }
 
 .ln-sp-card-logo {
@@ -154,7 +128,7 @@
   width: auto;
   max-width: 65%;
   object-fit: contain;
-  opacity: 0.75;
+  opacity: 0.68;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
@@ -163,74 +137,52 @@
 }
 
 .ln-sp-card-visual--diamond .ln-sp-card-logo {
-  max-height: 54px;
-  height: 42%;
+  max-height: 58px;
+  height: 44%;
 }
 
 .ln-sp-card:hover .ln-sp-card-logo {
-  opacity: 1;
-  transform: scale(1.04);
-}
-
-/* ─── Card Info ─── */
-
-.ln-sp-card-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.ln-sp-card-name {
-  font-family: 'Geist', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: -0.01em;
+  opacity: 0.95;
+  transform: scale(1.02);
 }
 
 .ln-sp-card-arrow {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
   color: rgba(255, 255, 255, 0.25);
+  opacity: 0.55;
+  transform: translateX(0);
   transition:
+    opacity 0.2s ease,
     color 0.2s ease,
     transform 0.2s ease;
 }
 
 .ln-sp-card:hover .ln-sp-card-arrow {
-  color: rgba(255, 255, 255, 0.6);
-  transform: translateX(2px);
+  color: rgba(255, 255, 255, 0.62);
+  opacity: 1;
+  transform: translateX(0);
 }
-
-/* ─── Empty slot ─── */
 
 .ln-sp-card--empty {
-  border-style: dashed;
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.045);
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.ln-sp-card--empty:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-  transform: none;
 }
 
 .ln-sp-empty-icon {
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.16);
   transition: color 0.2s ease;
 }
 
-.ln-sp-card--empty:hover .ln-sp-empty-icon {
-  color: rgba(255, 255, 255, 0.4);
-}
+@media (hover: hover) and (pointer: fine) {
+  .ln-sp-card--empty:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 
-.ln-sp-empty-name {
-  color: rgba(255, 255, 255, 0.45);
+  .ln-sp-card--empty:hover .ln-sp-empty-icon {
+    color: rgba(255, 255, 255, 0.36);
+  }
 }
 
 /* ─── Footer links ─── */
@@ -239,16 +191,17 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  margin-top: 28px;
+  margin-top: 36px;
 }
 
 .ln-sp-footer-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -261,27 +214,24 @@
 
 @media (max-width: 1100px) {
   .ln-sp-grid--silver {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 900px) {
+  .ln-sp-grid--platinum,
   .ln-sp-grid--silver {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
+  .ln-sp-title {
+    margin-bottom: 36px;
+  }
+
   .ln-sp-grid--diamond {
     grid-template-columns: 1fr;
-  }
-
-  .ln-sp-grid--platinum {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ln-sp-grid--silver {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -294,8 +244,10 @@
     padding: 0 16px;
   }
 
+  .ln-sp-grid--diamond,
+  .ln-sp-grid--platinum,
   .ln-sp-grid--silver {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .ln-sp-footer {
@@ -311,5 +263,56 @@
   .ln-sp-card:hover .ln-sp-card-logo,
   .ln-sp-card:hover .ln-sp-card-arrow {
     transform: none;
+  }
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-sp-section {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-sp-title {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-sp-tier-label {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-sp-card {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: #fff;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .ln-sp-card--empty {
+  border-color: rgba(24, 24, 27, 0.065);
+}
+
+:root[data-theme='light'] .ln-sp-empty-icon {
+  color: rgba(24, 24, 27, 0.2);
+}
+
+:root[data-theme='light'] .ln-sp-card-logo {
+  filter: grayscale(1) brightness(0.28);
+  opacity: 0.82;
+}
+
+:root[data-theme='light'] .ln-sp-card-arrow,
+:root[data-theme='light'] .ln-sp-footer-link {
+  color: #71717a;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme='light'] .ln-sp-card:hover {
+    border-color: rgba(24, 24, 27, 0.18);
+  }
+
+  :root[data-theme='light'] .ln-sp-card--empty:hover {
+    border-color: rgba(24, 24, 27, 0.13);
+  }
+
+  :root[data-theme='light'] .ln-sp-card--empty:hover .ln-sp-empty-icon {
+    color: rgba(24, 24, 27, 0.42);
   }
 }

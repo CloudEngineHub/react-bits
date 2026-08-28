@@ -13,9 +13,19 @@ const COMPONENT_ROUTES = CATEGORIES.filter(category => category.name !== 'Get St
 );
 
 const PagerLink = ({ item, direction }) => {
-  if (!item) return <span className="component-pager-spacer" aria-hidden="true" />;
-
   const previous = direction === 'previous';
+
+  if (!item) {
+    return (
+      <span className={`component-pager-empty component-pager-${direction}`}>
+        <span>
+          <span className="component-pager-label">Collection</span>
+          <span className="component-pager-name">{previous ? 'Start of library' : 'End of library'}</span>
+        </span>
+      </span>
+    );
+  }
+
   return (
     <Link className={`component-pager-link component-pager-${direction}`} to={item.path}>
       {previous ? <ArrowLeft size={16} aria-hidden="true" /> : null}

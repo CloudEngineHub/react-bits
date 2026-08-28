@@ -16,6 +16,7 @@ interface LightPillarProps {
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
   pillarRotation?: number;
   quality?: 'low' | 'medium' | 'high';
+  lightMode?: boolean;
 }
 
 const LightPillar: React.FC<LightPillarProps> = ({
@@ -31,7 +32,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
   noiseIntensity = 0.5,
   mixBlendMode = 'screen',
   pillarRotation = 0,
-  quality = 'high'
+  quality = 'high',
+  lightMode = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -134,6 +136,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
       uniform float uPillarWidth;
       uniform float uPillarHeight;
       uniform float uNoiseIntensity;
+      uniform float uLightMode;
       uniform float uRotCos;
       uniform float uRotSin;
       uniform float uPillarRotCos;
@@ -199,7 +202,15 @@ const LightPillar: React.FC<LightPillarProps> = ({
         
         col -= fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) / 15.0 * uNoiseIntensity;
         
-        gl_FragColor = vec4(col * uIntensity, 1.0);
+        vec3 result = clamp(col * uIntensity, 0.0, 1.0);
+        if (uLightMode > 0.5) {
+          float energy = max(result.r, max(result.g, result.b));
+          vec3 hue = result / max(energy, 0.001);
+          float coverage = smoothstep(0.025, 0.95, energy);
+          hue = pow(clamp(hue, 0.0, 1.0), vec3(1.25));
+          result = mix(vec3(1.0), hue, coverage * 0.94);
+        }
+        gl_FragColor = vec4(result, 1.0);
       }
     `;
 
@@ -222,6 +233,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
         uPillarWidth: { value: pillarWidth },
         uPillarHeight: { value: pillarHeight },
         uNoiseIntensity: { value: noiseIntensity },
+        uLightMode: { value: lightMode ? 1 : 0 },
         uRotCos: { value: 1.0 },
         uRotSin: { value: 0.0 },
         uPillarRotCos: { value: Math.cos(pillarRotRad) },
@@ -382,6 +394,11 @@ const LightPillar: React.FC<LightPillarProps> = ({
     if (!materialRef.current) return;
     materialRef.current.uniforms.uNoiseIntensity.value = noiseIntensity;
   }, [noiseIntensity]);
+
+  useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uLightMode.value = lightMode ? 1 : 0;
+  }, [lightMode]);
 
   useEffect(() => {
     if (!materialRef.current) return;

@@ -14,6 +14,7 @@ import { infiniteMenu } from '../../constants/code/Components/infiniteMenuCode';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import Customize from '@/components/common/Preview/Customize';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   scale: 1.0
@@ -23,6 +24,7 @@ const InfiniteMenuDemo = () => {
   const [isHidden, setIsHidden] = useState(true);
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { scale } = props;
+  const backgroundColor = useColorModeValue('#ffffff', '#120f17');
 
   const propData = useMemo(
     () => [
@@ -37,6 +39,12 @@ const InfiniteMenuDemo = () => {
         type: 'number',
         default: '1.0',
         description: 'Controls camera zoom'
+      },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        default: '"#000000"',
+        description: 'Sets the canvas background and the action button outline color.'
       }
     ],
     []
@@ -94,7 +102,7 @@ const InfiniteMenuDemo = () => {
               transform={isHidden ? 'scale(5)' : 'scale(1)'}
               transition="1s ease"
             >
-              <InfiniteMenu items={items} scale={scale} />
+              <InfiniteMenu items={items} scale={scale} backgroundColor={backgroundColor} />
             </Box>
           </Box>
 

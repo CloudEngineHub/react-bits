@@ -13,6 +13,7 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PropTable from '../../components/common/Preview/PropTable';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import TextLoop from '../../content/TextAnimations/TextLoop/TextLoop';
 import { textLoop } from '../../constants/code/TextAnimations/textLoopCode';
@@ -67,6 +68,7 @@ const TextLoopDemo = () => {
     ribbonWidth,
     pauseOnHover
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#ffffff' : color, color);
 
   const propData = useMemo(
     () => [
@@ -152,7 +154,7 @@ const TextLoopDemo = () => {
               fontWeight={fontWeight}
               letterSpacing={letterSpacing}
               uppercase={uppercase}
-              color={color}
+              color={renderedColor}
               ribbon={ribbon}
               ribbonColor={ribbonColor}
               ribbonWidth={ribbonWidth}
@@ -192,7 +194,11 @@ const TextLoopDemo = () => {
               onChange={value => updateProp('direction', value)}
             />
 
-            <PreviewColorPickerCustom title="Text Color" color={color} onChange={value => updateProp('color', value)} />
+            <PreviewColorPickerCustom
+              title="Text Color"
+              color={renderedColor}
+              onChange={value => updateProp('color', value)}
+            />
             <PreviewColorPickerCustom
               title="Ribbon Color"
               color={ribbonColor}

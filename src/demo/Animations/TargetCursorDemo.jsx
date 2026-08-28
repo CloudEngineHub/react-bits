@@ -15,6 +15,7 @@ import PreviewColorPickerCustom from '../../components/common/Preview/PreviewCol
 
 import TargetCursor from '../../content/Animations/TargetCursor/TargetCursor';
 import { targetCursor } from '../../constants/code/Animations/targetCursorCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   spinDuration: 2,
@@ -28,6 +29,10 @@ const DEFAULT_PROPS = {
 const TargetCursorDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { spinDuration, hideDefaultCursor, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget } = props;
+  const renderedCursorColor = useColorModeValue(
+    cursorColor === DEFAULT_PROPS.cursorColor ? '#18181b' : cursorColor,
+    cursorColor
+  );
 
   const propData = useMemo(
     () => [
@@ -88,7 +93,7 @@ const TargetCursorDemo = () => {
         <TabsLayout>
           <PreviewTab>
             <Box position="relative" className="demo-container" flexDirection="column" h={400} overflow="hidden">
-              <Text fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={900} mb={6} color="#2F293A">
+              <Text className="demo-instruction" fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={600} mb={6}>
                 Hover Below.
               </Text>
 
@@ -98,7 +103,7 @@ const TargetCursorDemo = () => {
                     borderRadius="15px"
                     color="#B497CF"
                     border="1px dashed #B497CF"
-                    fontWeight={900}
+                    fontWeight={600}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
                     py={2}
@@ -113,7 +118,7 @@ const TargetCursorDemo = () => {
                     borderRadius="15px"
                     color="#B497CF"
                     border="1px dashed #B497CF"
-                    fontWeight={900}
+                    fontWeight={600}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
                     py={2}
@@ -128,7 +133,7 @@ const TargetCursorDemo = () => {
                     borderRadius="15px"
                     color="#B497CF"
                     border="1px dashed #B497CF"
-                    fontWeight={900}
+                    fontWeight={600}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
                     py={2}
@@ -144,7 +149,7 @@ const TargetCursorDemo = () => {
                     borderRadius="15px"
                     color="#B497CF"
                     border="1px dashed #B497CF"
-                    fontWeight={900}
+                    fontWeight={600}
                     fontSize="clamp(1rem, 4vw, 2rem)"
                     className="cursor-target"
                     py={2}
@@ -189,7 +194,7 @@ const TargetCursorDemo = () => {
               />
               <PreviewColorPickerCustom
                 title="Cursor Color"
-                color={cursorColor}
+                color={renderedCursorColor}
                 onChange={val => updateProp('cursorColor', val)}
               />
               <PreviewColorPickerCustom
@@ -214,7 +219,7 @@ const TargetCursorDemo = () => {
         hideDefaultCursor={hideDefaultCursor}
         hoverDuration={hoverDuration}
         parallaxOn={parallaxOn}
-        cursorColor={cursorColor}
+        cursorColor={renderedCursorColor}
         cursorColorOnTarget={cursorColorOnTarget}
       />
     </>

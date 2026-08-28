@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import Customize from '../../components/common/Preview/Customize';
 import CodeExample from '../../components/code/CodeExample';
@@ -157,7 +158,9 @@ const CardNavDemo = () => {
     }
   };
 
-  const currentTheme = themeConfigs[theme];
+  const siteTheme = useColorModeValue('light', 'dark');
+  const renderedTheme = theme === DEFAULT_PROPS.theme ? siteTheme : theme;
+  const currentTheme = themeConfigs[renderedTheme];
 
   const themeOptions = [
     { value: 'light', label: 'Light Mode' },

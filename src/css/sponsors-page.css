@@ -32,7 +32,7 @@
 }
 
 .sponsors-page-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(36px, 5vw, 100px);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -99,7 +99,7 @@
 }
 
 .sponsors-section-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(22px, 3vw, 46px);
   font-weight: 500;
   color: #fff;
@@ -550,4 +550,118 @@
   .sponsors-tier-grid--silver {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─── Light theme ─────────────────────────────────────────────────────────── */
+:root[data-theme='light'] .sponsors-dotfield {
+  opacity: 0.3;
+}
+
+:root[data-theme='light'] .sponsors-page-title,
+:root[data-theme='light'] .sponsors-section-title,
+:root[data-theme='light'] .sponsors-stat-value,
+:root[data-theme='light'] .sponsors-card-name,
+:root[data-theme='light'] .sponsors-pricing-price {
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] .sponsors-page-subtitle,
+:root[data-theme='light'] .sponsors-section-subtitle,
+:root[data-theme='light'] .sponsors-stat-label,
+:root[data-theme='light'] .sponsors-pricing-period,
+:root[data-theme='light'] .sponsors-pricing-note,
+:root[data-theme='light'] .sponsors-pricing-benefits li {
+  color: var(--text-dimmed);
+}
+
+:root[data-theme='light'] .sponsors-page-cta,
+:root[data-theme='light'] .sponsors-pricing-btn {
+  font-family: 'Geist', sans-serif;
+}
+
+:root[data-theme='light'] .sponsors-divider {
+  border-top-color: var(--border-subtle);
+}
+
+:root[data-theme='light'] .sponsors-stat,
+:root[data-theme='light'] .sponsors-page-card,
+:root[data-theme='light'] .sponsors-pricing-card {
+  border-color: var(--border-subtle);
+  background: #fff;
+}
+
+:root[data-theme='light'] .sponsors-stat:hover,
+:root[data-theme='light'] .sponsors-page-card:hover,
+:root[data-theme='light'] .sponsors-pricing-card:hover {
+  border-color: var(--border-primary);
+}
+
+:root[data-theme='light'] .sponsors-pricing-card--featured,
+:root[data-theme='light'] .sponsors-pricing-card--featured:hover {
+  border-color: rgba(143, 54, 232, 0.32);
+}
+
+:root[data-theme='light'] .sponsors-card-banner {
+  border: 1px solid var(--preview-border);
+}
+
+:root[data-theme='light'] .sponsors-card-banner--diamond {
+  background: linear-gradient(145deg, #fafafa 0%, #f7f4fb 100%);
+}
+
+:root[data-theme='light'] .sponsors-card-banner--platinum,
+:root[data-theme='light'] .sponsors-card-banner--silver {
+  background: #fafafa;
+}
+
+:root[data-theme='light'] .sponsors-card-banner--diamond::before {
+  background: radial-gradient(circle at 50% 80%, rgba(143, 54, 232, 0.1) 0%, transparent 60%);
+}
+
+:root[data-theme='light'] .sponsors-card-banner--platinum::before,
+:root[data-theme='light'] .sponsors-card-banner--silver::before {
+  background: radial-gradient(circle at 50% 80%, rgba(24, 24, 27, 0.035) 0%, transparent 60%);
+}
+
+:root[data-theme='light'] .sponsors-card-logo {
+  filter: grayscale(1) invert(1);
+}
+
+:root[data-theme='light'] .sponsors-card-arrow {
+  color: #a1a1aa;
+}
+
+:root[data-theme='light'] .sponsors-tier-badge--diamond {
+  border-color: rgba(143, 54, 232, 0.18);
+  background: rgba(143, 54, 232, 0.07);
+  color: #7e3db8;
+}
+
+:root[data-theme='light'] .sponsors-tier-badge--platinum,
+:root[data-theme='light'] .sponsors-tier-badge--silver {
+  border-color: var(--border-subtle);
+  background: #fafafa;
+  color: var(--text-muted);
+}
+
+:root[data-theme='light'] .sponsors-tier-empty {
+  border-color: var(--border-primary);
+  color: var(--text-dimmed);
+}
+
+:root[data-theme='light'] .sponsors-pricing-btn:not(.sponsors-pricing-btn--featured) {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+  color: var(--text-primary);
+}
+
+:root[data-theme='light'] .sponsors-pricing-btn:not(.sponsors-pricing-btn--featured):hover {
+  border-color: var(--border-primary);
+  background: #fafafa;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .sponsors-pricing-note a {
+  color: #7e3db8;
 }

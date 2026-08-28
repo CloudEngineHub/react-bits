@@ -2,9 +2,8 @@ import { TbCopy, TbCheck, TbMoodSad } from 'react-icons/tb';
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { colors } from '../../constants/colors';
-import codeTheme from '../../utils/codeTheme';
+import ShikiCode from './ShikiCode';
 
 const routeExpansionState = {};
 
@@ -20,16 +19,8 @@ const hashSnippet = str => {
 
 const COPY_RESET_MS = 2000;
 
-const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLines = 25, snippetId }) => {
-  const { pathname } = useLocation();
-  const key = snippetId || hashSnippet(codeString + '|' + language);
+export const CodeCopyButton = ({ codeString }) => {
   const [copied, setCopied] = useState(false);
-  const [expanded, setExpanded] = useState(() => routeExpansionState[pathname]?.[key] ?? false);
-
-  useEffect(() => {
-    if (!routeExpansionState[pathname]) routeExpansionState[pathname] = {};
-    routeExpansionState[pathname][key] = expanded;
-  }, [expanded, pathname, key]);
 
   const handleCopy = async () => {
     try {
@@ -41,6 +32,37 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
     }
   };
 
+  if (!codeString) return null;
+
+  return (
+    <button
+      className={`docs-copy-button${copied ? ' docs-copy-button--done' : ''}`}
+      onClick={handleCopy}
+      title={copied ? 'Copied!' : 'Copy to clipboard'}
+      aria-label={copied ? 'Code copied to clipboard' : 'Copy code to clipboard'}
+    >
+      {copied ? <TbCheck /> : <TbCopy />}
+    </button>
+  );
+};
+
+const CodeHighlighter = ({
+  language,
+  codeString,
+  showLineNumbers = true,
+  maxLines = 25,
+  snippetId,
+  showCopyButton = true
+}) => {
+  const { pathname } = useLocation();
+  const key = snippetId || hashSnippet(codeString + '|' + language);
+  const [expanded, setExpanded] = useState(() => routeExpansionState[pathname]?.[key] ?? false);
+
+  useEffect(() => {
+    if (!routeExpansionState[pathname]) routeExpansionState[pathname] = {};
+    routeExpansionState[pathname][key] = expanded;
+  }, [expanded, pathname, key]);
+
   const codeLines = codeString?.split('\n').length;
   const shouldCollapse = codeLines > maxLines;
 
@@ -49,19 +71,12 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
       <Box
         position="relative"
         overflow="hidden"
-        maxHeight={shouldCollapse && !expanded ? `calc(1.2em * ${maxLines})` : 'none'}
+        maxHeight={shouldCollapse && !expanded ? `calc(1.55em * ${maxLines} + 2.5rem)` : 'none'}
       >
         {codeString ? (
-          <SyntaxHighlighter
-            language={language}
-            style={codeTheme}
-            showLineNumbers={showLineNumbers}
-            className="code-highlighter"
-          >
-            {codeString}
-          </SyntaxHighlighter>
+          <ShikiCode code={codeString} language={language} showLineNumbers={showLineNumbers} />
         ) : (
-          <Flex alignItems="center" gap={2} my={2} color={colors.textMuted}>
+          <Flex className="code-unsupported" alignItems="center" gap={2} color={colors.textMuted}>
             <Text>Sorry, this combination is not supported</Text>
             <Icon as={TbMoodSad} />
           </Flex>
@@ -74,7 +89,7 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
             left={0}
             right={0}
             height="60%"
-            background={`linear-gradient(to bottom, transparent, ${colors.bgBody})`}
+            background="linear-gradient(to bottom, transparent, var(--code-bg))"
           />
         )}
 
@@ -85,16 +100,9 @@ const CodeHighlighter = ({ language, codeString, showLineNumbers = true, maxLine
         )}
       </Box>
 
-      {codeString && (
+      {codeString && showCopyButton && (
         <div className="docs-code-header">
-          <button
-            className={`docs-copy-button${copied ? ' docs-copy-button--done' : ''}`}
-            onClick={handleCopy}
-            title={copied ? 'Copied!' : 'Copy to clipboard'}
-            aria-label={copied ? 'Code copied to clipboard' : 'Copy code to clipboard'}
-          >
-            {copied ? <TbCheck /> : <TbCopy />}
-          </button>
+          <CodeCopyButton codeString={codeString} />
         </div>
       )}
     </Box>

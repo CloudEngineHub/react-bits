@@ -1,31 +1,23 @@
 import {
-  Text,
   Code,
-  Stack,
-  VStack,
   HStack,
   Flex,
-  Button,
-  Icon,
-  Box,
   Tooltip,
+  Menu,
+  Portal,
 } from '@chakra-ui/react';
-import { TbCopy, TbCopyCheckFilled } from 'react-icons/tb';
+import { TbCheck, TbChevronDown } from 'react-icons/tb';
 import { useActiveRoute } from '../../hooks/useActiveRoute';
 import { useOptions } from '../context/OptionsContext/useOptions';
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { generateCliCommands } from '../../utils/cli';
 import { useInstallation } from '../../hooks/useInstallation';
 import { colors } from '../../constants/colors';
-import IconSelect from './IconSelect';
-
-import jsrepoIcon from '../../assets/icons/jsrepo-outline.svg';
-import shadcnIcon from '../../assets/icons/shadcn-outline.svg';
+import CodeSection from './CodeSection';
+import { CodeCopyButton } from './CodeHighlighter';
 
 const PKG_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'];
 const CLI_TOOLS = ['shadcn', 'jsrepo'];
-const CLI_ICON_MAP = { jsrepo: jsrepoIcon, shadcn: shadcnIcon };
-const CLI_LABEL_MAP = { shadcn: 'shadcn', jsrepo: 'jsrepo' };
 
 const CliCodeSection = ({
   command,
@@ -35,8 +27,6 @@ const CliCodeSection = ({
   trackRef,
   onScroll,
   onScrollbarMouseDown,
-  onCopy,
-  copied,
 }) => (
   <div className="code-wrapper" style={{ position: 'relative' }}>
     <Code ref={codeRef} whiteSpace="pre" w="100%" onScroll={onScroll}>
@@ -55,31 +45,12 @@ const CliCodeSection = ({
         />
       </div>
     )}
-    <Button
-      position="absolute"
-      h={10}
-      top="50%"
-      transform="translateY(-50%)"
-      right=".6em"
-      borderRadius="12px"
-      fontWeight={500}
-      bg={copied ? colors.primary : colors.bgBody}
-      border={`1px solid ${colors.borderSecondary}`}
-      color={copied ? 'black' : 'white'}
-      _hover={{ bg: copied ? colors.primary : colors.bgElevated }}
-      _active={{ bg: colors.primary }}
-      transition="background-color 0.3s ease"
-      onClick={onCopy}
-      aria-label="Copy installation command"
-    >
-      <Icon as={copied ? TbCopyCheckFilled : TbCopy} color="#fff" boxSize={4} />
-    </Button>
   </div>
 );
 
-const CliModeSwitch = ({ mode, hasManual, setMode, cliLib, setCliLib }) => (
-  <Flex className="mode-switch" data-mode-switch w="100%" align="center" gap={0}>
-    <HStack>
+const CliModeSwitch = ({ mode, hasManual, setMode }) => (
+  <Flex className="mode-switch" data-mode-switch align="center">
+    <HStack gap={1}>
       <button data-active={mode === 'cli'} onClick={() => setMode('cli')} className="cli-toggle-button">
         CLI
       </button>
@@ -110,9 +81,10 @@ const CliModeSwitch = ({ mode, hasManual, setMode, cliLib, setCliLib }) => (
           </Tooltip.Trigger>
           <Tooltip.Positioner>
             <Tooltip.Content
-              bg={colors.bgElevated}
+              bg="var(--shell-panel-solid)"
               border={`1px solid ${colors.borderSecondary}`}
-              color="#c9c9c9"
+              color="var(--text-muted)"
+              boxShadow="var(--shadow-menu)"
               fontSize="12px"
               px={2}
               whiteSpace="nowrap"
@@ -126,20 +98,61 @@ const CliModeSwitch = ({ mode, hasManual, setMode, cliLib, setCliLib }) => (
         </Tooltip.Root>
       )}
     </HStack>
-    {mode === 'cli' && (
-      <Box ml="auto">
-        <IconSelect
-          collection={CLI_TOOLS}
-          value={cliLib}
-          onChange={setCliLib}
-          iconMap={CLI_ICON_MAP}
-          labelMap={CLI_LABEL_MAP}
-          width="125px"
-          closeOnSelect
-        />
-      </Box>
-    )}
   </Flex>
+);
+
+const InstallOptionsMenu = ({ pkg, setPkg, cliLib, setCliLib, showRegistry }) => (
+  <Menu.Root positioning={{ placement: 'bottom-start', gutter: 8 }}>
+    <Menu.Trigger asChild>
+      <button type="button" className="install-options-trigger" aria-label="Choose installation options">
+        <span>{pkg}</span>
+        {showRegistry && (
+          <>
+            <span className="install-options-dot" aria-hidden="true">
+              ·
+            </span>
+            <span>{cliLib}</span>
+          </>
+        )}
+        <TbChevronDown aria-hidden="true" />
+      </button>
+    </Menu.Trigger>
+    <Portal>
+      <Menu.Positioner>
+        <Menu.Content className="install-options-menu">
+          <div className="install-options-label">Package manager</div>
+          {PKG_MANAGERS.map(manager => (
+            <Menu.Item
+              key={manager}
+              value={`package-${manager}`}
+              className="install-options-item"
+              onSelect={() => setPkg(manager)}
+            >
+              <span>{manager}</span>
+              {pkg === manager && <TbCheck aria-hidden="true" />}
+            </Menu.Item>
+          ))}
+          {showRegistry && (
+            <>
+              <Menu.Separator className="install-options-separator" />
+              <div className="install-options-label">Registry</div>
+              {CLI_TOOLS.map(tool => (
+                <Menu.Item
+                  key={tool}
+                  value={`registry-${tool}`}
+                  className="install-options-item"
+                  onSelect={() => setCliLib(tool)}
+                >
+                  <span>{tool}</span>
+                  {cliLib === tool && <TbCheck aria-hidden="true" />}
+                </Menu.Item>
+              ))}
+            </>
+          )}
+        </Menu.Content>
+      </Menu.Positioner>
+    </Portal>
+  </Menu.Root>
 );
 
 const CliInstallation = ({ deps }) => {
@@ -170,7 +183,6 @@ const CliInstallation = ({ deps }) => {
 
 
 
-  const [copied, setCopied] = useState(false);
   const codeRef = useRef(null);
   const [scrollMeta, setScrollMeta] = useState({ w: 0, l: 0, show: false });
   const [dragging, setDragging] = useState(false);
@@ -266,89 +278,36 @@ const CliInstallation = ({ deps }) => {
     setDragging(true);
   };
 
-  useEffect(() => {
-    setCopied(false);
-  }, [currentCommand]);
-
-  const handleCopy = async () => {
-    if (!currentCommand) return;
-    try {
-      await navigator.clipboard.writeText(currentCommand);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
-      // noop
-    }
-  };
-
   if (!commands) return null;
 
-  const renderPkgButtons = () => (
-    <div className="pkg-buttons" data-role="pkg-buttons">
-      {PKG_MANAGERS.map(m => (
-        <button key={m} className="cli-tool-tab" data-active={pkg === m} onClick={() => setPkg(m)}>
-          {m}
-        </button>
-      ))}
-    </div>
-  );
-
-  const manualSection = hasManual && (
-    <VStack align="stretch" gap={0} fontFamily="mono" className="cli-install-section manual-mode">
-      <div className="cli-row" data-row="manual">
-        {renderPkgButtons()}
-      </div>
-      <CliCodeSection
-        command={commands.manual[pkg]}
-        codeRef={mode === 'manual' ? codeRef : undefined}
-        scrollMeta={scrollMeta}
-        dragging={dragging}
-        trackRef={trackRef}
-        onScroll={mode === 'manual' ? updateScrollMeta : undefined}
-        onScrollbarMouseDown={handleScrollbarMouseDown}
-        onCopy={handleCopy}
-        copied={copied}
-      />
-    </VStack>
-  );
-
-  const cliSection = (
-    <VStack align="stretch" gap={0} fontFamily="mono" className="cli-install-section cli-mode">
-      <div className="cli-row" data-row="cli">
-        {renderPkgButtons()}
-      </div>
-      <CliCodeSection
-        command={
-          cliLib === 'jsrepo'
-            ? commands.jsrepo[pkg === 'npm' ? 'npx' : pkg]
-            : commands.shadcn[pkg === 'npm' ? 'npx' : pkg]
-        }
-        codeRef={mode === 'cli' ? codeRef : undefined}
-        scrollMeta={scrollMeta}
-        dragging={dragging}
-        trackRef={trackRef}
-        onScroll={mode === 'cli' ? updateScrollMeta : undefined}
-        onScrollbarMouseDown={handleScrollbarMouseDown}
-        onCopy={handleCopy}
-        copied={copied}
-      />
-    </VStack>
-  );
-
   return (
-    <div className="cli-install">
-      <Text className="demo-title">Install</Text>
-      <Stack my={2}>
-        <CliModeSwitch
-          mode={mode}
-          hasManual={hasManual}
-          setMode={setMode}
-          cliLib={cliLib}
-          setCliLib={setCliLib}
-        />
-        {hasManual && mode === 'manual' ? manualSection : cliSection}
-      </Stack>
-    </div>
+    <CodeSection
+      title="Install"
+      className="cli-install"
+      actions={
+        <div className="cli-install-actions">
+          <CliModeSwitch mode={mode} hasManual={hasManual} setMode={setMode} />
+          <InstallOptionsMenu
+            pkg={pkg}
+            setPkg={setPkg}
+            cliLib={cliLib}
+            setCliLib={setCliLib}
+            showRegistry={mode === 'cli'}
+          />
+          <CodeCopyButton codeString={currentCommand} />
+        </div>
+      }
+    >
+      <CliCodeSection
+        command={currentCommand}
+        codeRef={codeRef}
+        scrollMeta={scrollMeta}
+        dragging={dragging}
+        trackRef={trackRef}
+        onScroll={updateScrollMeta}
+        onScrollbarMouseDown={handleScrollbarMouseDown}
+      />
+    </CodeSection>
   );
 };
 

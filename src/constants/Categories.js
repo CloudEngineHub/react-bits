@@ -46,6 +46,7 @@ export const CATEGORIES = [
   {
     name: 'Text Animations',
     subcategories: [
+      'Text Loop',
       'Masked Heading',
       'Particle Text',
       'Split Flap Text',
@@ -54,7 +55,6 @@ export const CATEGORIES = [
       'Depth Text',
       'Fold Text',
       'Echo Text',
-      'Text Loop',
       'Split Text',
       'Blur Text',
       'Circular Text',

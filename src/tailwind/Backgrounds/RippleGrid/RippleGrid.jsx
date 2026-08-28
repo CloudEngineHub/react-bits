@@ -13,7 +13,8 @@ const RippleGrid = ({
   opacity = 1.0,
   gridRotation = 0,
   mouseInteraction = true,
-  mouseInteractionRadius = 1
+  mouseInteractionRadius = 1,
+  lightMode = false
 }) => {
   const containerRef = useRef(null);
   const mousePositionRef = useRef({ x: 0.5, y: 0.5 });
@@ -67,6 +68,7 @@ uniform bool mouseInteraction;
 uniform vec2 mousePosition;
 uniform float mouseInfluence;
 uniform float mouseInteractionRadius;
+uniform bool lightMode;
 varying vec2 vUv;
 
 float pi = 3.141592;
@@ -140,7 +142,14 @@ void main() {
 
     float finalFade = ddd * vignette;
     float alpha = length(color) * finalFade * opacity;
-    gl_FragColor = vec4(color * t * finalFade * opacity, alpha);
+    vec3 effect = color * t * finalFade * opacity;
+    if (lightMode) {
+        float peak = max(effect.r, max(effect.g, effect.b));
+        vec3 chroma = pow(clamp(effect / max(peak, 0.0001), 0.0, 1.0), vec3(1.2));
+        gl_FragColor = vec4(mix(vec3(1.0), chroma, clamp(alpha * 0.94, 0.0, 0.94)), 1.0);
+    } else {
+        gl_FragColor = vec4(effect, alpha);
+    }
 }`;
 
     const uniforms = {
@@ -159,7 +168,8 @@ void main() {
       mouseInteraction: { value: mouseInteraction },
       mousePosition: { value: [0.5, 0.5] },
       mouseInfluence: { value: 0 },
-      mouseInteractionRadius: { value: mouseInteractionRadius }
+      mouseInteractionRadius: { value: mouseInteractionRadius },
+      lightMode: { value: lightMode }
     };
 
     uniformsRef.current = uniforms;
@@ -257,6 +267,7 @@ void main() {
     uniformsRef.current.gridRotation.value = gridRotation;
     uniformsRef.current.mouseInteraction.value = mouseInteraction;
     uniformsRef.current.mouseInteractionRadius.value = mouseInteractionRadius;
+    uniformsRef.current.lightMode.value = lightMode;
   }, [
     enableRainbow,
     gridColor,
@@ -269,7 +280,8 @@ void main() {
     opacity,
     gridRotation,
     mouseInteraction,
-    mouseInteractionRadius
+    mouseInteractionRadius,
+    lightMode
   ]);
 
   return <div ref={containerRef} className="w-full h-full relative overflow-hidden [&_canvas]:block" />;

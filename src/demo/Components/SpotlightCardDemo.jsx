@@ -4,6 +4,7 @@ import { VscSparkleFilled } from 'react-icons/vsc';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import Customize from '../../components/common/Preview/Customize';
@@ -20,6 +21,10 @@ const DEFAULT_PROPS = {
 const SpotlightCardDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { spotlightColor } = props;
+  const renderedSpotlightColor = useColorModeValue(
+    spotlightColor === DEFAULT_PROPS.spotlightColor ? '#18181b14' : spotlightColor,
+    spotlightColor
+  );
 
   const propData = useMemo(
     () => [
@@ -44,13 +49,13 @@ const SpotlightCardDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" py={10}>
-            <SpotlightCard className="custom-spotlight-card" spotlightColor={spotlightColor}>
+            <SpotlightCard className="custom-spotlight-card" spotlightColor={renderedSpotlightColor}>
               <Flex h={'100%'} direction="column" alignItems="flex-start" justifyContent="center">
                 <Icon mb={3} boxSize={12} as={VscSparkleFilled} />
                 <Text fontWeight={600} fontSize={'1.4rem'} letterSpacing={'-.5px'}>
                   Boost Your Experience
                 </Text>
-                <Text color="#a1a1aa" fontSize={'14px'} mt={1} mb={8}>
+                <Text color="var(--text-muted)" fontSize={'14px'} mt={1} mb={8}>
                   Get exclusive benefits, features & 24/7 support as a permanent club member.
                 </Text>
               </Flex>
@@ -58,7 +63,7 @@ const SpotlightCardDemo = () => {
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Spotlight Color" color={spotlightColor} onChange={v => updateProp('spotlightColor', v)} />
+            <PreviewColorPickerCustom title="Spotlight Color" color={renderedSpotlightColor} onChange={v => updateProp('spotlightColor', v)} />
           </Customize>
 
           <PropTable data={propData} />

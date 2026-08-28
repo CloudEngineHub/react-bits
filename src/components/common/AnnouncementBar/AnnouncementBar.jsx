@@ -5,7 +5,7 @@ import { LuArrowRight, LuRocket } from 'react-icons/lu';
 const AnnouncementBar = ({ message, link, linkText, backgroundColor, noBorder, className }) => {
   const content = (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <Icon as={LuRocket} color="#ffffff" boxSize="14px" className="header-announcement-icon" />
+      <Icon as={LuRocket} color="currentColor" boxSize="14px" className="header-announcement-icon" />
       <span className="header-announcement-message">
         {message}
         {linkText && (

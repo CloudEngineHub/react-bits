@@ -35,6 +35,7 @@ uniform float uRepulsionStrength;
 uniform float uMouseActiveFactor;
 uniform float uAutoCenterRepulsion;
 uniform bool uTransparent;
+uniform float uLightMode;
 
 varying vec2 vUv;
 
@@ -159,7 +160,12 @@ void main() {
     col += StarLayer(uv * scale + i * 453.32) * fade;
   }
 
-  if (uTransparent) {
+  if (uLightMode > 0.5) {
+    float energy = max(max(col.r, col.g), col.b);
+    float coverage = clamp(smoothstep(0.0, 0.42, energy) * 0.92, 0.0, 0.92);
+    vec3 ink = clamp(col * 0.48, 0.0, 0.82);
+    gl_FragColor = vec4(mix(vec3(1.0), ink, coverage), 1.0);
+  } else if (uTransparent) {
     float alpha = length(col);
     alpha = smoothstep(0.0, 0.3, alpha);
     alpha = min(alpha, 1.0);
@@ -187,6 +193,7 @@ export default function Galaxy({
   rotationSpeed = 0.1,
   autoCenterRepulsion = 0,
   transparent = true,
+  lightMode = false,
   ...rest
 }) {
   const ctnDom = useRef(null);
@@ -204,7 +211,9 @@ export default function Galaxy({
     });
     const gl = renderer.gl;
 
-    if (transparent) {
+    if (lightMode) {
+      gl.clearColor(1, 1, 1, 1);
+    } else if (transparent) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.clearColor(0, 0, 0, 0);
@@ -254,7 +263,8 @@ export default function Galaxy({
         uRepulsionStrength: { value: repulsionStrength },
         uMouseActiveFactor: { value: 0.0 },
         uAutoCenterRepulsion: { value: autoCenterRepulsion },
-        uTransparent: { value: transparent }
+        uTransparent: { value: transparent },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -326,7 +336,8 @@ export default function Galaxy({
     rotationSpeed,
     repulsionStrength,
     autoCenterRepulsion,
-    transparent
+    transparent,
+    lightMode
   ]);
 
   return <div ref={ctnDom} className="galaxy-container" {...rest} />;

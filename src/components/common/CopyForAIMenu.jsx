@@ -9,7 +9,7 @@ const AI_MENU_ITEM_PROPS = {
   px: 3,
   py: 2,
   fontSize: '14px',
-  color: '#fff',
+  color: 'var(--text-primary)',
   borderRadius: '8px',
   cursor: 'pointer',
   _hover: { bg: colors.bgHover }
@@ -42,7 +42,7 @@ const CopyForAIMenu = ({ triggerProps, copyItems, openItems, done }) => {
         >
           {done && <Check size={14} color={colors.accent} />}
           {done ? 'Copied!' : 'Copy for AI'}
-          <ChevronDown size={14} color="#fff" />
+          <ChevronDown size={14} />
         </Box>
       </Menu.Trigger>
       <Portal>
@@ -53,7 +53,7 @@ const CopyForAIMenu = ({ triggerProps, copyItems, openItems, done }) => {
             borderRadius="10px"
             p={1}
             minW="235px"
-            boxShadow="0 10px 30px rgba(0, 0, 0, 0.5)"
+            boxShadow="var(--shadow-menu)"
             zIndex={1500}
             transformOrigin="top right"
           >

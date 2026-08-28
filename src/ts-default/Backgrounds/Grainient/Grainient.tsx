@@ -25,6 +25,7 @@ interface GrainientProps {
   color1?: string;
   color2?: string;
   color3?: string;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -66,6 +67,7 @@ uniform float uZoom;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
+uniform float uLightMode;
 out vec4 fragColor;
 #define S(a,b,t) smoothstep(a,b,t)
 mat2 Rot(float a){float s=sin(a),c=cos(a);return mat2(c,-s,s,c);} 
@@ -115,6 +117,13 @@ void mainImage(out vec4 o, vec2 C){
   col=mix(vec3(luma),col,uSaturation);
   col=pow(max(col,0.0),vec3(1.0/max(uGamma,0.001)));
   col=clamp(col,0.0,1.0);
+  if(uLightMode>0.5){
+    float energy=max(max(col.r,col.g),col.b);
+    vec3 hue=col/max(energy,0.001);
+    float chroma=length(col-vec3(dot(col,vec3(0.333333))));
+    float coverage=clamp(0.12+chroma*1.15+energy*0.18,0.0,0.88);
+    col=mix(vec3(1.0),clamp(hue*0.58+col*0.18,0.0,1.0),coverage);
+  }
 
   o=vec4(col,1.0);
 }
@@ -158,6 +167,7 @@ const Grainient: React.FC<GrainientProps> = ({
   color1 = '#FF9FFC',
   color2 = '#5227FF',
   color3 = '#B497CF',
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -208,7 +218,8 @@ const Grainient: React.FC<GrainientProps> = ({
         uZoom:           { value: 0.9 },
         uColor1:         { value: new Float32Array([1, 1, 1]) },
         uColor2:         { value: new Float32Array([1, 1, 1]) },
-        uColor3:         { value: new Float32Array([1, 1, 1]) }
+        uColor3:         { value: new Float32Array([1, 1, 1]) },
+        uLightMode:      { value: 0.0 }
       }
     });
 
@@ -302,11 +313,12 @@ const Grainient: React.FC<GrainientProps> = ({
     u.uColor1.value         = new Float32Array(hexToRgb(color1));
     u.uColor2.value         = new Float32Array(hexToRgb(color2));
     u.uColor3.value         = new Float32Array(hexToRgb(color3));
+    u.uLightMode.value      = lightMode ? 1.0 : 0.0;
   }, [
     timeSpeed, colorBalance, warpStrength, warpFrequency, warpSpeed,
     warpAmplitude, blendAngle, blendSoftness, rotationAmount, noiseScale,
     grainAmount, grainScale, grainAnimated, contrast, gamma, saturation,
-    centerX, centerY, zoom, color1, color2, color3
+    centerX, centerY, zoom, color1, color2, color3, lightMode
   ]);
 
 

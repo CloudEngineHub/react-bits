@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
@@ -79,6 +80,16 @@ const CurvedInputDemo = () => {
     showButton,
     showIcon
   } = props;
+  const siteTheme = useColorModeValue('light', 'dark');
+  const usesDefaultPalette =
+    theme === DEFAULT_PROPS.theme &&
+    backgroundColor === DEFAULT_PROPS.backgroundColor &&
+    textColor === DEFAULT_PROPS.textColor &&
+    borderColor === DEFAULT_PROPS.borderColor &&
+    buttonColor === DEFAULT_PROPS.buttonColor &&
+    buttonTextColor === DEFAULT_PROPS.buttonTextColor;
+  const renderedTheme = usesDefaultPalette ? siteTheme : theme;
+  const renderedColors = usesDefaultPalette ? THEME_COLORS[renderedTheme] : { backgroundColor, textColor, borderColor, buttonColor, buttonTextColor };
 
   const handleThemeChange = nextTheme => {
     updateProps({ theme: nextTheme, ...THEME_COLORS[nextTheme] });
@@ -126,7 +137,13 @@ const CurvedInputDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden" display="flex" alignItems="center" justifyContent="center" px={{ base: 4, md: 12 }}>
             <Box w="100%" maxW="720px" display="flex" justifyContent="center">
-              <CurvedInput {...props} placeholder="david@reactbits.dev" onSubmit={value => console.log('Submitted:', value)} />
+              <CurvedInput
+                {...props}
+                theme={renderedTheme}
+                {...renderedColors}
+                placeholder="david@reactbits.dev"
+                onSubmit={value => console.log('Submitted:', value)}
+              />
             </Box>
           </Box>
 
@@ -141,11 +158,11 @@ const CurvedInputDemo = () => {
               onChange={handleThemeChange}
               width={120}
             />
-            <PreviewColorPickerCustom title="Background" color={backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
-            <PreviewColorPickerCustom title="Text" color={textColor} onChange={val => updateProp('textColor', val)} />
-            <PreviewColorPickerCustom title="Border" color={borderColor} onChange={val => updateProp('borderColor', val)} />
-            <PreviewColorPickerCustom title="Button" color={buttonColor} onChange={val => updateProp('buttonColor', val)} />
-            <PreviewColorPickerCustom title="Button Text" color={buttonTextColor} onChange={val => updateProp('buttonTextColor', val)} />
+            <PreviewColorPickerCustom title="Background" color={renderedColors.backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
+            <PreviewColorPickerCustom title="Text" color={renderedColors.textColor} onChange={val => updateProp('textColor', val)} />
+            <PreviewColorPickerCustom title="Border" color={renderedColors.borderColor} onChange={val => updateProp('borderColor', val)} />
+            <PreviewColorPickerCustom title="Button" color={renderedColors.buttonColor} onChange={val => updateProp('buttonColor', val)} />
+            <PreviewColorPickerCustom title="Button Text" color={renderedColors.buttonTextColor} onChange={val => updateProp('buttonTextColor', val)} />
             <PreviewInput title="Button Label" value={buttonText} maxLength={24} onChange={val => updateProp('buttonText', val)} />
             <PreviewSelect title="Shadow" options={SHADOW_OPTIONS} value={shadowSize} onChange={val => updateProp('shadowSize', val)} width={140} />
             <PreviewSlider title="Width" min={340} max={720} step={10} value={width} valueUnit="px" onChange={val => updateProp('width', val)} />

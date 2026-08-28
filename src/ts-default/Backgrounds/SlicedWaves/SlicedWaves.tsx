@@ -27,6 +27,7 @@ export interface SlicedWavesProps {
   mouseRadius?: number;
   grain?: boolean;
   grainIntensity?: number;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -68,6 +69,7 @@ uniform float uEnableMouse;
 uniform float uMouseActive;
 uniform float uGrain;
 uniform float uGrainIntensity;
+uniform float uLightMode;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
@@ -127,7 +129,13 @@ void main() {
   col = clamp(col, 0.0, 1.0);
 
   float a = intensity * uOpacity;
-  fragColor = vec4(col * a, a);
+  if (uLightMode > 0.5) {
+    float peak = max(col.r, max(col.g, col.b));
+    vec3 chroma = pow(clamp(col / max(peak, 0.0001), 0.0, 1.0), vec3(1.16));
+    fragColor = vec4(mix(vec3(1.0), chroma, a * 0.94), 1.0);
+  } else {
+    fragColor = vec4(col * a, a);
+  }
 }
 `;
 
@@ -161,6 +169,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
   mouseRadius = 0.3,
   grain = true,
   grainIntensity = 0.05,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -213,6 +222,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
         uMouseActive: { value: 0.0 },
         uGrain: { value: 1.0 },
         uGrainIntensity: { value: 0.05 },
+        uLightMode: { value: 0.0 },
         uColor1: { value: new Float32Array([1, 1, 1]) },
         uColor2: { value: new Float32Array([1, 1, 1]) },
         uColor3: { value: new Float32Array([1, 1, 1]) }
@@ -339,6 +349,7 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
     u.uEnableMouse.value = mouseInteraction ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
     u.uGrainIntensity.value = grainIntensity;
+    u.uLightMode.value = lightMode ? 1.0 : 0.0;
     const c1 = hexToRgb(color1);
     const a1 = u.uColor1.value as Float32Array;
     a1[0] = c1[0];
@@ -376,7 +387,8 @@ const SlicedWaves: React.FC<SlicedWavesProps> = ({
     mouseStrength,
     mouseRadius,
     grain,
-    grainIntensity
+    grainIntensity,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`sliced-waves-container ${className}`.trim()} />;

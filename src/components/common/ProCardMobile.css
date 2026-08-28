@@ -73,7 +73,7 @@
     overflow: hidden;
     color: rgba(255, 255, 255, 0.86);
     font-size: 12.5px;
-    font-weight: 550;
+    font-weight: 500;
     line-height: 1.25;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -89,6 +89,35 @@
     color: rgba(255, 255, 255, 0.58);
   }
 
+}
+
+@media only screen and (max-width: 1000px) {
+  :root[data-theme='light'] .pro-mobile-shell {
+    border-top-color: rgba(24, 24, 27, 0.1);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 -10px 28px rgba(24, 24, 27, 0.08);
+  }
+
+  :root[data-theme='light'] .pro-mobile-bar {
+    color: #18181b;
+  }
+
+  :root[data-theme='light'] .pro-mobile-bar-image {
+    border-color: rgba(24, 24, 27, 0.1);
+    background: #fff;
+  }
+
+  :root[data-theme='light'] .pro-mobile-bar-label {
+    color: #71717a;
+  }
+
+  :root[data-theme='light'] .pro-mobile-bar-text strong {
+    color: #27272a;
+  }
+
+  :root[data-theme='light'] .pro-mobile-bar-cta {
+    color: #71717a;
+  }
 }
 
 @media only screen and (max-width: 360px) {

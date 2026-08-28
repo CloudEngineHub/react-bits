@@ -578,8 +578,7 @@ export default function Controls({
                     maxW="220px"
                     lineHeight="1.4"
                   >
-                    Light backgrounds might not work well with some effects, and some effects might not have a
-                    transparent background.
+                    Follows the site theme by default. Choose a color here to override the canvas for this background.
                   </Tooltip.Content>
                 </Tooltip.Positioner>
               </Tooltip.Root>
@@ -686,8 +685,8 @@ export default function Controls({
           _hover={{ bg: '#b96dfa' }}
           transition="background 0.2s"
         >
-          <Icon as={Code2} boxSize={4} color="var(--text-primary)" />
-          <Text fontSize="13px" color="var(--text-primary)" fontWeight={600}>
+          <Icon as={Code2} boxSize={4} color="#fff" />
+          <Text fontSize="13px" color="#fff" fontWeight={600}>
             Export Code
           </Text>
         </Flex>

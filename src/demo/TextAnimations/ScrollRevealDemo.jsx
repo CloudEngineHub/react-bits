@@ -137,10 +137,10 @@ const ScrollRevealDemo = () => {
             position="relative"
           >
             <Text
+              className="demo-instruction"
               textAlign="center"
-              color="#2F293A"
               fontSize="clamp(4rem, 6vw, 4rem)"
-              fontWeight={900}
+              fontWeight={600}
               position="absolute"
               top="50%"
               transform="translateY(-50%)"

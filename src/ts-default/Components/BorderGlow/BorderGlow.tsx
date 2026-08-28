@@ -48,6 +48,16 @@ function buildGradientVars(colors: string[]): Record<string, string> {
   return vars;
 }
 
+function isLightColor(color: string): boolean {
+  const value = color.trim().replace('#', '');
+  if (!/^[\da-f]{3}([\da-f]{3})?$/i.test(value)) return false;
+  const hex = value.length === 3 ? value.split('').map(char => char + char).join('') : value;
+  const red = parseInt(hex.slice(0, 2), 16);
+  const green = parseInt(hex.slice(2, 4), 16);
+  const blue = parseInt(hex.slice(4, 6), 16);
+  return red * 0.2126 + green * 0.7152 + blue * 0.0722 > 180;
+}
+
 function easeOutCubic(x: number) { return 1 - Math.pow(1 - x, 3); }
 function easeInCubic(x: number) { return x * x * x; }
 
@@ -148,12 +158,13 @@ const BorderGlow: React.FC<BorderGlowProps> = ({
   }, [animated]);
 
   const glowVars = buildGlowVars(glowColor, glowIntensity);
+  const lightSurface = isLightColor(backgroundColor);
 
   return (
     <div
       ref={cardRef}
       onPointerMove={handlePointerMove}
-      className={`border-glow-card ${className}`}
+      className={`border-glow-card${lightSurface ? ' border-glow-card--light' : ''} ${className}`}
       style={{
         '--card-bg': backgroundColor,
         '--edge-sensitivity': edgeSensitivity,

@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import Dependencies from '../../components/code/Dependencies';
@@ -61,6 +62,10 @@ const SpecularButtonDemo = () => {
     proximity,
     autoAnimate
   } = props;
+  const renderedTint = useColorModeValue(tint === DEFAULT_PROPS.tint ? '#ffffff' : tint, tint);
+  const renderedTextColor = useColorModeValue(textColor === DEFAULT_PROPS.textColor ? '#18181b' : textColor, textColor);
+  const renderedLineColor = useColorModeValue(lineColor === DEFAULT_PROPS.lineColor ? '#18181b' : lineColor, lineColor);
+  const renderedBaseColor = useColorModeValue(baseColor === DEFAULT_PROPS.baseColor ? '#d4d4d8' : baseColor, baseColor);
 
   const propData = useMemo(
     () => [
@@ -94,14 +99,22 @@ const SpecularButtonDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={400} overflow="hidden" display="flex" alignItems="center" justifyContent="center">
-            <SpecularButton {...props}>Get Started</SpecularButton>
+            <SpecularButton
+              {...props}
+              tint={renderedTint}
+              textColor={renderedTextColor}
+              lineColor={renderedLineColor}
+              baseColor={renderedBaseColor}
+            >
+              Get Started
+            </SpecularButton>
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Highlight" color={lineColor} onChange={val => updateProp('lineColor', val)} />
-            <PreviewColorPickerCustom title="Edge" color={baseColor} onChange={val => updateProp('baseColor', val)} />
-            <PreviewColorPickerCustom title="Tint" color={tint} onChange={val => updateProp('tint', val)} />
-            <PreviewColorPickerCustom title="Text" color={textColor} onChange={val => updateProp('textColor', val)} />
+            <PreviewColorPickerCustom title="Highlight" color={renderedLineColor} onChange={val => updateProp('lineColor', val)} />
+            <PreviewColorPickerCustom title="Edge" color={renderedBaseColor} onChange={val => updateProp('baseColor', val)} />
+            <PreviewColorPickerCustom title="Tint" color={renderedTint} onChange={val => updateProp('tint', val)} />
+            <PreviewColorPickerCustom title="Text" color={renderedTextColor} onChange={val => updateProp('textColor', val)} />
             <PreviewSelect title="Size" options={SIZE_OPTIONS} value={size} onChange={val => updateProp('size', val)} width={140} />
             <PreviewSlider title="Radius" min={0} max={60} step={1} value={radius} valueUnit="px" onChange={val => updateProp('radius', val)} />
             <PreviewSlider title="Tint Opacity" min={0} max={0.4} step={0.01} value={tintOpacity} onChange={val => updateProp('tintOpacity', val)} />

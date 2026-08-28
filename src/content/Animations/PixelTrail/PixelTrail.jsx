@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { shaderMaterial, useTrailTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -63,27 +63,34 @@ const DotMaterial = shaderMaterial(
   `
 );
 
+const identityEase = x => x;
+
 function Scene({ gridSize, trailSize, maxAge, interpolate, easingFunction, pixelColor }) {
   const size = useThree(s => s.size);
   const viewport = useThree(s => s.viewport);
 
   const dotMaterial = useMemo(() => new DotMaterial(), []);
-  dotMaterial.uniforms.pixelColor.value = new THREE.Color(pixelColor);
+  useEffect(() => () => dotMaterial.dispose(), [dotMaterial]);
+
+  useEffect(() => {
+    dotMaterial.uniforms.pixelColor.value.set(pixelColor);
+  }, [dotMaterial, pixelColor]);
 
   const [trail, onMove] = useTrailTexture({
     size: 512,
     radius: trailSize,
     maxAge: maxAge,
     interpolate: interpolate || 0.1,
-    ease: easingFunction || (x => x)
+    ease: easingFunction || identityEase
   });
 
-  if (trail) {
+  useEffect(() => {
+    if (!trail) return;
     trail.minFilter = THREE.NearestFilter;
     trail.magFilter = THREE.NearestFilter;
     trail.wrapS = THREE.ClampToEdgeWrapping;
     trail.wrapT = THREE.ClampToEdgeWrapping;
-  }
+  }, [trail]);
 
   const scale = Math.max(viewport.width, viewport.height) / 2;
 
@@ -92,6 +99,7 @@ function Scene({ gridSize, trailSize, maxAge, interpolate, easingFunction, pixel
       <planeGeometry args={[2, 2]} />
       <primitive
         object={dotMaterial}
+        attach="material"
         gridSize={gridSize}
         resolution={[size.width * viewport.dpr, size.height * viewport.dpr]}
         mouseTrail={trail}
@@ -105,7 +113,7 @@ export default function PixelTrail({
   trailSize = 0.1,
   maxAge = 250,
   interpolate = 5,
-  easingFunction = x => x,
+  easingFunction = identityEase,
   canvasProps = {},
   glProps = {
     antialias: false,
@@ -121,6 +129,7 @@ export default function PixelTrail({
       {gooeyFilter && <GooeyFilter id={gooeyFilter.id} strength={gooeyFilter.strength} />}
       <Canvas
         {...canvasProps}
+        dpr={canvasProps.dpr ?? [1, 1.25]}
         gl={glProps}
         className={`pixel-canvas ${className}`}
         style={gooeyFilter && { filter: `url(#${gooeyFilter.id})` }}

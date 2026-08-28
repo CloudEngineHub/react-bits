@@ -75,7 +75,7 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
             >
               <Icon as={selected.icon} boxSize={4} color="#fff" />
             </Flex>
-            <Text fontSize="14px" fontWeight={700} color="#fff" letterSpacing="-0.01em">
+            <Text fontSize="14px" fontWeight={600} color="var(--text-primary)" letterSpacing="-0.01em">
               {selected.label}
             </Text>
           </Flex>
@@ -118,7 +118,7 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
         transform={isOpen ? 'translateY(0)' : 'translateY(-8px)'}
         transition="all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
         zIndex={100}
-        boxShadow="0 8px 32px rgba(0, 0, 0, 0.4)"
+        boxShadow="var(--tool-menu-shadow)"
       >
         {TOOLS.map(tool => (
           <Flex
@@ -148,7 +148,7 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
             >
               <Icon as={tool.icon} boxSize={3.5} color={selectedTool === tool.id ? '#fff' : colors.accent} />
             </Flex>
-            <Text fontSize="14px" fontWeight={selectedTool === tool.id ? 600 : 500} color="#fff">
+            <Text fontSize="14px" fontWeight={selectedTool === tool.id ? 600 : 500} color="var(--text-primary)">
               {tool.label}
             </Text>
             {!tool.component && (
@@ -166,15 +166,15 @@ const ToolDropdown = ({ selectedTool, onSelect, isOpen, setIsOpen }) => {
             position="fixed"
             top={`${tooltipPos.top}px`}
             left={`${tooltipPos.left}px`}
-            bg={colors.bgElevated}
-            border={`1px solid ${colors.borderPrimary}`}
+            bg="var(--tool-popover-bg)"
+            border="1px solid var(--tool-popover-border)"
             borderRadius="8px"
             p="8px 12px"
             w="220px"
             fontSize="12px"
-            color={colors.accent}
+            color="var(--text-muted)"
             lineHeight={1.5}
-            boxShadow="0 8px 32px rgba(0, 0, 0, 0.4)"
+            boxShadow="var(--tool-menu-shadow)"
             zIndex={99999}
             pointerEvents="none"
           >
@@ -208,7 +208,7 @@ const ComingSoon = ({ label, toolSelector }) => (
       bg={colors.bgCard}
       minH={{ base: '200px', lg: 'auto' }}
     >
-      <Text fontSize={{ base: '20px', md: '24px' }} fontWeight={700} color="#fff">
+      <Text fontSize={{ base: '20px', md: '24px' }} fontWeight={700} color="var(--text-primary)">
         {label}
       </Text>
       <Text fontSize="14px" color={colors.accentMuted}>
@@ -320,7 +320,7 @@ export default function ToolsPage() {
   const selectedTool = TOOLS.find(t => t.id === toolId)?.id || 'background-studio';
 
   return (
-    <Box h="100vh" bg="#120F17" overflow="hidden">
+    <Box className="rb-tools-page" h="100vh" bg={colors.bgBody} overflow="hidden">
       <Navbar showDocs />
 
       <Box

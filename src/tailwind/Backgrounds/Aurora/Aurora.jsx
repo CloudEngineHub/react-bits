@@ -16,6 +16,7 @@ uniform float uAmplitude;
 uniform vec3 uColorStops[3];
 uniform vec2 uResolution;
 uniform float uBlend;
+uniform float uLightMode;
 
 out vec4 fragColor;
 
@@ -103,12 +104,21 @@ void main() {
   
   vec3 auroraColor = intensity * rampColor;
   
-  fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+  if (uLightMode > 0.5) {
+    float energy = clamp(max(intensity, 0.0), 0.0, 1.0);
+    float coverage = clamp(auroraAlpha * (0.55 + 0.45 * energy), 0.0, 0.86);
+    vec3 chroma = pow(clamp(rampColor, 0.0, 1.0), vec3(1.2));
+    float chromaPeak = max(chroma.r, max(chroma.g, chroma.b));
+    chroma /= max(chromaPeak, 0.0001);
+    fragColor = vec4(mix(vec3(1.0), chroma, min(coverage * 1.08, 0.94)), 1.0);
+  } else {
+    fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+  }
 }
 `;
 
 export default function Aurora(props) {
-  const { colorStops = ['#5227FF', '#7cff67', '#5227FF'], amplitude = 1.0, blend = 0.5 } = props;
+  const { colorStops = ['#5227FF', '#7cff67', '#5227FF'], amplitude = 1.0, blend = 0.5, lightMode = false } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
 
@@ -160,7 +170,8 @@ export default function Aurora(props) {
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
         uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
-        uBlend: { value: blend }
+        uBlend: { value: blend },
+        uLightMode: { value: lightMode ? 1 : 0 }
       }
     });
 
@@ -174,6 +185,7 @@ export default function Aurora(props) {
       program.uniforms.uTime.value = time * speed * 0.1;
       program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
+      program.uniforms.uLightMode.value = (propsRef.current.lightMode ?? lightMode) ? 1 : 0;
       const stops = propsRef.current.colorStops ?? colorStops;
       program.uniforms.uColorStops.value = stops.map(hex => {
         const c = new Color(hex);

@@ -67,7 +67,7 @@ const PixelTrailDemo = () => {
               color={color}
               gooeyFilter={gooeyEnabled ? { id: 'custom-goo-filter', strength: gooStrength } : undefined}
             />
-            <Text position="absolute" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" color="#2F293A" fontWeight={900}>
+            <Text className="demo-instruction" position="absolute" zIndex={0} fontSize="clamp(2rem, 6vw, 6rem)" fontWeight={600}>
               Move Cursor.
             </Text>
           </Box>

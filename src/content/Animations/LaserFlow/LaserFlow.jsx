@@ -258,7 +258,8 @@ export const LaserFlow = ({
   decay = 1.1,
   falloffStart = 1.2,
   fogFallSpeed = 0.6,
-  color = '#FF79C6'
+  color = '#FF79C6',
+  backgroundColor = '#000000'
 }) => {
   const mountRef = useRef(null);
   const rendererRef = useRef(null);
@@ -312,6 +313,15 @@ export const LaserFlow = ({
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    const applyBackgroundMode = value => {
+      const background = new THREE.Color(value || '#000000');
+      const luma = background.r * 0.2126 + background.g * 0.7152 + background.b * 0.0722;
+      const lightBackground = luma > 0.72;
+      mount.style.backgroundColor = value || '#000000';
+      canvas.style.filter = lightBackground ? 'invert(1) hue-rotate(180deg)' : 'none';
+      canvas.style.mixBlendMode = lightBackground ? 'normal' : 'screen';
+    };
+    applyBackgroundMode(backgroundColor);
     mount.appendChild(canvas);
 
     const scene = new THREE.Scene();
@@ -559,6 +569,16 @@ export const LaserFlow = ({
 
     const { r, g, b } = hexToRGB(color || '#FFFFFF');
     uniforms.uColor.value.set(r, g, b);
+    const canvas = rendererRef.current?.domElement;
+    if (canvas) {
+      const background = new THREE.Color(backgroundColor || '#000000');
+      const luma = background.r * 0.2126 + background.g * 0.7152 + background.b * 0.0722;
+      const lightBackground = luma > 0.72;
+      const mount = mountRef.current;
+      if (mount) mount.style.backgroundColor = backgroundColor || '#000000';
+      canvas.style.filter = lightBackground ? 'invert(1) hue-rotate(180deg)' : 'none';
+      canvas.style.mixBlendMode = lightBackground ? 'normal' : 'screen';
+    }
   }, [
     wispDensity,
     mouseTiltStrength,
@@ -575,7 +595,8 @@ export const LaserFlow = ({
     decay,
     falloffStart,
     fogFallSpeed,
-    color
+    color,
+    backgroundColor
   ]);
 
   return <div ref={mountRef} className={`laser-flow-container ${className || ''}`} style={style} />;

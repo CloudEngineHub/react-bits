@@ -28,7 +28,7 @@ const DEFAULT_PROPS = {
 
 const SilkDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { speed, scale, color, noiseIntensity, rotation } = props;
+  const { speed, scale, color, noiseIntensity, rotation, lightMode } = props;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -85,6 +85,7 @@ const SilkDemo = () => {
               color={color}
               noiseIntensity={noiseIntensity}
               rotation={rotation}
+              lightMode={lightMode}
             />
 
             {/* For Demo Purposes Only */}

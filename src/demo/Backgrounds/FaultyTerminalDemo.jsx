@@ -14,6 +14,7 @@ import BackgroundContent from '../../components/common/Preview/BackgroundContent
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import { faultyTerminal } from '../../constants/code/Backgrounds/faultyTerminalCode';
@@ -35,6 +36,12 @@ const DEFAULT_PROPS = {
 
 const FaultyTerminalDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, {
+    lightMode: true,
+    tint: '#4f46e5',
+    brightness: 0.8,
+    scanlineIntensity: 0.18
+  });
   const {
     scale,
     digitSize,
@@ -46,8 +53,9 @@ const FaultyTerminalDemo = () => {
     mouseStrength,
     pageLoadAnimation,
     noiseAmp,
-    brightness
-  } = props;
+    brightness,
+    lightMode
+  } = themedProps;
   const [key, forceRerender] = useForceRerender();
 
   const handleChange = propName => value => {
@@ -193,6 +201,7 @@ const FaultyTerminalDemo = () => {
               pageLoadAnimation={pageLoadAnimation}
               noiseAmp={noiseAmp}
               brightness={brightness}
+              lightMode={lightMode}
             />
 
             <BackgroundContent pillText="New Background" headline="It works on my machine, please check again" />

@@ -1,9 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v6';
 import Providers from './components/layout/Providers';
-import { useEffect } from 'react';
 import { ActiveRouteProvider } from './components/context/ActiveRouteContext/ActiveRouteContext';
-import { forceChakraDarkTheme } from './utils/utils';
 
 import AnnouncementModal from './components/common/AnnouncementModal/AnnouncementModal';
 import SidebarLayout from './components/layout/SidebarLayout';
@@ -58,10 +56,6 @@ function AppContent() {
 }
 
 export default function App() {
-  useEffect(() => {
-    forceChakraDarkTheme();
-  }, []);
-
   return (
     <Router>
       <NuqsAdapter>

@@ -33,7 +33,7 @@ const DEFAULT_PROPS = {
 
 const PrismaticBurstDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { animationType, intensity, speed, distort, hoverDampness, rayCount, color0, color1, color2 } = props;
+  const { animationType, intensity, speed, distort, hoverDampness, rayCount, color0, color1, color2, lightMode } = props;
   const userColors = [color0, color1, color2].filter(Boolean);
 
   const propData = useMemo(
@@ -114,6 +114,7 @@ const PrismaticBurstDemo = () => {
               distort={distort}
               hoverDampness={hoverDampness}
               rayCount={rayCount || undefined}
+              lightMode={lightMode}
               {...(userColors.length ? { colors: userColors } : {})}
             />
 

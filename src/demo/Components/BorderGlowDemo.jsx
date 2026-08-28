@@ -4,6 +4,7 @@ import { VscSparkleFilled } from 'react-icons/vsc';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
@@ -28,8 +29,21 @@ const DEFAULT_PROPS = {
 
 const BorderGlowDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { edgeSensitivity, backgroundColor, borderRadius, glowRadius, glowIntensity, coneSpread, animated } = props;
+  const { edgeSensitivity, glowColor, backgroundColor, borderRadius, glowRadius, glowIntensity, coneSpread, animated } = props;
   const [colors, setColors] = useState(['#c084fc', '#f472b6', '#38bdf8']);
+  const renderedBackgroundColor = useColorModeValue(
+    backgroundColor === DEFAULT_PROPS.backgroundColor ? '#ffffff' : backgroundColor,
+    backgroundColor
+  );
+  const renderedGlowColor = useColorModeValue(
+    glowColor === DEFAULT_PROPS.glowColor ? '278 90 58' : glowColor,
+    glowColor
+  );
+  const renderedGlowIntensity = useColorModeValue(
+    glowIntensity === DEFAULT_PROPS.glowIntensity ? 1.25 : glowIntensity,
+    glowIntensity
+  );
+  const renderedFillOpacity = useColorModeValue(0.22, 0.5);
 
   const updateColor = (index, value) => {
     const next = [...colors];
@@ -59,13 +73,20 @@ const BorderGlowDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" py={10} h={500}>
-            <BorderGlow {...props} colors={colors}>
+            <BorderGlow
+              {...props}
+              backgroundColor={renderedBackgroundColor}
+              glowColor={renderedGlowColor}
+              glowIntensity={renderedGlowIntensity}
+              fillOpacity={renderedFillOpacity}
+              colors={colors}
+            >
               <Flex direction="column" alignItems="flex-start" justifyContent="center" p="2em" minH="200px">
                 <Icon mb={3} boxSize={10} as={VscSparkleFilled} />
                 <Text fontWeight={600} fontSize="1.4rem" letterSpacing="-.5px">
                   Hover Near the Edges
                 </Text>
-                <Text color="#a1a1aa" fontSize="14px" maxW="40ch" mt={1}>
+                <Text color="var(--text-muted)" fontSize="14px" maxW="40ch" mt={1}>
                   Move your cursor close to the card border to see the colored glow effect follow your pointer direction.
                 </Text>
               </Flex>
@@ -78,8 +99,8 @@ const BorderGlowDemo = () => {
             <PreviewSlider min={10} max={80} step={1} title="Glow Radius" value={glowRadius} onChange={val => updateProp('glowRadius', val)} />
             <PreviewSlider min={0.1} max={3} step={0.1} title="Glow Intensity" value={glowIntensity} onChange={val => updateProp('glowIntensity', val)} />
             <PreviewSlider min={5} max={45} step={1} title="Cone Spread" value={coneSpread} onChange={val => updateProp('coneSpread', val)} />
-            <PreviewSwitch title="Animated Intro" value={animated} onChange={val => updateProp('animated', val)} />
-            <PreviewColorPickerCustom title="Background" color={backgroundColor} onChange={val => updateProp('backgroundColor', val)} />
+            <PreviewSwitch title="Animated Intro" isChecked={animated} onChange={val => updateProp('animated', val)} />
+            <PreviewColorPickerCustom title="Background" color={renderedBackgroundColor} onChange={val => updateProp('backgroundColor', val)} />
             <Text fontSize="sm" mt={4}>Gradient Colors</Text>
             <Flex gap={2} flexWrap="wrap" mt={1}>
               {colors.map((c, i) => (

@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
@@ -60,6 +61,8 @@ const LineSidebarDemo = () => {
     fontSize,
     smoothing
   } = props;
+  const renderedTextColor = useColorModeValue(textColor === DEFAULT_PROPS.textColor ? '#52525b' : textColor, textColor);
+  const renderedMarkerColor = useColorModeValue(markerColor === DEFAULT_PROPS.markerColor ? '#a1a1aa' : markerColor, markerColor);
   const propData = useMemo(
     () => [
       { name: 'items', type: 'string[]', default: '[...]', description: 'Labels rendered as the list of sidebar entries.' },
@@ -90,13 +93,13 @@ const LineSidebarDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} overflow="hidden" display="flex" alignItems="center" justifyContent="flex-start" pl={{ base: 6, md: 12 }} py={12}>
-            <LineSidebar {...props} items={DEMO_ITEMS} />
+            <LineSidebar {...props} items={DEMO_ITEMS} textColor={renderedTextColor} markerColor={renderedMarkerColor} />
           </Box>
 
           <Customize>
             <PreviewColorPickerCustom title="Accent" color={accentColor} onChange={val => updateProp('accentColor', val)} />
-            <PreviewColorPickerCustom title="Text" color={textColor} onChange={val => updateProp('textColor', val)} />
-            <PreviewColorPickerCustom title="Marker" color={markerColor} onChange={val => updateProp('markerColor', val)} />
+            <PreviewColorPickerCustom title="Text" color={renderedTextColor} onChange={val => updateProp('textColor', val)} />
+            <PreviewColorPickerCustom title="Marker" color={renderedMarkerColor} onChange={val => updateProp('markerColor', val)} />
             <PreviewSelect title="Falloff" options={FALLOFF_OPTIONS} value={falloff} onChange={val => updateProp('falloff', val)} width={140} />
             <PreviewSlider title="Proximity Radius" min={40} max={280} step={5} value={proximityRadius} valueUnit="px" onChange={val => updateProp('proximityRadius', val)} />
             <PreviewSlider title="Max Shift" min={0} max={60} step={1} value={maxShift} valueUnit="px" onChange={val => updateProp('maxShift', val)} />

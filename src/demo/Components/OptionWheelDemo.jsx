@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLayout';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import CodeExample from '../../components/code/CodeExample';
 import PropTable from '../../components/common/Preview/PropTable';
@@ -44,6 +45,8 @@ const OptionWheelDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { textColor, activeColor, side, fontSize, spacing, curve, tilt, blur, fade, smoothing, inset, loop, draggable, soundUrl, soundVolume } =
     props;
+  const renderedTextColor = useColorModeValue(textColor === DEFAULT_PROPS.textColor ? '#71717a' : textColor, textColor);
+  const renderedActiveColor = useColorModeValue(activeColor === DEFAULT_PROPS.activeColor ? '#18181b' : activeColor, activeColor);
 
   const propData = useMemo(
     () => [
@@ -76,12 +79,12 @@ const OptionWheelDemo = () => {
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
-            <OptionWheel {...props} items={DEMO_ITEMS} />
+            <OptionWheel {...props} items={DEMO_ITEMS} textColor={renderedTextColor} activeColor={renderedActiveColor} />
           </Box>
 
           <Customize>
-            <PreviewColorPickerCustom title="Text" color={textColor} onChange={val => updateProp('textColor', val)} />
-            <PreviewColorPickerCustom title="Active" color={activeColor} onChange={val => updateProp('activeColor', val)} />
+            <PreviewColorPickerCustom title="Text" color={renderedTextColor} onChange={val => updateProp('textColor', val)} />
+            <PreviewColorPickerCustom title="Active" color={renderedActiveColor} onChange={val => updateProp('activeColor', val)} />
             <PreviewSelect title="Side" options={SIDE_OPTIONS} value={side} onChange={val => updateProp('side', val)} width={120} />
             <PreviewSlider title="Font Size" min={1.5} max={5} step={0.1} value={fontSize} valueUnit="rem" onChange={val => updateProp('fontSize', val)} />
             <PreviewSlider title="Spacing" min={1} max={2.5} step={0.05} value={spacing} onChange={val => updateProp('spacing', val)} />

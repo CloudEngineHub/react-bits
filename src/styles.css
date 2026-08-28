@@ -18,15 +18,16 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--bg-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html {
   scroll-behavior: smooth;
+  min-height: 100%;
+  background: var(--bg-body);
 }
 
 input[type='color'] {
@@ -69,6 +70,14 @@ body {
   font-family: 'Geist', sans-serif;
   margin: 0;
   min-width: 100%;
+  min-height: 100%;
+  color: var(--text-primary);
+  background: var(--bg-body);
+}
+
+#root {
+  min-height: 100vh;
+  background: var(--bg-body);
 }
 
 .app-container {
@@ -105,6 +114,31 @@ body {
 
 .back-to-top:hover {
   background: var(--surface-ghost-hover) !important;
+}
+
+:root[data-theme='light'] .back-to-top {
+  border-color: var(--border-subtle);
+  background: #fafafa !important;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .back-to-top::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--inset-border);
+  border-radius: 8px;
+  background: #fff;
+  pointer-events: none;
+}
+
+:root[data-theme='light'] .back-to-top svg {
+  position: relative;
+  z-index: 1;
+}
+
+:root[data-theme='light'] .back-to-top:hover {
+  background: #f7f7f8 !important;
 }
 
 @media only screen and (max-width: 1000px) {

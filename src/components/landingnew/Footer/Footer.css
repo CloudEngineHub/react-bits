@@ -205,3 +205,36 @@
     gap: 8px;
   }
 }
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-footer {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-footer-separator,
+:root[data-theme='light'] .ln-footer-divider {
+  background: linear-gradient(90deg, transparent, #e4e4e7 30%, #e4e4e7 70%, transparent);
+}
+
+:root[data-theme='light'] .ln-footer-logo {
+  filter: invert(1);
+  opacity: 0.88;
+}
+
+:root[data-theme='light'] .ln-footer-tagline,
+:root[data-theme='light'] .ln-footer-col-title,
+:root[data-theme='light'] .ln-footer-link,
+:root[data-theme='light'] .ln-footer-attribution,
+:root[data-theme='light'] .ln-footer-creator,
+:root[data-theme='light'] .ln-footer-copy {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-footer-link:hover,
+:root[data-theme='light'] .ln-footer-creator:hover {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-footer-heart {
+  color: #52525b;
+}

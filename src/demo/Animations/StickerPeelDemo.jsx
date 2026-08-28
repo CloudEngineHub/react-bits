@@ -14,6 +14,7 @@ import Dependencies from '../../components/code/Dependencies';
 
 import StickerPeel from '../../content/Animations/StickerPeel/StickerPeel';
 import { stickerPeel } from '../../constants/code/Animations/stickerPeelCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   rotate: 0,
@@ -29,6 +30,10 @@ const StickerPeelDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { rotate, width, peelBackHoverPct, peelBackActivePct, lightingIntensity, shadowIntensity, peelDirection } =
     props;
+  const previewBackground = useColorModeValue(
+    'linear-gradient(to bottom, #ffffff, #fafafa, #fafafa, #ffffff)',
+    'linear-gradient(to bottom, #120F17, #1B1722, #1B1722, #120F17)'
+  );
 
   const propData = useMemo(
     () => [
@@ -118,7 +123,7 @@ const StickerPeelDemo = () => {
             className="demo-container"
             h={400}
             overflow="hidden"
-            bg="linear-gradient(to bottom, #120F17, #1B1722, #1B1722 , #120F17)"
+            bg={previewBackground}
           >
             <StickerPeel
               imageSrc={logo}
@@ -139,8 +144,8 @@ const StickerPeelDemo = () => {
               top="1em"
               transform="translateX(-50%)"
               fontSize="clamp(1.5rem, 4vw, 3rem)"
-              fontWeight={900}
-              color="#2F293A"
+              fontWeight={600}
+              className="demo-instruction"
             >
               Try dragging it!
             </Text>

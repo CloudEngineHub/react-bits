@@ -1,5 +1,7 @@
 import { useQueryStates } from 'nuqs';
 import { useCallback, useMemo, useRef } from 'react';
+import { useColorMode } from '../components/setup/color-mode';
+import { getBackgroundLightProps } from '../constants/backgroundThemeProps';
 
 const isHexColor = value => typeof value === 'string' && /^#?[0-9a-fA-F]{3,8}$/.test(value);
 
@@ -34,6 +36,13 @@ const createParser = defaultValue => {
 
 export function useComponentProps(defaultProps) {
   const defaultPropsRef = useRef(defaultProps);
+  const { colorMode } = useColorMode();
+  const lightProps = useMemo(() => getBackgroundLightProps(), []);
+
+  const effectiveDefaultProps = useMemo(
+    () => (colorMode === 'light' && lightProps ? { ...defaultPropsRef.current, ...lightProps } : defaultPropsRef.current),
+    [colorMode, lightProps]
+  );
 
   const parsers = useMemo(() => {
     const result = {};
@@ -46,14 +55,14 @@ export function useComponentProps(defaultProps) {
   const [queryState, setQueryState] = useQueryStates(parsers);
 
   const props = useMemo(() => {
-    const merged = { ...defaultPropsRef.current };
+    const merged = { ...effectiveDefaultProps };
     for (const [key, value] of Object.entries(queryState)) {
       if (value !== null) {
         merged[key] = value;
       }
     }
     return merged;
-  }, [queryState]);
+  }, [effectiveDefaultProps, queryState]);
 
   const hasChanges = useMemo(() => {
     return Object.values(queryState).some(v => v !== null);
@@ -61,21 +70,21 @@ export function useComponentProps(defaultProps) {
 
   const updateProp = useCallback(
     (name, value) => {
-      const newValue = value === defaultPropsRef.current[name] ? null : value;
+      const newValue = value === effectiveDefaultProps[name] ? null : value;
       setQueryState({ [name]: newValue });
     },
-    [setQueryState]
+    [effectiveDefaultProps, setQueryState]
   );
 
   const updateProps = useCallback(
     updates => {
       const newState = {};
       for (const [name, value] of Object.entries(updates)) {
-        newState[name] = value === defaultPropsRef.current[name] ? null : value;
+        newState[name] = value === effectiveDefaultProps[name] ? null : value;
       }
       setQueryState(newState);
     },
-    [setQueryState]
+    [effectiveDefaultProps, setQueryState]
   );
 
   const resetProps = useCallback(() => {
@@ -92,7 +101,7 @@ export function useComponentProps(defaultProps) {
 
   return {
     props,
-    defaultProps: defaultPropsRef.current,
+    defaultProps: effectiveDefaultProps,
     updateProp,
     updateProps,
     resetProps,

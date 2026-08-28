@@ -15,6 +15,7 @@ import MagicBento from '../../content/Components/MagicBento/MagicBento';
 
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   enableStars: true,
@@ -30,6 +31,7 @@ const MagicBentoDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { enableStars, enableSpotlight, disableAnimations, spotlightRadius, enableTilt, clickEffect, enableMagnetism } =
     props;
+  const glowColor = useColorModeValue('24, 24, 27', '132, 0, 255');
 
   const propData = useMemo(
     () => [
@@ -116,6 +118,7 @@ const MagicBentoDemo = () => {
               enableTilt={enableTilt}
               clickEffect={clickEffect}
               enableMagnetism={enableMagnetism}
+              glowColor={glowColor}
             />
           </Box>
 

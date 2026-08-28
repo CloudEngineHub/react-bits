@@ -36,6 +36,7 @@ uniform vec2 uMouse;
 uniform float uMouseInteractive;
 uniform float uQuality;
 uniform float uStepScale;
+uniform float uLightMode;
 out vec4 fragColor;
 
 void mainImage(out vec4 o, vec2 C) {
@@ -83,7 +84,18 @@ void main() {
   vec3 finalColor = mix(rgb, customColor, step(0.5, uUseCustomColor));
   
   float alpha = length(rgb) * uOpacity;
-  fragColor = vec4(finalColor, alpha);
+  if (uLightMode > 0.5) {
+    vec3 source = clamp(finalColor, 0.0, 1.0);
+    float peak = max(source.r, max(source.g, source.b));
+    float floorColor = min(source.r, min(source.g, source.b));
+    vec3 chroma = (source - vec3(floorColor)) / max(peak - floorColor, 0.0001);
+    vec3 pigment = mix(source / max(peak, 0.0001), chroma, 0.68) * 0.72;
+    float energy = clamp(length(rgb) / 1.7320508, 0.0, 1.0);
+    float coverage = pow(smoothstep(0.035, 0.72, energy), 0.76) * min(uOpacity, 1.0) * 0.9;
+    fragColor = vec4(mix(vec3(1.0), pigment, coverage), 1.0);
+  } else {
+    fragColor = vec4(finalColor, alpha);
+  }
 }`;
 };
 
@@ -98,6 +110,7 @@ export const Plasma = ({
   maxDpr = 1.5,
   targetFps = 60,
   iterations = 60,
+  lightMode = false,
 }) => {
   const containerRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -154,6 +167,7 @@ export const Plasma = ({
         uMouseInteractive: { value: mouseInteractive ? 1.0 : 0.0 },
         uQuality: { value: iterations },
         uStepScale: { value: ORIGINAL_QUALITY / iterations },
+        uLightMode: { value: lightMode ? 1 : 0 },
       }
     });
 
@@ -306,7 +320,7 @@ export const Plasma = ({
         containerEl?.removeChild(canvas);
       } catch {}
     };
-  }, [color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, iterations]);
+  }, [color, speed, direction, scale, opacity, mouseInteractive, renderScale, maxDpr, targetFps, iterations, lightMode]);
 
   return <div ref={containerRef} className="plasma-container" />;
 };

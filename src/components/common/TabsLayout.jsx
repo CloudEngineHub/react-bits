@@ -4,9 +4,9 @@ import CategoryProFooter from './Pro/CategoryProFooter';
 
 import { Tabs, Icon, Flex, Tooltip, Box, Menu, Portal } from '@chakra-ui/react';
 import { FiCode, FiEye } from 'react-icons/fi';
-import { PiShareFat } from 'react-icons/pi';
+import { FaRegShareFromSquare } from 'react-icons/fa6';
 import { RiHeartFill, RiHeartLine } from 'react-icons/ri';
-import { RotateCcw, MoreHorizontal, Palette } from 'lucide-react';
+import { MoreHorizontal, Palette } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { toggleSavedComponent, isComponentSaved } from '../../utils/favorites';
@@ -15,29 +15,33 @@ import { useOptions } from '../context/OptionsContext/useOptions';
 import { colors } from '../../constants/colors';
 import PropTable from './Preview/PropTable';
 import CodeExample, { injectPropsIntoCode } from '../code/CodeExample';
-import OpenInStudioButton, { buildStudioUrl } from './Preview/OpenInStudioButton';
+import OpenInStudioButton from './Preview/OpenInStudioButton';
+import { buildStudioUrl } from './Preview/studio-url';
 import CopyForAIMenu, { AIMenuItem } from './CopyForAIMenu';
 import { useAIExportActions } from '../../hooks/useAIExportActions';
 import ComponentPager from './ComponentPager';
+import CustomizeActionsContext from './Preview/CustomizeContext';
 
 const TAB_STYLE_PROPS = {
   flex: '0 0 auto',
-  border: '1px solid transparent',
+  border: '1px solid var(--action-control-border)',
   borderRadius: '10px',
   fontSize: '14px',
+  fontWeight: '500',
   h: 10,
   px: 4,
-  color: 'rgba(255, 255, 255, 0.75)',
-  bg: 'var(--surface-ghost-track)',
+  color: 'var(--text-muted)',
+  bg: 'var(--action-control-bg)',
   justifyContent: 'center',
   transition:
     'transform var(--dur-press) var(--ease-out), background-color var(--dur-menu) var(--ease-out), color var(--dur-menu) var(--ease-out)',
-  _hover: { bg: 'var(--surface-ghost-hover)', color: '#ffffff' },
+  _hover: { bg: 'var(--action-control-hover)', color: 'var(--text-primary)' },
   _active: { transform: 'scale(0.97)' },
   _selected: {
-    bg: 'var(--surface-ghost)',
+    bg: 'var(--action-control-selected)',
+    borderColor: 'var(--action-control-selected-border)',
     color: colors.accent,
-    boxShadow: 'var(--surface-ghost-highlight)'
+    boxShadow: 'var(--action-control-shadow)'
   }
 };
 
@@ -254,7 +258,7 @@ const TabsLayout = ({ children, className }) => {
   }, []);
 
   const showFavorite = favoriteKey && category !== 'get-started';
-  const hasOverflowActions = hasChanges || showFavorite || Boolean(codeExampleProps) || Boolean(studioButtonProps);
+  const hasOverflowActions = showFavorite || Boolean(codeExampleProps) || Boolean(studioButtonProps);
 
   return (
     <Tabs.Root w="100%" variant="plain" lazyMount defaultValue="preview" className={className}>
@@ -273,28 +277,12 @@ const TabsLayout = ({ children, className }) => {
 
           {/* Desktop: full action buttons */}
           <Flex alignItems="center" gap={2} flexShrink={0} display={{ base: 'none', md: 'flex' }}>
-            {hasChanges && (
-              <Box
-                as="button"
-                aria-label="Reset to defaults"
-                onClick={resetProps}
-                display="flex"
-                cursor="pointer"
-                alignItems="center"
-                justifyContent="center"
-                gap={2}
-                {...TAB_STYLE_PROPS}
-              >
-                <RotateCcw size={16} color="#fff" /> Reset
-              </Box>
-            )}
-
             {showFavorite && (
               <Tooltip.Root openDelay={250} closeDelay={100} positioning={{ placement: 'left', gutter: 8 }}>
                 <Tooltip.Trigger asChild>
                   <Box
                     as="button"
-                    aria-label="Add to Favorites"
+                    aria-label={isSaved ? 'Remove from Favorites' : 'Add to Favorites'}
                     onClick={toggleFavorite}
                     aria-pressed={isSaved}
                     display="flex"
@@ -303,11 +291,23 @@ const TabsLayout = ({ children, className }) => {
                     gap={2}
                     {...TAB_STYLE_PROPS}
                     w={10}
-                    bg={isSaved ? 'rgba(168, 85, 247, 0.18)' : TAB_STYLE_PROPS.bg}
-                    boxShadow={isSaved ? 'var(--surface-ghost-highlight)' : undefined}
-                    _hover={isSaved ? { bg: 'rgba(168, 85, 247, 0.26)' } : TAB_STYLE_PROPS._hover}
+                    borderColor={isSaved ? 'rgba(168, 85, 247, 0.3)' : 'var(--action-control-border)'}
+                    boxShadow={isSaved ? 'inset 0 0 0 1px rgba(168, 85, 247, 0.04)' : undefined}
+                    _hover={
+                      isSaved
+                        ? {
+                            bg: 'var(--action-control-hover)',
+                            borderColor: 'rgba(168, 85, 247, 0.48)'
+                          }
+                        : TAB_STYLE_PROPS._hover
+                    }
                   >
-                    <Icon as={isSaved ? RiHeartFill : RiHeartLine} color={isSaved ? '#c084fc' : '#fff'} boxSize={4} />
+                    <Icon
+                      as={isSaved ? RiHeartFill : RiHeartLine}
+                      color={isSaved ? '#a855f7' : 'var(--text-primary)'}
+                      boxSize={4}
+                      filter={isSaved ? 'drop-shadow(0 1px 3px rgba(168, 85, 247, 0.2))' : undefined}
+                    />
                   </Box>
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
@@ -348,7 +348,7 @@ const TabsLayout = ({ children, className }) => {
                     {...TAB_STYLE_PROPS}
                     w={10}
                   >
-                    <Icon as={PiShareFat} boxSize={4} color="#fff" />
+                    <Icon as={FaRegShareFromSquare} boxSize={4} flexShrink={0} color="var(--text-primary)" />
                   </Box>
                 </Tooltip.Trigger>
                 <Tooltip.Positioner>
@@ -404,8 +404,8 @@ const TabsLayout = ({ children, className }) => {
                     px={0}
                     position="relative"
                   >
-                    <MoreHorizontal size={18} color="#fff" />
-                    {(hasChanges || isSaved) && (
+                    <MoreHorizontal size={18} />
+                    {isSaved && (
                       <Box
                         position="absolute"
                         top="6px"
@@ -426,28 +426,10 @@ const TabsLayout = ({ children, className }) => {
                       borderRadius="10px"
                       p={1}
                       minW="180px"
-                      boxShadow="0 10px 30px rgba(0, 0, 0, 0.5)"
+                      boxShadow="var(--shadow-menu)"
                       zIndex={1500}
                       transformOrigin="top right"
                     >
-                      {hasChanges && (
-                        <Menu.Item
-                          value="reset"
-                          onSelect={resetProps}
-                          display="flex"
-                          alignItems="center"
-                          gap={3}
-                          px={3}
-                          py={2}
-                          fontSize="14px"
-                          color="#fff"
-                          borderRadius="8px"
-                          cursor="pointer"
-                          _hover={{ bg: colors.bgHover }}
-                        >
-                          <RotateCcw size={16} color="#fff" /> Reset to defaults
-                        </Menu.Item>
-                      )}
                       {showFavorite && (
                         <Menu.Item
                           value="favorite"
@@ -458,14 +440,14 @@ const TabsLayout = ({ children, className }) => {
                           px={3}
                           py={2}
                           fontSize="14px"
-                          color="#fff"
+                          color="var(--text-primary)"
                           borderRadius="8px"
                           cursor="pointer"
                           _hover={{ bg: colors.bgHover }}
                         >
                           <Icon
                             as={isSaved ? RiHeartFill : RiHeartLine}
-                            color={isSaved ? '#c084fc' : '#fff'}
+                            color={isSaved ? '#a855f7' : 'var(--text-primary)'}
                             boxSize={4}
                           />
                           {isSaved ? 'Remove from favorites' : 'Add to favorites'}
@@ -481,12 +463,12 @@ const TabsLayout = ({ children, className }) => {
                           px={3}
                           py={2}
                           fontSize="14px"
-                          color="#fff"
+                          color="var(--text-primary)"
                           borderRadius="8px"
                           cursor="pointer"
                           _hover={{ bg: colors.bgHover }}
                         >
-                          <Icon as={PiShareFat} boxSize={4} color="#fff" /> Copy share link
+                          <Icon as={FaRegShareFromSquare} boxSize={4} flexShrink={0} color="var(--text-primary)" /> Copy share link
                         </Menu.Item>
                       )}
                       {aiExport && (
@@ -511,12 +493,12 @@ const TabsLayout = ({ children, className }) => {
                           px={3}
                           py={2}
                           fontSize="14px"
-                          color="#fff"
+                          color="var(--text-primary)"
                           borderRadius="8px"
                           cursor="pointer"
                           _hover={{ bg: colors.bgHover }}
                         >
-                          <Palette size={16} color="#fff" /> Open in BG Studio
+                          <Palette size={16} /> Open in BG Studio
                         </Menu.Item>
                       )}
                     </Menu.Content>
@@ -529,7 +511,15 @@ const TabsLayout = ({ children, className }) => {
       </Tabs.List>
 
       <Tabs.Content pt={0} value="preview">
-        {contentMap.PreviewTab}
+        <CustomizeActionsContext.Provider
+          value={{
+            openStudio: studioButtonProps ? handleOpenStudio : null,
+            reset: resetProps,
+            canReset: hasChanges
+          }}
+        >
+          {contentMap.PreviewTab}
+        </CustomizeActionsContext.Provider>
       </Tabs.Content>
       <Tabs.Content pt={0} value="code">
         {contentMap.CodeTab}

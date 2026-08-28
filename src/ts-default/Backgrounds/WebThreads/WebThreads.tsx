@@ -26,6 +26,8 @@ export interface WebThreadsProps {
   grainIntensity?: number;
   mouseInteraction?: boolean;
   mouseStrength?: number;
+  backgroundColor?: string;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -67,6 +69,8 @@ uniform float uGrainIntensity;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
+uniform vec3 uBackgroundColor;
+uniform bool uLightMode;
 uniform vec2 uMouse;
 uniform float uMouseStrength;
 uniform float uEnableMouse;
@@ -142,7 +146,19 @@ void main() {
     alpha = clamp(alpha + gv, 0.0, 1.0);
   }
 
-  fragColor = vec4(outRgb, alpha);
+  if (uLightMode) {
+    vec3 mapped = vec3(1.0) - exp(-max(col, vec3(0.0)) * 1.3);
+    float rawEnergy = clamp(max(mapped.r, max(mapped.g, mapped.b)) * uOpacity, 0.0, 1.0);
+    float coverage = smoothstep(0.18, 0.72, rawEnergy);
+    coverage *= coverage;
+    vec3 hue = mapped / max(max(mapped.r, max(mapped.g, mapped.b)), 1e-4);
+    vec3 chroma = pow(clamp(hue, 0.0, 1.0), vec3(0.78));
+    vec3 pigment = mix(chroma, vec3(0.08), 0.12);
+    vec3 ink = mix(vec3(0.9), pigment, 0.82 + coverage * 0.18);
+    fragColor = vec4(mix(uBackgroundColor, ink, coverage), 1.0);
+  } else {
+    fragColor = vec4(outRgb, alpha);
+  }
 }
 `;
 
@@ -175,6 +191,8 @@ const WebThreads: React.FC<WebThreadsProps> = ({
   grainIntensity = 0.05,
   mouseInteraction = true,
   mouseStrength = 0.3,
+  backgroundColor = '#FFFFFF',
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -226,6 +244,8 @@ const WebThreads: React.FC<WebThreadsProps> = ({
         uColor1: { value: new Float32Array([1, 1, 1]) },
         uColor2: { value: new Float32Array([1, 1, 1]) },
         uColor3: { value: new Float32Array([1, 1, 1]) },
+        uBackgroundColor: { value: new Float32Array([1, 1, 1]) },
+        uLightMode: { value: false },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
         uMouseStrength: { value: 0.3 },
         uEnableMouse: { value: 1.0 },
@@ -374,6 +394,11 @@ const WebThreads: React.FC<WebThreadsProps> = ({
     c3[0] = rgb3[0];
     c3[1] = rgb3[1];
     c3[2] = rgb3[2];
+    const bg = hexToRgb(backgroundColor);
+    u.uBackgroundColor.value[0] = bg[0];
+    u.uBackgroundColor.value[1] = bg[1];
+    u.uBackgroundColor.value[2] = bg[2];
+    u.uLightMode.value = lightMode;
     u.uMouseStrength.value = mouseStrength;
     u.uEnableMouse.value = mouseInteraction ? 1.0 : 0.0;
     mouseRef.current.enabled = mouseInteraction;
@@ -399,7 +424,9 @@ const WebThreads: React.FC<WebThreadsProps> = ({
     grain,
     grainIntensity,
     mouseInteraction,
-    mouseStrength
+    mouseStrength,
+    backgroundColor,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`web-threads-container ${className}`.trim()} />;

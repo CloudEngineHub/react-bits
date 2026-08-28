@@ -24,6 +24,18 @@
     rgba(0, 0, 0, 0.1) 0px 32px 64px;
 }
 
+.border-glow-card--light {
+  border-color: rgb(24 24 27 / 12%);
+  box-shadow:
+    rgb(24 24 27 / 4%) 0 1px 2px,
+    rgb(24 24 27 / 5%) 0 8px 24px;
+}
+
+.border-glow-card--light::after,
+.border-glow-card--light > .edge-light {
+  mix-blend-mode: normal;
+}
+
 .border-glow-card::before,
 .border-glow-card::after,
 .border-glow-card > .edge-light {

@@ -136,14 +136,12 @@ const Ownership = () => (
 
               <div className="ln-own-code">
                 {CODE.map((line, i) => (
-                  // eslint-disable-next-line react/no-array-index-key
                   <div className="ln-own-code-line" key={i}>
                     <span className="ln-own-code-num" aria-hidden="true">
                       {i + 1}
                     </span>
                     <span className="ln-own-code-text">
                       {line.map(([text, kind], j) => (
-                        // eslint-disable-next-line react/no-array-index-key
                         <span className={`ln-own-t-${kind}`} key={j}>
                           {text}
                         </span>

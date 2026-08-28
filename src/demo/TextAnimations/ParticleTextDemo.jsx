@@ -5,6 +5,7 @@ import { CodeTab, PreviewTab, TabsLayout } from '../../components/common/TabsLay
 import useComponentProps from '../../hooks/useComponentProps';
 import useForceRerender from '../../hooks/useForceRerender';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 import Customize from '../../components/common/Preview/Customize';
 import PreviewInput from '../../components/common/Preview/PreviewInput';
 import PreviewSlider from '../../components/common/Preview/PreviewSlider';
@@ -72,6 +73,7 @@ const ParticleTextDemo = () => {
     fontFamily,
     glow
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#18181b' : color, color);
 
   const propData = useMemo(
     () => [
@@ -198,7 +200,7 @@ const ParticleTextDemo = () => {
               text={text}
               particleSize={particleSize}
               density={density}
-              color={color}
+              color={renderedColor}
               highlightColor={highlightColor}
               scatter={scatter}
               gatherDuration={gatherDuration}
@@ -240,7 +242,7 @@ const ParticleTextDemo = () => {
               onChange={val => updateProp('fontWeight', val)}
             />
 
-            <PreviewColorPickerCustom title="Color" color={color} onChange={val => updateProp('color', val)} />
+            <PreviewColorPickerCustom title="Color" color={renderedColor} onChange={val => updateProp('color', val)} />
             <PreviewColorPickerCustom
               title="Highlight"
               color={highlightColor}

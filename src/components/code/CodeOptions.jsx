@@ -3,6 +3,8 @@ import { Flex, Text, Icon, Box } from '@chakra-ui/react';
 import { useOptions } from '../context/OptionsContext/useOptions';
 import { TbMoodSad } from 'react-icons/tb';
 import IconSelect from './IconSelect';
+import CodeHighlighter, { CodeCopyButton } from './CodeHighlighter';
+import CodeSection from './CodeSection';
 import { colors } from '../../constants/colors';
 
 import jsIcon from '../../assets/icons/js.svg';
@@ -22,11 +24,24 @@ const COLOR_MAP = { JS: '#F7DF1E', TS: '#3178C6', CSS: '#B497CF', TW: '#38BDF8' 
 const LABEL_MAP = { JS: 'JavaScript', TS: 'TypeScript', CSS: 'CSS', TW: 'Tailwind' };
 
 const UNSUPPORTED = (
-  <Flex alignItems="center" gap={1} my={6} color={colors.textMuted}>
+  <Flex className="code-unsupported" alignItems="center" gap={1} color={colors.textMuted}>
     <Text>Sorry, this combination is not supported</Text>
     <Icon as={TbMoodSad} />
   </Flex>
 );
+
+const findCodeHighlighter = node => {
+  if (!node || typeof node !== 'object') return null;
+  if (node.type === CodeHighlighter) return node;
+
+  const nested = Children.toArray(node.props?.children);
+  for (const child of nested) {
+    const match = findCodeHighlighter(child);
+    if (match) return match;
+  }
+
+  return null;
+};
 
 const CodeOptions = ({ children }) => {
   const { languagePreset, setLanguagePreset, stylePreset, setStylePreset } = useOptions();
@@ -47,31 +62,54 @@ const CodeOptions = ({ children }) => {
   };
 
   const styleVariant = stylePreset === 'TW' ? 'tailwind' : 'css';
+  const activeNode = renderContent(styleVariant);
+  const activeParts = activeNode === UNSUPPORTED ? [activeNode] : Children.toArray(activeNode?.props?.children);
+  const primaryContent = activeParts[0] || activeNode;
+  const additionalContent = activeParts.slice(1);
+  const activeCode = findCodeHighlighter(primaryContent)?.props?.codeString;
 
   return (
-    <Box mt={0} w="100%">
-      <Flex mb={2} w="100%" alignItems="center" gap={2}>
-        <IconSelect
-          collection={LANG_ITEMS}
-          value={currentLang}
-          onChange={setLanguagePreset}
-          iconMap={ICON_MAP}
-          labelMap={LABEL_MAP}
-          colorMap={COLOR_MAP}
-          width="150px"
-        />
-        <IconSelect
-          collection={STYLE_ITEMS}
-          value={stylePreset}
-          onChange={setStylePreset}
-          iconMap={ICON_MAP}
-          labelMap={LABEL_MAP}
-          colorMap={COLOR_MAP}
-          width="135px"
-        />
-      </Flex>
-      <Box>{renderContent(styleVariant)}</Box>
-    </Box>
+    <>
+      <CodeSection
+        title="Code"
+        actions={
+          <>
+            <IconSelect
+              collection={LANG_ITEMS}
+              value={currentLang}
+              onChange={setLanguagePreset}
+              iconMap={ICON_MAP}
+              labelMap={LABEL_MAP}
+              colorMap={COLOR_MAP}
+              width="140px"
+              contentWidth="172px"
+              triggerHeight={8}
+              triggerRadius="7px"
+              triggerClassName="section-header-select"
+              placement="bottom-start"
+            />
+            <IconSelect
+              collection={STYLE_ITEMS}
+              value={stylePreset}
+              onChange={setStylePreset}
+              iconMap={ICON_MAP}
+              labelMap={LABEL_MAP}
+              colorMap={COLOR_MAP}
+              width="125px"
+              contentWidth="154px"
+              triggerHeight={8}
+              triggerRadius="7px"
+              triggerClassName="section-header-select"
+              placement="bottom-start"
+            />
+            <CodeCopyButton codeString={activeCode} />
+          </>
+        }
+      >
+        <Box>{primaryContent}</Box>
+      </CodeSection>
+      {additionalContent}
+    </>
   );
 };
 

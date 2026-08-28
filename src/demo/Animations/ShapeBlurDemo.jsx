@@ -79,7 +79,7 @@ const ShapeBlurDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" background="#120F17" height={500} overflow="hidden" p={0}>
+          <Box position="relative" className="demo-container" height={500} overflow="hidden" p={0}>
             <ShapeBlur
               className="shapeblur-demo"
               variation={0}
@@ -96,9 +96,9 @@ const ShapeBlurDemo = () => {
               top="50%"
               transform="translate(-50%, -50%)"
               fontSize="6rem"
-              fontWeight={900}
+              fontWeight={600}
               zIndex={0}
-              color="#2F293A"
+              className="demo-instruction"
             >
               Hover Me.
             </Text>

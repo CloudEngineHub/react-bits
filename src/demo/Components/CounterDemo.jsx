@@ -147,36 +147,36 @@ const CounterDemo = () => {
               <Counter
                 value={parseFloat(value.toFixed(1))}
                 places={[100, 10, 1, '.', 0.1]}
-                gradientFrom="#120F17"
+                gradientFrom="var(--bg-body)"
                 fontSize={fontSize}
                 padding={5}
                 gap={gap}
                 borderRadius={10}
                 horizontalPadding={15}
-                textColor="white"
-                fontWeight={900}
+                textColor="var(--text-primary)"
+                fontWeight={600}
               />
             ) : (
               <Counter
                 value={value}
-                gradientFrom="#120F17"
+                gradientFrom="var(--bg-body)"
                 fontSize={fontSize}
                 padding={5}
                 gap={gap}
                 borderRadius={10}
                 horizontalPadding={15}
-                textColor="white"
-                fontWeight={900}
+                textColor="var(--text-primary)"
+                fontWeight={600}
               />
             )}
 
             <Flex gap={4} bottom="1em" direction={'row'} justify={'center'} mt={4} position="absolute">
               <Button
-                bg="#2F293A"
+                bg="var(--text-primary)"
                 borderRadius="10px"
-                border="1px solid #2F293A"
-                _hover={{ bg: '#2F293A' }}
-                color="#fff"
+                border="1px solid var(--text-primary)"
+                _hover={{ opacity: 0.84 }}
+                color="var(--bg-body)"
                 h={10}
                 w={16}
                 onClick={() => updateProp('value', roundToTenth(value - 0.4))}
@@ -184,11 +184,11 @@ const CounterDemo = () => {
                 - 0.4
               </Button>
               <Button
-                bg="#2F293A"
+                bg="var(--text-primary)"
                 borderRadius="10px"
-                border="1px solid #2F293A"
-                _hover={{ bg: '#2F293A' }}
-                color="#fff"
+                border="1px solid var(--text-primary)"
+                _hover={{ opacity: 0.84 }}
+                color="var(--bg-body)"
                 h={10}
                 w={10}
                 onClick={() => updateProp('value', value - 1)}
@@ -196,11 +196,11 @@ const CounterDemo = () => {
                 -
               </Button>
               <Button
-                bg="#2F293A"
+                bg="var(--text-primary)"
                 borderRadius="10px"
-                border="1px solid #2F293A"
-                _hover={{ bg: '#2F293A' }}
-                color="#fff"
+                border="1px solid var(--text-primary)"
+                _hover={{ opacity: 0.84 }}
+                color="var(--bg-body)"
                 h={10}
                 w={10}
                 onClick={() => value < 999 && updateProp('value', value + 1)}
@@ -208,11 +208,11 @@ const CounterDemo = () => {
                 +
               </Button>
               <Button
-                bg="#2F293A"
+                bg="var(--text-primary)"
                 borderRadius="10px"
-                border="1px solid #2F293A"
-                _hover={{ bg: '#2F293A' }}
-                color="#fff"
+                border="1px solid var(--text-primary)"
+                _hover={{ opacity: 0.84 }}
+                color="var(--bg-body)"
                 h={10}
                 w={16}
                 onClick={() => value < 999 && updateProp('value', roundToTenth(value + 0.4))}

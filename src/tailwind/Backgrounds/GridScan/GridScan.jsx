@@ -33,6 +33,7 @@ uniform float uScanSoftness;
 uniform float uPhaseTaper;
 uniform float uScanDuration;
 uniform float uScanDelay;
+uniform float uLightMode;
 varying vec2 vUv;
 
 uniform float uScanStarts[8];
@@ -258,7 +259,16 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
   float gy = 1.0 - smoothstep(ty * 2.0, ty * 2.0 + aay * 2.0, ay);
   float halo = max(gx, gy) * fade;
   alpha = max(alpha, halo * clamp(uBloomOpacity, 0.0, 1.0));
-  fragColor = vec4(color, alpha);
+  if (uLightMode > 0.5) {
+    float energy = max(max(color.r, color.g), color.b);
+    float coverage = clamp(max(alpha, smoothstep(0.0, 0.55, energy) * 0.82), 0.0, 0.9);
+    coverage *= smoothstep(0.015, 0.12, energy);
+    vec3 chroma = clamp(color / max(energy, 0.0001), 0.0, 1.0);
+    chroma = pow(chroma, vec3(1.2));
+    fragColor = vec4(mix(vec3(1.0), chroma, coverage * 0.94), 1.0);
+  } else {
+    fragColor = vec4(color, alpha);
+  }
 }
 
 void main(){
@@ -295,6 +305,7 @@ export const GridScan = ({
   enableGyro = false,
   scanOnClick = false,
   snapBackDelay = 250,
+  lightMode = false,
   className,
   style
 }) => {
@@ -454,7 +465,8 @@ export const GridScan = ({
       uScanDelay: { value: scanDelay },
       uScanDirection: { value: scanDirection === 'backward' ? 1 : scanDirection === 'pingpong' ? 2 : 0 },
       uScanStarts: { value: new Array(MAX_SCANS).fill(0) },
-      uScanCount: { value: 0 }
+      uScanCount: { value: 0 },
+      uLightMode: { value: lightMode ? 1 : 0 }
     };
 
     const material = new THREE.ShaderMaterial({
@@ -594,7 +606,8 @@ export const GridScan = ({
     skewScale,
     yBoost,
     tiltScale,
-    yawScale
+    yawScale,
+    lightMode
   ]);
 
   useEffect(() => {
@@ -616,6 +629,7 @@ export const GridScan = ({
       u.uPhaseTaper.value = scanPhaseTaper;
       u.uScanDuration.value = Math.max(0.05, scanDuration);
       u.uScanDelay.value = Math.max(0.0, scanDelay);
+      u.uLightMode.value = lightMode ? 1 : 0;
     }
     if (bloomRef.current) {
       bloomRef.current.blendMode.opacity.value = Math.max(0, bloomIntensity);
@@ -643,7 +657,8 @@ export const GridScan = ({
     scanSoftness,
     scanPhaseTaper,
     scanDuration,
-    scanDelay
+    scanDelay,
+    lightMode
   ]);
 
   useEffect(() => {

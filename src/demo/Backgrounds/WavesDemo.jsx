@@ -14,6 +14,7 @@ import { waves } from '../../constants/code/Backgrounds/wavesCode';
 
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
@@ -21,9 +22,14 @@ const DEFAULT_PROPS = {
   waveSpeedX: 0.0125
 };
 
+const LIGHT_PROPS = {
+  lineColor: '#52525b'
+};
+
 const WavesDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { lineColor, waveSpeedX } = props;
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
+  const { lineColor, waveSpeedX } = themedProps;
   const [key, forceRerender] = useForceRerender();
 
   const propData = useMemo(
@@ -111,7 +117,7 @@ const WavesDemo = () => {
   );
 
   return (
-    <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
+    <ComponentPropsProvider props={themedProps} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
           <Box position="relative" h={500} className="demo-container" overflow="hidden" p={0}>

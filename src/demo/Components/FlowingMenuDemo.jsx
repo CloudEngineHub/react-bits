@@ -8,6 +8,7 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useComponentProps from '../../hooks/useComponentProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
@@ -27,6 +28,11 @@ const DEFAULT_PROPS = {
 const FlowingMenuDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { speed, textColor, bgColor, marqueeBgColor, marqueeTextColor, borderColor } = props;
+  const renderedTextColor = useColorModeValue(textColor === DEFAULT_PROPS.textColor ? '#18181b' : textColor, textColor);
+  const renderedBgColor = useColorModeValue(bgColor === DEFAULT_PROPS.bgColor ? '#ffffff' : bgColor, bgColor);
+  const renderedMarqueeBgColor = useColorModeValue(marqueeBgColor === DEFAULT_PROPS.marqueeBgColor ? '#18181b' : marqueeBgColor, marqueeBgColor);
+  const renderedMarqueeTextColor = useColorModeValue(marqueeTextColor === DEFAULT_PROPS.marqueeTextColor ? '#ffffff' : marqueeTextColor, marqueeTextColor);
+  const renderedBorderColor = useColorModeValue(borderColor === DEFAULT_PROPS.borderColor ? '#e4e4e7' : borderColor, borderColor);
 
   const propData = useMemo(
     () => [
@@ -111,11 +117,11 @@ const FlowingMenuDemo = () => {
             <FlowingMenu
               items={demoItems}
               speed={speed}
-              textColor={textColor}
-              bgColor={bgColor}
-              marqueeBgColor={marqueeBgColor}
-              marqueeTextColor={marqueeTextColor}
-              borderColor={borderColor}
+              textColor={renderedTextColor}
+              bgColor={renderedBgColor}
+              marqueeBgColor={renderedMarqueeBgColor}
+              marqueeTextColor={renderedMarqueeTextColor}
+              borderColor={renderedBorderColor}
             />
           </Box>
 
@@ -128,25 +134,25 @@ const FlowingMenuDemo = () => {
               value={speed}
               onChange={v => updateProp('speed', v)}
             />
-            <PreviewColorPickerCustom title="Text Color" color={textColor} onChange={v => updateProp('textColor', v)} />
+            <PreviewColorPickerCustom title="Text Color" color={renderedTextColor} onChange={v => updateProp('textColor', v)} />
             <PreviewColorPickerCustom
               title="Background Color"
-              color={bgColor}
+              color={renderedBgColor}
               onChange={v => updateProp('bgColor', v)}
             />
             <PreviewColorPickerCustom
               title="Marquee BG Color"
-              color={marqueeBgColor}
+              color={renderedMarqueeBgColor}
               onChange={v => updateProp('marqueeBgColor', v)}
             />
             <PreviewColorPickerCustom
               title="Marquee Text Color"
-              color={marqueeTextColor}
+              color={renderedMarqueeTextColor}
               onChange={v => updateProp('marqueeTextColor', v)}
             />
             <PreviewColorPickerCustom
               title="Border Color"
-              color={borderColor}
+              color={renderedBorderColor}
               onChange={v => updateProp('borderColor', v)}
             />
           </Customize>

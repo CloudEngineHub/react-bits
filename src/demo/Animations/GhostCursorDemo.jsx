@@ -15,6 +15,7 @@ import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButt
 
 import GhostCursor from '@/content/Animations/GhostCursor/GhostCursor';
 import { ghostCursor } from '@/constants/code/Animations/ghostCursorCode';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   trailLength: 50,
@@ -43,6 +44,7 @@ const GhostCursorDemo = () => {
     fadeDelayMs,
     fadeDurationMs
   } = props;
+  const demoTextColor = useColorModeValue('#27272a', '#ffffff');
 
   const propData = useMemo(
     () => [
@@ -165,8 +167,8 @@ const GhostCursorDemo = () => {
               userSelect="none"
               fontSize="clamp(3rem, 8vw, 8rem)"
               zIndex={11}
-              fontWeight={900}
-              color="#120F17"
+              fontWeight={600}
+              color={demoTextColor}
             >
               Boo!
             </Text>

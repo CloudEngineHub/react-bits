@@ -14,6 +14,8 @@ import useProManifest from '../hooks/useProManifest';
 import useProImpression from '../hooks/useProImpression';
 import usePageSEO from '../hooks/usePageSEO';
 import useScrollToTop from '../hooks/useScrollToTop';
+import ReactBitsLogo from '../assets/logos/react-bits-logo.svg';
+import ReactBitsProLogo from '../assets/logos/react-bits-pro-logo.svg';
 
 const HERO_PLACEMENT = 'pro-hub-hero';
 
@@ -29,6 +31,7 @@ const TAG_ITEMS = [
 const COMPARISON = [
   {
     label: 'React Bits',
+    logo: ReactBitsLogo,
     title: 'Add a standout moment.',
     description: 'The open-source library for adding individual animated components and effects to any project.',
     points: ['Free forever', 'Four code variants', 'Source you own'],
@@ -36,6 +39,7 @@ const COMPARISON = [
   },
   {
     label: 'React Bits Pro',
+    logo: ReactBitsProLogo,
     title: 'Build the complete experience.',
     description:
       'The full toolkit for shipping the marketing site, the product behind it and the agent workflow around both.',
@@ -234,7 +238,12 @@ const ProPage = () => {
             <div className="prox-compare">
               {COMPARISON.map(item => (
                 <article className={`prox-compare-card${item.featured ? ' is-featured' : ''}`} key={item.label}>
-                  <span className="prox-compare-label">{item.label}</span>
+                  <span
+                    className={`prox-compare-logo${item.featured ? ' is-pro' : ''}`}
+                    style={{ '--prox-compare-logo': `url(${item.logo})` }}
+                    role="img"
+                    aria-label={item.label}
+                  />
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                   <ul>

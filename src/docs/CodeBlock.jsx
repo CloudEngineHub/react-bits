@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { TbCopy, TbCheck } from 'react-icons/tb';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ShikiCode from '../components/code/ShikiCode';
 
 const COPY_RESET_MS = 2000;
 
@@ -31,14 +30,7 @@ const CodeBlock = ({ children, language = null, showLineNumbers = false }) => {
           {copied ? <TbCheck /> : <TbCopy />}
         </button>
       </div>
-      <SyntaxHighlighter
-        language={language}
-        style={twilight}
-        showLineNumbers={showLineNumbers}
-        className="code-highlighter"
-      >
-        {children}
-      </SyntaxHighlighter>
+      <ShikiCode code={children} language={language} showLineNumbers={showLineNumbers} />
     </div>
   );
 };

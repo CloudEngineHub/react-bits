@@ -38,6 +38,7 @@ uniform vec2 uPointer;
 uniform float uMouseInfluence;
 uniform int uIterations;
 uniform float uIntensity;
+uniform float uLightMode;
 varying vec2 vUv;
 
 void main() {
@@ -67,8 +68,18 @@ void main() {
   w *= smoothstep(uFadeTop, 0.0, vUv.y);
   w *= uIntensity;
 
+  float grain = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453) - 0.5;
+
+  if (uLightMode > 0.5) {
+    float alpha = clamp(w * 0.78, 0.0, 0.8);
+    vec3 lightCol = mix(vec3(1.0), uColor, 0.96);
+    lightCol = clamp(lightCol + uColor * grain * uNoise * 0.45, 0.0, 1.0);
+    gl_FragColor = vec4(lightCol * alpha, alpha);
+    return;
+  }
+
   vec3 col = uColor * w;
-  col += (fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * uNoise;
+  col += grain * uNoise;
   col = clamp(col, 0.0, 1.0) * w;
 
   gl_FragColor = vec4(col, w);
@@ -99,6 +110,7 @@ const HeroBand = memo(function HeroBand({
   mouseInfluence = 0.3,
   iterations = 1,
   intensity = 1.0,
+  lightMode = false,
 }) {
   const containerRef = useRef(null);
   const materialRef = useRef(null);
@@ -139,6 +151,7 @@ const HeroBand = memo(function HeroBand({
         uMouseInfluence: { value: mouseInfluence },
         uIterations: { value: iterations },
         uIntensity: { value: intensity },
+        uLightMode: { value: lightMode ? 1 : 0 },
       },
       premultipliedAlpha: true,
       transparent: true,
@@ -269,6 +282,7 @@ const HeroBand = memo(function HeroBand({
     material.uniforms.uMouseInfluence.value = mouseInfluence;
     material.uniforms.uIterations.value = iterations;
     material.uniforms.uIntensity.value = intensity;
+    material.uniforms.uLightMode.value = lightMode ? 1 : 0;
 
     const hex = color.replace('#', '').trim();
     const r = parseInt(hex.slice(0, 2), 16) / 255;
@@ -280,7 +294,7 @@ const HeroBand = memo(function HeroBand({
     material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
 
     redrawRef.current?.();
-  }, [color, rotation, speed, scale, frequency, warpStrength, noise, bandWidth, yOffset, fadeTop, mouseInfluence, iterations, intensity]);
+  }, [color, rotation, speed, scale, frequency, warpStrength, noise, bandWidth, yOffset, fadeTop, mouseInfluence, iterations, intensity, lightMode]);
 
   if (!supported) return <div className={className} style={style} />;
 

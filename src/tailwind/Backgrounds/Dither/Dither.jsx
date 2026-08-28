@@ -24,6 +24,7 @@ uniform float waveSpeed;
 uniform float waveFrequency;
 uniform float waveAmplitude;
 uniform vec3 waveColor;
+uniform vec3 backgroundColor;
 uniform vec2 mousePos;
 uniform int enableMouseInteraction;
 uniform float mouseRadius;
@@ -91,7 +92,7 @@ void main() {
     float effect = 1.0 - smoothstep(0.0, mouseRadius, dist);
     f -= 0.5 * effect;
   }
-  vec3 col = mix(vec3(0.0), waveColor, f);
+  vec3 col = mix(backgroundColor, waveColor, clamp(f, 0.0, 1.0));
   gl_FragColor = vec4(col, 1.0);
 }
 `;
@@ -118,7 +119,8 @@ vec3 dither(vec2 uv, vec3 color) {
   float threshold = bayerMatrix8x8[y * 8 + x] - 0.25;
   float step = 1.0 / (colorNum - 1.0);
   color += threshold * step;
-  float bias = 0.2;
+  float luminance = dot(color, vec3(0.2126, 0.7152, 0.0722));
+  float bias = mix(0.2, 0.0, smoothstep(0.45, 0.8, luminance));
   color = clamp(color - bias, 0.0, 1.0);
   return floor(color * (colorNum - 1.0) + 0.5) / (colorNum - 1.0);
 }
@@ -168,6 +170,7 @@ function DitheredWaves({
   waveFrequency,
   waveAmplitude,
   waveColor,
+  backgroundColor,
   colorNum,
   pixelSize,
   disableAnimation,
@@ -185,6 +188,7 @@ function DitheredWaves({
     waveFrequency: new THREE.Uniform(waveFrequency),
     waveAmplitude: new THREE.Uniform(waveAmplitude),
     waveColor: new THREE.Uniform(new THREE.Color(...waveColor)),
+    backgroundColor: new THREE.Uniform(new THREE.Color(...backgroundColor)),
     mousePos: new THREE.Uniform(new THREE.Vector2(0, 0)),
     enableMouseInteraction: new THREE.Uniform(enableMouseInteraction ? 1 : 0),
     mouseRadius: new THREE.Uniform(mouseRadius)
@@ -201,6 +205,7 @@ function DitheredWaves({
   }, [size, gl]);
 
   const prevColor = useRef([...waveColor]);
+  const prevBackgroundColor = useRef([...backgroundColor]);
   useFrame(({ clock }) => {
     const u = waveUniformsRef.current;
 
@@ -215,6 +220,12 @@ function DitheredWaves({
     if (!prevColor.current.every((v, i) => v === waveColor[i])) {
       u.waveColor.value.set(...waveColor);
       prevColor.current = [...waveColor];
+    }
+
+
+    if (!prevBackgroundColor.current.every((v, i) => v === backgroundColor[i])) {
+      u.backgroundColor.value.set(...backgroundColor);
+      prevBackgroundColor.current = [...backgroundColor];
     }
 
     u.enableMouseInteraction.value = enableMouseInteraction ? 1 : 0;
@@ -265,6 +276,7 @@ export default function Dither({
   waveFrequency = 3,
   waveAmplitude = 0.3,
   waveColor = [0.5, 0.5, 0.5],
+  backgroundColor = [0, 0, 0],
   colorNum = 4,
   pixelSize = 2,
   disableAnimation = false,
@@ -283,6 +295,7 @@ export default function Dither({
         waveFrequency={waveFrequency}
         waveAmplitude={waveAmplitude}
         waveColor={waveColor}
+        backgroundColor={backgroundColor}
         colorNum={colorNum}
         pixelSize={pixelSize}
         disableAnimation={disableAnimation}

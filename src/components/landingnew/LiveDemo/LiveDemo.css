@@ -19,11 +19,11 @@
 /* ─── Title ─── */
 
 .ln-demo-title {
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -2px;
   color: #fff;
   margin: 0 0 40px;
 }
@@ -126,8 +126,9 @@
 }
 
 .ln-demo-card-name {
-  font-family: 'Geist Mono', monospace;
+  font-family: 'Geist', sans-serif;
   font-size: 12px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.45);
 }
 
@@ -145,8 +146,7 @@
 
 .ln-demo-rings-wrap {
   position: absolute;
-  inset: 0;
-  transform: translateY(-30px);
+  inset: -60px 0 0;
 }
 
 /* ─── ShinyText ─── */
@@ -154,7 +154,7 @@
 .ln-demo-shiny {
   font-family: 'Geist', sans-serif;
   font-size: clamp(28px, 3.5vw, 44px);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.03em;
 }
 
@@ -224,5 +224,65 @@
   .ln-demo-card:active {
     translate: none;
     transform: none;
+  }
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-demo-section {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-demo-title {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-demo-card {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .ln-demo-card-visual {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-demo-rings-wrap {
+  filter: grayscale(1) invert(1);
+}
+
+:root[data-theme='light'] .ln-demo-card-overlay {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.78) 48%, transparent 100%);
+}
+
+:root[data-theme='light'] .ln-demo-card-category,
+:root[data-theme='light'] .ln-demo-card-name {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-demo-dock-wrap .dock-panel {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 10px 30px rgba(24, 24, 27, 0.075),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+:root[data-theme='light'] .ln-demo-dock-wrap .dock-item {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: #fff;
+  color: #52525b;
+  box-shadow: 0 3px 10px rgba(24, 24, 27, 0.055);
+}
+
+:root[data-theme='light'] .ln-demo-dock-wrap .dock-label {
+  border-color: rgba(24, 24, 27, 0.1);
+  background: #fff;
+  color: #27272a;
+  box-shadow: 0 6px 18px rgba(24, 24, 27, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root[data-theme='light'] .ln-demo-card:hover {
+    border-color: #d4d4d8;
   }
 }

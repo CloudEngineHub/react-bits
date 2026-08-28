@@ -67,7 +67,7 @@ const CategoryPage = () => {
       {isIndexPage ? (
         <IndexPage />
       ) : (
-        <Box className={`category-page ${isLoading ? 'loading' : ''}`}>
+        <Box className={`category-page category-${category} ${isLoading ? 'loading' : ''}`}>
           <Box className="page-transition-fade" style={{ opacity }}>
             {!isGetStartedRoute && <h2 className="sub-category">{decodedLabel}</h2>}
 
@@ -77,10 +77,10 @@ const CategoryPage = () => {
               </Suspense>
             ) : (
               <Box p={6}>
-                <Text color="#fff" fontWeight={600} fontSize="18px">
+                <Text color="var(--text-primary)" fontWeight={600} fontSize="18px">
                   Not found
                 </Text>
-                <Text color="#a6a6a6" fontSize="14px">
+                <Text color="var(--text-muted)" fontSize="14px">
                   This section is unavailable.
                 </Text>
               </Box>

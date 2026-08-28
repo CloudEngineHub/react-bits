@@ -13,6 +13,7 @@ import PropTable from '../../components/common/Preview/PropTable';
 import Dependencies from '../../components/code/Dependencies';
 import RefreshButton from '@/components/common/Preview/RefreshButton';
 import useForceRerender from '@/hooks/useForceRerender';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 
@@ -57,6 +58,11 @@ const LaserFlowDemo = () => {
     decay,
     falloffStart
   } = props;
+  const laserBackground = useColorModeValue('#ffffff', '#120F17');
+  const boxBackground = useColorModeValue('#ffffff', '#120F17');
+  const boxTextColor = useColorModeValue('#52525b', '#ffffff');
+  const revealBlendMode = useColorModeValue('multiply', 'lighten');
+  const revealOpacity = useColorModeValue(0.12, 0.3);
 
   const exampleOptions = [
     { label: 'Box', value: 'box' },
@@ -117,7 +123,13 @@ const LaserFlowDemo = () => {
         default: 'auto',
         description: 'Device pixel ratio override (defaults to window.devicePixelRatio).'
       },
-      { name: 'color', type: 'string', default: '#FF79C6', description: 'Beam color (hex).' }
+      { name: 'color', type: 'string', default: '#FF79C6', description: 'Beam color (hex).' },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        default: '#000000',
+        description: 'Canvas background color used for theme-aware compositing.'
+      }
     ],
     []
   );
@@ -173,6 +185,7 @@ const LaserFlowDemo = () => {
               decay={decay}
               falloffStart={falloffStart}
               color={color}
+              backgroundColor={laserBackground}
               key={key}
               className={`laser-flow-demo-${selectedExample}`}
             />
@@ -188,13 +201,13 @@ const LaserFlowDemo = () => {
                   transform="translateX(-50%)"
                   width="86%"
                   height="60%"
-                  backgroundColor="#120F17"
+                  backgroundColor={boxBackground}
                   borderRadius="20px"
                   border={`2px solid ${color}`}
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
-                  color="white"
+                  color={boxTextColor}
                   fontSize="2xl"
                 ></Box>
                 <Image
@@ -204,8 +217,8 @@ const LaserFlowDemo = () => {
                   width="100%"
                   top="-50%"
                   zIndex={2}
-                  mixBlendMode="lighten"
-                  opacity={0.3}
+                  mixBlendMode={revealBlendMode}
+                  opacity={revealOpacity}
                   pointerEvents="none"
                   style={{
                     ['--mx']: '-9999px',

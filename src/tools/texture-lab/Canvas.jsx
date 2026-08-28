@@ -481,7 +481,7 @@ export default function Canvas({
         left="50%"
         transform="translateX(-50%)"
         gap={1}
-        bg="rgba(13, 7, 22, 0.9)"
+        bg="var(--tool-overlay-bg)"
         borderRadius="8px"
         border="1px solid var(--border-primary)"
         p={1}
@@ -525,7 +525,7 @@ export default function Canvas({
                   <Slider.Thumb
                     index={0}
                     boxSize={2.5}
-                    bg="#fff"
+                    bg="var(--slider-thumb)"
                     borderRadius="full"
                     css={{ display: isExporting ? 'none' : 'block' }}
                   />
@@ -586,7 +586,7 @@ const ControlButton = ({ icon: IconComponent, onClick, isActive }) => (
     bg={isActive ? 'rgba(168, 85, 247, 0.2)' : 'transparent'}
     onClick={onClick}
     transition="all 0.15s"
-    _hover={{ bg: isActive ? 'rgba(168, 85, 247, 0.3)' : 'rgba(255,255,255,0.1)' }}
+    _hover={{ bg: isActive ? 'rgba(168, 85, 247, 0.3)' : 'var(--tool-control-hover)' }}
   >
     <Icon as={IconComponent} boxSize={4} color={isActive ? 'var(--color-accent)' : 'var(--text-muted)'} />
   </Flex>

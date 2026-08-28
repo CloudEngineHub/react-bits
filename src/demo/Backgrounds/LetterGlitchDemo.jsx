@@ -12,6 +12,7 @@ import PreviewSwitch from '../../components/common/Preview/PreviewSwitch';
 import PreviewColorPickerCustom from '../../components/common/Preview/PreviewColorPickerCustom';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 import BackgroundContent from '../../components/common/Preview/BackgroundContent';
 
@@ -28,7 +29,13 @@ const DEFAULT_PROPS = {
 
 const LetterGlitchDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
-  const { smooth, speed, colors, showCenterVignette, showOuterVignette } = props;
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, {
+    lightMode: true,
+    colors: ['#4338ca', '#7c3aed', '#db2777'],
+    backgroundColor: '#ffffff',
+    showOuterVignette: false
+  });
+  const { smooth, speed, colors, showCenterVignette, showOuterVignette, lightMode, backgroundColor } = themedProps;
 
   const [key, forceRerender] = useForceRerender();
 
@@ -86,6 +93,8 @@ const LetterGlitchDemo = () => {
               centerVignette={showCenterVignette}
               outerVignette={showOuterVignette}
               smooth={smooth}
+              lightMode={lightMode}
+              backgroundColor={backgroundColor}
             />
 
             {/* For Demo Purposes Only */}

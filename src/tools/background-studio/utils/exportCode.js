@@ -35,11 +35,14 @@ export function generateExportCode(background, props, options = {}) {
   }
 
   const allProps = background.props || [];
+  const definedPropNames = new Set(allProps.map(propDef => propDef.name));
 
-  const propsEntries = allProps.map(propDef => {
+  const definedPropsEntries = allProps.map(propDef => {
     const value = props[propDef.name] !== undefined ? props[propDef.name] : propDef.default;
     return [propDef.name, value];
   });
+  const themePropsEntries = Object.entries(props).filter(([name]) => !definedPropNames.has(name));
+  const propsEntries = [...definedPropsEntries, ...themePropsEntries];
 
   let propsString = '';
   if (propsEntries.length > 0) {

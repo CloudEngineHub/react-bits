@@ -44,7 +44,8 @@ const GradientBlindsDemo = () => {
     spotlightRadius,
     distortAmount,
     mouseDampening,
-    shineDirection
+    shineDirection,
+    lightMode
   } = props;
 
   const gradientColors = [color1, color2];
@@ -168,6 +169,7 @@ const GradientBlindsDemo = () => {
               distortAmount={distortAmount}
               mouseDampening={mouseDampening}
               shineDirection={shineDirection}
+              lightMode={lightMode}
             />
 
             <BackgroundContent pillText="New Background" headline="Smooth gradients make everything better" />

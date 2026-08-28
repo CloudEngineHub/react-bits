@@ -17,6 +17,7 @@ uniform float uBaseRadius, uRadiusStep, uScaleRate;
 uniform float uOpacity, uNoiseAmount, uRotation, uRingGap;
 uniform float uFadeIn, uFadeOut;
 uniform float uMouseInfluence, uHoverAmount, uHoverScale, uParallax, uBurst;
+uniform float uCoverageAlpha;
 uniform vec2 uResolution, uMouse;
 uniform vec3 uColor, uColorTwo;
 uniform int uRingCount;
@@ -48,18 +49,25 @@ void main() {
   float sc = mix(1.0, uHoverScale, uHoverAmount) + uBurst * 0.3;
   p /= sc;
   vec3 c = vec3(0.0);
+  float coverage = 0.0;
   float rcf = max(float(uRingCount) - 1.0, 1.0);
   for (int i = 0; i < 10; i++) {
     if (i >= uRingCount) break;
     float fi = float(i);
     vec2 pr = p - fi * uParallax * uMouse;
     vec3 rc = mix(uColor, uColorTwo, fi / rcf);
-    c = mix(c, rc, vec3(ring(pr, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : 2.95 * fi, px)));
+    float ringAmount = ring(pr, uBaseRadius + fi * uRadiusStep, pow(uRingGap, fi), i == 0 ? 0.0 : 2.95 * fi, px);
+    c = mix(c, rc, vec3(ringAmount));
+    coverage = max(coverage, ringAmount);
   }
   c *= 1.0 + uBurst * 2.0;
   float n = fract(sin(dot(gl_FragCoord.xy + uTime * 100.0, vec2(12.9898, 78.233))) * 43758.5453);
   c += (n - 0.5) * uNoiseAmount;
-  gl_FragColor = vec4(c, max(c.r, max(c.g, c.b)) * uOpacity);
+  float intensity = max(c.r, max(c.g, c.b));
+  vec3 emissiveColor = intensity > 0.0001 ? clamp(c / intensity, 0.0, 1.0) : vec3(0.0);
+  vec3 outputColor = mix(emissiveColor, clamp(c, 0.0, 1.0), uCoverageAlpha);
+  float outputAlpha = mix(intensity, coverage, uCoverageAlpha);
+  gl_FragColor = vec4(outputColor, clamp(outputAlpha * uOpacity, 0.0, 1.0));
 }
 `;
 
@@ -85,6 +93,7 @@ interface MagicRingsProps {
   hoverScale?: number;
   parallax?: number;
   clickBurst?: boolean;
+  alphaMode?: 'luminance' | 'coverage';
 }
 
 export default function MagicRings({
@@ -109,6 +118,7 @@ export default function MagicRings({
   hoverScale = 1.2,
   parallax = 0.05,
   clickBurst = false,
+  alphaMode = 'luminance',
 }: MagicRingsProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const propsRef = useRef<Required<MagicRingsProps> | null>(null);
@@ -122,7 +132,7 @@ export default function MagicRings({
     color, colorTwo, speed, ringCount, attenuation, lineThickness,
     baseRadius, radiusStep, scaleRate, opacity, blur, noiseAmount,
     rotation, ringGap, fadeIn, fadeOut, followMouse, mouseInfluence,
-    hoverScale, parallax, clickBurst,
+    hoverScale, parallax, clickBurst, alphaMode,
   };
 
   useEffect(() => {
@@ -171,6 +181,7 @@ export default function MagicRings({
       uHoverScale: { value: 1 },
       uParallax: { value: 0 },
       uBurst: { value: 0 },
+      uCoverageAlpha: { value: 0 },
     };
 
     const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true });
@@ -249,6 +260,7 @@ export default function MagicRings({
       uniforms.uHoverScale.value = p.hoverScale;
       uniforms.uParallax.value = p.parallax;
       uniforms.uBurst.value = p.clickBurst ? burstRef.current : 0;
+      uniforms.uCoverageAlpha.value = p.alphaMode === 'coverage' ? 1 : 0;
 
       renderer.render(scene, camera);
     };

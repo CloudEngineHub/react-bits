@@ -6,6 +6,9 @@ const LetterGlitch = ({
   centerVignette = false,
   outerVignette = true,
   smooth = true,
+  lightMode = false,
+  backgroundColor,
+  className = '',
   characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789'
 }: {
   glitchColors: string[];
@@ -13,6 +16,9 @@ const LetterGlitch = ({
   centerVignette: boolean;
   outerVignette: boolean;
   smooth: boolean;
+  lightMode?: boolean;
+  backgroundColor?: string;
+  className?: string;
   characters: string;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -218,7 +224,7 @@ const LetterGlitch = ({
     position: 'relative',
     width: '100%',
     height: '100%',
-    backgroundColor: '#000000',
+    backgroundColor: backgroundColor || (lightMode ? '#ffffff' : '#000000'),
     overflow: 'hidden'
   };
 
@@ -235,7 +241,9 @@ const LetterGlitch = ({
     width: '100%',
     height: '100%',
     pointerEvents: 'none',
-    background: 'radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,1) 100%)'
+    background: lightMode
+      ? 'radial-gradient(circle, rgba(255,255,255,0) 58%, rgba(255,255,255,0.96) 100%)'
+      : 'radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,1) 100%)'
   };
 
   const centerVignetteStyle = {
@@ -245,11 +253,13 @@ const LetterGlitch = ({
     width: '100%',
     height: '100%',
     pointerEvents: 'none',
-    background: 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)'
+    background: lightMode
+      ? 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 60%)'
+      : 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)'
   };
 
   return (
-    <div style={containerStyle as React.CSSProperties}>
+    <div style={containerStyle as React.CSSProperties} className={className}>
       <canvas ref={canvasRef} style={canvasStyle} />
       {outerVignette && <div style={outerVignetteStyle as React.CSSProperties}></div>}
       {centerVignette && <div style={centerVignetteStyle as React.CSSProperties}></div>}

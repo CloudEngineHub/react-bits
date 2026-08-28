@@ -35,6 +35,7 @@ uniform float uContrast;
 uniform float uBrightness;
 uniform float uFillBands;
 uniform float uOpacity;
+uniform float uLightMode;
 uniform vec3 uLow;
 uniform vec3 uMid;
 uniform vec3 uHigh;
@@ -134,7 +135,13 @@ void main() {
   outColor = clamp(outColor, 0.0, 1.0);
 
   float a = clamp(outAlpha, 0.0, 1.0) * uOpacity;
-  fragColor = vec4(outColor * a, a);
+  if (uLightMode > 0.5) {
+    float peak = max(outColor.r, max(outColor.g, outColor.b));
+    vec3 chroma = pow(clamp(outColor / max(peak, 0.0001), 0.0, 1.0), vec3(1.18));
+    fragColor = vec4(mix(vec3(1.0), chroma, a * 0.94), 1.0);
+  } else {
+    fragColor = vec4(outColor * a, a);
+  }
 }
 `;
 
@@ -169,6 +176,7 @@ const Topography = ({
   mouseInteraction = true,
   mouseRadius = 0.3,
   mouseStrength = 0.4,
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef(null);
@@ -213,6 +221,7 @@ const Topography = ({
         uBrightness: { value: 1.0 },
         uFillBands: { value: 0.0 },
         uOpacity: { value: 1.0 },
+        uLightMode: { value: 0.0 },
         uGrain: { value: 1.0 },
         uGrainIntensity: { value: 0.05 },
         uLow: { value: new Float32Array([1, 1, 1]) },
@@ -369,6 +378,7 @@ const Topography = ({
     u.uBrightness.value = brightness;
     u.uFillBands.value = fillBands ? 1.0 : 0.0;
     u.uOpacity.value = opacity;
+    u.uLightMode.value = lightMode ? 1.0 : 0.0;
     u.uGrain.value = grain ? 1.0 : 0.0;
     u.uGrainIntensity.value = grainIntensity;
     u.uLow.value = new Float32Array(hexToRgb(lowColor));
@@ -398,7 +408,8 @@ const Topography = ({
     grainIntensity,
     mouseInteraction,
     mouseRadius,
-    mouseStrength
+    mouseStrength,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`relative h-full w-full overflow-hidden ${className}`.trim()} />;

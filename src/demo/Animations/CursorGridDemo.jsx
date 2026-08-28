@@ -81,7 +81,7 @@ const CursorGridDemo = () => {
         <PreviewTab>
           <Box position="relative" className="demo-container" h={500} p={0} overflow="hidden">
             <CursorGrid {...props} />
-              <Text textAlign="center" fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={900} position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" color="#2F293A">
+              <Text className="demo-instruction" textAlign="center" fontSize="clamp(2rem, 6vw, 3rem)" fontWeight={600} position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
                 Move Your Cursor
               </Text>
           </Box>

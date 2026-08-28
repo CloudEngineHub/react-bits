@@ -23,11 +23,11 @@
 .ln-prospot-header h2 {
   margin: 0;
   color: #fff;
-  font-family: 'Geist Pixel Line', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: clamp(34px, 4vw, 46px);
   font-weight: 500;
   line-height: 1.06;
-  letter-spacing: -0.025em;
+  letter-spacing: -2px;
   white-space: nowrap;
 }
 
@@ -229,4 +229,41 @@
   .ln-prospot-item:hover .ln-prospot-media video {
     transform: none;
   }
+}
+
+/* ── Light theme ── */
+:root[data-theme='light'] .ln-prospot-section {
+  background: #fff;
+}
+
+:root[data-theme='light'] .ln-prospot-header h2,
+:root[data-theme='light'] .ln-prospot-item-copy strong {
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-prospot-copy > p {
+  color: #71717a;
+}
+
+:root[data-theme='light'] .ln-prospot-primary {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+  color: #18181b;
+  font-family: 'Geist', sans-serif;
+}
+
+:root[data-theme='light'] .ln-prospot-primary:hover {
+  background: #f8f8fa;
+  color: #18181b;
+}
+
+:root[data-theme='light'] .ln-prospot-item {
+  border-color: var(--border-subtle);
+  background: #fff;
+  box-shadow: none;
+}
+
+:root[data-theme='light'] .ln-prospot-item-copy small {
+  color: #71717a;
 }

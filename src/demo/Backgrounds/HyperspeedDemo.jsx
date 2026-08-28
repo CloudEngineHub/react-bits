@@ -6,6 +6,7 @@ import { hyperspeedPresets } from '../../content/Backgrounds/Hyperspeed/HyperSpe
 import OpenInStudioButton from '../../components/common/Preview/OpenInStudioButton';
 import useForceRerender from '../../hooks/useForceRerender';
 import useComponentProps from '../../hooks/useComponentProps';
+import { useColorMode } from '../../components/setup/color-mode';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 import PropTable from '../../components/common/Preview/PropTable';
@@ -27,6 +28,8 @@ const HyperspeedDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { activePreset } = props;
   const [key] = useForceRerender();
+  const { colorMode } = useColorMode();
+  const lightMode = colorMode === 'light';
 
   const propData = useMemo(
     () => [
@@ -71,7 +74,7 @@ const HyperspeedDemo = () => {
             p={0}
             mb={4}
           >
-            <Hyperspeed effectOptions={hyperspeedPresets[activePreset]} />
+            <Hyperspeed effectOptions={hyperspeedPresets[activePreset]} lightMode={lightMode} />
 
             {/* For Demo Purposes Only */}
             <BackgroundContent pillText="New Background" headline="Click & hold to see the real magic of hyperspeed!" />

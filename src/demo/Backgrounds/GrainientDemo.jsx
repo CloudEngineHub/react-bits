@@ -68,7 +68,8 @@ const GrainientDemo = () => {
     saturation,
     centerX,
     centerY,
-    zoom
+    zoom,
+    lightMode
   } = props;
   const [key, forceRerender] = useForceRerender();
 
@@ -243,6 +244,7 @@ const GrainientDemo = () => {
               gamma={gamma}
               saturation={saturation}
               centerX={centerX}
+              lightMode={lightMode}
               centerY={centerY}
               zoom={zoom}
             />

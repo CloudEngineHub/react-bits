@@ -19,6 +19,7 @@ import MagicRings from '../../content/Animations/MagicRings/MagicRings';
 import { magicRings } from '../../constants/code/Animations/magicRingsCode';
 import { Sparkles } from 'lucide-react';
 import { FaGithub, FaReact } from 'react-icons/fa6';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   color: '#A855F7',
@@ -53,6 +54,15 @@ const MagicRingsDemo = () => {
     rotation, ringGap, fadeIn, fadeOut, followMouse, mouseInfluence,
     hoverScale, parallax, clickBurst,
   } = props;
+  const renderedColor = useColorModeValue(color === DEFAULT_PROPS.color ? '#52525b' : color, color);
+  const renderedColorTwo = useColorModeValue(
+    colorTwo === DEFAULT_PROPS.colorTwo ? '#a1a1aa' : colorTwo,
+    colorTwo
+  );
+  const renderedOpacity = useColorModeValue(opacity === DEFAULT_PROPS.opacity ? 0.62 : opacity, opacity);
+  const accentColor = useColorModeValue('#52525b', '#A855F7');
+  const secondaryAccentColor = useColorModeValue('#71717a', '#B497CF');
+  const alphaMode = useColorModeValue('coverage', 'luminance');
 
   const [key, forceRerender] = useForceRerender();
 
@@ -79,6 +89,7 @@ const MagicRingsDemo = () => {
       { name: 'hoverScale', type: 'number', default: '1.2', description: 'Scale multiplier on hover.' },
       { name: 'parallax', type: 'number', default: '0.05', description: 'Per-ring depth offset based on mouse position.' },
       { name: 'clickBurst', type: 'boolean', default: 'false', description: 'Click triggers a brightness flash and scale pulse.' },
+      { name: 'alphaMode', type: "'luminance' | 'coverage'", default: "'luminance'", description: 'Uses emissive luminance alpha on dark surfaces or geometry coverage alpha for dark colors on light surfaces.' },
     ],
     []
   );
@@ -87,14 +98,14 @@ const MagicRingsDemo = () => {
     <ComponentPropsProvider props={props} defaultProps={DEFAULT_PROPS} resetProps={resetProps} hasChanges={hasChanges}>
       <TabsLayout>
         <PreviewTab>
-          <Box position="relative" className="demo-container" background="#120F17" h={500} p="0" overflow="hidden" display="flex" alignItems="center" justifyContent="center">
+          <Box position="relative" className="demo-container" h={500} p="0" overflow="hidden" display="flex" alignItems="center" justifyContent="center">
             {example === 'card' ? (
               <div className="mr-demo-card">
                 <div className="mr-demo-card-visual">
                   <MagicRings
                     key={key}
-                    color={color}
-                    colorTwo={colorTwo}
+                    color={renderedColor}
+                    colorTwo={renderedColorTwo}
                     ringCount={ringCount}
                     speed={speed}
                     attenuation={attenuation}
@@ -102,7 +113,7 @@ const MagicRingsDemo = () => {
                     baseRadius={baseRadius}
                     radiusStep={radiusStep}
                     scaleRate={scaleRate}
-                    opacity={opacity}
+                    opacity={renderedOpacity}
                     blur={blur}
                     noiseAmount={noiseAmount}
                     rotation={rotation}
@@ -114,8 +125,9 @@ const MagicRingsDemo = () => {
                     hoverScale={hoverScale}
                     parallax={parallax}
                     clickBurst={clickBurst}
+                    alphaMode={alphaMode}
                   />
-                  <Icon as={Sparkles} strokeWidth={1} boxSize={12} color="#A855F7" position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" opacity={0.8} />
+                  <Icon as={Sparkles} strokeWidth={1} boxSize={12} color={accentColor} position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" opacity={0.8} />
                 </div>
                 <div className="mr-demo-card-body">
                   <h3 className="mr-demo-card-title">Magic Rings</h3>
@@ -133,7 +145,7 @@ const MagicRingsDemo = () => {
                   <div className="mr-demo-card-actions">
                     <button className="mr-demo-card-cta">Copy to clipboard</button>
                     <div className="mr-demo-card-heart">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B497CF" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={secondaryAccentColor} strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
                     </div>
                   </div>
                 </div>
@@ -141,8 +153,8 @@ const MagicRingsDemo = () => {
             ) : (
               <MagicRings
                 key={key}
-                color={color}
-                colorTwo={colorTwo}
+                color={renderedColor}
+                colorTwo={renderedColorTwo}
                 ringCount={ringCount}
                 speed={speed}
                 attenuation={attenuation}
@@ -150,7 +162,7 @@ const MagicRingsDemo = () => {
                 baseRadius={baseRadius}
                 radiusStep={radiusStep}
                 scaleRate={scaleRate}
-                opacity={opacity}
+                opacity={renderedOpacity}
                 blur={blur}
                 noiseAmount={noiseAmount}
                 rotation={rotation}
@@ -162,6 +174,7 @@ const MagicRingsDemo = () => {
                 hoverScale={hoverScale}
                 parallax={parallax}
                 clickBurst={clickBurst}
+                alphaMode={alphaMode}
               />
             )}
             <RefreshButton onClick={forceRerender} />
@@ -180,8 +193,8 @@ const MagicRingsDemo = () => {
               onChange={val => setExample(val)}
             />
 
-            <PreviewColorPickerCustom title="Color" color={color} onChange={val => { updateProp('color', val); forceRerender(); }} />
-            <PreviewColorPickerCustom title="Color Two" color={colorTwo} onChange={val => { updateProp('colorTwo', val); forceRerender(); }} />
+            <PreviewColorPickerCustom title="Color" color={renderedColor} onChange={val => { updateProp('color', val); forceRerender(); }} />
+            <PreviewColorPickerCustom title="Color Two" color={renderedColorTwo} onChange={val => { updateProp('colorTwo', val); forceRerender(); }} />
 
             <PreviewSlider
               title="Ring Count"

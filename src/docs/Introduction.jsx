@@ -33,7 +33,11 @@ const Introduction = () => {
       </div>
 
       <p className="docs-lead">
-        Pick a component, tune it in the preview, then copy or install the exact variant for your stack.
+        React Bits is an open-source collection of expressive UI components for adding motion and personality without adopting an entire design system.
+      </p>
+
+      <p className="docs-lead">
+        Pick a component, tune it in the preview, then copy or install the exact variant for your stack. React Bits makes it easy to be creative, and works great with AI.
       </p>
 
       <div className="docs-quickstart">
@@ -59,11 +63,6 @@ const Introduction = () => {
           </Link>
         </div>
       </div>
-
-      <p className="docs-paragraph">
-        React Bits is an open-source collection of expressive UI components for adding motion and personality without
-        adopting an entire design system.
-      </p>
 
       <h2 className="docs-section-title">Mission</h2>
 

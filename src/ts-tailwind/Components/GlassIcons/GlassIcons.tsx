@@ -54,7 +54,7 @@ const GlassIcons: React.FC<GlassIconsProps> = ({ items, className }) => {
               boxShadow: '0 0 0 0.1em hsla(0, 0%, 100%, 0.3) inset'
             }}
           >
-            <span className="m-auto w-[1.5em] h-[1.5em] flex items-center justify-center" aria-hidden="true">
+            <span className="m-auto flex h-[1.5em] w-[1.5em] items-center justify-center text-white" aria-hidden="true">
               {item.icon}
             </span>
           </span>

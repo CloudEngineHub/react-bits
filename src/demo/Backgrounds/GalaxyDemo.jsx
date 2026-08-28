@@ -16,6 +16,7 @@ import Galaxy from '../../content/Backgrounds/Galaxy/Galaxy';
 import { galaxy } from '../../constants/code/Backgrounds/galaxyCode';
 
 import useComponentProps from '../../hooks/useComponentProps';
+import useThemedProps from '../../hooks/useThemedProps';
 import { ComponentPropsProvider } from '../../components/context/ComponentPropsContext';
 
 const DEFAULT_PROPS = {
@@ -33,8 +34,17 @@ const DEFAULT_PROPS = {
   mouseInteraction: true
 };
 
+const LIGHT_PROPS = {
+  lightMode: true,
+  saturation: 0.75,
+  hueShift: 275,
+  glowIntensity: 0.55,
+  backgroundColor: '#ffffff'
+};
+
 const GalaxyDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
+  const themedProps = useThemedProps(props, DEFAULT_PROPS, LIGHT_PROPS);
   const {
     density,
     glowIntensity,
@@ -47,8 +57,10 @@ const GalaxyDemo = () => {
     starSpeed,
     speed,
     mouseRepulsion,
-    mouseInteraction
-  } = props;
+    mouseInteraction,
+    lightMode,
+    backgroundColor
+  } = themedProps;
 
   const propData = useMemo(
     () => [
@@ -170,6 +182,8 @@ const GalaxyDemo = () => {
               speed={speed}
               mouseRepulsion={mouseRepulsion}
               mouseInteraction={mouseInteraction}
+              lightMode={lightMode}
+              backgroundColor={backgroundColor}
             />
 
             <BackgroundContent headline="Components you shall have, young padawan." pillText="New Background" />

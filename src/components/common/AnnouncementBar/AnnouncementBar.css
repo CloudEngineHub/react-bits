@@ -64,6 +64,25 @@
   white-space: nowrap;
 }
 
+:root[data-theme='light'] .header-announcement-bar {
+  border-bottom-color: rgba(24, 24, 27, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  color: #52525b;
+}
+
+:root[data-theme='light'] .header-announcement-bar.landing-bar::before {
+  background: linear-gradient(to right, rgba(24, 24, 27, 0.035), transparent, rgba(24, 24, 27, 0.035));
+}
+
+:root[data-theme='light'] .header-announcement-bar:hover {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+:root[data-theme='light'] .header-announcement-message,
+:root[data-theme='light'] .header-announcement-link-text {
+  color: #27272a;
+}
+
 @media (max-width: 768px) {
   .header-announcement-icon {
     display: none;

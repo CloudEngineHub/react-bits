@@ -24,7 +24,20 @@ const ProCard = () => {
     >
       <article className="pro-card">
         <div className="pro-card-preview is-aurora" aria-hidden="true">
-          <img src={proComponentPreview(config.featured[0].slug).poster} alt="" loading="lazy" decoding="async" />
+          <img
+            className="pro-card-art pro-card-art-dark"
+            src={proComponentPreview(config.featured[0].slug).poster}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            className="pro-card-art pro-card-art-light"
+            src="/assets/pro/components/aurora-beam-light.webp"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
           <img className="pro-card-brand" src={ReactBitsProLogo} alt="" />
         </div>
 

@@ -23,6 +23,8 @@ export interface MoltenMetalProps {
   mouseInteraction?: boolean;
   mouseStrength?: number;
   opacity?: number;
+  backgroundColor?: string;
+  lightMode?: boolean;
   className?: string;
 }
 
@@ -64,6 +66,8 @@ uniform bool uEnableMouse;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
 uniform vec3 uColor3;
+uniform vec3 uBackgroundColor;
+uniform bool uLightMode;
 out vec4 fragColor;
 
 float hash(vec2 p) {
@@ -120,7 +124,24 @@ void main() {
     a += (gr - 0.5) * uGrainIntensity;
   }
   a = clamp(a, 0.0, 1.0) * uOpacity;
-  fragColor = vec4(col * a, a);
+  if (uLightMode) {
+    float signal = 1.0 - exp(-max(c, 0.0) * 6.5);
+    float body = smoothstep(0.075, 0.68, signal);
+    float ridge = smoothstep(0.42, 0.92, signal);
+
+    vec3 lightCol = mix(uColor1, uColor2, smoothstep(0.08, 0.52, signal));
+    lightCol = mix(lightCol, uColor3, smoothstep(0.52, 0.96, signal));
+    lightCol = mix(lightCol, lightCol * 0.72, ridge * 0.24);
+
+    float coverage = body * mix(0.2, 0.86, signal) * uOpacity;
+    if (uGrain > 0.5) {
+      float gr = hash(gl_FragCoord.xy + iTime);
+      coverage += (gr - 0.5) * uGrainIntensity * body * 0.16;
+    }
+    fragColor = vec4(mix(uBackgroundColor, lightCol, clamp(coverage, 0.0, 0.92)), 1.0);
+  } else {
+    fragColor = vec4(col * a, a);
+  }
 }
 `;
 
@@ -150,6 +171,8 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
   mouseInteraction = true,
   mouseStrength = 0.3,
   opacity = 1.0,
+  backgroundColor = '#FFFFFF',
+  lightMode = false,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -199,7 +222,9 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
         uEnableMouse: { value: true },
         uColor1: { value: new Float32Array([1, 1, 1]) },
         uColor2: { value: new Float32Array([1, 1, 1]) },
-        uColor3: { value: new Float32Array([1, 1, 1]) }
+        uColor3: { value: new Float32Array([1, 1, 1]) },
+        uBackgroundColor: { value: new Float32Array([1, 1, 1]) },
+        uLightMode: { value: false }
       }
     });
 
@@ -287,9 +312,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
       ctxMap.delete(container);
-      try {
-        container.removeChild(canvas);
-      } catch {}
+      if (canvas.parentNode === container) container.removeChild(canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, []);
@@ -319,6 +342,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     const c1 = hexToRgb(color1);
     const c2 = hexToRgb(color2);
     const c3 = hexToRgb(color3);
+    const bg = hexToRgb(backgroundColor);
     const uc1 = u.uColor1.value as Float32Array;
     const uc2 = u.uColor2.value as Float32Array;
     const uc3 = u.uColor3.value as Float32Array;
@@ -331,6 +355,9 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     uc3[0] = c3[0];
     uc3[1] = c3[1];
     uc3[2] = c3[2];
+    u.uBackgroundColor.value[0] = bg[0];
+    u.uBackgroundColor.value[1] = bg[1];
+    u.uBackgroundColor.value[2] = bg[2];
   }, [
     color1,
     color2,
@@ -349,7 +376,9 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     grainIntensity,
     mouseInteraction,
     mouseStrength,
-    opacity
+    opacity,
+    backgroundColor,
+    lightMode
   ]);
 
   return <div ref={containerRef} className={`molten-metal-container ${className}`.trim()} />;

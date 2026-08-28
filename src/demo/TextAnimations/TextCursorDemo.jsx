@@ -83,13 +83,13 @@ const TextCursorDemo = () => {
           <Box position="relative" className="demo-container" h={400} overflow="hidden">
             <TextCursor key={key} text={text} followMouseDirection={followMouseDirection} randomFloat={randomFloat} />
             <Text
+              className="demo-instruction"
               pointerEvents="none"
               position="absolute"
               textAlign="center"
               fontSize="4rem"
-              fontWeight={900}
+              fontWeight={600}
               userSelect="none"
-              color="#2F293A"
             >
               Hover Around!
             </Text>

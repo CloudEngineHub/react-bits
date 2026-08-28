@@ -5,6 +5,17 @@ import { Settings, ChevronUp, Download, Video } from 'lucide-react';
 import Controls from './Controls';
 import { BACKGROUNDS, getBackgroundById, getDefaultProps } from './backgrounds';
 import { hyperspeedPresets } from '../../content/Backgrounds/Hyperspeed/HyperSpeedPresets';
+import { useColorMode } from '../../components/setup/color-mode';
+import { BACKGROUND_LIGHT_PROPS } from '../../constants/backgroundThemeProps';
+
+const CANVAS_BACKGROUNDS = {
+  dark: '#120F17',
+  light: '#ffffff'
+};
+
+const STUDIO_LIGHT_PROPS = {
+  'laser-flow': { backgroundColor: '#ffffff' }
+};
 
 const LoadingFallback = () => (
   <Flex w="100%" h="100%" align="center" justify="center" bg="var(--bg-body)">
@@ -128,6 +139,7 @@ BackgroundRenderer.displayName = 'BackgroundRenderer';
 
 export default function BackgroundStudio({ toolSelector }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { colorMode } = useColorMode();
   const [mobileControlsOpen, setMobileControlsOpen] = useState(false);
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
@@ -135,7 +147,7 @@ export default function BackgroundStudio({ toolSelector }) {
   const [renderKey, setRenderKey] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingProgress, setRecordingProgress] = useState(0);
-  const [canvasBg, setCanvasBg] = useState('#120F17');
+  const [canvasBgOverride, setCanvasBgOverride] = useState(null);
   const debounceTimer = useRef(null);
   const previewRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -144,6 +156,8 @@ export default function BackgroundStudio({ toolSelector }) {
   const recordingTimeoutRef = useRef(null);
 
   const backgroundId = searchParams.get('bg') || 'silk';
+  const isLightMode = colorMode === 'light';
+  const canvasBg = canvasBgOverride ?? CANVAS_BACKGROUNDS[isLightMode ? 'light' : 'dark'];
 
   const background = useMemo(() => {
     return getBackgroundById(backgroundId) || BACKGROUNDS[0];
@@ -173,10 +187,21 @@ export default function BackgroundStudio({ toolSelector }) {
     return parsed;
   }, [background, searchParams]);
 
+  const defaultProps = useMemo(() => {
+    const registryDefaults = getDefaultProps(background);
+    const themeDefaults = isLightMode
+      ? {
+          ...(BACKGROUND_LIGHT_PROPS[backgroundId] || {}),
+          ...(STUDIO_LIGHT_PROPS[backgroundId] || {})
+        }
+      : {};
+
+    return { ...registryDefaults, ...themeDefaults };
+  }, [background, backgroundId, isLightMode]);
+
   const baseProps = useMemo(() => {
-    const defaults = getDefaultProps(background);
-    return { ...defaults, ...customProps };
-  }, [background, customProps]);
+    return { ...defaultProps, ...customProps };
+  }, [defaultProps, customProps]);
 
   const props = useMemo(() => {
     return { ...baseProps, ...localProps };
@@ -186,10 +211,12 @@ export default function BackgroundStudio({ toolSelector }) {
     setLocalProps({});
   }, [searchParams, backgroundId]);
 
+  useEffect(() => {
+    setRenderKey(key => key + 1);
+  }, [isLightMode]);
+
   const updateProp = useCallback(
     (name, value) => {
-      const defaults = getDefaultProps(background);
-
       setLocalProps(prev => ({
         ...prev,
         [name]: value
@@ -209,7 +236,7 @@ export default function BackgroundStudio({ toolSelector }) {
         const getPropType = key => propDefs.find(p => p.name === key)?.type;
 
         Object.entries(newCustomProps).forEach(([key, val]) => {
-          if (JSON.stringify(val) === JSON.stringify(defaults[key])) {
+          if (JSON.stringify(val) === JSON.stringify(defaultProps[key])) {
             return;
           }
           const propType = getPropType(key);
@@ -230,7 +257,7 @@ export default function BackgroundStudio({ toolSelector }) {
         setLocalProps({});
       }, 300);
     },
-    [background, customProps, localProps, backgroundId, setSearchParams]
+    [background, customProps, localProps, backgroundId, defaultProps, setSearchParams]
   );
 
   const changeBackground = useCallback(
@@ -239,6 +266,7 @@ export default function BackgroundStudio({ toolSelector }) {
       newParams.set('bg', id);
       setSearchParams(newParams, { replace: true });
       setLocalProps({});
+      setCanvasBgOverride(null);
       setRenderKey(k => k + 1);
     },
     [setSearchParams]
@@ -249,6 +277,7 @@ export default function BackgroundStudio({ toolSelector }) {
     newParams.set('bg', backgroundId);
     setSearchParams(newParams, { replace: true });
     setLocalProps({});
+    setCanvasBgOverride(null);
     setRenderKey(k => k + 1);
   }, [backgroundId, setSearchParams]);
 
@@ -460,7 +489,7 @@ export default function BackgroundStudio({ toolSelector }) {
           toolSelector={toolSelector}
           disabled={isRecording}
           canvasBg={canvasBg}
-          onCanvasBgChange={setCanvasBg}
+          onCanvasBgChange={setCanvasBgOverride}
         />
       </Box>
 
@@ -485,7 +514,7 @@ export default function BackgroundStudio({ toolSelector }) {
           position="absolute"
           top={4}
           left={4}
-          bg="rgba(13, 7, 22, 0.9)"
+          bg="var(--tool-overlay-bg)"
           border="1px solid var(--border-primary)"
           borderRadius="8px"
           px={3}
@@ -501,14 +530,14 @@ export default function BackgroundStudio({ toolSelector }) {
             as="button"
             align="center"
             gap={2}
-            bg="rgba(13, 7, 22, 0.9)"
+            bg="var(--tool-overlay-bg)"
             border="1px solid var(--border-primary)"
             px={3}
             py={2}
             borderRadius="8px"
             cursor="pointer"
             onClick={downloadImage}
-            _hover={{ bg: 'rgba(39, 30, 55, 0.9)' }}
+            _hover={{ bg: 'var(--tool-overlay-hover)' }}
             transition="background 0.2s"
           >
             <Icon as={Download} boxSize={3.5} color="var(--text-muted)" />
@@ -521,14 +550,14 @@ export default function BackgroundStudio({ toolSelector }) {
             as="button"
             align="center"
             gap={2}
-            bg={isRecording ? 'rgba(255, 59, 48, 0.2)' : 'rgba(13, 7, 22, 0.9)'}
+            bg={isRecording ? 'rgba(255, 59, 48, 0.2)' : 'var(--tool-overlay-bg)'}
             border={isRecording ? '1px solid #ff3b30' : '1px solid var(--border-primary)'}
             px={3}
             py={2}
             borderRadius="8px"
             cursor="pointer"
             onClick={isRecording ? cancelRecording : recordVideo}
-            _hover={!isRecording ? { bg: 'rgba(39, 30, 55, 0.9)' } : {}}
+            _hover={!isRecording ? { bg: 'var(--tool-overlay-hover)' } : {}}
             transition="all 0.2s"
             position="relative"
             overflow="hidden"
@@ -648,6 +677,8 @@ export default function BackgroundStudio({ toolSelector }) {
                 toolSelector={toolSelector}
                 isMobile={true}
                 disabled={isRecording}
+                canvasBg={canvasBg}
+                onCanvasBgChange={setCanvasBgOverride}
               />
             </Box>
           </Box>

@@ -16,6 +16,7 @@ import PreviewSlider from '../../components/common/Preview/PreviewSlider';
 
 import { gradualBlur } from '../../constants/code/Animations/gradualblurCode';
 import GradualBlur from '../../content/Animations/GradualBlur/GradualBlur';
+import { useColorModeValue } from '../../components/setup/color-mode';
 
 const DEFAULT_PROPS = {
   position: 'bottom',
@@ -31,6 +32,9 @@ const DEFAULT_PROPS = {
 const GradualBlurDemo = () => {
   const { props, updateProp, resetProps, hasChanges } = useComponentProps(DEFAULT_PROPS);
   const { position, strength, height, divCount, curve, target, exponential, opacity } = props;
+  const previewTextColor = useColorModeValue('#27272a', '#B497CF');
+  const instructionColor = useColorModeValue('#d4d4d8', '#2f293a');
+  const imageBorder = useColorModeValue('#e4e4e7', '#2F293A');
 
   const propData = useMemo(
     () => [
@@ -209,7 +213,13 @@ const GradualBlurDemo = () => {
                 msOverflowStyle: 'none'
               }}
             >
-              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B497CF">
+              <Text
+                className="demo-instruction"
+                fontSize="clamp(2rem, 4vw, 5rem)"
+                fontWeight={600}
+                zIndex={0}
+                color={instructionColor}
+              >
                 Scroll Down.
               </Text>
 
@@ -220,11 +230,11 @@ const GradualBlurDemo = () => {
                 alt="Lighthouse in the distance with purple colors."
                 w="100%"
                 maxW="600px"
-                border="1px solid #2F293A"
+                border={`1px solid ${imageBorder}`}
                 filter={'grayscale(0) brightness(2)'}
               />
 
-              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={900} zIndex={0} color="#B497CF">
+              <Text fontSize="clamp(2rem, 4vw, 5rem)" fontWeight={600} zIndex={0} color={previewTextColor}>
                 Gradual Blur
               </Text>
             </Flex>

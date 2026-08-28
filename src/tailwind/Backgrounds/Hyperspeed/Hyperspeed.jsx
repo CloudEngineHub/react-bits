@@ -40,7 +40,7 @@ const DEFAULT_EFFECT_OPTIONS = {
   }
 };
 
-const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
+const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false }) => {
   const hyperspeed = useRef(null);
   const appRef = useRef(null);
 
@@ -1159,7 +1159,19 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
     const options = {
       ...DEFAULT_EFFECT_OPTIONS,
       ...effectOptions,
-      colors: { ...DEFAULT_EFFECT_OPTIONS.colors, ...effectOptions.colors }
+      colors: {
+        ...DEFAULT_EFFECT_OPTIONS.colors,
+        ...effectOptions.colors,
+        ...(lightMode
+          ? {
+              roadColor: 0xffffff,
+              islandColor: 0xf8f7fa,
+              background: 0xffffff,
+              shoulderLines: 0x7c3aed,
+              brokenLines: 0xc084fc
+            }
+          : {})
+      }
     };
     options.distortion = distortions[options.distortion];
 
@@ -1172,7 +1184,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS }) => {
         appRef.current.dispose();
       }
     };
-  }, [effectOptions]);
+  }, [effectOptions, lightMode]);
 
   return <div className="w-full h-full" ref={hyperspeed}></div>;
 };
