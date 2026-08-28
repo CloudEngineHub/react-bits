@@ -46,7 +46,7 @@ const Navbar = ({ showDocs }) => {
   const isLightTheme = resolvedTheme === 'light';
   const location = useLocation();
   const docsCategory = location.pathname.split('/').filter(Boolean)[0] || 'unknown';
-  const showDocsProCta = showDocs && !location.pathname.startsWith('/pro');
+  const showDocsProCta = showDocs;
   const docsProRef = useProImpression('docs-navbar', { category: docsCategory }, showDocsProCta);
   const landingProRef = useProImpression('navbar', { surface: 'marketing' }, !showDocs);
   const mobileFilterQuery = mobileFilter.trim().toLowerCase();
