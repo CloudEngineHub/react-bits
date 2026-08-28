@@ -621,7 +621,14 @@
 .install-options-separator {
   height: 1px;
   margin: 4px 6px;
-  background: var(--inset-divider);
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--inset-divider) 14%,
+    var(--inset-divider) 86%,
+    transparent
+  );
 }
 
 .cli-install.code-section-frame .code-section-body > .code-wrapper {

@@ -194,6 +194,14 @@ a.pro-item,
   pointer-events: none;
 }
 
+:root[data-theme='light'] .pro-item-badge-free {
+  color: #504b57;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(27, 22, 34, 0.14);
+  box-shadow: 0 1px 3px rgba(27, 22, 34, 0.08);
+  backdrop-filter: blur(8px);
+}
+
 /* ─── Hover "view live" overlay ────────────────────────────────────────────── */
 .pro-item-overlay {
   position: absolute;

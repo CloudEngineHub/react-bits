@@ -6,6 +6,7 @@ import { PRO_SECTIONS, PRO_SECTION_MAP } from '../constants/Pro';
 import { proUrl, trackProClick } from '../utils/pro';
 import useProManifest from '../hooks/useProManifest';
 import usePageSEO from '../hooks/usePageSEO';
+import useScrollToTop from '../hooks/useScrollToTop';
 import BackToTopButton from '../components/common/BackToTopButton';
 import {
   ComponentCard,
@@ -70,6 +71,7 @@ const ProSectionPage = () => {
   const { section: sectionSlug } = useParams();
   const section = PRO_SECTION_MAP[sectionSlug];
   const { manifest, loading, error } = useProManifest();
+  useScrollToTop();
 
   // The active filter lives in the URL so other pages can deep-link straight to
   // a group, and so a filtered view is shareable and survives a reload.

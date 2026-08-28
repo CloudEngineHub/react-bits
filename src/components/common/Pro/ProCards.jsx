@@ -26,7 +26,9 @@ const Overlay = ({ label = 'View live', corner = false }) => (
   </span>
 );
 
-const Badge = ({ children = 'New' }) => <span className="pro-item-badge">{children}</span>;
+const Badge = ({ children = 'New', free = false }) => (
+  <span className={`pro-item-badge${free ? ' pro-item-badge-free' : ''}`}>{children}</span>
+);
 
 /** Mono `<Name />` tile, the same fallback the component index uses for missing clips. */
 const EmptyTile = ({ title }) => (
@@ -244,7 +246,7 @@ export const TemplateCard = ({ item, placement }) => {
         ) : (
           <EmptyTile title={item.name} />
         )}
-        {item.isFree ? <Badge>Free</Badge> : item.isNew ? <Badge /> : null}
+        {item.isFree ? <Badge free>Free</Badge> : item.isNew ? <Badge /> : null}
 
         <span className="pro-item-overlay pro-item-overlay-actions">
           {liveHref && (
@@ -306,7 +308,7 @@ export const AgentKitCard = ({ item, placement }) => {
     >
       <span className="browse-card-well pro-item-media">
         <PreviewImage src={preview} alt={item.name} title={item.name} />
-        {isFree ? <Badge>Free</Badge> : null}
+        {isFree ? <Badge free>Free</Badge> : null}
         <Overlay label="View skill" />
       </span>
 
