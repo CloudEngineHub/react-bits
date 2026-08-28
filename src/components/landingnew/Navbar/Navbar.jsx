@@ -275,7 +275,8 @@ const Navbar = ({ showDocs }) => {
               })}
               className="ln-navbar-pro ln-navbar-pro-docs"
             >
-              Get React Bits Pro
+              <span className="ln-navbar-pro-label ln-navbar-pro-label-desktop">Get React Bits Pro</span>
+              <span className="ln-navbar-pro-label ln-navbar-pro-label-mobile">Get Pro</span>
             </a>
           )}
 
@@ -290,7 +291,8 @@ const Navbar = ({ showDocs }) => {
                 e.currentTarget.style.setProperty('--pro-mx', `${x}%`);
               }}
             >
-              Get React Bits Pro
+              <span className="ln-navbar-pro-label ln-navbar-pro-label-desktop">Get React Bits Pro</span>
+              <span className="ln-navbar-pro-label ln-navbar-pro-label-mobile">Get Pro</span>
             </a>
           )}
 

@@ -232,6 +232,15 @@
   pointer-events: none;
 }
 
+.ln-navbar-pro-label {
+  position: relative;
+  z-index: 2;
+}
+
+.ln-navbar-pro-label-mobile {
+  display: none;
+}
+
 .ln-navbar-pro:hover {
   box-shadow:
     0 0 24px rgba(var(--pro-glow, 168, 85, 247), 0.7),
@@ -322,6 +331,14 @@
     font-size: 12px;
     border-width: 3px;
     border-radius: 8px;
+  }
+
+  .ln-navbar-pro-label-desktop {
+    display: none;
+  }
+
+  .ln-navbar-pro-label-mobile {
+    display: inline;
   }
 
   .ln-navbar-pro-docs {
