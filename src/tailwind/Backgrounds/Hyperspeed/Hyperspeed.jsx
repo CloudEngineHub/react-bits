@@ -378,7 +378,8 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false 
           fogNear: { value: fog.near },
           fogFar: { value: fog.far }
         };
-        this.clock = new THREE.Clock();
+        this.timer = new THREE.Timer();
+        this.timer.connect(document);
         this.assets = {};
         this.disposed = false;
 
@@ -547,7 +548,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false 
         this.speedUp += lerp(this.speedUp, this.speedUpTarget, lerpPercentage, 0.00001);
         this.timeOffset += this.speedUp * delta;
 
-        let time = this.clock.elapsedTime + this.timeOffset;
+        const time = this.timer.getElapsed() + this.timeOffset;
 
         this.rightCarLights.update(time);
         this.leftCarLights.update(time);
@@ -584,6 +585,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false 
 
       dispose() {
         this.disposed = true;
+        this.timer.dispose();
 
         if (this.scene) {
           this.scene.traverse(object => {
@@ -648,6 +650,7 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false 
             this.camera.updateProjectionMatrix();
             this.composer.setSize(w, h);
             this.hasValidSize = true;
+            this.timer.reset();
           } else {
             requestAnimationFrame(this.tick);
             return;
@@ -663,7 +666,8 @@ const Hyperspeed = ({ effectOptions = DEFAULT_EFFECT_OPTIONS, lightMode = false 
         }
 
         if (this.hasValidSize) {
-          const delta = this.clock.getDelta();
+          this.timer.update();
+          const delta = this.timer.getDelta();
           this.render(delta);
           this.update(delta);
         }
