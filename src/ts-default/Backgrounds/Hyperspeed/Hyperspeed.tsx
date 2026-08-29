@@ -926,7 +926,7 @@ class App {
   scene: THREE.Scene;
   renderPass!: RenderPass;
   bloomPass!: EffectPass;
-  clock: THREE.Clock;
+  timer: THREE.Timer;
   assets: Record<string, any>;
   disposed: boolean;
   road: Road;
@@ -981,7 +981,8 @@ class App {
       fogFar: { value: fog.far }
     };
 
-    this.clock = new THREE.Clock();
+    this.timer = new THREE.Timer();
+    this.timer.connect(document);
     this.assets = {};
     this.disposed = false;
 
@@ -1151,7 +1152,7 @@ class App {
     const lerpPercentage = Math.exp(-(-60 * Math.log2(1 - 0.1)) * delta);
     this.speedUp += lerp(this.speedUp, this.speedUpTarget, lerpPercentage, 0.00001);
     this.timeOffset += this.speedUp * delta;
-    const time = this.clock.elapsedTime + this.timeOffset;
+    const time = this.timer.getElapsed() + this.timeOffset;
 
     this.rightCarLights.update(time);
     this.leftCarLights.update(time);
@@ -1188,6 +1189,7 @@ class App {
 
   dispose() {
     this.disposed = true;
+    this.timer.dispose();
 
     if (this.scene) {
       this.scene.traverse(object => {
@@ -1247,6 +1249,7 @@ class App {
         this.camera.updateProjectionMatrix();
         this.composer.setSize(w, h);
         this.hasValidSize = true;
+        this.timer.reset();
       } else {
         requestAnimationFrame(this.tick);
         return;
@@ -1262,7 +1265,8 @@ class App {
     }
 
     if (this.hasValidSize) {
-      const delta = this.clock.getDelta();
+      this.timer.update();
+      const delta = this.timer.getDelta();
       this.render(delta);
       this.update(delta);
     }
