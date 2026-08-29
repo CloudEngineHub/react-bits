@@ -224,7 +224,7 @@ const CounterDemo = () => {
 
           <Customize>
             <PreviewSwitch
-              title="digit Place Holders"
+              title="Show Digits"
               isChecked={digitPlaceHolders}
               onChange={v => updateProp('digitPlaceHolders', v)}
             />

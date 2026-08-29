@@ -135,6 +135,7 @@ Notes:
 - [Glass Surface](https://www.reactbits.dev/components/glass-surface): Advanced Apple-style glass surface with real-time distortion + lighting. CLI: `GlassSurface`.
 - [Gooey Nav](https://www.reactbits.dev/components/gooey-nav): Navigation indicator morphs with gooey blob transitions between items. CLI: `GooeyNav`.
 - [Infinite Menu](https://www.reactbits.dev/components/infinite-menu): Horizontally looping menu effect that scrolls endlessly with seamless wrap. CLI: `InfiniteMenu`.
+- [Infinite Spiral](https://www.reactbits.dev/components/infinite-spiral): An endlessly looping 3D helix of images with customizable motion, depth, spacing and interaction. CLI: `InfiniteSpiral`.
 - [Lanyard](https://www.reactbits.dev/components/lanyard): Swinging 3D lanyard / badge card with realistic inertial motion. CLI: `Lanyard`.
 - [Line Sidebar](https://www.reactbits.dev/components/line-sidebar): Static list navigation with a cursor-proximity effect that shifts and highlights nearby items. CLI: `LineSidebar`.
 - [Magic Bento](https://www.reactbits.dev/components/magic-bento): Interactive bento grid tiles expand + animate with various options. CLI: `MagicBento`.
@@ -172,6 +173,7 @@ Notes:
 - [Ferrofluid](https://www.reactbits.dev/backgrounds/ferrofluid): A churning magnetic fluid traced by glowing contour lines, with a cursor magnet. CLI: `Ferrofluid`.
 - [Floating Lines](https://www.reactbits.dev/backgrounds/floating-lines): 3D floating lines that react to cursor movement. CLI: `FloatingLines`.
 - [Galaxy](https://www.reactbits.dev/backgrounds/galaxy): Parallax realistic starfield with pointer interactions. CLI: `Galaxy`.
+- [Ghost Fibers](https://www.reactbits.dev/backgrounds/ghost-fibers): A deep-blue recursive fiber field with luminous bands, radial twisting and soft atmospheric glow. CLI: `GhostFibers`.
 - [Gradient Blinds](https://www.reactbits.dev/backgrounds/gradient-blinds): Layered gradient blinds with spotlight and noise distortion. CLI: `GradientBlinds`.
 - [Gradient Waves](https://www.reactbits.dev/backgrounds/gradient-waves): Raymarched sine waves rolling toward a soft, hazy horizon. CLI: `GradientWaves`.
 - [Grainient](https://www.reactbits.dev/backgrounds/grainient): Grainy gradient swirls with soft wave distortion. CLI: `Grainient`.

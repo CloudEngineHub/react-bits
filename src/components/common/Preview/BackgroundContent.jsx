@@ -125,7 +125,7 @@ const BackgroundContent = ({
                 New
               </Box>
               <Text fontSize="12px" fontWeight={500} color={secondaryText}>
-                Just shipped v2.0
+                Creative Components
               </Text>
             </Box>
 

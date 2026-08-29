@@ -90,6 +90,7 @@ const components = {
   'bounce-cards': () => import('../demo/Components/BounceCardsDemo'),
   'pixel-card': () => import('../demo/Components/PixelCardDemo'),
   'tilted-card': () => import('../demo/Components/TiltedCardDemo'),
+  'infinite-spiral': () => import('../demo/Components/InfiniteSpiralDemo'),
   'infinite-menu': () => import('../demo/Components/InfiniteMenuDemo'),
   'flying-posters': () => import('../demo/Components/FlyingPostersDemo'),
   'flowing-menu': () => import('../demo/Components/FlowingMenuDemo'),
@@ -128,6 +129,7 @@ const components = {
 };
 
 const backgrounds = {
+  'ghost-fibers': () => import('../demo/Backgrounds/GhostFibersDemo.jsx'),
   'silk': () => import('../demo/Backgrounds/SilkDemo'),
   'aurora': () => import('../demo/Backgrounds/AuroraDemo'),
   'shape-grid': () => import('../demo/Backgrounds/ShapeGridDemo'),

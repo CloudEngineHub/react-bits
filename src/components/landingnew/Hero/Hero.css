@@ -636,7 +636,7 @@
 
 @media (max-width: 640px) {
   .ln-hero-content {
-    padding: clamp(90px, 16vw, 120px) 16px 48px;
+    padding: clamp(108px, 19vw, 132px) 16px 48px;
   }
 
   .ln-hero-headline {

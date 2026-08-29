@@ -1,5 +1,48 @@
 export const BACKGROUNDS = [
   {
+    id: 'ghost-fibers',
+    label: 'Ghost Fibers',
+    component: () => import('../../../content/Backgrounds/GhostFibers/GhostFibers.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/ghost-fibers"',
+    props: [
+      { name: 'lineColor', type: 'color', default: '#140E35', label: 'Line Color' },
+      { name: 'glowColor', type: 'color', default: '#3437A0', label: 'Glow Color' },
+      { name: 'speed', type: 'number', default: 0.2, min: 0, max: 2, step: 0.01, label: 'Speed' },
+      { name: 'scale', type: 'number', default: 2, min: 0.4, max: 2, step: 0.01, label: 'Scale' },
+      { name: 'rotation', type: 'number', default: 0, min: -180, max: 180, step: 1, label: 'Rotation' },
+      {
+        name: 'rotationSpeed',
+        type: 'number',
+        default: 0.25,
+        min: -0.4,
+        max: 0.4,
+        step: 0.01,
+        label: 'Rotation Speed'
+      },
+      { name: 'layers', type: 'number', default: 4, min: 1, max: 10, step: 1, label: 'Layers' },
+      { name: 'waveAmplitude', type: 'number', default: 0.015, min: 0, max: 0.3, step: 0.005, label: 'Wave Amplitude' },
+      { name: 'waveFrequency', type: 'number', default: 3, min: 0.5, max: 6, step: 0.05, label: 'Wave Frequency' },
+      { name: 'waveSpeed', type: 'number', default: 0.15, min: -2, max: 2, step: 0.05, label: 'Wave Speed' },
+      { name: 'layerSpeed', type: 'number', default: 0.08, min: -0.3, max: 0.3, step: 0.01, label: 'Layer Speed' },
+      { name: 'twist', type: 'number', default: 0.1, min: 0, max: 0.5, step: 0.005, label: 'Twist' },
+      { name: 'twistFrequency', type: 'number', default: 5, min: 0.5, max: 12, step: 0.1, label: 'Twist Frequency' },
+      { name: 'twistSpeed', type: 'number', default: 1.2, min: -3, max: 3, step: 0.05, label: 'Twist Speed' },
+      { name: 'lineFrequency', type: 'number', default: 5, min: 1, max: 10, step: 0.1, label: 'Line Frequency' },
+      { name: 'lineSpacing', type: 'number', default: 2, min: 0, max: 4, step: 0.05, label: 'Line Spacing' },
+      { name: 'lineSharpness', type: 'number', default: 16, min: 1, max: 16, step: 0.25, label: 'Line Sharpness' },
+      { name: 'glowFalloff', type: 'number', default: 10, min: 1, max: 16, step: 0.25, label: 'Glow Falloff' },
+      { name: 'glowIntensity', type: 'number', default: 1.6, min: 0, max: 3, step: 0.05, label: 'Glow Intensity' },
+      { name: 'brightness', type: 'number', default: 2, min: 0.2, max: 4, step: 0.05, label: 'Brightness' },
+      { name: 'blueBoost', type: 'number', default: 1.25, min: 0.5, max: 2, step: 0.01, label: 'Blue Boost' },
+      { name: 'vignette', type: 'number', default: 0.8, min: 0, max: 1, step: 0.01, label: 'Vignette' },
+      { name: 'grain', type: 'number', default: 0.05, min: 0, max: 0.12, step: 0.0025, label: 'Grain' },
+      { name: 'lightMode', type: 'boolean', default: false, label: 'Light Rendering' },
+      { name: 'dpr', type: 'select', default: 1, options: [0.75, 1, 1.25, 1.5, 2], label: 'Render Quality' },
+      { name: 'fps', type: 'select', default: 60, options: [24, 30, 45, 60], label: 'Frame Rate' },
+      { name: 'paused', type: 'boolean', default: false, label: 'Paused' }
+    ]
+  },
+  {
     id: 'crt-warp',
     label: 'CRT Warp',
     component: () => import('../../../content/Backgrounds/CRTWarp/CRTWarp.jsx'),

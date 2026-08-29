@@ -742,6 +742,14 @@ export const componentMetadata = {
     docsUrl: 'https://reactbits.dev/components/gooey-nav',
     tags: []
   },
+  'Components/InfiniteSpiral': {
+    videoUrl: '/assets/video/infinitespiral.webm',
+    description: 'An endlessly looping 3D helix of images with customizable motion, depth, spacing and interaction.',
+    category: 'Components',
+    name: 'InfiniteSpiral',
+    docsUrl: 'https://reactbits.dev/components/infinite-spiral',
+    tags: []
+  },
   'Components/InfiniteMenu': {
     videoUrl: '/assets/video/infinitemenu.webm',
     description: 'Horizontally looping menu effect that scrolls endlessly with seamless wrap.',
@@ -952,6 +960,14 @@ export const componentMetadata = {
   },
 
   //! Backgrounds -------------------------------------------------------------------------------------------------------------------------------
+  'Backgrounds/GhostFibers': {
+    videoUrl: '/assets/video/ghostfibers.webm',
+    description: 'A deep-blue recursive fiber field with luminous bands, radial twisting and soft atmospheric glow.',
+    category: 'Backgrounds',
+    name: 'GhostFibers',
+    docsUrl: 'https://reactbits.dev/backgrounds/ghost-fibers',
+    tags: []
+  },
   'Backgrounds/Aurora': {
     videoUrl: '/assets/video/aurora.webm',
     description: 'Flowing aurora gradient background.',

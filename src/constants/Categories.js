@@ -1,39 +1,22 @@
 // Highlighted sidebar items
 export const NEW = [
+  'Ghost Fibers',
+  'Infinite Spiral',
   'CRT Warp',
   'Glow Cursor',
   'Scroll Expand',
-  'Masked Heading',
-  'Elastic Mesh',
   'Ripple Distortion',
-  'Swarm Cursor',
-  'Halftone Reveal',
-  'Pixel Swap',
   'Depth Carousel',
-  'Accordion Gallery',
   'Morph Slider',
   'Drift Wall',
   'Particle Text',
   'Split Flap Text',
   'Warp Text',
-  'Stroke Text',
   'Depth Text',
-  'Fold Text',
-  'Echo Text',
   'Text Loop',
   'Molten Metal',
   'Gradient Waves',
-  'Web Threads',
-  'Topography',
-  'Light Tunnel',
-  'Sliced Waves',
-  'Acid Squares',
-  'Scanner',
-  'Specular Button',
-  'Option Wheel',
-  'Curved Input',
-  'Line Sidebar',
-  'Strands'
+  'Web Threads'
 ];
 export const UPDATED = [];
 
@@ -85,8 +68,8 @@ export const CATEGORIES = [
     subcategories: [
       'Glow Cursor',
       'Scroll Expand',
-      'Elastic Mesh',
       'Ripple Distortion',
+      'Elastic Mesh',
       'Swarm Cursor',
       'Halftone Reveal',
       'Pixel Swap',
@@ -126,10 +109,11 @@ export const CATEGORIES = [
   {
     name: 'Components',
     subcategories: [
+      'Infinite Spiral',
       'Depth Carousel',
-      'Accordion Gallery',
       'Morph Slider',
       'Drift Wall',
+      'Accordion Gallery',
       'Specular Button',
       'Option Wheel',
       'Curved Input',
@@ -175,6 +159,8 @@ export const CATEGORIES = [
   {
     name: 'Backgrounds',
     subcategories: [
+      'Ghost Fibers',
+      'CRT Warp',
       'Molten Metal',
       'Gradient Waves',
       'Web Threads',
@@ -195,7 +181,6 @@ export const CATEGORIES = [
       'Light Rays',
       'Pixel Blast',
       'Color Bends',
-      'CRT Warp',
       'Evil Eye',
       'Line Waves',
       'Radar',
