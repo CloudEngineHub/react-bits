@@ -117,6 +117,56 @@ const Shuffle = ({
 
         const rolls = Math.max(1, Math.floor(shuffleTimes));
         const rand = set => set.charAt(Math.floor(Math.random() * set.length)) || '';
+        const isVertical = shuffleDirection === 'up' || shuffleDirection === 'down';
+        const metricsContext = isVertical ? document.createElement('canvas').getContext('2d') : null;
+
+        const measureVerticalCell = (node, lineBoxHeight) => {
+          const computed = window.getComputedStyle(node);
+          let fontHeight = 0;
+
+          if (metricsContext) {
+            metricsContext.font = [
+              computed.fontStyle,
+              computed.fontVariant,
+              computed.fontWeight,
+              computed.fontSize,
+              computed.fontFamily
+            ].join(' ');
+
+            const sample = `${node.textContent || 'M'}${scrambleCharset}`;
+            const metrics = metricsContext.measureText(sample);
+            const ascent = metrics.fontBoundingBoxAscent;
+            const descent = metrics.fontBoundingBoxDescent;
+            if (Number.isFinite(ascent) && Number.isFinite(descent)) fontHeight = ascent + descent;
+          }
+
+          if (!fontHeight) {
+            const probe = node.cloneNode(true);
+            probe.textContent = `${node.textContent || 'M'}${scrambleCharset}`;
+            Object.assign(probe.style, {
+              position: 'absolute',
+              visibility: 'hidden',
+              pointerEvents: 'none',
+              width: 'auto',
+              height: 'auto',
+              whiteSpace: 'nowrap',
+              lineHeight: 'normal',
+              fontFamily: computed.fontFamily,
+              fontSize: computed.fontSize,
+              fontStyle: computed.fontStyle,
+              fontVariant: computed.fontVariant,
+              fontWeight: computed.fontWeight,
+              fontStretch: computed.fontStretch
+            });
+            document.body.appendChild(probe);
+            fontHeight = probe.getBoundingClientRect().height;
+            probe.remove();
+          }
+
+          const overflow = Math.max(0, Math.ceil(fontHeight - lineBoxHeight));
+          const padTop = Math.floor(overflow / 2);
+          return { cellHeight: lineBoxHeight + overflow, padTop, padBottom: overflow - padTop };
+        };
 
         chars.forEach(ch => {
           const parent = ch.parentElement;
@@ -126,19 +176,25 @@ const Shuffle = ({
           const h = ch.getBoundingClientRect().height;
           if (!w) return;
 
+          const { cellHeight, padTop, padBottom } = isVertical
+            ? measureVerticalCell(ch, h)
+            : { cellHeight: h, padTop: 0, padBottom: 0 };
+
           const wrap = document.createElement('span');
           Object.assign(wrap.style, {
             display: 'inline-block',
             overflow: 'hidden',
             width: w + 'px',
-            height: shuffleDirection === 'up' || shuffleDirection === 'down' ? h + 'px' : 'auto',
+            height: isVertical ? cellHeight + 'px' : 'auto',
+            marginTop: isVertical ? -padTop + 'px' : '0',
+            marginBottom: isVertical ? -padBottom + 'px' : '0',
             verticalAlign: 'bottom'
           });
 
           const inner = document.createElement('span');
           Object.assign(inner.style, {
             display: 'inline-block',
-            whiteSpace: shuffleDirection === 'up' || shuffleDirection === 'down' ? 'normal' : 'nowrap',
+            whiteSpace: isVertical ? 'normal' : 'nowrap',
             willChange: 'transform'
           });
 
@@ -147,14 +203,22 @@ const Shuffle = ({
 
           const firstOrig = ch.cloneNode(true);
           Object.assign(firstOrig.style, {
-            display: shuffleDirection === 'up' || shuffleDirection === 'down' ? 'block' : 'inline-block',
+            display: isVertical ? 'flex' : 'inline-block',
+            alignItems: isVertical ? 'center' : '',
+            justifyContent: isVertical ? 'center' : '',
+            height: isVertical ? cellHeight + 'px' : '',
+            lineHeight: isVertical ? h + 'px' : '',
             width: w + 'px',
             textAlign: 'center'
           });
 
           ch.setAttribute('data-orig', '1');
           Object.assign(ch.style, {
-            display: shuffleDirection === 'up' || shuffleDirection === 'down' ? 'block' : 'inline-block',
+            display: isVertical ? 'flex' : 'inline-block',
+            alignItems: isVertical ? 'center' : '',
+            justifyContent: isVertical ? 'center' : '',
+            height: isVertical ? cellHeight + 'px' : '',
+            lineHeight: isVertical ? h + 'px' : '',
             width: w + 'px',
             textAlign: 'center'
           });
@@ -164,7 +228,11 @@ const Shuffle = ({
             const c = ch.cloneNode(true);
             if (scrambleCharset) c.textContent = rand(scrambleCharset);
             Object.assign(c.style, {
-              display: shuffleDirection === 'up' || shuffleDirection === 'down' ? 'block' : 'inline-block',
+              display: isVertical ? 'flex' : 'inline-block',
+              alignItems: isVertical ? 'center' : '',
+              justifyContent: isVertical ? 'center' : '',
+              height: isVertical ? cellHeight + 'px' : '',
+              lineHeight: isVertical ? h + 'px' : '',
               width: w + 'px',
               textAlign: 'center'
             });
@@ -193,11 +261,11 @@ const Shuffle = ({
             startX = 0;
             finalX = -steps * w;
           } else if (shuffleDirection === 'down') {
-            startY = -steps * h;
+            startY = -steps * cellHeight;
             finalY = 0;
           } else if (shuffleDirection === 'up') {
             startY = 0;
-            finalY = -steps * h;
+            finalY = -steps * cellHeight;
           }
 
           if (shuffleDirection === 'left' || shuffleDirection === 'right') {
