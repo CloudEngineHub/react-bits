@@ -1,5 +1,5 @@
-import { Box, Flex, Text, Icon, Input, Code, Button, Tooltip } from '@chakra-ui/react';
-import { ChevronDown, RotateCcw, Share2, Code2, Plus, X, ExternalLink, Info } from 'lucide-react';
+import { Box, Flex, Text, Icon, Input, Code, Button } from '@chakra-ui/react';
+import { ChevronDown, RotateCcw, Share2, Code2, Plus, X, ExternalLink } from 'lucide-react';
 import { TbCopy, TbCopyCheckFilled } from 'react-icons/tb';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -271,13 +271,7 @@ const SelectControl = ({ prop, value, onChange }) => {
   const { name, label, options = [] } = prop;
 
   return (
-    <PreviewSelect
-      title={label}
-      options={options}
-      value={value}
-      onChange={val => onChange(name, val)}
-      width={120}
-    />
+    <PreviewSelect title={label} options={options} value={value} onChange={val => onChange(name, val)} width={120} />
   );
 };
 
@@ -506,9 +500,7 @@ export default function Controls({
   onReset,
   toolSelector,
   isMobile = false,
-  disabled = false,
-  canvasBg = '#120F17',
-  onCanvasBgChange
+  disabled = false
 }) {
   const [exportOpen, setExportOpen] = useState(false);
   const [shareStatus, setShareStatus] = useState(null);
@@ -554,37 +546,6 @@ export default function Controls({
           Background
         </Text>
         <BackgroundSelector selectedId={backgroundId} onSelect={onBackgroundChange} />
-
-        {onCanvasBgChange && (
-          <Box mb={4}>
-            <Flex align="center" gap={1.5} mb={2}>
-              <PreviewColorPickerCustom title="Canvas BG" color={canvasBg} onChange={onCanvasBgChange} />
-              <Tooltip.Root openDelay={200} closeDelay={100} positioning={{ placement: 'top', gutter: 8 }}>
-                <Tooltip.Trigger asChild>
-                  <Flex align="center" justify="center" cursor="help">
-                    <Icon as={Info} boxSize={3.5} color="var(--text-muted)" />
-                  </Flex>
-                </Tooltip.Trigger>
-                <Tooltip.Positioner>
-                  <Tooltip.Content
-                    bg="var(--bg-body)"
-                    border="1px solid var(--border-primary)"
-                    color="var(--text-muted)"
-                    fontSize="12px"
-                    fontWeight="500"
-                    px={3}
-                    py={2}
-                    borderRadius="10px"
-                    maxW="220px"
-                    lineHeight="1.4"
-                  >
-                    Follows the site theme by default. Choose a color here to override the canvas for this background.
-                  </Tooltip.Content>
-                </Tooltip.Positioner>
-              </Tooltip.Root>
-            </Flex>
-          </Box>
-        )}
 
         <Box h="1px" bg="var(--border-primary)" mb={4} />
 

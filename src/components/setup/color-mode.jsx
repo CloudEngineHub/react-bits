@@ -6,7 +6,35 @@ import { ThemeProvider, useTheme } from 'next-themes';
 import * as React from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
 
-export function ColorModeProvider(props) {
+function ThemeKeyboardShortcut() {
+  const { resolvedTheme, setTheme, forcedTheme } = useTheme();
+
+  React.useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.defaultPrevented || event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key.toLowerCase() !== 'd' && event.key.toLowerCase() !== 't') return;
+
+      const target = event.target;
+      const isEditing =
+        target instanceof Element &&
+        target.closest(
+          'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"], [role="searchbox"]'
+        );
+
+      if (isEditing || forcedTheme) return;
+
+      event.preventDefault();
+      setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [forcedTheme, resolvedTheme, setTheme]);
+
+  return null;
+}
+
+export function ColorModeProvider({ children, ...props }) {
   return (
     <ThemeProvider
       attribute="data-theme"
@@ -16,7 +44,10 @@ export function ColorModeProvider(props) {
       storageKey="react-bits-theme"
       disableTransitionOnChange
       {...props}
-    />
+    >
+      <ThemeKeyboardShortcut />
+      {children}
+    </ThemeProvider>
   );
 }
 

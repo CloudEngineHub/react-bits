@@ -1,14 +1,14 @@
 import { Box, Flex, Text, Spinner, Icon, useBreakpointValue } from '@chakra-ui/react';
 import React, { Suspense, useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Settings, ChevronUp, Download, Video } from 'lucide-react';
+import { Settings, ChevronUp, ChevronLeft, ChevronRight, Download, Video } from 'lucide-react';
 import Controls from './Controls';
 import { BACKGROUNDS, getBackgroundById, getDefaultProps } from './backgrounds';
 import { hyperspeedPresets } from '../../content/Backgrounds/Hyperspeed/HyperSpeedPresets';
 import { useColorMode } from '../../components/setup/color-mode';
 import { BACKGROUND_LIGHT_PROPS } from '../../constants/backgroundThemeProps';
 
-const CANVAS_BACKGROUNDS = {
+const STUDIO_BACKGROUNDS = {
   dark: '#120F17',
   light: '#ffffff'
 };
@@ -16,6 +16,8 @@ const CANVAS_BACKGROUNDS = {
 const STUDIO_LIGHT_PROPS = {
   'laser-flow': { backgroundColor: '#ffffff' }
 };
+
+const ORDERED_BACKGROUNDS = [...BACKGROUNDS].sort((a, b) => a.label.localeCompare(b.label));
 
 const LoadingFallback = () => (
   <Flex w="100%" h="100%" align="center" justify="center" bg="var(--bg-body)">
@@ -147,7 +149,6 @@ export default function BackgroundStudio({ toolSelector }) {
   const [renderKey, setRenderKey] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingProgress, setRecordingProgress] = useState(0);
-  const [canvasBgOverride, setCanvasBgOverride] = useState(null);
   const debounceTimer = useRef(null);
   const previewRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -157,7 +158,7 @@ export default function BackgroundStudio({ toolSelector }) {
 
   const backgroundId = searchParams.get('bg') || 'silk';
   const isLightMode = colorMode === 'light';
-  const canvasBg = canvasBgOverride ?? CANVAS_BACKGROUNDS[isLightMode ? 'light' : 'dark'];
+  const studioBackground = STUDIO_BACKGROUNDS[isLightMode ? 'light' : 'dark'];
 
   const background = useMemo(() => {
     return getBackgroundById(backgroundId) || BACKGROUNDS[0];
@@ -266,18 +267,47 @@ export default function BackgroundStudio({ toolSelector }) {
       newParams.set('bg', id);
       setSearchParams(newParams, { replace: true });
       setLocalProps({});
-      setCanvasBgOverride(null);
       setRenderKey(k => k + 1);
     },
     [setSearchParams]
   );
+
+  const navigateBackground = useCallback(
+    direction => {
+      if (isRecording) return;
+
+      const currentIndex = ORDERED_BACKGROUNDS.findIndex(item => item.id === background.id);
+      const nextIndex = (currentIndex + direction + ORDERED_BACKGROUNDS.length) % ORDERED_BACKGROUNDS.length;
+      changeBackground(ORDERED_BACKGROUNDS[nextIndex].id);
+    },
+    [background.id, changeBackground, isRecording]
+  );
+
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+
+      const target = event.target;
+      const isEditing =
+        target instanceof Element &&
+        target.closest('input, textarea, select, [contenteditable="true"], [role="slider"], [role="spinbutton"]');
+
+      if (isEditing) return;
+
+      event.preventDefault();
+      navigateBackground(event.key === 'ArrowLeft' ? -1 : 1);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigateBackground]);
 
   const resetProps = useCallback(() => {
     const newParams = new URLSearchParams();
     newParams.set('bg', backgroundId);
     setSearchParams(newParams, { replace: true });
     setLocalProps({});
-    setCanvasBgOverride(null);
     setRenderKey(k => k + 1);
   }, [backgroundId, setSearchParams]);
 
@@ -294,7 +324,7 @@ export default function BackgroundStudio({ toolSelector }) {
     const ctx = offscreen.getContext('2d');
 
     requestAnimationFrame(() => {
-      ctx.fillStyle = canvasBg;
+      ctx.fillStyle = studioBackground;
       ctx.fillRect(0, 0, 1920, 1080);
 
       const sourceAspect = sourceCanvas.width / sourceCanvas.height;
@@ -325,7 +355,7 @@ export default function BackgroundStudio({ toolSelector }) {
         console.error('Failed to capture screenshot:', err);
       }
     });
-  }, [backgroundId, canvasBg]);
+  }, [backgroundId, studioBackground]);
 
   const recordVideo = useCallback(() => {
     const sourceCanvas = previewRef.current?.querySelector('canvas');
@@ -354,7 +384,7 @@ export default function BackgroundStudio({ toolSelector }) {
       }
 
       const copyFrame = () => {
-        ctx.fillStyle = canvasBg;
+        ctx.fillStyle = studioBackground;
         ctx.fillRect(0, 0, 1920, 1080);
         ctx.drawImage(sourceCanvas, sx, sy, sw, sh, 0, 0, 1920, 1080);
         recordingAnimationRef.current = requestAnimationFrame(copyFrame);
@@ -420,7 +450,7 @@ export default function BackgroundStudio({ toolSelector }) {
       if (recordingTimeoutRef.current) clearTimeout(recordingTimeoutRef.current);
       setIsRecording(false);
     }
-  }, [backgroundId, isRecording, canvasBg]);
+  }, [backgroundId, isRecording, studioBackground]);
 
   const cancelRecording = useCallback(() => {
     if (!isRecording) return;
@@ -488,8 +518,6 @@ export default function BackgroundStudio({ toolSelector }) {
           onReset={resetProps}
           toolSelector={toolSelector}
           disabled={isRecording}
-          canvasBg={canvasBg}
-          onCanvasBgChange={setCanvasBgOverride}
         />
       </Box>
 
@@ -503,7 +531,7 @@ export default function BackgroundStudio({ toolSelector }) {
         borderRadius={{ base: '12px', lg: '16px' }}
         overflow="hidden"
         border="1px solid var(--border-primary)"
-        bg={canvasBg}
+        bg={studioBackground}
         minH={{ base: '300px', lg: 'auto' }}
       >
         <Suspense fallback={<LoadingFallback />}>
@@ -524,6 +552,54 @@ export default function BackgroundStudio({ toolSelector }) {
             {background.label}
           </Text>
         </Box>
+
+        <Flex position="absolute" zIndex={99} top={4} right={4} gap={2}>
+          <Flex
+            as="button"
+            type="button"
+            align="center"
+            justify="center"
+            w="34px"
+            h="34px"
+            bg="var(--tool-overlay-bg)"
+            border="1px solid var(--border-primary)"
+            borderRadius="8px"
+            cursor={isRecording ? 'not-allowed' : 'pointer'}
+            opacity={isRecording ? 0.5 : 1}
+            disabled={isRecording}
+            onClick={() => navigateBackground(-1)}
+            aria-label="Previous background"
+            title="Previous background (Left Arrow)"
+            _hover={isRecording ? {} : { bg: 'var(--tool-overlay-hover)' }}
+            _active={isRecording ? {} : { transform: 'scale(0.94)' }}
+            transition="background 0.2s, transform 0.1s, opacity 0.2s"
+          >
+            <Icon as={ChevronLeft} boxSize={4} color="var(--text-muted)" />
+          </Flex>
+
+          <Flex
+            as="button"
+            type="button"
+            align="center"
+            justify="center"
+            w="34px"
+            h="34px"
+            bg="var(--tool-overlay-bg)"
+            border="1px solid var(--border-primary)"
+            borderRadius="8px"
+            cursor={isRecording ? 'not-allowed' : 'pointer'}
+            opacity={isRecording ? 0.5 : 1}
+            disabled={isRecording}
+            onClick={() => navigateBackground(1)}
+            aria-label="Next background"
+            title="Next background (Right Arrow)"
+            _hover={isRecording ? {} : { bg: 'var(--tool-overlay-hover)' }}
+            _active={isRecording ? {} : { transform: 'scale(0.94)' }}
+            transition="background 0.2s, transform 0.1s, opacity 0.2s"
+          >
+            <Icon as={ChevronRight} boxSize={4} color="var(--text-muted)" />
+          </Flex>
+        </Flex>
 
         <Flex position="absolute" zIndex={99} bottom={4} left={4} gap={2} display={{ base: 'none', lg: 'flex' }}>
           <Flex
@@ -677,8 +753,6 @@ export default function BackgroundStudio({ toolSelector }) {
                 toolSelector={toolSelector}
                 isMobile={true}
                 disabled={isRecording}
-                canvasBg={canvasBg}
-                onCanvasBgChange={setCanvasBgOverride}
               />
             </Box>
           </Box>
