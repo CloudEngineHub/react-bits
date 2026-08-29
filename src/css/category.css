@@ -1521,6 +1521,10 @@
   padding: 20vh 2rem 50rem;
 }
 
+.scroll-stack-demo-container {
+  container-type: inline-size;
+}
+
 .ssc-demo-1 {
   background-color: var(--color-primary);
 }
@@ -1544,7 +1548,7 @@
   align-items: center;
 }
 
-@media only screen and (min-width: 1240px) {
+@container (min-width: 900px) {
   .scroll-stack-card-demo {
     flex-direction: row;
     gap: 2rem;
@@ -1557,6 +1561,7 @@
 
   .scroll-stack-card-demo .stack-img-container {
     width: 50%;
+    flex-shrink: 0;
     min-height: auto;
   }
 
