@@ -18,7 +18,10 @@ public/default
 public/tailwind
 public/ts/default
 public/ts/tailwind
+
+# Local agent instructions and working files
 AGENTS.md
+/AGENTS/
 
 # Editor directories and files
 .vscode/*
