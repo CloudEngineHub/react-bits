@@ -372,7 +372,9 @@ const WarpText = ({
       if (document.fonts?.ready) {
         try {
           await document.fonts.ready;
-        } catch {}
+        } catch (error) {
+          void error;
+        }
       }
       if (disposed || contextLost || version !== rasterVersion) return;
 
@@ -508,7 +510,9 @@ const WarpText = ({
           geometry?.remove?.();
           program?.remove?.();
           gl.getExtension('WEBGL_lose_context')?.loseContext();
-        } catch {}
+        } catch (error) {
+          void error;
+        }
       }
 
       if (canvas.parentNode === container) container.removeChild(canvas);
