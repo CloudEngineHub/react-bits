@@ -5,7 +5,7 @@ import tsCode from '@ts-default/Components/SpecularButton/SpecularButton.tsx?raw
 import tsTailwind from '@ts-tailwind/Components/SpecularButton/SpecularButton.tsx?raw';
 
 export const specularButton = {
-  dependencies: `npm i ogl`,
+  dependencies: `ogl`,
   usage: `import SpecularButton from './SpecularButton';
 
 <SpecularButton
