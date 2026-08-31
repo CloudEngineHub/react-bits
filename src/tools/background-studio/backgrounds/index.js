@@ -1,5 +1,130 @@
 export const BACKGROUNDS = [
   {
+    id: 'aero-shards',
+    label: 'Aero Shards',
+    component: () => import('../../../content/Backgrounds/AeroShards/AeroShards.jsx'),
+    installCommand: 'npx shadcn@latest add "https://reactbits.dev/default/backgrounds/aero-shards"',
+    props: [
+      { name: 'backgroundColor', type: 'color', default: '#120F17', label: 'Background' },
+      { name: 'shardColor', type: 'color', default: '#896ABD', label: 'Shards' },
+      { name: 'accentColor', type: 'color', default: '#A855F7', label: 'Accent' },
+      {
+        name: 'placement',
+        type: 'select',
+        default: 'full',
+        options: ['right', 'left', 'center', 'full'],
+        label: 'Placement'
+      },
+      {
+        name: 'material',
+        type: 'select',
+        default: 'pearl',
+        options: ['pearl', 'chrome', 'satin'],
+        label: 'Material'
+      },
+      {
+        name: 'detail',
+        type: 'select',
+        default: 'balanced',
+        options: ['bold', 'balanced', 'fine'],
+        label: 'Detail'
+      },
+      { name: 'effect', type: 'select', default: 'none', options: ['none', 'dither', 'ascii'], label: 'Effect' },
+      { name: 'flow', type: 'select', default: 'stream', options: ['stream', 'vortex', 'ribbon'], label: 'Flow' },
+      { name: 'rippleIntensity', type: 'number', default: 1, min: 0, max: 2, step: 0.05, label: 'Ripple Intensity' },
+      { name: 'holdToGather', type: 'boolean', default: true, label: 'Hold to Gather' },
+      { name: 'scale', type: 'number', default: 1, min: 0.5, max: 2.5, step: 0.05, label: 'Scale' },
+      { name: 'spread', type: 'number', default: 1, min: 0.15, max: 1.1, step: 0.05, label: 'Spread' },
+      { name: 'depth', type: 'number', default: 1, min: 0, max: 1.25, step: 0.05, label: 'Depth' },
+      { name: 'speed', type: 'number', default: 1, min: 0, max: 2, step: 0.05, label: 'Speed' },
+      { name: 'spin', type: 'number', default: 1, min: 0, max: 2, step: 0.05, label: 'Spin' },
+      {
+        name: 'interaction',
+        type: 'select',
+        default: 'repel',
+        options: ['none', 'repel', 'attract'],
+        label: 'Interaction'
+      },
+      {
+        name: 'density',
+        type: 'number',
+        default: 1.5,
+        min: 0.5,
+        max: 1.5,
+        step: 0.05,
+        label: 'Density Multiplier'
+      },
+      {
+        name: 'shardSize',
+        type: 'number',
+        default: 1.1,
+        min: 0.5,
+        max: 1.5,
+        step: 0.05,
+        label: 'Shard Size Multiplier'
+      },
+      { name: 'stretch', type: 'number', default: 1, min: 0.6, max: 1.8, step: 0.05, label: 'Stretch' },
+      {
+        name: 'turbulence',
+        type: 'number',
+        default: 1,
+        min: 0,
+        max: 2,
+        step: 0.05,
+        label: 'Turbulence Multiplier'
+      },
+      { name: 'glow', type: 'number', default: 1, min: 0, max: 2, step: 0.05, label: 'Glow Multiplier' },
+      {
+        name: 'edgeSoftness',
+        type: 'number',
+        default: 2,
+        min: 0,
+        max: 2,
+        step: 0.05,
+        label: 'Edge Softness'
+      },
+      { name: 'bloom', type: 'number', default: 0.5, min: 0, max: 3, step: 0.05, label: 'Bloom' },
+      { name: 'grain', type: 'number', default: 0.05, min: 0, max: 0.12, step: 0.0025, label: 'Grain' },
+      {
+        name: 'chromaticAberration',
+        type: 'number',
+        default: 0.0075,
+        min: 0,
+        max: 0.01,
+        step: 0.0005,
+        label: 'Chromatic Aberration'
+      },
+      {
+        name: 'transitionDuration',
+        type: 'number',
+        default: 1,
+        min: 0.2,
+        max: 2,
+        step: 0.05,
+        label: 'Transition Duration'
+      },
+      {
+        name: 'interactionRadius',
+        type: 'number',
+        default: 1.5,
+        min: 0.5,
+        max: 2,
+        step: 0.05,
+        label: 'Interaction Radius Multiplier'
+      },
+      {
+        name: 'interactionStrength',
+        type: 'number',
+        default: 0.5,
+        min: 0,
+        max: 2,
+        step: 0.05,
+        label: 'Interaction Strength Multiplier'
+      },
+      { name: 'paused', type: 'boolean', default: false, label: 'Paused' }
+    ]
+  },
+  {
     id: 'ghost-fibers',
     label: 'Ghost Fibers',
     component: () => import('../../../content/Backgrounds/GhostFibers/GhostFibers.jsx'),

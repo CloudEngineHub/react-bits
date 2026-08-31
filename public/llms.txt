@@ -158,6 +158,7 @@ Notes:
 ## Backgrounds
 
 - [Acid Squares](https://www.reactbits.dev/backgrounds/acid-squares): A crystalline corridor of stacked squares receding into depth. CLI: `AcidSquares`.
+- [Aero Shards](https://www.reactbits.dev/backgrounds/aero-shards): A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions. CLI: `AeroShards`.
 - [Aurora](https://www.reactbits.dev/backgrounds/aurora): Flowing aurora gradient background. CLI: `Aurora`.
 - [Balatro](https://www.reactbits.dev/backgrounds/balatro): The balatro shader, fully customizalbe and interactive. CLI: `Balatro`.
 - [Ballpit](https://www.reactbits.dev/backgrounds/ballpit): Physics ball pit simulation with bouncing colorful spheres. CLI: `Ballpit`.

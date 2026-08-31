@@ -960,6 +960,14 @@ export const componentMetadata = {
   },
 
   //! Backgrounds -------------------------------------------------------------------------------------------------------------------------------
+  'Backgrounds/AeroShards': {
+    videoUrl: '/assets/video/aeroshards.webm',
+    description: 'A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions.',
+    category: 'Backgrounds',
+    name: 'AeroShards',
+    docsUrl: 'https://reactbits.dev/backgrounds/aero-shards',
+    tags: ['webgpu', 'vgpu', 'particles', 'procedural', 'post-processing', 'interactive']
+  },
   'Backgrounds/GhostFibers': {
     videoUrl: '/assets/video/ghostfibers.webm',
     description: 'A deep-blue recursive fiber field with luminous bands, radial twisting and soft atmospheric glow.',

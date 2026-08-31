@@ -1,4 +1,7 @@
 export const BACKGROUND_LIGHT_PROPS = {
+  'aero-shards': {
+    backgroundColor: '#ffffff'
+  },
   'acid-squares': {
     lightMode: true,
     color1: '#5b21b6',

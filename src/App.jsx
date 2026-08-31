@@ -3,7 +3,6 @@ import { NuqsAdapter } from 'nuqs/adapters/react-router/v6';
 import Providers from './components/layout/Providers';
 import { ActiveRouteProvider } from './components/context/ActiveRouteContext/ActiveRouteContext';
 
-import AnnouncementModal from './components/common/AnnouncementModal/AnnouncementModal';
 import SidebarLayout from './components/layout/SidebarLayout';
 import LandingPage from './pages/LandingPage';
 import CategoryPage from './pages/CategoryPage';
@@ -61,7 +60,6 @@ export default function App() {
       <NuqsAdapter>
         <ActiveRouteProvider>
           <AppContent />
-          <AnnouncementModal />
         </ActiveRouteProvider>
       </NuqsAdapter>
     </Router>

@@ -129,6 +129,7 @@ const components = {
 };
 
 const backgrounds = {
+  'aero-shards': () => import('../demo/Backgrounds/AeroShardsDemo.jsx'),
   'ghost-fibers': () => import('../demo/Backgrounds/GhostFibersDemo.jsx'),
   'silk': () => import('../demo/Backgrounds/SilkDemo'),
   'aurora': () => import('../demo/Backgrounds/AuroraDemo'),
