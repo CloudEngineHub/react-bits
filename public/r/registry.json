@@ -8122,7 +8122,7 @@
 		{
 			"name": "AeroShards-JS-CSS",
 			"title": "AeroShards",
-			"description": "A GPU-driven wind sculpture of folded foil shards with content-safe placements and magnetic pointer attraction.",
+			"description": "A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions.",
 			"type": "registry:component",
 			"dependencies": [
 				"vgpu@^0.3.1"
@@ -8143,7 +8143,7 @@
 		{
 			"name": "AeroShards-JS-TW",
 			"title": "AeroShards",
-			"description": "A GPU-driven wind sculpture of folded foil shards with content-safe placements and magnetic pointer attraction.",
+			"description": "A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions.",
 			"type": "registry:component",
 			"dependencies": [
 				"vgpu@^0.3.1"
@@ -8159,7 +8159,7 @@
 		{
 			"name": "AeroShards-TS-CSS",
 			"title": "AeroShards",
-			"description": "A GPU-driven wind sculpture of folded foil shards with content-safe placements and magnetic pointer attraction.",
+			"description": "A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions.",
 			"type": "registry:component",
 			"dependencies": [
 				"vgpu@^0.3.1"
@@ -8180,7 +8180,7 @@
 		{
 			"name": "AeroShards-TS-TW",
 			"title": "AeroShards",
-			"description": "A GPU-driven wind sculpture of folded foil shards with content-safe placements and magnetic pointer attraction.",
+			"description": "A GPU-driven wind sculpture of folded foil shards with crisp detail, content-safe placements, and responsive pointer interactions.",
 			"type": "registry:component",
 			"dependencies": [
 				"vgpu@^0.3.1"

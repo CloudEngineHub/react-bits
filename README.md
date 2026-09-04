@@ -95,6 +95,14 @@ React Bits is proudly supported by these amazing sponsors:
   </picture>
 </a>
 
+<a href="https://shadcnuikit.com/?utm_source=reactbits&utm_medium=sponsor&utm_campaign=silver&ref=reactbits" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/sponsors/shadcnuikit.svg">
+    <source media="(prefers-color-scheme: light)" srcset="public/assets/sponsors/shadcnuikit-lightmode.svg">
+    <img src="public/assets/sponsors/shadcnuikit.svg" alt="shadcnuikit.com" style="height: 40px;">
+  </picture>
+</a>
+
 <hr />
 
 **[Become a sponsor](https://reactbits.dev/sponsors)** — Get your brand in front of 500K+ developers monthly.
